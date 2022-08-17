@@ -3,7 +3,7 @@
     <!-- Inspiro Slider -->
     <div id="slider" class="inspiro-slider slider-fullscreen dots-creative" data-fade="true">
         <!-- Slide 1 -->
-        <div class="slide kenburns" data-bg-image="images/slider/notgeneric_bg3.jpg">
+        <div class="slide kenburns" data-bg-image="{{ asset('theme-1/images/slider/notgeneric_bg3.jpg') }}">
             <div class="bg-overlay"></div>
             <div class="container">
                 <div class="slide-captions text-center text-light">
@@ -19,7 +19,7 @@
         </div>
         <!-- end: Slide 1 -->
         <!-- Slide 2 -->
-        <div class="slide" data-bg-video="video/pexels-waves.mp4">
+        <div class="slide" data-bg-video="{{ asset('theme-1/video/pexels-waves.mp4') }}">
             <div class="bg-overlay"></div>
             <div class="container">
                 <div class="slide-captions text-start text-light">
@@ -44,7 +44,7 @@
             </div>
             <div class="row" data-animate="fadeInUp">
                 <div class="col-lg-12">
-                    <img class="img-fluid" src="images/other/responsive-1.jpg" alt="Welcome to POLO">
+                    <img class="img-fluid" src="{{ asset('theme-1/images/other/responsive-1.jpg') }}" alt="Welcome to POLO">
                 </div>
             </div>
         </div>
@@ -125,8 +125,10 @@
                             <div class="carousel dots-inside dots-dark arrows-dark" data-items="1" data-loop="true"
                                 data-autoplay="true" data-animate-in="fadeIn" data-animate-out="fadeOut"
                                 data-autoplay="1500">
-                                <a href="#"><img src="images/portfolio/64.jpg" alt=""></a>
-                                <a href="#"><img src="images/portfolio/70.jpg" alt=""></a>
+                                <a href="#"><img src="{{ asset('theme-1/images/portfolio/64.jpg') }}"
+                                        alt=""></a>
+                                <a href="#"><img src="{{ asset('theme-1/images/portfolio/70.jpg') }}"
+                                        alt=""></a>
                             </div>
                         </div>
                     </div>
@@ -136,11 +138,11 @@
                 <div class="portfolio-item img-zoom ct-photography ct-marketing ct-media">
                     <div class="portfolio-item-wrap">
                         <div class="portfolio-image">
-                            <a href="#"><img src="images/portfolio/60.jpg" alt=""></a>
+                            <a href="#"><img src="{{ asset('theme-1/images/portfolio/60.jpg') }}" alt=""></a>
                         </div>
                         <div class="portfolio-description">
-                            <a title="Paper Pouch!" data-lightbox="image" href="images/portfolio/83l.jpg"><i
-                                    class="icon-maximize"></i></a>
+                            <a title="Paper Pouch!" data-lightbox="image"
+                                href="{{ asset('theme-1/images/portfolio/83l.jpg') }}"><i class="icon-maximize"></i></a>
                             <a href="portfolio-page-grid-gallery.html"><i class="icon-link"></i></a>
                         </div>
                     </div>
@@ -150,7 +152,7 @@
                 <div class="portfolio-item img-zoom ct-photography ct-media ct-branding ct-Media">
                     <div class="portfolio-item-wrap">
                         <div class="portfolio-image">
-                            <a href="#"><img src="images/portfolio/61.jpg" alt=""></a>
+                            <a href="#"><img src="{{ asset('theme-1/images/portfolio/61.jpg') }}" alt=""></a>
                         </div>
                         <div class="portfolio-description">
                             <a href="portfolio-page-grid-gallery.html">
@@ -165,15 +167,16 @@
                 <div class="portfolio-item img-zoom ct-photography ct-media ct-branding ct-marketing ct-webdesign">
                     <div class="portfolio-item-wrap">
                         <div class="portfolio-image">
-                            <a href="#"><img src="images/portfolio/65.jpg" alt=""></a>
+                            <a href="#"><img src="{{ asset('theme-1/images/portfolio/65.jpg') }}"
+                                    alt=""></a>
                         </div>
                         <div class="portfolio-description" data-lightbox="gallery">
                             <a title="Photoshop Mock-up!" data-lightbox="gallery-image"
-                                href="images/portfolio/80l.jpg"><i class="icon-copy"></i></a>
-                            <a title="Paper Pouch!" data-lightbox="gallery-image" href="images/portfolio/81l.jpg"
-                                class="hidden"></a>
-                            <a title="Mock-up" data-lightbox="gallery-image" href="images/portfolio/82l.jpg"
-                                class="hidden"></a>
+                                href="{{ asset('theme-1/images/portfolio/80l.jpg') }}"><i class="icon-copy"></i></a>
+                            <a title="Paper Pouch!" data-lightbox="gallery-image"
+                                href="{{ asset('theme-1/images/portfolio/81l.jpg') }}" class="hidden"></a>
+                            <a title="Mock-up" data-lightbox="gallery-image"
+                                href="{{ asset('theme-1/images/portfolio/82l.jpg') }}" class="hidden"></a>
                             <a href="portfolio-page-grid-gallery.html"><i class="icon-link"></i></a>
                         </div>
                     </div>
@@ -183,7 +186,8 @@
                 <div class="portfolio-item img-zoom ct-marketing ct-media ct-branding ct-marketing ct-webdesign">
                     <div class="portfolio-item-wrap">
                         <div class="portfolio-image">
-                            <a href="#"><img src="images/portfolio/66.jpg" alt=""></a>
+                            <a href="#"><img src="{{ asset('theme-1/images/portfolio/66.jpg') }}"
+                                    alt=""></a>
                         </div>
                         <div class="portfolio-description">
                             <a href="portfolio-page-grid-gallery.html">
@@ -198,7 +202,8 @@
                 <div class="portfolio-item img-zoom ct-photography ct-media ct-branding ct-marketing ct-webdesign">
                     <div class="portfolio-item-wrap">
                         <div class="portfolio-image">
-                            <a href="#"><img src="images/portfolio/67.jpg" alt=""></a>
+                            <a href="#"><img src="{{ asset('theme-1/images/portfolio/67.jpg') }}"
+                                    alt=""></a>
                         </div>
                         <div class="portfolio-description">
                             <a title="Paper Pouch!" data-lightbox="iframe"
@@ -216,8 +221,10 @@
                             <div class="carousel dots-inside dots-dark arrows-dark" data-items="1" data-loop="true"
                                 data-autoplay="true" data-animate-in="fadeIn" data-animate-out="fadeOut"
                                 data-autoplay="1500">
-                                <a href="#"><img src="images/portfolio/68.jpg" alt=""></a>
-                                <a href="#"><img src="images/portfolio/71.jpg" alt=""></a>
+                                <a href="#"><img src="{{ asset('theme-1/images/portfolio/68.jpg') }}"
+                                        alt=""></a>
+                                <a href="#"><img src="{{ asset('theme-1/images/portfolio/71.jpg') }}"
+                                        alt=""></a>
                             </div>
                         </div>
                     </div>
@@ -227,7 +234,8 @@
                 <div class="portfolio-item img-zoom ct-photography ct-marketing ct-media">
                     <div class="portfolio-item-wrap">
                         <div class="portfolio-image">
-                            <a href="#"><img src="images/portfolio/69.jpg" alt=""></a>
+                            <a href="#"><img src="{{ asset('theme-1/images/portfolio/69.jpg') }}"
+                                    alt=""></a>
                         </div>
                         <div class="portfolio-description">
                             <a href="portfolio-page-grid-gallery.html">
@@ -356,7 +364,7 @@
     </section>
     <!-- end: SERVICES -->
     <!-- COUNTERS -->
-    <section class="text-light p-t-150 p-b-150 " data-bg-parallax="images/parallax/12.jpg">
+    <section class="text-light p-t-150 p-b-150 " data-bg-parallax="images/parallax/12.jpg')}}">
         <div class="bg-overlay"></div>
         <div class="container">
             <div class="row">
@@ -416,7 +424,7 @@
                     <div class="post-item-wrap">
                         <div class="post-image">
                             <a href="#">
-                                <img alt="" src="images/blog/12.jpg">
+                                <img alt="" src="{{ asset('theme-1/images/blog/12.jpg') }}">
                             </a>
                             <span class="post-meta-category"><a href="">Lifestyle</a></span>
                         </div>
@@ -438,7 +446,7 @@
                     <div class="post-item-wrap">
                         <div class="post-image">
                             <a href="#">
-                                <img alt="" src="images/blog/17.jpg">
+                                <img alt="" src="{{ asset('theme-1/images/blog/17.jpg') }}">
                             </a>
                             <span class="post-meta-category"><a href="">Science</a></span>
                         </div>
@@ -460,7 +468,7 @@
                     <div class="post-item-wrap">
                         <div class="post-image">
                             <a href="#">
-                                <img alt="" src="images/blog/18.jpg">
+                                <img alt="" src="{{ asset('theme-1/images/blog/18.jpg') }}">
                             </a>
                             <span class="post-meta-category"><a href="">Science</a></span>
                         </div>
@@ -491,31 +499,31 @@
             <div class="carousel client-logos" data-items="6" data-items-sm="4" data-items-xs="3" data-items-xxs="2"
                 data-margin="20" data-arrows="false" data-autoplay="true" data-autoplay="3000" data-loop="true">
                 <div>
-                    <a href="#"><img alt="" src="images/clients/1.png"> </a>
+                    <a href="#"><img alt="" src="{{ asset('theme-1/images/clients/1.png') }}"> </a>
                 </div>
                 <div>
-                    <a href="#"><img alt="" src="images/clients/2.png"> </a>
+                    <a href="#"><img alt="" src="{{ asset('theme-1/images/clients/2.png') }}"> </a>
                 </div>
                 <div>
-                    <a href="#"><img alt="" src="images/clients/3.png"> </a>
+                    <a href="#"><img alt="" src="{{ asset('theme-1/images/clients/3.png') }}"> </a>
                 </div>
                 <div>
-                    <a href="#"><img alt="" src="images/clients/4.png"> </a>
+                    <a href="#"><img alt="" src="{{ asset('theme-1/images/clients/4.png') }}"> </a>
                 </div>
                 <div>
-                    <a href="#"><img alt="" src="images/clients/5.png"> </a>
+                    <a href="#"><img alt="" src="{{ asset('theme-1/images/clients/5.png') }}"> </a>
                 </div>
                 <div>
-                    <a href="#"><img alt="" src="images/clients/6.png"> </a>
+                    <a href="#"><img alt="" src="{{ asset('theme-1/images/clients/6.png') }}"> </a>
                 </div>
                 <div>
-                    <a href="#"><img alt="" src="images/clients/7.png"> </a>
+                    <a href="#"><img alt="" src="{{ asset('theme-1/images/clients/7.png') }}"> </a>
                 </div>
                 <div>
-                    <a href="#"><img alt="" src="images/clients/8.png"> </a>
+                    <a href="#"><img alt="" src="{{ asset('theme-1/images/clients/8.png') }}"> </a>
                 </div>
                 <div>
-                    <a href="#"><img alt="" src="images/clients/9.png"> </a>
+                    <a href="#"><img alt="" src="{{ asset('theme-1/images/clients/9.png') }}"> </a>
                 </div>
             </div>
         </div>
@@ -533,7 +541,7 @@
                 <div class="col-lg-3">
                     <div class="team-member">
                         <div class="team-image">
-                            <img src="images/team/6.jpg">
+                            <img src="{{ asset('theme-1/images/team/6.jpg') }}">
                         </div>
                         <div class="team-desc">
                             <h3>Alea Smith</h3>
@@ -563,7 +571,7 @@
                 <div class="col-lg-3">
                     <div class="team-member">
                         <div class="team-image">
-                            <img src="images/team/7.jpg">
+                            <img src="{{ asset('theme-1/images/team/7.jpg') }}">
                         </div>
                         <div class="team-desc">
                             <h3>Ariol Doe</h3>
@@ -593,7 +601,7 @@
                 <div class="col-lg-3">
                     <div class="team-member">
                         <div class="team-image">
-                            <img src="images/team/8.jpg">
+                            <img src="{{ asset('theme-1/images/team/8.jpg') }}">
                         </div>
                         <div class="team-desc">
                             <h3>Emma Ross</h3>
@@ -623,7 +631,7 @@
                 <div class="col-lg-3">
                     <div class="team-member">
                         <div class="team-image">
-                            <img src="images/team/9.jpg">
+                            <img src="{{ asset('theme-1/images/team/9.jpg') }}">
                         </div>
                         <div class="team-desc">
                             <h3>Victor Loda</h3>

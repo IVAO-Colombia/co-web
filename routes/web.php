@@ -25,7 +25,7 @@ Route::get('locale/{locale}', function ($locale) {
 
 
 
-Route::controller( FrontController::class)->group(function () {
-    Route::get('/', 'comingsoon');
+Route::controller(FrontController::class)->group(function () {
+    Route::get('/', 'index');
 
 });
