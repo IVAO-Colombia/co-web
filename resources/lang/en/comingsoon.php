@@ -15,5 +15,9 @@ return [
     */
 
     'welaunch' => "We're getting ready to launch in",
-
+    'construction' => "Our website is under construction, we are working very hard to give you the best experience on our new web site.",
+    'days' => "Days",
+    'hours' => "Hours",
+    'minutes' => "Minutes",
+    'seconds' => "Seconds",
 ];

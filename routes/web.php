@@ -14,6 +14,17 @@ use App\Http\Controllers\FrontController;
 |
 */
 
+/*
+Language
+*/
+
+Route::get('locale/{locale}', function ($locale) {
+    Session::put('locale', $locale);
+    return redirect()->back();
+});
+
+
+
 Route::controller( FrontController::class)->group(function () {
     Route::get('/', 'comingsoon');
 
