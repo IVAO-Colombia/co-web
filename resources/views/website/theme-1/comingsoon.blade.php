@@ -21,9 +21,14 @@
 
     <!-- Body Inner -->
     <div class="body-inner">
-        <section class="text-center p-t-200 p-b-200 text-light"
+        <section class="text-center p-t-100 p-b-100 text-light"
             style="background-image:url({{ asset('theme-1/homepages/coming-soon/images/1.jpg') }});">
             <div class="container">
+
+                <div data-animate="fadeInUp">
+                    <img src="{{ asset('theme-1/images/logoivao.png') }}" alt="Logo" style="max-height: 200px" />
+                </div>
+
                 <div data-animate="fadeInUp">
                     <h1>{{ __('comingsoon.welaunch') }}</h1>
                 </div>
