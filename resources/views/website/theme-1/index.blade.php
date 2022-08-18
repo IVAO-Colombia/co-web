@@ -364,7 +364,7 @@
     </section>
     <!-- end: SERVICES -->
     <!-- COUNTERS -->
-    <section class="text-light p-t-150 p-b-150 " data-bg-parallax="images/parallax/12.jpg')}}">
+    <section class="text-light p-t-150 p-b-150 " data-bg-parallax="{{ asset('theme-1/images/parallax/12.jpg') }}">
         <div class="bg-overlay"></div>
         <div class="container">
             <div class="row">
