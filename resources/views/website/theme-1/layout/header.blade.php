@@ -3,7 +3,7 @@
         <div class="container">
             <!--Logo-->
             <div id="logo">
-                <a href="index.html">
+                <a href="{{ url('/') }}">
                     <span class="logo-default">IVAO CO</span>
                     <span class="logo-dark">IVAO CO</span>
                 </a>
@@ -21,19 +21,27 @@
             <!--Header Extras-->
             <div class="header-extras">
                 <ul>
+
+                    <li class="d-none d-xl-block d-lg-block">
+                        <a href="{{ url('/') }}" class="btn btn-rounded">Login</a>
+                    </li>
+
                     <li>
                         <a id="btn-search" href="#"> <i class="icon-search"></i></a>
                     </li>
                     <li>
                         <div class="p-dropdown">
-                            <a href="#"><i class="icon-globe"></i><span>EN</span></a>
+                            <a href="#"><i
+                                    class="icon-globe"></i><span>{{ Str::upper(App::currentLocale()) }}</span></a>
                             <ul class="p-dropdown-content">
-                                <li><a href="#">French</a></li>
-                                <li><a href="#">Spanish</a></li>
-                                <li><a href="#">English</a></li>
+                                <li><a href="{{ url('locale/es') }}">{{ __('general.spanish') }}</a></li>
+                                <li><a href="{{ url('locale/en') }}">{{ __('general.english') }}</a></li>
                             </ul>
                         </div>
                     </li>
+
+
+
                 </ul>
             </div>
             <!--end: Header Extras-->
@@ -47,8 +55,8 @@
                 <div class="container">
                     <nav>
                         <ul>
-                            <li><a href="index.html">Home</a></li>
-                            <li class="dropdown"><a href="#">Layout</a>
+                            <li><a href="{{ url('/') }}">{{ __('general.home') }}</a></li>
+                            <li class="dropdown"><a href="#">Piloto</a>
                                 <ul class="dropdown-menu">
                                     <li class="dropdown-submenu"><a href="#">Topbar</a>
                                         <ul class="dropdown-menu">
@@ -59,7 +67,7 @@
                                             <li><a href="header-topbar-fullwidth.html">Fullwidth</a></li>
                                         </ul>
                                     </li>
-                                    <li class="dropdown-submenu"><a href="#">Header</a>
+                                    <li class="dropdown-submenu"><a href="#">ATC</a>
                                         <ul class="dropdown-menu">
                                             <li><a href="header.html">Light</a></li>
                                             <li><a href="header-dark.html">Dark</a></li>
@@ -202,7 +210,7 @@
                                     </li>
                                 </ul>
                             </li>
-                            <li class="dropdown"><a href="#">Features</a>
+                            <li class="dropdown"><a href="#">ATC</a>
                                 <ul class="dropdown-menu">
                                     <li class="dropdown-submenu"><a href="#">Sliders</a>
                                         <ul class="dropdown-menu">
@@ -262,7 +270,7 @@
                                     </li>
                                 </ul>
                             </li>
-                            <li class="dropdown mega-menu-item"><a href="#">Elements</a>
+                            <li class="dropdown mega-menu-item"><a href="#">Formacion</a>
                                 <ul class="dropdown-menu">
                                     <li class="mega-menu-content">
                                         <div class="row">
@@ -413,7 +421,7 @@
                                     </li>
                                 </ul>
                             </li>
-                            <li class="dropdown"><a href="#">Pages</a>
+                            <li class="dropdown"><a href="#">Foro</a>
                                 <ul class="dropdown-menu">
                                     <li class="dropdown-submenu"><span class="dropdown-menu-title-only">About
                                             us</span>
@@ -498,8 +506,11 @@
                                     <li><a href="page-faq.html">FAQ</a></li>
                                 </ul>
                             </li>
-                            <li class="dropdown mega-menu-item"><a href="#">Portfolio</a>
-                                <ul class="dropdown-menu">
+
+                            <li class="d-none  d-md-none d-sm-block"><a
+                                    href="{{ url('/') }}">{{ __('general.login') }}</a></li>
+                            {{-- <li class="dropdown mega-menu-item"><a href="#">Portfolio</a>
+                             <ul class="dropdown-menu">
                                     <li class="mega-menu-content">
                                         <div class="row">
                                             <div class="col-lg-2-5">
@@ -795,7 +806,8 @@
                                         </div>
                                     </li>
                                 </ul>
-                            </li>
+                            </li> --}}
+
                         </ul>
                     </nav>
                 </div>
