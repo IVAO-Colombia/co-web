@@ -26,5 +26,6 @@ class FrontController extends Controller
     function sendcontact(Request $request)
     {
         Mail::to("edgardoalvarez100@gmail.com")->send(new Sendcontact());
+        echo "Enviado";
     }
 }
