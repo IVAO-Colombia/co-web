@@ -259,67 +259,28 @@
                     <div>
                         <h2>Espacio Aéreo de Colombia</h2>
                     </div>
-                    <div class="tabs-container" data-content-align="left">
-                        <ul class="tabs">
-                            <li class="active">
-                                <div class="tab__title text-center">
+                    <div class="mt-4">
+                        <div class="tabs">
+                            <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#home"
+                                        role="tab" aria-controls="home" aria-selected="true">
+                                        <i class="icon icon--sm block fas fa-plane-departure"></i>
+                                        <span class="h5">Salidas / Departure</span></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#profile"
+                                        role="tab" aria-controls="profile" aria-selected="false"> <i
+                                            class="icon icon--sm block fas fa-plane-arrival"></i>
+                                        <span class="h5">LLegadas / Arrivale</span></a>
+                                </li>
 
-                                    <i class="icon icon--sm block fas fa-plane-departure"></i>
-                                    <span class="h5">Salidas / Departure</span>
-                                </div>
-                                <div class="tab__content">
+                            </ul>
+                            <div class="tab-content" id="myTabContent">
+                                <div class="tab-pane fade show active" id="home" role="tabpanel"
+                                    aria-labelledby="home-tab">
                                     <div class="table-responsive">
-                                        <table class="border--round table--alternate-row">
-                                            <thead>
-                                                <tr>
-                                                    <th>ETOD</th>
-                                                    <th>Callsign</th>
-                                                    <th>Salidas</th>
-                                                    <th>Llegadas</th>
-                                                    <th>Aeronave</th>
-                                                    <th>Información</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @if (count($flights['departure']) > 0)
-                                                    @foreach ($flights['departure'] as $item)
-                                                        @php
-                                                            // dd($item);
-                                                            $timeDeparture = \Carbon\Carbon::parse($item->flightPlan->departureTime);
-                                                        @endphp
-                                                        <tr>
-                                                            <td>{{ $timeDeparture->format('H:i\h') }}</td>
-                                                            <td><a href="https://www.ivao.aero/Member.aspx?Id={{ $item->userId }}"
-                                                                    target="_blank"
-                                                                    title="Ver perfil del piloto">{{ $item->callsign }}</a>
-                                                            </td>
-                                                            <td>{{ $item->flightPlan->departureId }}</td>
-                                                            <td>{{ $item->flightPlan->arrivalId }}</td>
-                                                            <td>{{ $item->flightPlan->aircraft->icaoCode }}</td>
-                                                            <td><a href="{{ url('front.fasttrack', $item->callsign) }}"
-                                                                    class=""> Ver</a>
-                                                            </td>
-                                                        </tr>
-                                                    @endforeach
-                                                @else
-                                                    <tr>
-                                                        <td>No hay vuelos</td>
-                                                    </tr>
-                                                @endif
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="tab__title text-center">
-
-                                    <i class="icon icon--sm block fas fa-plane-arrival"></i>
-                                    <span class="h5">LLegadas / Arrival</span>
-                                </div>
-                                <div class="tab__content">
-                                    <div class="table-responsive">
-                                        <table class="border--round table--alternate-row">
+                                        <table class="table border--round table--alternate-row">
                                             <thead>
                                                 <tr>
                                                     <th>ETA</th>
@@ -360,9 +321,57 @@
                                         </table>
                                     </div>
                                 </div>
-                            </li>
+                                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                                    <div class="table-responsive">
+                                        <table class="table border--round table--alternate-row">
+                                            <thead>
+                                                <tr>
+                                                    <th>ETOD</th>
+                                                    <th>Callsign</th>
+                                                    <th>Salidas</th>
+                                                    <th>Llegadas</th>
+                                                    <th>Aeronave</th>
+                                                    <th>Información</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @if (count($flights['departure']) > 0)
+                                                    @foreach ($flights['departure'] as $item)
+                                                        @php
+                                                            // dd($item);
+                                                            $timeDeparture = \Carbon\Carbon::parse($item->flightPlan->departureTime);
+                                                        @endphp
+                                                        <tr>
+                                                            <td>{{ $timeDeparture->format('H:i\h') }}</td>
+                                                            <td><a href="https://www.ivao.aero/Member.aspx?Id={{ $item->userId }}"
+                                                                    target="_blank"
+                                                                    title="Ver perfil del piloto">{{ $item->callsign }}</a>
+                                                            </td>
+                                                            <td>{{ $item->flightPlan->departureId }}</td>
+                                                            <td>{{ $item->flightPlan->arrivalId }}</td>
+                                                            <td>{{ $item->flightPlan->aircraft->icaoCode }}</td>
+                                                            <td><a href="{{ url('front.fasttrack', $item->callsign) }}"
+                                                                    class=""> Ver</a>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                @else
+                                                    <tr>
+                                                        <td>No hay vuelos</td>
+                                                    </tr>
+                                                @endif
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
 
-                        </ul>
+                            </div>
+                        </div>
+
+
+
+
+
                     </div>
                     <!--end of tabs container-->
 
