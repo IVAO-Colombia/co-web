@@ -22,12 +22,13 @@
             <div class="header-extras">
                 <ul>
 
-                    <li class="d-none d-xl-block d-lg-block ml-2">
-                        <a href="{{ url('/') }}" class="btn btn-rounded">Ingresar</a>
+                    <li class="d-none d-xl-block d-lg-block mx-1">
+                        <a href="{{ url('/') }}" class="btn btn-rounded btn-sm">Ingresar</a>
                     </li>
 
-                    <li class="d-none d-xl-block d-lg-block ml-2">
-                        <a href="{{ url('/') }}" class="btn btn-rounded">Registrate</a>
+                    <li class="d-none d-xl-block d-lg-block mx-1">
+                        <a href="{{ url('/') }}"
+                            class="btn btn-rounded btn-outline btn-light btn-sm">Registrate</a>
                     </li>
 
                     {{-- <li>
@@ -55,7 +56,7 @@
             </div>
             <!--end: Navigation Resposnive Trigger-->
             <!--Navigation-->
-            <div id="mainMenu">
+            <div id="mainMenu" class="menu-center">
                 <div class="container">
                     <nav>
                         <ul>
@@ -95,32 +96,32 @@
                                 <ul class="dropdown-menu">
                                     <li class="mega-menu-content">
                                         <div class="row">
-                                            <div class="col-lg-2">
-                                                <ul>
-                                                    <li><a href="shortcode-according.html">Accordions</a></li>
-                                                    <li><a href="shortcode-alerts.html">Alerts</a></li>
-                                                    <li><a href="shortcode-animations.html">Animations</a></li>
-                                                    <li><a href="shortcode-avatar.html">Avatar</a></li>
-                                                    <li><a href="shortcode-audio-video.html">Audio & Video</a>
-                                                    </li>
-                                                    <li><a href="shortcode-blockquotes.html">Blockquotes</a>
-                                                    </li>
-                                                    <li><a href="component-bootstrap-switch.html">BS
-                                                            Switch<span class="badge bg-danger">NEW</span></a>
-                                                    </li>
-                                                    <li><a href="component-bootstrap-notify.html">BS
-                                                            Notify<span class="badge bg-danger">NEW</span></a>
-                                                    </li>
-                                                    <li><a href="shortcode-breadcrumbs.html">Breadcrumbs</a>
-                                                    </li>
-                                                    <li><a href="shortcode-buttons.html">Buttons</a></li>
-                                                    <li><a href="shortcode-background-image.html">Background
-                                                            Image</a></li>
-                                                    <li><a href="shortcode-background-overlays.html">Background
-                                                            Overlays</a></li>
-                                                </ul>
+                                            <div class="pos-absolute col-md-6 imagebg hidden-sm hidden-xs"
+                                                data-overlay="8">
+                                                <div class="background-image-holder"
+                                                    style="background: url(&quot;/web/20191025023955/https://co.ivao.aero/main/img/default/formacion.jpg&quot;); opacity: 1;">
+                                                    <img alt="background"
+                                                        src="/web/20191025023955im_/https://co.ivao.aero/main/img/default/formacion.jpg">
+                                                </div>
+                                                <div class="container pos-vertical-center">
+                                                    <div class="row">
+                                                        <div class="col-md-10 col-md-offset-1">
+
+                                                            <span class="h3 color--white">Formación</span>
+                                                            <a href="./?page=FAQ"
+                                                                class="btn btn--primary type--uppercase">
+                                                                <span class="btn__text">
+                                                                    Preguntas Comunes </span>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                    <!--end of row-->
+                                                </div>
                                             </div>
-                                            <div class="col-lg-2">
+                                            {{-- <div class="col-lg-2">
+
+                                            </div> --}}
+                                            <div class="col-lg-6">
                                                 <ul>
                                                     <li><a href="component-charts-chartjs.html">Charts<span
                                                                 class="badge bg-danger">NEW</span></a></li>
@@ -128,116 +129,12 @@
                                                                 class="badge bg-danger">NEW</span></a></li>
                                                     <li><a href="shortcode-client-logo.html">Clients logos</a>
                                                     </li>
-                                                    <li><a href="shortcode-calltoaction.html">Call to
-                                                            action</a></li>
-                                                    <li><a href="shortcode-carousel.html">Carousel</a></li>
-                                                    <li><a href="shortcode-code.html">Code</a></li>
-                                                    <li><a href="shortcode-countdown-timer.html">Countdown
-                                                            Timers</a></li>
-                                                    <li><a href="shortcode-countdown.html">Countdown<span
-                                                                class="badge bg-danger">NEW</span></a></li>
-                                                    <li><a href="shortcode-counters.html">Counter Numbers</a>
-                                                    </li>
-                                                    <li><a href="component-clipboard.html">Clipboard<span
-                                                                class="badge bg-danger">NEW</span></a></li>
-                                                    <li><a href="component-datatable.html">Data Tables<span
-                                                                class="badge bg-danger">NEW</span></a></li>
-                                                    <li><a href="component-daterangepicker.html">Date & Time
-                                                            Pickers</a></li>
+
                                                 </ul>
                                             </div>
-                                            <div class="col-lg-2">
-                                                <ul>
-                                                    <li><a href="shortcode-dropcat-highlight.html">Dropcat &
-                                                            Highlight</a></li>
-                                                    <li><a href="shortcode-dropdowns.html">Dropdowns</a></li>
-                                                    <li><a href="shortcode-team-members.html">Team members</a>
-                                                    </li>
-                                                    <li><a href="shortcode-forms.html">Form Controls</a></li>
-                                                    <li><a href="shortcode-form-validation.html">Form
-                                                            Validation</a></li>
-                                                    <li><a href="shortcode-form-layouts.html">Form Layouts</a>
-                                                    </li>
-                                                    <li><a href="shortcode-file-upload.html">File upload</a>
-                                                    </li>
-                                                    <li><a href="shortcode-grid.html">Grid System</a></li>
-                                                    <li><a href="shortcode-heading-styles.html">Heading
-                                                            Styles</a></li>
-                                                    <li><a href="shortcode-icon-boxes.html">Icon Boxes</a></li>
-                                                    <li><a href="shortcode-icon-lists.html">Icons</a></li>
-                                                    <li><a href="shortcode-images.html">Images</a></li>
-                                                </ul>
-                                            </div>
-                                            <div class="col-lg-2">
-                                                <ul>
-                                                    <li><a href="shortcode-lightbox.html">Lightbox</a></li>
-                                                    <li><a href="shortcode-lists.html">Lists</a></li>
-                                                    <li><a href="shortcode-labels-badgets.html">Labels &
-                                                            Badges</a></li>
-                                                    <li><a href="shortcode-maps.html">Maps</a></li>
-                                                    <li><a href="shortcode-modal.html">Modal</a></li>
-                                                    <li><a href="shortcode-modal-strip.html">Modal Strip</a>
-                                                    </li>
-                                                    <li><a href="shortcode-navs.html">Navbar & Navs</a></li>
-                                                    <li><a href="shortcode-paginations.html">Pagination &
-                                                            Pager</a></li>
-                                                    <li><a href="shortcode-panels.html">Panels</a></li>
-                                                    <li><a href="shortcode-pie-chart.html">Pie charts</a></li>
-                                                    <li><a href="shortcode-popover.html">Popover</a></li>
-                                                    <li><a href="shortcode-milestone-stats.html">Milestone &
-                                                            Stats</a></li>
-                                                </ul>
-                                            </div>
-                                            <div class="col-lg-2">
-                                                <ul>
-                                                    <li><a href="shortcode-pricing-table.html">Pricing
-                                                            tables</a></li>
-                                                    <li><a href="shortcode-progress-bar.html">Progress bars</a>
-                                                    </li>
-                                                    <li><a href="shortcode-parallax.html">Parallax</a></li>
-                                                    <li><a href="shortcode-particles.html">Particles<span
-                                                                class="badge bg-danger">NEW</span></a></li>
-                                                    <li><a href="shortcode-responsive-utilities.html">Responsive
-                                                            utilities</a></li>
-                                                    <li><a href="component-ion-range-slider.html">Range
-                                                            Slider<span class="badge bg-danger">NEW</span></a>
-                                                    </li>
-                                                    <li><a href="shortcode-sections.html">Sections</a></li>
-                                                    <li><a href="shortcode-smooth-scrolling.html">Smooth
-                                                            Scrolling</a></li>
-                                                    <li><a href="shortcode-social-icons.html">Social Icons</a>
-                                                    </li>
-                                                    <li><a href="shortcode-spinners.html">Spinners<span
-                                                                class="badge bg-danger">NEW</span></a></li>
-                                                    <li><a href="component-toggles-radio-checkboxes.html">Switch
-                                                            Toggle<span class="badge bg-danger">NEW</span></a>
-                                                    </li>
-                                                    <li><a href="shortcode-shape-dividers.html">Shape
-                                                            Dividers<span class="badge bg-danger">NEW</span></a></li>
-                                                </ul>
-                                            </div>
-                                            <div class="col-lg-2">
-                                                <ul>
-                                                    <li><a href="shortcode-ratings.html">Ratings<span
-                                                                class="badge bg-danger">NEW</span></a></li>
-                                                    <li><a href="shortcode-tables.html">Tables</a></li>
-                                                    <li><a href="shortcode-textbox.html">Text Boxes</a></li>
-                                                    <li><a href="shortcode-tabs.html">Tabs</a></li>
-                                                    <li><a href="shortcode-testimonial.html">Testimonials</a>
-                                                    </li>
-                                                    <li><a href="shortcode-toggles.html">Toggles</a></li>
-                                                    <li><a href="shortcode-tooltips.html">Tooltips</a></li>
-                                                    <li><a href="shortcode-typography.html">Typography</a></li>
-                                                    <li><a href="shortcode-text-rotator.html">Text Rotator</a>
-                                                    </li>
-                                                    <li><a href="shortcode-timeline.html">Timeline<span
-                                                                class="badge bg-danger">NEW</span></a></li>
-                                                    <li><a href="shortcode-video-background.html">Video
-                                                            Background</a></li>
-                                                    <li><a href="shortcode-wizard.html">Wizard<span
-                                                                class="badge bg-danger">NEW</span></a></li>
-                                                </ul>
-                                            </div>
+
+
+
                                         </div>
                                     </li>
                                 </ul>

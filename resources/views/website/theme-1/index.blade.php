@@ -3,16 +3,15 @@
     <!-- Inspiro Slider -->
     <div id="slider" class="inspiro-slider slider-fullscreen dots-creative" data-fade="true">
         <!-- Slide 1 -->
-        <div class="slide kenburns" data-bg-image="{{ asset('theme-1/images/slider/notgeneric_bg3.jpg') }}">
+        <div class="slide kenburns" data-bg-image="{{ asset('img/3.jpeg') }}">
             <div class="bg-overlay"></div>
             <div class="container">
                 <div class="slide-captions text-center text-light">
                     <!-- Captions -->
-                    <h1 data-caption-animate="zoom-out">WELCOME TO THE WORLD OF POLO</h1>
-                    <p>Say hello to the smartest and most flexible bootstrap template. Polo is an powerful template
-                        that can build any type of websites, and quite possibly the only one you will ever need.</p>
-                    <div><a href="#welcome" class="btn btn-primary scroll-to">Explore more</a></div>
-                    </span>
+                    <h1 data-caption-animate="zoom-out" class="text-uppercase">Bienvenido al mundo de la aviación</h1>
+                    <p>¡Despega tu pasión en los cielos colombianos!</p>
+                    {{-- <div><a href="#welcome" class="btn btn-primary scroll-to">Explore more</a></div> --}}
+                    {{-- </span> --}}
                     <!-- end: Captions -->
                 </div>
             </div>
@@ -35,7 +34,9 @@
         <!-- end: Slide 2 -->
     </div>
     <!--end: Inspiro Slider -->
-    <!-- WELCOME -->
+
+
+    {{-- <!-- WELCOME -->
     <section id="welcome" class="p-b-0">
         <div class="container">
             <div class="heading-text heading-section text-center m-b-40" data-animate="fadeInUp">
@@ -49,8 +50,8 @@
             </div>
         </div>
     </section>
-    <!-- end: WELCOME -->
-    <!-- WHAT WE DO -->
+    <!-- end: WELCOME --> --}}
+    {{-- <!-- WHAT WE DO -->
     <section class="background-grey">
         <div class="container">
             <div class="heading-text heading-section">
@@ -103,8 +104,8 @@
             </div>
         </div>
     </section>
-    <!-- END WHAT WE DO -->
-    <!-- PORTFOLIO -->
+    <!-- END WHAT WE DO --> --}}
+    {{-- <!-- PORTFOLIO -->
     <section class="p-b-0">
         <div class="container">
             <div class="heading-text heading-section">
@@ -250,7 +251,7 @@
             <!-- end: Portfolio Items -->
         </div>
     </section>
-    <!-- end: PORTFOLIO -->
+    <!-- end: PORTFOLIO --> --}}
 
     <section>
         <div class="container">
@@ -264,30 +265,32 @@
                             <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
                                 <li class="nav-item">
                                     <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#home"
-                                        role="tab" aria-controls="home" aria-selected="true">
-                                        <i class="icon icon--sm block fas fa-plane-departure"></i>
-                                        <span class="h5">Salidas / Departure</span></a>
+                                        role="tab" aria-controls="home" aria-selected="true"> <i
+                                            class="icon icon--sm block fas fa-plane-arrival"></i>
+                                        <span class="h5">LLegadas / Arrivals</span></a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#profile"
-                                        role="tab" aria-controls="profile" aria-selected="false"> <i
-                                            class="icon icon--sm block fas fa-plane-arrival"></i>
-                                        <span class="h5">LLegadas / Arrivale</span></a>
+                                    <a class="nav-link " id="departure-tab" data-bs-toggle="tab" href="#departure"
+                                        role="tab" aria-controls="departure" aria-selected="false">
+                                        <i class="icon icon--sm block fas fa-plane-departure"></i>
+                                        <span class="h5">Salidas / Departures</span></a>
                                 </li>
+
 
                             </ul>
                             <div class="tab-content" id="myTabContent">
-                                <div class="tab-pane fade show active" id="home" role="tabpanel"
-                                    aria-labelledby="home-tab">
+                                <div class="tab-pane fade show active" id="arrival" role="tabpanel"
+                                    aria-labelledby="arrival-tab">
                                     <div class="table-responsive">
                                         <table class="table border--round table--alternate-row">
                                             <thead>
                                                 <tr>
                                                     <th>ETA</th>
                                                     <th>Callsign</th>
-                                                    <th>Salidas</th>
-                                                    <th>Llegadas</th>
+                                                    <th>Origen</th>
+                                                    <th>Destino</th>
                                                     <th>Aeronave</th>
+                                                    <th>Estado</th>
                                                     <th>Información</th>
                                                 </tr>
                                             </thead>
@@ -300,13 +303,14 @@
                                                         @endphp
                                                         <tr>
                                                             <td>{{ $timeDeparture->format('H:i\h') }}</td>
-                                                            <td><a href="https://www.ivao.aero/Member.aspx?Id={{ $item->userId }}"
+                                                            <td><a href="https://www.ivao.aero/member?id={{ $item->userId }}"
                                                                     target="_blank"
                                                                     title="Ver perfil del piloto">{{ $item->callsign }}</a>
                                                             </td>
                                                             <td>{{ $item->flightPlan->departureId }}</td>
                                                             <td>{{ $item->flightPlan->arrivalId }}</td>
                                                             <td>{{ $item->flightPlan->aircraft->icaoCode }}</td>
+                                                            <td>{{ $item->lastTrack->state }}</td>
                                                             <td><a href="{{ url('front.fasttrack', $item->callsign) }}"
                                                                     class=""> Ver</a>
                                                             </td>
@@ -321,16 +325,17 @@
                                         </table>
                                     </div>
                                 </div>
-                                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                                <div class="tab-pane fade" id="departure" role="tabpanel" aria-labelledby="departure-tab">
                                     <div class="table-responsive">
                                         <table class="table border--round table--alternate-row">
                                             <thead>
                                                 <tr>
                                                     <th>ETOD</th>
                                                     <th>Callsign</th>
-                                                    <th>Salidas</th>
-                                                    <th>Llegadas</th>
+                                                    <th>Origen</th>
+                                                    <th>Destino</th>
                                                     <th>Aeronave</th>
+                                                    <th>Estado</th>
                                                     <th>Información</th>
                                                 </tr>
                                             </thead>
@@ -343,13 +348,14 @@
                                                         @endphp
                                                         <tr>
                                                             <td>{{ $timeDeparture->format('H:i\h') }}</td>
-                                                            <td><a href="https://www.ivao.aero/Member.aspx?Id={{ $item->userId }}"
+                                                            <td><a href="https://www.ivao.aero/member?id={{ $item->userId }}"
                                                                     target="_blank"
                                                                     title="Ver perfil del piloto">{{ $item->callsign }}</a>
                                                             </td>
                                                             <td>{{ $item->flightPlan->departureId }}</td>
                                                             <td>{{ $item->flightPlan->arrivalId }}</td>
                                                             <td>{{ $item->flightPlan->aircraft->icaoCode }}</td>
+                                                            <td>{{ $item->lastTrack->state }}</td>
                                                             <td><a href="{{ url('front.fasttrack', $item->callsign) }}"
                                                                     class=""> Ver</a>
                                                             </td>
@@ -367,10 +373,6 @@
 
                             </div>
                         </div>
-
-
-
-
 
                     </div>
                     <!--end of tabs container-->
@@ -493,44 +495,44 @@
     </section>
     <!-- end: SERVICES -->
     <!-- COUNTERS -->
-    <section class="text-light p-t-150 p-b-150 " data-bg-parallax="{{ asset('theme-1/images/parallax/12.jpg') }}">
+    <section class="text-light p-t-150 p-b-150 " data-bg-parallax="{{ asset('img/vfr.jpeg') }}">
         <div class="bg-overlay"></div>
         <div class="container">
             <div class="row">
                 <div class="col-lg-3">
                     <div class="text-center">
-                        <div class="icon"><i class="fa fa-3x fa-code"></i></div>
-                        <div class="counter"> <span data-speed="3000" data-refresh-interval="50" data-to="12416"
-                                data-from="600" data-seperator="true"></span> </div>
+                        <div class="icon"><i class="fa fa-3x fa-users"></i></div>
+                        <div class="counter"> <span data-speed="1500" data-refresh-interval="400" data-to="2087"
+                                data-from="1000" data-seperator="true"></span> </div>
                         <div class="seperator seperator-small"></div>
-                        <p>LINES OF CODE</p>
+                        <p>Miembros Activos</p>
                     </div>
                 </div>
                 <div class="col-lg-3">
                     <div class="text-center">
-                        <div class="icon"><i class="fa fa-3x fa-coffee"></i></div>
-                        <div class="counter"> <span data-speed="4500" data-refresh-interval="23" data-to="365"
+                        <div class="icon"><i class="fa fa-3x fa-user"></i></div>
+                        <div class="counter"> <span data-speed="1500" data-refresh-interval="400" data-to="1331"
                                 data-from="100" data-seperator="true"></span> </div>
                         <div class="seperator seperator-small"></div>
-                        <p>CUPS OF COFFEE</p>
+                        <p>Pilotos</p>
                     </div>
                 </div>
                 <div class="col-lg-3">
                     <div class="text-center">
-                        <div class="icon"><i class="fa fa-3x fa-rocket"></i></div>
-                        <div class="counter"> <span data-speed="3000" data-refresh-interval="12" data-to="114"
-                                data-from="50" data-seperator="true"></span> </div>
+                        <div class="icon"><i class="fa fa-3x fa-broadcast-tower"></i></div>
+                        <div class="counter"> <span data-speed="1500" data-refresh-interval="400" data-to="612"
+                                data-from="100" data-seperator="true"></span> </div>
                         <div class="seperator seperator-small"></div>
-                        <p>FINISHED PROJECTS</p>
+                        <p>Controladores</p>
                     </div>
                 </div>
                 <div class="col-lg-3">
                     <div class="text-center">
-                        <div class="icon"><i class="fa fa-3x fa-smile-o"></i></div>
-                        <div class="counter"> <span data-speed="4550" data-refresh-interval="50" data-to="14825"
-                                data-from="48" data-seperator="true"></span> </div>
+                        <div class="icon"><i class="fa fa-3x fa-chart-line"></i></div>
+                        <div class="counter"> <span data-speed="1500" data-refresh-interval="400" data-to="7"
+                                data-from="100" data-seperator="true"></span> </div>
                         <div class="seperator seperator-small"></div>
-                        <p>SATISFIED CLIENTS</p>
+                        <p>Puesto de la división</p>
                     </div>
                 </div>
             </div>
