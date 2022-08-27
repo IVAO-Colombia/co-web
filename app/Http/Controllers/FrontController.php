@@ -20,7 +20,7 @@ class FrontController extends Controller
     {
         $flights = [];
         $flights = FlightIvao::flightsV2();
-        $sliders = Slider::all();
+        $sliders = Slider::where('status',1)->orderBy("order")->get();
         return view("website.theme-1.index", compact("flights","sliders"));
     }
 

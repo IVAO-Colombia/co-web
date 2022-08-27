@@ -96,17 +96,18 @@
                             </li>
                             <li><a href="http://co.forum.ivao.aero/" target="_blank">Foro</a>
                             </li>
-
-                            <li class="dropdown">
-                                <a href="#">{{ Auth::user()->firstname }} - {{ Auth::user()->id }}</a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#" }}">Perfil</a></li>
-                                    <li><a href="#">Staff</a></li>
-                                    <li>
-                                        <a href="{{ route('ivao.logout') }}" }}">Logout</a>
-                                    </li>
-                                </ul>
-                            </li>
+                            @if (Auth::check())
+                                <li class="dropdown">
+                                    <a href="#">{{ Auth::user()->firstname }} - {{ Auth::user()->id }}</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="#" }}">Perfil</a></li>
+                                        <li><a href="#">Staff</a></li>
+                                        <li>
+                                            <a href="{{ route('ivao.logout') }}" }}">Logout</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            @endif
                         </ul>
                     </nav>
                 </div>
