@@ -24,6 +24,10 @@ class FrontController extends Controller
         return view("website.theme-1.index", compact("flights","sliders"));
     }
 
+    function about(){
+        return view("website.theme-1.about");
+    }
+
     function sendcontact(Request $request)
     {
         Mail::to("edgardoalvarez100@gmail.com")->send(new Sendcontact());

@@ -25,6 +25,7 @@ Route::get("locale/{locale}", function ($locale) {
 
 Route::controller(FrontController::class)->group(function () {
     Route::get("/", "index")->name("Home");
+    Route::get("/about", "about")->name("about");
 
     Route::get("/contact/send", "sendcontact");
 });
