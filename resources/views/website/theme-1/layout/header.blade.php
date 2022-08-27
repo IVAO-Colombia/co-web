@@ -87,21 +87,17 @@
                             <li class="dropdown"><a href="#">Formacion</a>
                                 <ul class="dropdown-menu">
 
-                                    <li><a href="component-charts-chartjs.html">Charts<span
-                                                class="badge bg-danger">NEW</span></a></li>
-                                    <li><a href="component-calendar.html">Calendar<span
-                                                class="badge bg-danger">NEW</span></a></li>
-                                    <li><a href="shortcode-client-logo.html">Clients logos</a>
+                                    <li><a href="#">Charts<span class="badge bg-danger">NEW</span></a></li>
+                                    <li><a href="#">Calendar<span class="badge bg-danger">NEW</span></a></li>
+                                    <li><a href="#">General</a>
                                     </li>
-
 
                                 </ul>
                             </li>
                             <li><a href="http://co.forum.ivao.aero/" target="_blank">Foro</a>
                             </li>
 
-
-                            <li class="dropdown  d-none d-xl-block d-lg-block mx-1">
+                            <li class="dropdown">
                                 <a href="#">{{ Auth::user()->firstname }} - {{ Auth::user()->id }}</a>
                                 <ul class="dropdown-menu">
                                     <li><a href="#" }}">Perfil</a></li>

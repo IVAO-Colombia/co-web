@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
-use App\Mail\Sendcontact;
-use App\Models\FlightIvao;
+use App\Mail\{Sendcontact};
+use App\Models\{FlightIvao, Slider};
 use Mail;
 
 class FrontController extends Controller
@@ -20,7 +20,8 @@ class FrontController extends Controller
     {
         $flights = [];
         $flights = FlightIvao::flightsV2();
-        return view("website.theme-1.index", compact("flights"));
+        $sliders = Slider::all();
+        return view("website.theme-1.index", compact("flights","sliders"));
     }
 
     function sendcontact(Request $request)
