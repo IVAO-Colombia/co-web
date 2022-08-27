@@ -264,8 +264,8 @@
                         <div class="tabs">
                             <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#home"
-                                        role="tab" aria-controls="home" aria-selected="true"> <i
+                                    <a class="nav-link active" id="arrival-tab" data-bs-toggle="tab" href="#arrival"
+                                        role="tab" aria-controls="arrival" aria-selected="true"> <i
                                             class="icon icon--sm block fas fa-plane-arrival"></i>
                                         <span class="h5">LLegadas / Arrivals</span></a>
                                 </li>
@@ -299,10 +299,12 @@
                                                     @foreach ($flights['arrival'] as $item)
                                                         @php
 
-                                                            $timeDeparture = \Carbon\Carbon::parse($item->flightPlan->eet);
+                                                            // $eet = \Carbon\Carbon::parse($item->flightPlan->eet);
+                                                            $timeDeparture = \Carbon\Carbon::parse($item->flightPlan->departureTime);
+                                                            $arrivaltime = $timeDeparture->addSeconds($item->flightPlan->eet);
                                                         @endphp
                                                         <tr>
-                                                            <td>{{ $timeDeparture->format('H:i\h') }}</td>
+                                                            <td>{{ $arrivaltime->format('H:i\z') }}</td>
                                                             <td><a href="https://www.ivao.aero/member?id={{ $item->userId }}"
                                                                     target="_blank"
                                                                     title="Ver perfil del piloto">{{ $item->callsign }}</a>
@@ -347,7 +349,7 @@
                                                             $timeDeparture = \Carbon\Carbon::parse($item->flightPlan->departureTime);
                                                         @endphp
                                                         <tr>
-                                                            <td>{{ $timeDeparture->format('H:i\h') }}</td>
+                                                            <td>{{ $timeDeparture->format('H:i\z') }}</td>
                                                             <td><a href="https://www.ivao.aero/member?id={{ $item->userId }}"
                                                                     target="_blank"
                                                                     title="Ver perfil del piloto">{{ $item->callsign }}</a>
@@ -382,7 +384,7 @@
         </div>
     </section>
 
-    <!-- SERVICES -->
+    {{-- <!-- SERVICES -->
     <section>
         <div class="container">
             <div class="heading-text heading-section text-center">
@@ -493,8 +495,8 @@
             </div>
         </div>
     </section>
-    <!-- end: SERVICES -->
-    <!-- COUNTERS -->
+    <!-- end: SERVICES --> --}}
+    {{-- <!-- COUNTERS -->
     <section class="text-light p-t-150 p-b-150 " data-bg-parallax="{{ asset('img/vfr.jpeg') }}">
         <div class="bg-overlay"></div>
         <div class="container">
@@ -538,8 +540,8 @@
             </div>
         </div>
     </section>
-    <!-- end: COUNTERS -->
-    <!-- BLOG -->
+    <!-- end: COUNTERS --> --}}
+    {{-- <!-- BLOG -->
     <section class="content background-grey">
         <div class="container">
             <div class="heading-text heading-section">
@@ -619,8 +621,8 @@
             </div>
         </div>
     </section>
-    <!-- end: BLOG -->
-    <!-- CLIENTS -->
+    <!-- end: BLOG --> --}}
+    {{-- <!-- CLIENTS -->
     <section class="p-t-60">
         <div class="container">
             <div class="heading-text heading-section text-center">
@@ -659,8 +661,8 @@
             </div>
         </div>
     </section>
-    <!-- end: CLIENTS -->
-    <!-- TEAM -->
+    <!-- end: CLIENTS --> --}}
+    {{-- <!-- TEAM -->
     <section class="background-grey">
         <div class="container">
             <div class="heading-text heading-section text-center">
@@ -792,5 +794,5 @@
             </div>
         </div>
     </section>
-    <!-- end: TEAM -->
+    <!-- end: TEAM --> --}}
 @endsection

@@ -4,8 +4,11 @@
             <!--Logo-->
             <div id="logo">
                 <a href="{{ url('/') }}">
-                    <span class="logo-default">IVAO CO</span>
-                    <span class="logo-dark">IVAO CO</span>
+                    {{-- <span class="logo-default">IVAO CO</span>
+                    <span class="logo-dark">IVAO CO</span> --}}
+
+                    <img src="{{ asset('img/Logo1_WHITE.png') }}" class="logo-default">
+                    <img src="{{ asset('img/Logo1_WHITE.png') }}" class="logo-dark">
                 </a>
             </div>
             <!--End: Logo-->
