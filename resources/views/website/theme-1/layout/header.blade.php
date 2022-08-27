@@ -15,16 +15,16 @@
             <!--Header Extras-->
             <div class="header-extras">
                 <ul>
+                    @if (!Auth::check())
+                        <li class="d-none d-xl-block d-lg-block mx-1">
+                            <a href="{{ route('ivao.login') }}" }}" class="btn btn-rounded btn-sm">Ingresar</a>
+                        </li>
 
-                    <li class="d-none d-xl-block d-lg-block mx-1">
-                        <a href="{{ route('ivao.login') }}" }}" class="btn btn-rounded btn-sm">Ingresar</a>
-                    </li>
-
-                    <li class="d-none d-xl-block d-lg-block mx-1">
-                        <a href="{{ url('/') }}"
-                            class="btn btn-rounded btn-outline btn-light btn-sm">Registrate</a>
-                    </li>
-
+                        <li class="d-none d-xl-block d-lg-block mx-1">
+                            <a href="{{ url('/') }}"
+                                class="btn btn-rounded btn-outline btn-light btn-sm">Registrate</a>
+                        </li>
+                    @endif
 
                     <li>
                         <div class="p-dropdown">
@@ -100,10 +100,17 @@
                             <li><a href="http://co.forum.ivao.aero/" target="_blank">Foro</a>
                             </li>
 
-                            <li class="d-none  d-md-none d-sm-block"><a
-                                    href="{{ route('ivao.login') }}">{{ __('general.login') }}</a></li>
 
-
+                            <li class="dropdown  d-none d-xl-block d-lg-block mx-1">
+                                <a href="#">{{ Auth::user()->firstname }} - {{ Auth::user()->id }}</a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#" }}">Perfil</a></li>
+                                    <li><a href="#">Staff</a></li>
+                                    <li>
+                                        <a href="{{ route('ivao.logout') }}" }}">Logout</a>
+                                    </li>
+                                </ul>
+                            </li>
                         </ul>
                     </nav>
                 </div>
