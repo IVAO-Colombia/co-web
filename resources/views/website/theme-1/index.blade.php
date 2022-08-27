@@ -1,7 +1,7 @@
 @extends('website.theme-1.layout.theme-1')
 @section('content')
-    <!-- Inspiro Slider -->
-    <div id="slider" class="inspiro-slider slider-fullscreen dots-creative" data-fade="true">
+    {{-- <!-- Inspiro Slider -->
+    <div id="slider" class="inspiro-slider slider-fullscreen dots-creative" data-fade="true" style="display: none;">
         <!-- Slide 1 -->
         <div class="slide kenburns" data-bg-image="{{ asset('img/3.jpeg') }}">
             <div class="bg-overlay"></div>
@@ -10,14 +10,13 @@
                     <!-- Captions -->
                     <h1 data-caption-animate="zoom-out" class="text-uppercase">Bienvenido al mundo de la aviación</h1>
                     <p>¡Despega tu pasión en los cielos colombianos!</p>
-                    {{-- <div><a href="#welcome" class="btn btn-primary scroll-to">Explore more</a></div> --}}
-                    {{-- </span> --}}
+
                     <!-- end: Captions -->
                 </div>
             </div>
         </div>
         <!-- end: Slide 1 -->
-        {{-- <!-- Slide 2 -->
+        <!-- Slide 2 -->
         <div class="slide" data-bg-video="{{ asset('theme-1/video/pexels-waves.mp4') }}">
             <div class="bg-overlay"></div>
             <div class="container">
@@ -31,10 +30,11 @@
                 </div>
             </div>
         </div>
-        <!-- end: Slide 2 --> --}}
+        <!-- end: Slide 2 -->
     </div>
-    <!--end: Inspiro Slider -->
+    <!--end: Inspiro Slider --> --}}
 
+    @include('website.theme-1.slider')
 
     {{-- <!-- WELCOME -->
     <section id="welcome" class="p-b-0">
