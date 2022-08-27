@@ -17,7 +17,7 @@
             </div>
         </div>
         <!-- end: Slide 1 -->
-        <!-- Slide 2 -->
+        {{-- <!-- Slide 2 -->
         <div class="slide" data-bg-video="{{ asset('theme-1/video/pexels-waves.mp4') }}">
             <div class="bg-overlay"></div>
             <div class="container">
@@ -31,7 +31,7 @@
                 </div>
             </div>
         </div>
-        <!-- end: Slide 2 -->
+        <!-- end: Slide 2 --> --}}
     </div>
     <!--end: Inspiro Slider -->
 

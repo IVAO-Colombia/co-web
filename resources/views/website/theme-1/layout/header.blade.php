@@ -1,4 +1,4 @@
-<header id="header" data-transparent="true" data-fullwidth="true" class="dark submenu-light">
+<header id="header" data-transparent="true" data-fullwidth="true" class="dark ">
     <div class="header-inner">
         <div class="container">
             <!--Logo-->
@@ -56,7 +56,7 @@
             </div>
             <!--end: Navigation Resposnive Trigger-->
             <!--Navigation-->
-            <div id="mainMenu" class="menu-center">
+            <div id="mainMenu" class="">
                 <div class="container">
                     <nav>
                         <ul>
