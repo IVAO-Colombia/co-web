@@ -40,7 +40,7 @@
     <section id="welcome" class="p-b-0">
         <div class="container">
             <div class="heading-text heading-section text-center m-b-40" data-animate="fadeInUp">
-                <h2>WELCOME TO THE WORLD OF POLO</h2>
+                <h2>BIENVENIDO AL MUNDO DE LA AVIACION</h2>
                 <span class="lead">Create amam ipsum dolor sit amet, Beautiful nature, and rare feathers!.</span>
             </div>
             <div class="row" data-animate="fadeInUp">
@@ -496,10 +496,14 @@
         </div>
     </section>
     <!-- end: SERVICES --> --}}
-    {{-- <!-- COUNTERS -->
+    <!-- COUNTERS -->
     <section class="text-light p-t-150 p-b-150 " data-bg-parallax="{{ asset('img/vfr.jpeg') }}">
         <div class="bg-overlay"></div>
         <div class="container">
+            <div class="heading-text heading-section text-center m-b-40" data-animate="fadeInUp">
+                <h2>Estadisticas</h2>
+                <span class="lead">Las principales estadísticas de nuestra división</span>
+            </div>
             <div class="row">
                 <div class="col-lg-3">
                     <div class="text-center">
@@ -540,7 +544,7 @@
             </div>
         </div>
     </section>
-    <!-- end: COUNTERS --> --}}
+    <!-- end: COUNTERS -->
     {{-- <!-- BLOG -->
     <section class="content background-grey">
         <div class="container">

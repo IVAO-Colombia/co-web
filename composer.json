@@ -9,9 +9,13 @@
         "artesaos/seotools": "^0.22.1",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
+        "ivao-colombia/api-login": "^1.0",
         "laravel/framework": "^8.75",
+        "laravel/jetstream": "^2.9",
         "laravel/sanctum": "^2.11",
-        "laravel/tinker": "^2.5"
+        "laravel/socialite": "^5.5",
+        "laravel/tinker": "^2.5",
+        "livewire/livewire": "^2.5"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

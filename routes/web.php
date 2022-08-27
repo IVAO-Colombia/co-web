@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\FrontController;
+use App\Http\Controllers\{FrontController, IvaoController};
 
 /*
 |--------------------------------------------------------------------------
@@ -24,7 +24,32 @@ Route::get("locale/{locale}", function ($locale) {
 });
 
 Route::controller(FrontController::class)->group(function () {
-    Route::get("/", "index");
+    Route::get("/", "index")->name("Home");
 
     Route::get("/contact/send", "sendcontact");
 });
+
+/*
+IVAO Login
+*/
+
+Route::get('auth/ivao', [IvaoController::class, 'redirect'])->name('ivao.login');
+Route::get('auth/ivao/callback', [IvaoController::class, 'callback']);
+Route::get('auth/ivao/logout', function () {
+    Auth::logout();
+    return redirect()->route('Home');
+})->name('ivao.logout');
+
+
+
+// Route::middleware([
+//     'auth:sanctum',
+//     config('jetstream.auth_session'),
+//     'verified'
+// ])->group(function () {
+//     Route::get('/dashboard', function () {
+//         return view('dashboard');
+//     })->name('dashboard');
+// });
+
+

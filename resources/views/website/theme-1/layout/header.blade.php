@@ -17,7 +17,7 @@
                 <ul>
 
                     <li class="d-none d-xl-block d-lg-block mx-1">
-                        <a href="{{ url('/') }}" class="btn btn-rounded btn-sm">Ingresar</a>
+                        <a href="{{ route('ivao.login') }}" }}" class="btn btn-rounded btn-sm">Ingresar</a>
                     </li>
 
                     <li class="d-none d-xl-block d-lg-block mx-1">
@@ -101,7 +101,7 @@
                             </li>
 
                             <li class="d-none  d-md-none d-sm-block"><a
-                                    href="{{ url('/') }}">{{ __('general.login') }}</a></li>
+                                    href="{{ route('ivao.login') }}">{{ __('general.login') }}</a></li>
 
 
                         </ul>
