@@ -86,21 +86,15 @@
                             </li>
                             <li class="dropdown"><a href="#">Formacion</a>
                                 <ul class="dropdown-menu">
-                                    <li class="mega-menu-content">
-                                        <div class="row">
 
-                                            <ul>
-                                                <li><a href="component-charts-chartjs.html">Charts<span
-                                                            class="badge bg-danger">NEW</span></a></li>
-                                                <li><a href="component-calendar.html">Calendar<span
-                                                            class="badge bg-danger">NEW</span></a></li>
-                                                <li><a href="shortcode-client-logo.html">Clients logos</a>
-                                                </li>
-
-                                            </ul>
-                                        </div>
-
+                                    <li><a href="component-charts-chartjs.html">Charts<span
+                                                class="badge bg-danger">NEW</span></a></li>
+                                    <li><a href="component-calendar.html">Calendar<span
+                                                class="badge bg-danger">NEW</span></a></li>
+                                    <li><a href="shortcode-client-logo.html">Clients logos</a>
                                     </li>
+
+
                                 </ul>
                             </li>
                             <li><a href="http://co.forum.ivao.aero/" target="_blank">Foro</a>
