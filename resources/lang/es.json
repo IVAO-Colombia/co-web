@@ -1,9 +1,9 @@
 {
     "Boarding" : "Abordando",
-    "En Route" : "En Ruta",
-    "Approach" : "Aproximando",
+    "En Route" : "Crucero",
+    "Approach" : "Aproximación Final",
     "On Blocks" : "Aterrizó",
-    "Departing" : "Saliendo",
+    "Departing" : "Rodando",
     "Initial Climb" : "En Ascenso",
     "Landed" : "Aterrizó"
 }
