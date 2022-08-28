@@ -1,110 +1,10 @@
 @extends('website.theme-1.layout.theme-1')
 @section('content')
-    {{-- <!-- Inspiro Slider -->
-    <div id="slider" class="inspiro-slider slider-fullscreen dots-creative" data-fade="true" style="display: none;">
-        <!-- Slide 1 -->
-        <div class="slide kenburns" data-bg-image="{{ asset('img/3.jpeg') }}">
-            <div class="bg-overlay"></div>
-            <div class="container">
-                <div class="slide-captions text-center text-light">
-                    <!-- Captions -->
-                    <h1 data-caption-animate="zoom-out" class="text-uppercase">Bienvenido al mundo de la aviación</h1>
-                    <p>¡Despega tu pasión en los cielos colombianos!</p>
 
-                    <!-- end: Captions -->
-                </div>
-            </div>
-        </div>
-        <!-- end: Slide 1 -->
-        <!-- Slide 2 -->
-        <div class="slide" data-bg-video="{{ asset('theme-1/video/pexels-waves.mp4') }}">
-            <div class="bg-overlay"></div>
-            <div class="container">
-                <div class="slide-captions text-start text-light">
-                    <!-- Captions -->
-                    <h1>220+ Laytout Demos</h1>
-                    <p class="text-small">POLO is packed with 220+ pre-made layouts that allow you to quickly
-                        jumpstart your project. Completely customizable for creating your own designs.</p>
-                    <div><a href="#welcome" class="btn btn-primary scroll-to">Explore more</a></div>
-                    <!-- end: Captions -->
-                </div>
-            </div>
-        </div>
-        <!-- end: Slide 2 -->
-    </div>
-    <!--end: Inspiro Slider --> --}}
 
     @include('website.theme-1.slider')
 
-    {{-- <!-- WELCOME -->
-    <section id="welcome" class="p-b-0">
-        <div class="container">
-            <div class="heading-text heading-section text-center m-b-40" data-animate="fadeInUp">
-                <h2>BIENVENIDO AL MUNDO DE LA AVIACION</h2>
-                <span class="lead">Create amam ipsum dolor sit amet, Beautiful nature, and rare feathers!.</span>
-            </div>
-            <div class="row" data-animate="fadeInUp">
-                <div class="col-lg-12">
-                    <img class="img-fluid" src="{{ asset('theme-1/images/other/responsive-1.jpg') }}" alt="Welcome to POLO">
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- end: WELCOME --> --}}
-    {{-- <!-- WHAT WE DO -->
-    <section class="background-grey">
-        <div class="container">
-            <div class="heading-text heading-section">
-                <h2>WHAT WE DO</h2>
-                <span class="lead">Create amam ipsum dolor sit amet, Beautiful nature, and rare feathers!.</span>
-            </div>
-            <div class="row">
-                <div class="col-lg-4">
-                    <div data-animate="fadeInUp" data-animate-delay="0">
-                        <h4>Modern Design</h4>
-                        <p>Lorem ipsum dolor sit amet, blandit vel sapien vitae, condimentum ultricies magna et.
-                            Quisque euismod orci ut et lobortis aliquam.</p>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div data-animate="fadeInUp" data-animate-delay="200">
-                        <h4>Loaded with Features</h4>
-                        <p>Lorem ipsum dolor sit amet, blandit vel sapien vitae, condimentum ultricies magna et.
-                            Quisque euismod orci ut et lobortis aliquam.</p>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div data-animate="fadeInUp" data-animate-delay="400">
-                        <h4>Completely Customizable</h4>
-                        <p>Lorem ipsum dolor sit amet, blandit vel sapien vitae, condimentum ultricies magna et.
-                            Quisque euismod orci ut et lobortis aliquam.</p>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div data-animate="fadeInUp" data-animate-delay="600">
-                        <h4>100% Responsive Layout</h4>
-                        <p>Lorem ipsum dolor sit amet, blandit vel sapien vitae, condimentum ultricies magna et.
-                            Quisque euismod orci ut et lobortis aliquam.</p>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div data-animate="fadeInUp" data-animate-delay="800">
-                        <h4>Clean Modern Code</h4>
-                        <p>Lorem ipsum dolor sit amet, blandit vel sapien vitae, condimentum ultricies magna et.
-                            Quisque euismod orci ut et lobortis aliquam.</p>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div data-animate="fadeInUp" data-animate-delay="1000">
-                        <h4>Free Updates & Support</h4>
-                        <p>Lorem ipsum dolor sit amet, blandit vel sapien vitae, condimentum ultricies magna et.
-                            Quisque euismod orci ut et lobortis aliquam.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- END WHAT WE DO --> --}}
+
     {{-- <!-- PORTFOLIO -->
     <section class="p-b-0">
         <div class="container">
@@ -312,7 +212,7 @@
                                                             <td>{{ $item->flightPlan->departureId }}</td>
                                                             <td>{{ $item->flightPlan->arrivalId }}</td>
                                                             <td>{{ $item->flightPlan->aircraft->icaoCode }}</td>
-                                                            <td>{{ $item->lastTrack->state }}</td>
+                                                            <td>{{ __($item->lastTrack->state) }}</td>
                                                             <td><a href="{{ url('front.fasttrack', $item->callsign) }}"
                                                                     class=""> Ver</a>
                                                             </td>
@@ -357,7 +257,7 @@
                                                             <td>{{ $item->flightPlan->departureId }}</td>
                                                             <td>{{ $item->flightPlan->arrivalId }}</td>
                                                             <td>{{ $item->flightPlan->aircraft->icaoCode }}</td>
-                                                            <td>{{ $item->lastTrack->state }}</td>
+                                                            <td>{{ __($item->lastTrack->state) }}</td>
                                                             <td><a href="{{ url('front.fasttrack', $item->callsign) }}"
                                                                     class=""> Ver</a>
                                                             </td>

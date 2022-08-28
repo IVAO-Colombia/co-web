@@ -5,5 +5,4 @@ return [
     "spanish" => "Español",
     "home" => "Inicio",
     "community"=> "Comunidad"
-
 ];
