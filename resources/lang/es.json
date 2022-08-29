@@ -5,5 +5,13 @@
     "On Blocks" : "Aterrizó",
     "Departing" : "Rodando",
     "Initial Climb" : "En Ascenso",
-    "Landed" : "Aterrizó"
+    "Landed" : "Aterrizó",
+    "Home": "Inicio",
+    "ATC": "Contralador",
+    "Pilot": "Piloto",
+    "Charts": "Cartas",
+    "Calendar": "Calendario",
+    "General": "General",
+    "Traning": "Formación",
+    "Forum": "Foro"
 }

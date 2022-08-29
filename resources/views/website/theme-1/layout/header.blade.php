@@ -52,7 +52,7 @@
                 <div class="container">
                     <nav>
                         <ul>
-                            <li><a href="{{ url('/') }}">{{ __('general.home') }}</a></li>
+                            <li><a href="{{ url('/') }}">{{ __('Home') }}</a></li>
                             <li class="dropdown"><a href="#">Piloto</a>
                                 <ul class="dropdown-menu">
                                     <li><a target="_blank"
@@ -67,7 +67,7 @@
                                     </li>
                                 </ul>
                             </li>
-                            <li class="dropdown"><a href="#">ATC</a>
+                            <li class="dropdown"><a href="#">{{ __('ATC') }}</a>
 
                                 <ul class="dropdown-menu">
                                     <li> <a target="_blank"
@@ -84,17 +84,17 @@
 
 
                             </li>
-                            <li class="dropdown"><a href="#">Formacion</a>
+                            <li class="dropdown"><a href="#">{{ __('Traning') }}</a>
                                 <ul class="dropdown-menu">
 
-                                    <li><a href="#">Charts<span class="badge bg-danger">NEW</span></a></li>
-                                    <li><a href="#">Calendar<span class="badge bg-danger">NEW</span></a></li>
-                                    <li><a href="#">General</a>
+                                    <li><a href="#">{{ __('Charts') }}<span class="badge bg-danger">NEW</span></a></li>
+                                    <li><a href="#">{{ __('Calendar') }}<span class="badge bg-danger">NEW</span></a></li>
+                                    <li><a href="#">{{ __('General') }}</a>
                                     </li>
 
                                 </ul>
                             </li>
-                            <li><a href="http://co.forum.ivao.aero/" target="_blank">Foro</a>
+                            <li><a href="http://co.forum.ivao.aero/" target="_blank">{{ __('Forum') }}</a>
                             </li>
                             @if (Auth::check())
                                 <li class="dropdown">
