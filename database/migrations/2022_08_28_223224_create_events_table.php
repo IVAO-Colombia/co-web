@@ -15,12 +15,12 @@ class CreateEventsTable extends Migration
     {
         Schema::create('events', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
+            $table->string('title',255);
             $table->string('slug',255)->unique();
             $table->string('image')->nullable();
             $table->string('date_time',255)->nullable();
-            $table->date('start_publish_date')->nullable()->default(new DateTime());
-            $table->date('end_publish_date')->nullable()->default(new DateTime());
+            $table->date('start_publish_date')->nullable();
+            $table->date('end_publish_date')->nullable();
             $table->text('description')->nullable();
             $table->boolean('has_booking')->default(false);
             $table->boolean('confirm_booking')->default(false);
