@@ -24,6 +24,17 @@ class FrontController extends Controller
         return view("website.theme-1.index", compact("flights","sliders"));
     }
 
+    public function fasttrack(Request $request, $callsign)
+    {
+       $flights = FlightIvao::flightsV2(true);
+       $flight = FlightIvao::fasttrack($callsign,$flights);
+       if($flight == null){
+          abort(404);
+       }
+     //   dd($flight);
+        return view('website.theme-1.fasttrack',compact('flight'));
+    }
+
     function about(){
         return view("website.theme-1.about");
     }

@@ -25,9 +25,11 @@ Route::get("locale/{locale}", function ($locale) {
 
 Route::controller(FrontController::class)->group(function () {
     Route::get("/", "index")->name("Home");
-    Route::get("/about", "about")->name("about");
+    Route::get("/about", "about")->name("about")->name("front.about");
 
-    Route::get("/contact/send", "sendcontact");
+    Route::get("/contact/send", "sendcontact")->name("front.sendcontact");
+
+    Route::get('/fasttrack/{callsign}', 'fasttrack')->name('front.fasttrack');
 });
 
 /*
