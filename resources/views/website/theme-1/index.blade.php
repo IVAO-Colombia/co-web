@@ -154,6 +154,7 @@
     <!-- end: PORTFOLIO --> --}}
 
     <section>
+
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-12 text-center boxed boxed--border bg--white">
@@ -398,7 +399,9 @@
     <!-- end: SERVICES --> --}}
     <!-- COUNTERS -->
     <section class="text-light p-t-150 p-b-150 " data-bg-parallax="{{ asset('img/vfr.jpeg') }}">
+        <div id="particles-dots" class="particles"></div>
         <div class="bg-overlay"></div>
+        <div class="shape-divider" data-style="4"></div>
         <div class="container">
             <div class="heading-text heading-section text-center m-b-40" data-animate="fadeInUp">
                 <h2>Estadisticas</h2>
@@ -700,3 +703,9 @@
     </section>
     <!-- end: TEAM --> --}}
 @endsection
+@push('scripts')
+    <!-- Partical js base file  -->
+    <script src="{{ asset('theme-1/plugins/particles/particles.js') }}" type="text/javascript"></script>
+    <!--Particles-->
+    <script src="{{ asset('theme-1/plugins/particles/particles-dots.js') }}" type="text/javascript"></script>
+@endpush
