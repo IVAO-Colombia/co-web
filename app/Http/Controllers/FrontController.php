@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 
 use App\Mail\{Sendcontact};
-use App\Models\{FlightIvao, Slider};
+use App\Models\{FlightIvao, Slider, Airport};
 use Mail;
 
 class FrontController extends Controller
@@ -28,11 +28,15 @@ class FrontController extends Controller
     {
        $flights = FlightIvao::flightsV2(true);
        $flight = FlightIvao::fasttrack($callsign,$flights);
+
        if($flight == null){
           abort(404);
        }
-     //   dd($flight);
-        return view('website.theme-1.fasttrack',compact('flight'));
+
+       $departureAirport = Airport::where("icao",$flight->flightPlan->departureId)->first();
+       $arrivalAirport = Airport::where("icao",$flight->flightPlan->arrivalId)->first();
+    //  dd($flight);
+        return view('website.theme-1.fasttrack',compact('flight',"departureAirport","arrivalAirport"));
     }
 
     function about(){

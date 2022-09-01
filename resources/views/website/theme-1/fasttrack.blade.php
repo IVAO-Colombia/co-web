@@ -1,15 +1,15 @@
 @extends('website.theme-1.layout.theme-1')
 @section('content')
     <!-- Inspiro Slider -->
-    <div id="slider" class="inspiro-slider dots-creative" data-height-xs="360">
+    <div id="slider" class="inspiro-slider dots-creative h-40" data-height-xs="360">
         <!-- Slide 2 -->
         <div class="slide kenburns" style="background-image:url('{{ asset('img/skmd.jpeg') }}');">
             <div class="bg-overlay"></div>
             <div class="container">
                 <div class="slide-captions text-center text-light">
                     <!-- Captions -->
-                    <span class="strong">Fast Track</span>
-                    <h1>Detalle del vuelo <b>{{ $flight->callsign }} </b></h1>
+                    <span class="strong">Detalle del vuelo</span>
+                    <h1> <b>{{ $flight->callsign }} </b></h1>
                     <!-- end: Captions -->
                 </div>
             </div>
@@ -23,8 +23,10 @@
         <div class="container">
             <div class="row justify-content-around">
                 <div class="col-md-12 my-2 text-center">
-                    <h3>{{ $flight->flightPlan->departureId }} - {{ $flight->flightPlan->arrivalId }}</h3>
-                    <p class="lead">Estado: {{ $flight->lastTrack->state }}</p>
+                    <h3>{{ $departureAirport->municipality ?? '' }}/{{ $departureAirport->iata ?? '' }} -
+                        {{ $arrivalAirport->municipality ?? '' }}/{{ $arrivalAirport->iata ?? '' }}</h3>
+                    {{-- <h3>{{ $flight->flightPlan->departureId }} - {{ $flight->flightPlan->arrivalId }}</h3> --}}
+                    <p class="lead">Estado: {{ __($flight->lastTrack->state) }}</p>
                     <p class="lead">Regla de vuelo: {{ $flight->flightPlan->flightRules }} </p>
                     <p class="lead">Altitud: {{ $flight->lastTrack->altitude }}</p>
                     <p class="lead">GS: {{ $flight->lastTrack->groundSpeed }} kts</p>
@@ -50,10 +52,11 @@
     {{-- <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.2.1/build/ol.js"></script> --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/4.6.5/ol.js"></script>
 
+
     <style>
         .mapa {
             min-height: 400px;
-            height: 70vh;
+            height: 80vh;
             width: 100%;
         }
     </style>
@@ -61,15 +64,92 @@
 
 @push('scripts')
     <script type="text/javascript">
+        var points = [
+            @if ($departureAirport)
+                [{{ $departureAirport->longitude }}, {{ $departureAirport->latitude }}],
+            @endif
+            [{{ $flight->lastTrack->longitude }},
+                {{ $flight->lastTrack->latitude }}
+            ],
+            [{{ $arrivalAirport->longitude }}, {{ $arrivalAirport->latitude }}]
+        ];
+
+        var lineStyle = new ol.style.Style({
+            stroke: new ol.style.Stroke({
+                color: '#FF0000',
+                width: 2
+            }),
+        });
+
+        var aeroStyle = new ol.style.Style({
+            stroke: new ol.style.Stroke({
+                width: 3,
+                color: [0, 0, 100, 0.50]
+            }),
+            fill: new ol.style.Fill({
+                color: [0, 0, 100, 0.50]
+            }),
+            image: new ol.style.Circle({
+                stroke: new ol.style.Stroke({
+                    color: 'red',
+                    width: 3
+                }),
+                fill: new ol.style.Fill({
+                    color: [0, 0, 100, 0.50]
+                }),
+                radius: 10,
+            })
+
+        });
+
+
         var iconFeature = new ol.Feature({
             geometry: new ol.geom.Point(ol.proj.transform([{{ $flight->lastTrack->longitude }},
                     {{ $flight->lastTrack->latitude }}
                 ], 'EPSG:4326',
-                'EPSG:3857'))
-        })
+                'EPSG:3857')),
 
-        // var lineFeature = new ol.Feature(
-        // new ol.geom.LineString([[-1e7, 1e6], [-1e6, 3e6]]));
+        });
+
+        var iconDeparture = new ol.Feature({
+            geometry: new ol.geom.Circle(ol.proj.transform([{{ $departureAirport->longitude }},
+                    {{ $departureAirport->latitude }}
+                ], 'EPSG:4326',
+                'EPSG:3857'), 7000),
+
+        });
+
+        var iconArrival = new ol.Feature({
+            geometry: new ol.geom.Circle(ol.proj.transform([{{ $arrivalAirport->longitude }},
+                    {{ $arrivalAirport->latitude }}
+                ], 'EPSG:4326',
+                'EPSG:3857'), 7000),
+
+        });
+        iconArrival.setStyle(aeroStyle);
+        iconDeparture.setStyle(aeroStyle);
+
+
+
+        var featureLine = new ol.Feature({
+            geometry: new ol.geom.LineString(points).transform('EPSG:4326', 'EPSG:3857'),
+            name: "Line",
+
+        });
+
+
+        featureLine.setStyle(lineStyle);
+
+
+        // featureLine.setStyle(
+        //     new ol.style.Style({
+        //         stroke: new ol.style.Style({
+        //             color: [255, 0, 0, 255],
+        //             width: 3
+        //         })
+        //     })
+        // );
+
 
         var styleAvion = new ol.style.Style({
             image: new ol.style.Icon({
@@ -82,9 +162,14 @@
         });
         iconFeature.setStyle(styleAvion);
 
+
+
+
         var vectorSource = new ol.source.Vector({
-            features: [iconFeature]
+            features: [featureLine, iconDeparture, iconArrival, iconFeature]
         });
+
+
 
         var vectorLayer = new ol.layer.Vector({
             source: vectorSource
@@ -102,8 +187,9 @@
                 center: ol.proj.fromLonLat([{{ $flight->lastTrack->longitude }},
                     {{ $flight->lastTrack->latitude }}
                 ]),
-                zoom: 5
+                zoom: 8
             })
         });
+        map.getView().fit(vectorSource.getExtent());
     </script>
 @endpush

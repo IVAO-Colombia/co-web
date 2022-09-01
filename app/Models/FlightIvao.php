@@ -46,6 +46,7 @@ class FlightIvao extends Model
 
     public static function fasttrack($callsign,$vuelos)
     {
+        $vuelo = null;
       foreach ($vuelos as $key => $vuelo) {
          if($vuelo->callsign == $callsign){
             return $vuelo;
