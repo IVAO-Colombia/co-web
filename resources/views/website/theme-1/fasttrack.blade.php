@@ -71,7 +71,9 @@
             [{{ $flight->lastTrack->longitude }},
                 {{ $flight->lastTrack->latitude }}
             ],
-            [{{ $arrivalAirport->longitude }}, {{ $arrivalAirport->latitude }}]
+            @if ($arrivalAirport)
+                [{{ $arrivalAirport->longitude }}, {{ $arrivalAirport->latitude }}]
+            @endif
         ];
 
         var lineStyle = new ol.style.Style({
@@ -111,23 +113,29 @@
 
         });
 
-        var iconDeparture = new ol.Feature({
-            geometry: new ol.geom.Circle(ol.proj.transform([{{ $departureAirport->longitude }},
-                    {{ $departureAirport->latitude }}
-                ], 'EPSG:4326',
-                'EPSG:3857'), 7000),
+        @if ($departureAirport)
+            var iconDeparture = new ol.Feature({
+                geometry: new ol.geom.Circle(ol.proj.transform([{{ $departureAirport->longitude }},
+                        {{ $departureAirport->latitude }}
+                    ], 'EPSG:4326',
+                    'EPSG:3857'), 7000),
 
-        });
+            });
+            iconDeparture.setStyle(aeroStyle);
+        @endif
 
-        var iconArrival = new ol.Feature({
-            geometry: new ol.geom.Circle(ol.proj.transform([{{ $arrivalAirport->longitude }},
-                    {{ $arrivalAirport->latitude }}
-                ], 'EPSG:4326',
-                'EPSG:3857'), 7000),
 
-        });
-        iconArrival.setStyle(aeroStyle);
-        iconDeparture.setStyle(aeroStyle);
+        @if ($arrivalAirport)
+            var iconArrival = new ol.Feature({
+                geometry: new ol.geom.Circle(ol.proj.transform([{{ $arrivalAirport->longitude }},
+                        {{ $arrivalAirport->latitude }}
+                    ], 'EPSG:4326',
+                    'EPSG:3857'), 7000),
+
+            });
+            iconArrival.setStyle(aeroStyle);
+        @endif
+
 
 
 
