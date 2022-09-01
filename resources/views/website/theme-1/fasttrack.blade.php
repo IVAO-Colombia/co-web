@@ -35,6 +35,9 @@
                     <p class="lead">Remark: {{ $flight->flightPlan->remarks }}</p>
                     <p class="lead">Personas abordo: {{ $flight->flightPlan->peopleOnBoard }}</p>
                     <p class="lead">Sesion: {{ $flight->pilotSession->simulatorId }}</p>
+                    <p class="lead">Webeye: <a href="https://webeye.ivao.aero/?pilotId={{ $flight->id }}"
+                            target="_blank" rel="noopener noreferrer">Ver</a></p>
+
                 </div>
                 <div class="col-md-12 my-4 wow fadeLeft">
                     <h3>Mapa</h3>
