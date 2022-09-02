@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 
 use App\Mail\{Sendcontact};
-use App\Models\{FlightIvao, Slider, Airport};
+use App\Models\{FlightIvao, Slider, Airport, Event};
 use Mail;
 
 class FrontController extends Controller
@@ -21,7 +21,8 @@ class FrontController extends Controller
         $flights = [];
         $flights = FlightIvao::flightsV2();
         $sliders = Slider::where('status',1)->orderBy("order")->get();
-        return view("website.theme-1.index", compact("flights","sliders"));
+        $events = Event::where("featured",true)->orderBy("id")->get();
+        return view("website.theme-1.index", compact("flights","sliders","events"));
     }
 
     public function fasttrack(Request $request, $callsign)
