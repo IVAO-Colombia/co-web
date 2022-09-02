@@ -128,8 +128,8 @@
     </section>
     <!-- end: BLOG -->
 
+    <!-- ATC -->
     <section>
-
         <div class="container">
             <div class="heading-text heading-section">
                 <h2 class="">Controladores en Colombia</h2>
@@ -142,7 +142,9 @@
             </div>
         </div>
     </section>
+    <!-- end: ATC -->
 
+    <!-- VUELOS -->
     <section>
         {{-- data-bg-image="{{ asset('img/sksm-exterior.jpg') }}" --}}
         {{-- <div class="bg-overlay" data-style="4"></div> --}}
@@ -326,6 +328,7 @@
             </div>
         </div>
     </section>
+    <!-- end: VUELOS -->
 
     {{-- <!-- SERVICES -->
     <section>
