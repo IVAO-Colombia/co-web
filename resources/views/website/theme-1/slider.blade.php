@@ -23,6 +23,15 @@
                                data-rotatestart="0" data-rotateend="0" data-blurstart="20" data-blurend="0"
                                data-offsetstart="0 0" data-offsetend="0 0" class="rev-slidebg" data-no-retina>
                            <!-- LAYERS -->
+
+                           {{-- <!-- BACKGROUND VIDEO LAYER -->
+                           <div class="rs-background-video-layer" data-volume="mute" data-videowidth="100%"
+                               data-duration="14000" data-videoheight="100%"
+                               data-videomp4="{{ asset('video/video-1.mp4') }}" data-videopreload="auto"
+                               data-videoloop="loop" data-forceCover="1" data-aspectratio="16:9" data-autoplay="true"
+                               data-autoplayonlyfirsttime="false"></div> --}}
+
+
                            <!-- LAYER NR. 1 -->
                            <div class="tp-caption tp-shape tp-shapewrapper tp-slicey  tp-resizeme"
                                id="slide-67-layer-{{ $item->id }}9" data-x="['center','center','center','center']"

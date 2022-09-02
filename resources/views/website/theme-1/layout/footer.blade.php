@@ -56,7 +56,10 @@
     </div>
     <div class="copyright-content">
         <div class="container">
-            <div class="copyright-text text-center">&copy;IVAO CO 2022. </div>
+            <div class="copyright-text text-center">&copy;IVAO CO 2022.
+                {{-- <br><small> This page took {{ microtime(true) - LARAVEL_START }} seconds to render</small> --}}
+            </div>
+
         </div>
     </div>
 </footer>
