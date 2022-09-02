@@ -96,7 +96,7 @@
                             </li>
                             <li><a href="http://co.forum.ivao.aero/" target="_blank">{{ __('Forum') }}</a>
                             </li>
-                            <li class="d-none d-md-block d-sm-block d-xs-block">
+                            <li class="d-xl-none d-lg-none d-md-block d-sm-block  ">
                                 <a href="{{ route('ivao.login') }}" }}">Ingresar</a>
                             </li>
                             @if (Auth::check())
