@@ -13,5 +13,10 @@
     "Calendar": "Calendario",
     "General": "General",
     "Traning": "Formación",
-    "Forum": "Foro"
+    "Forum": "Foro",
+    "Login": "Ingresar",
+    "Logout" : "Salir",
+    "Welcome" : "Bienvenido",
+    "Sign Up" : "Registrarse",
+    "":""
 }

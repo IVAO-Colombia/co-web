@@ -11,5 +11,6 @@
     <!-- Stylesheets & Fonts -->
     <link href="{{ asset('theme-1/css/plugins.css') }}" rel="stylesheet">
     <link href="{{ asset('theme-1/css/style.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('theme-1/css/custom.css') }}">
     @stack('styles')
 </head>

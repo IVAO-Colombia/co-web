@@ -22,9 +22,8 @@
     <script src="{{ asset('theme-1/js/plugins.js') }}"></script>
     <!--Template functions-->
     <script src="{{ asset('theme-1/js/functions.js') }}"></script>
-    <!--Pageloader plugin files-->
-    <script src="{{ asset('theme-1/plugins/pageloader/pageloader.js') }}"></script>
-    <script src="{{ asset('theme-1/plugins/pageloader/pageloader.init.js') }}"></script>
+
+
     @stack('scripts')
 </body>
 

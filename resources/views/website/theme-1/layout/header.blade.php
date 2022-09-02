@@ -17,12 +17,13 @@
                 <ul>
                     @if (!Auth::check())
                         <li class="d-none d-xl-block d-lg-block mx-1">
-                            <a href="{{ route('ivao.login') }}" }}" class="btn btn-rounded btn-sm">Ingresar</a>
+                            <a href="{{ route('ivao.login') }}" }}"
+                                class="btn btn-rounded btn-sm">{{ __('Login') }}</a>
                         </li>
 
                         <li class="d-none d-xl-block d-lg-block mx-1">
-                            <a href="{{ url('/') }}"
-                                class="btn btn-rounded btn-outline btn-light btn-sm">Registrate</a>
+                            <a href="https://ivao.aero/register" target="_blank"
+                                class="btn btn-rounded btn-outline btn-light btn-sm">{{ __('Logout') }}</a>
                         </li>
                     @endif
 
@@ -89,16 +90,13 @@
 
                                     <li><a href="#">{{ __('Charts') }}</a></li>
                                     <li><a href="#">{{ __('Calendar') }}</a></li>
-                                    <li><a href="#">{{ __('General') }}</a>
-                                    </li>
+
 
                                 </ul>
                             </li>
                             <li><a href="http://co.forum.ivao.aero/" target="_blank">{{ __('Forum') }}</a>
                             </li>
-                            <li class="d-xl-none d-lg-none d-md-block d-sm-block  ">
-                                <a href="{{ route('ivao.login') }}" }}">Ingresar</a>
-                            </li>
+
                             @if (Auth::check())
                                 <li class="dropdown">
                                     <a href="#">{{ Auth::user()->firstname }} - {{ Auth::user()->id }}</a>
@@ -106,9 +104,16 @@
                                         <li><a href="#" }}">Perfil</a></li>
                                         <li><a href="#">Staff</a></li>
                                         <li>
-                                            <a href="{{ route('ivao.logout') }}" }}">Logout</a>
+                                            <a href="{{ route('ivao.logout') }}">{{ __('Logout') }}</a>
                                         </li>
                                     </ul>
+                                </li>
+                            @else
+                                <li class="d-xl-none d-lg-none d-md-block d-sm-block">
+                                    <a href="{{ route('ivao.login') }}">{{ __('Login') }}</a>
+                                </li>
+                                <li class="d-xl-none d-lg-none d-md-block d-sm-block">
+                                    <a href="https://ivao.aero/register" target="_blank">{{ __('Sign Up') }}</a>
                                 </li>
                             @endif
                         </ul>

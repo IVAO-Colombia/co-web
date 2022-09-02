@@ -13,16 +13,27 @@
                 <div class="container">
                     <div class="slide-captions text-start text-light">
                         <!-- Captions -->
-                        <h2 class="text-uppercase text-lg">Bienvenido
+                        <h2 class="text-uppercase text-lg ">Bienvenido
                             {{ auth()->user()->firstname }}
                         </h2>
-                        <p class="text-small">¡Despega tu pasión en los cielos colombianos!</p>
+                        <p class="fw-light">¡Despega tu pasión en los cielos colombianos!
+                            <br>
+                            Somos
+                            <b>
+                                <span class="text-rotator">Los Mejores Pilotos,Los Mejores Controladores, La Mejor
+                                    División</span>
+                            </b>
+
+
+
+                        </p>
 
                         <!-- end: Captions -->
                     </div>
                 </div>
             </div>
             <!-- end: Slide 1 -->
+            <a href="#events" id="scroller-icon"><span></span></a>
         </div>
         <!--end: Inspiro Slider -->
     @else
@@ -34,10 +45,10 @@
 
 
     <!-- BLOG -->
-    <section class="content">
+    <section class="content" id="events">
         <div class="container">
             <div class="heading-text heading-section">
-                <h2 class="text-uppercase">EVENTOS</h2>
+                <h2 class="">Eventos</h2>
                 <span class="lead">Nuestros proximos eventos. </span>
             </div>
             <div id="blog" class="grid-layout post-4-columns m-b-30" data-item="post-item">
@@ -139,11 +150,28 @@
 
     <section>
         <div class="container">
+            <div class="heading-text heading-section">
+                <h2 class="">Controladores en Colombia</h2>
+                <span class="lead">Aquí puedes ver el control online en Colombia </span>
+            </div>
+            <div class="row">
+                <div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <div class="heading-text heading-section">
+                <h2 class="">Vuelos en Vivo</h2>
+                <span class="lead"> Aquí verás todos los vuelos en IVAO desde y hacia Colombia </span>
+            </div>
+
             <div class="row justify-content-center">
                 <div class="col-md-12 text-center boxed boxed--border bg--white">
-                    <div>
-                        <h2>Espacio Aéreo de Colombia</h2>
-                    </div>
+
                     <div class="mt-4">
                         <div class="tabs">
                             <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
@@ -151,13 +179,13 @@
                                     <a class="nav-link active" id="arrival-tab" data-bs-toggle="tab" href="#arrival"
                                         role="tab" aria-controls="arrival" aria-selected="true"> <i
                                             class="icon icon--sm block fas fa-plane-arrival"></i>
-                                        <span class="h5">LLegadas / Arrivals</span></a>
+                                        <span class="h5">LLegadas</span></a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link " id="departure-tab" data-bs-toggle="tab" href="#departure"
                                         role="tab" aria-controls="departure" aria-selected="false">
                                         <i class="icon icon--sm block fas fa-plane-departure"></i>
-                                        <span class="h5">Salidas / Departures</span></a>
+                                        <span class="h5">Salidas</span></a>
                                 </li>
 
 
@@ -170,6 +198,7 @@
                                             <thead>
                                                 <tr>
                                                     <th>ETA</th>
+                                                    <th>Aerolinea</th>
                                                     <th>Callsign</th>
                                                     <th>Origen</th>
                                                     <th>Destino</th>
@@ -179,6 +208,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
+
                                                 @if (count($flights['arrival']) > 0)
                                                     @foreach ($flights['arrival'] as $item)
                                                         @php
@@ -189,10 +219,30 @@
                                                         @endphp
                                                         <tr>
                                                             <td>{{ $arrivaltime->format('H:i\z') }}</td>
+                                                            <td>
+
+                                                                @php
+                                                                    $icao1L = mb_substr($item->callsign, 0, 1);
+                                                                    $icao3L = mb_substr($item->callsign, 0, 3);
+                                                                    $icao2L = mb_substr($item->callsign, 0, 2);
+                                                                    if ($icao1L == 'N' && $icao3L !== 'NSE' && $icao3L !== 'NKS') {
+                                                                        $airline = $icao1L;
+                                                                    } elseif ($icao2L == 'HK') {
+                                                                        $airline = $icao2L;
+                                                                    } else {
+                                                                        $airline = $icao3L;
+                                                                    }
+                                                                @endphp
+                                                                @if (File::exists(public_path("logos-icao/$airline.png")))
+                                                                    <img class="airlineslogo"
+                                                                        src="{{ asset("logos-icao/$airline.png") }}" />
+                                                                @endif
+                                                            </td>
                                                             <td><a href="https://www.ivao.aero/member?id={{ $item->userId }}"
                                                                     target="_blank"
                                                                     title="Ver perfil del piloto">{{ $item->callsign }}</a>
                                                             </td>
+
                                                             <td>{{ $item->flightPlan->departureId }}</td>
                                                             <td>{{ $item->flightPlan->arrivalId }}</td>
                                                             <td>{{ $item->flightPlan->aircraft->icaoCode }}</td>
@@ -218,6 +268,7 @@
                                             <thead>
                                                 <tr>
                                                     <th>ETOD</th>
+                                                    <th>Aerolinea</th>
                                                     <th>Callsign</th>
                                                     <th>Origen</th>
                                                     <th>Destino</th>
@@ -235,6 +286,26 @@
                                                         @endphp
                                                         <tr>
                                                             <td>{{ $timeDeparture->format('H:i\z') }}</td>
+                                                            <td>
+                                                                @php
+                                                                    $icao1L = mb_substr($item->callsign, 0, 1);
+                                                                    $icao3L = mb_substr($item->callsign, 0, 3);
+                                                                    $icao2L = mb_substr($item->callsign, 0, 2);
+                                                                    if ($icao1L == 'N' && $icao3L !== 'NSE' && $icao3L !== 'NKS') {
+                                                                        $airline = $icao1L;
+                                                                    } elseif ($icao2L == 'HK') {
+                                                                        $airline = $icao2L;
+                                                                    } else {
+                                                                        $airline = $icao3L;
+                                                                    }
+                                                                @endphp
+                                                                @if (File::exists(public_path("logos-icao/$airline.png")))
+                                                                    <img class="airlineslogo"
+                                                                        src="{{ asset("logos-icao/$airline.png") }}" />
+                                                                @endif
+
+
+                                                            </td>
                                                             <td><a href="https://www.ivao.aero/member?id={{ $item->userId }}"
                                                                     target="_blank"
                                                                     title="Ver perfil del piloto">{{ $item->callsign }}</a>
@@ -612,4 +683,14 @@
     <script src="{{ asset('theme-1/plugins/particles/particles.js') }}" type="text/javascript"></script>
     <!--Particles-->
     <script src="{{ asset('theme-1/plugins/particles/particles-dots.js') }}" type="text/javascript"></script>
+    <script>
+        $(function() {
+            $('a[href*=#]').on('click', function(e) {
+                e.preventDefault();
+                $('html, body').animate({
+                    scrollTop: $($(this).attr('href')).offset().top
+                }, 500, 'linear');
+            });
+        });
+    </script>
 @endpush
