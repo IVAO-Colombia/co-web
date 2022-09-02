@@ -1,7 +1,9 @@
 @extends('website.theme-1.layout.theme-1')
 @section('content')
-
-    @if ((bool) random_int(0, 1))
+    @php
+    $aleatorio = (bool) random_int(0, 1);
+    @endphp
+    @auth
         <!-- Inspiro Slider -->
         <div id="slider" class="inspiro-slider slider-fullscreen">
             <!-- Slide 1 -->
@@ -11,7 +13,9 @@
                 <div class="container">
                     <div class="slide-captions text-start text-light">
                         <!-- Captions -->
-                        <h2 class="text-uppercase text-lg">Bienvenido </h2>
+                        <h2 class="text-uppercase text-lg">Bienvenido
+                            {{ auth()->user()->firstname }}
+                        </h2>
                         <p class="text-small">¡Despega tu pasión en los cielos colombianos!</p>
 
                         <!-- end: Captions -->
@@ -23,7 +27,11 @@
         <!--end: Inspiro Slider -->
     @else
         @include('website.theme-1.slider')
-    @endif
+    @endauth
+
+
+
+
 
     <!-- BLOG -->
     <section class="content">
