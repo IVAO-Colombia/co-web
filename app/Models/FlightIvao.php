@@ -18,7 +18,7 @@ class FlightIvao extends Model
             return $filecontents;
         });
 
-        $countryicao = "LF";
+        $countryicao = "SK";
         $staffcountry = 'CO';
 
         $data = json_decode($whazzupivao);
