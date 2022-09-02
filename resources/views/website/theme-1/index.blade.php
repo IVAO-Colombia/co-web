@@ -129,6 +129,7 @@
     <!-- end: BLOG -->
 
     <section>
+
         <div class="container">
             <div class="heading-text heading-section">
                 <h2 class="">Controladores en Colombia</h2>
@@ -143,13 +144,17 @@
     </section>
 
     <section>
-        <div class="container">
+        {{-- data-bg-image="{{ asset('img/sksm-exterior.jpg') }}" --}}
+        {{-- <div class="bg-overlay" data-style="4"></div> --}}
+        {{-- <div class="shape-divider" data-style="1"></div> --}}
+        {{-- <div class="shape-divider" data-style="18" data-position="top" data-flip-vertical="true"></div> --}}
+        <div class="container ">
             <div class="heading-text heading-section">
                 <h2 class="">Vuelos en Vivo</h2>
                 <span class="lead"> Aquí verás todos los vuelos en IVAO desde y hacia Colombia </span>
             </div>
 
-            <div class="row justify-content-center">
+            <div class="row justify-content-center" style="background-color: white">
                 <div class="col-md-12 text-center boxed boxed--border bg--white">
 
                     <div class="mt-4">
@@ -159,13 +164,15 @@
                                     <a class="nav-link active" id="arrival-tab" data-bs-toggle="tab" href="#arrival"
                                         role="tab" aria-controls="arrival" aria-selected="true"> <i
                                             class="icon icon--sm block fas fa-plane-arrival"></i>
-                                        <span class="h5">LLegadas</span></a>
+                                        <span class="h5">LLegadas</span>
+                                    </a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link " id="departure-tab" data-bs-toggle="tab" href="#departure"
                                         role="tab" aria-controls="departure" aria-selected="false">
                                         <i class="icon icon--sm block fas fa-plane-departure"></i>
-                                        <span class="h5">Salidas</span></a>
+                                        <span class="h5">Salidas</span>
+                                    </a>
                                 </li>
 
 
@@ -663,7 +670,7 @@
     <script src="{{ asset('theme-1/plugins/particles/particles.js') }}" type="text/javascript"></script>
     <!--Particles-->
     <script src="{{ asset('theme-1/plugins/particles/particles-dots.js') }}" type="text/javascript"></script>
-    <script>
+    {{-- <script>
         $(function() {
             $('a[href*=#]').on('click', function(e) {
                 e.preventDefault();
@@ -672,5 +679,5 @@
                 }, 500, 'linear');
             });
         });
-    </script>
+    </script> --}}
 @endpush

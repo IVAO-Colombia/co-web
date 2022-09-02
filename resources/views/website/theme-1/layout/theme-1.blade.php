@@ -23,7 +23,6 @@
     <!--Template functions-->
     <script src="{{ asset('theme-1/js/functions.js') }}"></script>
 
-
     @stack('scripts')
 </body>
 
