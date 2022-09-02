@@ -23,7 +23,7 @@
 
                         <li class="d-none d-xl-block d-lg-block mx-1">
                             <a href="https://ivao.aero/register" target="_blank"
-                                class="btn btn-rounded btn-outline btn-light btn-sm">{{ __('Logout') }}</a>
+                                class="btn btn-rounded btn-outline btn-light btn-sm">{{ __('Sign Up') }}</a>
                         </li>
                     @endif
 
