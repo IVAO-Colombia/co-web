@@ -130,15 +130,72 @@
 
     <!-- ATC -->
     <section>
+        <div class="bg-overlay"></div>
+        <div class="shape-divider" data-style="8"></div>
         <div class="container">
             <div class="heading-text heading-section">
                 <h2 class="">Controladores en Colombia</h2>
                 <span class="lead">Aquí puedes ver el control online en Colombia </span>
             </div>
             <div class="row">
-                <div>
 
-                </div>
+                @if (count($flights['atc']) > 0)
+                    <div class="grid-layout grid-3-columns" data-item="grid-item" data-margin="10">
+                        @foreach ($flights['atc'] as $item)
+                            <div class="grid-item">
+
+                                <!-- Widget My Cart -->
+                                <div class="widget border-box p-cb">
+                                    <div class="boxed bg--light ">
+                                        {{-- {{ dd($item) }} --}}
+                                        <div class="row">
+                                            <div class="col-md-5 text-center">
+                                                <i class="icon icon--sm block fas fa-broadcast-tower"
+                                                    style="color: gray; font-size:30px;"></i>
+                                                {{ $item->atcSession->frequency }} Mhz <br>
+
+                                                {{ Carbon\Carbon::parse($item->time)->format('H:i') }}
+
+                                            </div>
+                                            <div class="col-md-7">
+                                                @php
+                                                    $icao = mb_substr($item->callsign, 0, 4);
+                                                    $airport = \App\Models\Airport::where('icao', $icao)->first();
+                                                @endphp
+                                                <p class="fw-light">
+                                                    <a href="https://webeye.ivao.aero/?atcId={{ $item->id }}"
+                                                        target="_blank" class="color--primary"
+                                                        title="Webeye"><b>{{ $item->atcSession->position }}</b></a>
+                                                    <br>
+
+                                                    {{ $airport->name }}
+                                                    <br>
+                                                    <a href="https://www.ivao.aero/member?id={{ $item->userId }}"
+                                                        target="_blank" class="color--primary"
+                                                        title="Ver perfil controlador">
+                                                        {{ $item->userId }}
+                                                    </a>
+                                                    {{-- <img src="https://ivao.aero/data/images/ratings/atc/{{ $item->rating }}.gif"
+                                                        alt=""> --}}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- end: Widget My Cart -->
+                            </div>
+                        @endforeach
+                    </div>
+                @else
+                    <div class="col-md-6">
+                        <div class="alert">
+                            <div class="alert__body">
+                                <span class="color--dark"> Ningun controlador conectado</span>
+                            </div>
+                        </div>
+
+                    </div>
+                @endif
             </div>
         </div>
     </section>
@@ -243,7 +300,7 @@
                                                     @endforeach
                                                 @else
                                                     <tr>
-                                                        <td>No hay vuelos</td>
+                                                        <td colspan="8">No hay vuelos</td>
                                                     </tr>
                                                 @endif
                                             </tbody>
@@ -310,7 +367,7 @@
                                                     @endforeach
                                                 @else
                                                     <tr>
-                                                        <td>No hay vuelos</td>
+                                                        <td colspan="8">No hay vuelos</td>
                                                     </tr>
                                                 @endif
                                             </tbody>

@@ -18,14 +18,32 @@
 
     </div>
     <!--end: Inspiro Slider -->
+    @php
+    $icao1L = mb_substr($flight->callsign, 0, 1);
+    $icao3L = mb_substr($flight->callsign, 0, 3);
+    $icao2L = mb_substr($flight->callsign, 0, 2);
+    if ($icao1L == 'N' && $icao3L !== 'NSE' && $icao3L !== 'NKS') {
+        $airline = $icao1L;
+    } elseif ($icao2L == 'HK') {
+        $airline = $icao2L;
+    } else {
+        $airline = $icao3L;
+    }
+    @endphp
 
     <section>
         <div class="container">
-            <div class="row justify-content-around">
-                <div class="col-md-12 my-2 text-center">
-                    <h3>{{ $departureAirport->municipality ?? '' }}/{{ $departureAirport->iata ?? '' }} -
-                        {{ $arrivalAirport->municipality ?? '' }}/{{ $arrivalAirport->iata ?? '' }}</h3>
-                    {{-- <h3>{{ $flight->flightPlan->departureId }} - {{ $flight->flightPlan->arrivalId }}</h3> --}}
+            <div class="row ">
+                <div class="col-md-12">
+                    <h1>Datos del Vuelo:</h1>
+                </div>
+                <div class="col-md-6 my-2 text-center">
+
+                    <h2>Origen: {{ $departureAirport->municipality ?? '' }}/{{ $departureAirport->iata ?? '' }}</h2>
+                    <h2>Destino: {{ $arrivalAirport->municipality ?? '' }}/{{ $arrivalAirport->iata ?? '' }}</h2>
+                    @if (File::exists(public_path("logos-icao/$airline.png")))
+                        <img src="{{ asset("logos-icao/$airline.png") }}" />
+                    @endif
                     <p class="lead">Estado: {{ __($flight->lastTrack->state) }}</p>
                     <p class="lead">Regla de vuelo: {{ $flight->flightPlan->flightRules }} </p>
                     <p class="lead">Altitud: {{ $flight->lastTrack->altitude }}</p>
