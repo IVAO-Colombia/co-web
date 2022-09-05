@@ -145,7 +145,7 @@
                             <div class="grid-item">
 
                                 <!-- Widget My Cart -->
-                                <div class="widget border-box p-cb">
+                                <div class="widget border-box p-cb" style="cursor: initial">
                                     <div class="boxed bg--light ">
                                         {{-- {{ dd($item) }} --}}
                                         <div class="row">
@@ -165,7 +165,8 @@
                                                 <p class="fw-light mb-0" style="min-height: 95px;">
                                                     <a href="https://webeye.ivao.aero/?atcId={{ $item->id }}"
                                                         target="_blank" class="color--primary"
-                                                        title="Webeye"><b>{{ $item->atcSession->position }}</b></a>
+                                                        title="Webeye"><b>{{ $item->atcSession->position }} </b> -
+                                                        {{ $airport->icao }}</a>
                                                     <br>
 
                                                     {{ $airport->name }}
