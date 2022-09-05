@@ -27,13 +27,10 @@ class Virtualairline extends Model
                         $flight->id
                     )->first();
 
-                    if ($tracker) {
-                        if (!$flight->lastTrack->onGround) {
-                            $tracker->arrivalTime = \Carbon\Carbon::now();
-                            $tracker->save();
-                        }
-                    } else {
+                    if (!$tracker) {
                         $tracker = new Trackerva();
+                    }
+
                         $tracker->virtualairines_id = $va->id;
                         $tracker->callsign = $flight->callsign;
                         $tracker->userId = $flight->userId;
@@ -43,17 +40,26 @@ class Virtualairline extends Model
                         $tracker->aircraftId = $flight->flightPlan->aircraftId;
                         $tracker->sessionId = $flight->id;
                         $tracker->stateAircraft = $flight->lastTrack->state;
-                        $tracker->onGround = $flight->lastTrack->onGround;
+
                         $tracker->groundSpeed = $flight->lastTrack->groundSpeed;
                         $tracker->route = $flight->flightPlan->route;
                         $tracker->remarks = $flight->flightPlan->remarks;
+                        if($tracker->onGround == null && !$flight->lastTrack->onGround){
+                            $tracker->departureTime = \Carbon\Carbon::now();
+
+                        }
+                        $tracker->onGround = $flight->lastTrack->onGround;
                         if (!$flight->lastTrack->onGround) {
                             $tracker->departureTime = \Carbon\Carbon::now();
                         }
 
                         $tracker->onlineTime = $flight->time;
-                        $tracker->save();
-                    }
+
+                        if ($tracker->departureTime != null && !$flight->lastTrack->onGround) {
+                            $tracker->arrivalTime = \Carbon\Carbon::now();
+                        }
+
+                    $tracker->save();
                 }
 
                 //validar
