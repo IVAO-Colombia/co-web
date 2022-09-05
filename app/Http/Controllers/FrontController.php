@@ -18,6 +18,8 @@ class FrontController extends Controller
 
     function index()
     {
+        // Virtualairline::tracking();
+
         $flights = [];
         $flights = FlightIvao::flightsV2();
 

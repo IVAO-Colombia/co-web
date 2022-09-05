@@ -24,8 +24,8 @@ class CreateTrackervasTable extends Migration
             $table->string("stateAircraft")->nullable();
             $table->string("onGround")->nullable();
             $table->string("groundSpeed")->nullable();
-            $table->string("route")->nullable();
-            $table->string("remarks")->nullable();
+            $table->text("route")->nullable();
+            $table->text("remarks")->nullable();
             $table->dateTime("departureTime")->nullable();
             $table->dateTime("arrivalTime")->nullable();
             $table->string("onlineTime")->nullable();
