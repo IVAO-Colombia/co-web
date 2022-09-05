@@ -19,28 +19,46 @@ class FrontController extends Controller
     function index()
     {
         $flights = [];
-        $flights = FlightIvao::flightsV2();
-        $sliders = Slider::where('status',1)->orderBy("order")->get();
-        $events = Event::where("featured",true)->orderBy("id")->get();
-        return view("website.theme-1.index", compact("flights","sliders","events"));
+        $flights = FlightIvao::flightsV2(true);
+        dd($flights);
+        $sliders = Slider::where("status", 1)
+            ->orderBy("order")
+            ->get();
+        $events = Event::where("featured", true)
+            ->orderBy("id")
+            ->get();
+        return view(
+            "website.theme-1.index",
+            compact("flights", "sliders", "events")
+        );
     }
 
     public function fasttrack(Request $request, $callsign)
     {
-       $flights = FlightIvao::flightsV2(true);
-       $flight = FlightIvao::fasttrack($callsign,$flights);
+        $flights = FlightIvao::flightsV2(true);
+        $flight = FlightIvao::fasttrack($callsign, $flights);
 
-       if($flight == null){
-          abort(404);
-       }
+        if ($flight == null) {
+            abort(404);
+        }
 
-       $departureAirport = Airport::where("icao",$flight->flightPlan->departureId)->first();
-       $arrivalAirport = Airport::where("icao",$flight->flightPlan->arrivalId)->first();
-    //  dd($flight);
-        return view('website.theme-1.fasttrack',compact('flight',"departureAirport","arrivalAirport"));
+        $departureAirport = Airport::where(
+            "icao",
+            $flight->flightPlan->departureId
+        )->first();
+        $arrivalAirport = Airport::where(
+            "icao",
+            $flight->flightPlan->arrivalId
+        )->first();
+        //  dd($flight);
+        return view(
+            "website.theme-1.fasttrack",
+            compact("flight", "departureAirport", "arrivalAirport")
+        );
     }
 
-    function about(){
+    function about()
+    {
         return view("website.theme-1.about");
     }
 
