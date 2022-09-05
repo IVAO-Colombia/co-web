@@ -44,14 +44,13 @@ class Virtualairline extends Model
                         $tracker->groundSpeed = $flight->lastTrack->groundSpeed;
                         $tracker->route = $flight->flightPlan->route;
                         $tracker->remarks = $flight->flightPlan->remarks;
+
+                        //si es el primer registro y no esta en tierra se registra como si estuviera en vuelo
                         if($tracker->onGround == null && !$flight->lastTrack->onGround){
                             $tracker->departureTime = \Carbon\Carbon::now();
 
                         }
                         $tracker->onGround = $flight->lastTrack->onGround;
-                        if (!$flight->lastTrack->onGround) {
-                            $tracker->departureTime = \Carbon\Carbon::now();
-                        }
 
                         $tracker->onlineTime = $flight->time;
 
