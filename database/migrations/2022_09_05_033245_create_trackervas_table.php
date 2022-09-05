@@ -28,6 +28,7 @@ class CreateTrackervasTable extends Migration
             $table->string("remarks")->nullable();
             $table->dateTime("departureTime")->nullable();
             $table->dateTime("arrivalTime")->nullable();
+            $table->dateTime("onlineTime")->nullable();
             $table->timestamps();
         });
     }
