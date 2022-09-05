@@ -20,6 +20,7 @@ class Virtualairline extends Model
                 $icaova = mb_substr($flight->callsign, 0, 3);
 
                 if ($va == $icaova) {
+                    Log::info("Vuelo:" . $flight->callsign . " " . $va);
                     $tracker = Trackerva::where(
                         "sessionId",
                         $flight->id
