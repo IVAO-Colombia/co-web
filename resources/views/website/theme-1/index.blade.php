@@ -1,7 +1,7 @@
 @extends('website.theme-1.layout.theme-1')
 @section('content')
     @php
-    $aleatorio = (bool) random_int(0, 1);
+        $aleatorio = (bool) random_int(0, 1);
     @endphp
     @auth
         <!-- Inspiro Slider -->
@@ -162,7 +162,7 @@
                                                     $icao = mb_substr($item->callsign, 0, 4);
                                                     $airport = \App\Models\Airport::where('icao', $icao)->first();
                                                 @endphp
-                                                <p class="fw-light">
+                                                <p class="fw-light mb-0" style="min-height: 95px;">
                                                     <a href="https://webeye.ivao.aero/?atcId={{ $item->id }}"
                                                         target="_blank" class="color--primary"
                                                         title="Webeye"><b>{{ $item->atcSession->position }}</b></a>
