@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 
 use App\Mail\{Sendcontact};
-use App\Models\{FlightIvao, Slider, Airport, Event};
+use App\Models\{FlightIvao, Slider, Airport, Event, Virtualairline};
 use Mail;
 
 class FrontController extends Controller
@@ -18,6 +18,8 @@ class FrontController extends Controller
 
     function index()
     {
+        Virtualairline::tracking();
+
         $flights = [];
         $flights = FlightIvao::flightsV2();
 

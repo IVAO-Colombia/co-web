@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\{FlightIvao, Trackerva};
+use Log;
 
 class Virtualairline extends Model
 {
@@ -19,15 +20,17 @@ class Virtualairline extends Model
             foreach ($flights as $key2 => $flight) {
                 $icaova = mb_substr($flight->callsign, 0, 3);
 
-                if ($va == $icaova) {
-                    Log::info("Vuelo:" . $flight->callsign . " " . $va);
+                if ($va->icao == $icaova) {
+                    // Log::info("Vuelo:" . $flight->callsign . " " . $va);
                     $tracker = Trackerva::where(
                         "sessionId",
                         $flight->id
                     )->first();
+
                     if ($tracker) {
                         if (!$flight->lastTrack->onGround) {
                             $tracker->arrivalTime = \Carbon\Carbon::now();
+                            $tracker->save();
                         }
                     } else {
                         $tracker = new Trackerva();
@@ -40,9 +43,9 @@ class Virtualairline extends Model
                         $tracker->sessionId = $flight->id;
                         $tracker->stateAircraft = $flight->lastTrack->state;
                         $tracker->onGround = $flight->lastTrack->onGround;
-                        $tracker->groundSpeed = $flight->groundSpeed;
-                        $tracker->route = $flight->route;
-                        $tracker->remarks = $flight->remarks;
+                        $tracker->groundSpeed = $flight->lastTrack->groundSpeed;
+                        $tracker->route = $flight->flightPlan->route;
+                        $tracker->remarks = $flight->flightPlan->remarks;
                         if (!$flight->lastTrack->onGround) {
                             $tracker->departureTime = \Carbon\Carbon::now();
                         }
