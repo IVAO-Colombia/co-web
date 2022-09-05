@@ -15,6 +15,7 @@ class CreateTrackervasTable extends Migration
     {
         Schema::create("trackervas", function (Blueprint $table) {
             $table->id();
+            $table->bigInteger("virtualairines_id")->nullable();
             $table->string("callsign")->nullable();
             $table->string("userId")->nullable();
             $table->string("departureId")->nullable();

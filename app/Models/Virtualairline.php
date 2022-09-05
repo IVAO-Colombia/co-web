@@ -34,6 +34,7 @@ class Virtualairline extends Model
                         }
                     } else {
                         $tracker = new Trackerva();
+                        $tracker->virtualairines_id = $va->id;
                         $tracker->callsign = $flight->callsign;
                         $tracker->userId = $flight->userId;
                         $tracker->departureId =
