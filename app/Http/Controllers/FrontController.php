@@ -19,8 +19,8 @@ class FrontController extends Controller
     function index()
     {
         $flights = [];
-        $flights = FlightIvao::flightsV2(true);
-        dd($flights);
+        $flights = FlightIvao::flightsV2();
+
         $sliders = Slider::where("status", 1)
             ->orderBy("order")
             ->get();
