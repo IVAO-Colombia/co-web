@@ -14,7 +14,7 @@ class Virtualairline extends Model
     public static function tracking()
     {
         $solovuelos = true;
-        $flights = FlightIvao::flightsV2($solovuelos);
+        $flights = FlightIvao::flightsWorldV2();
         $virtualarlines = Virtualairline::where("status", 1)->get();
         foreach ($virtualarlines as $key1 => $va) {
             foreach ($flights as $key2 => $flight) {
