@@ -31,32 +31,42 @@ class Virtualairline extends Model
                         $tracker = new Trackerva();
                     }
 
-                        $tracker->virtualairines_id = $va->id;
-                        $tracker->callsign = $flight->callsign;
-                        $tracker->userId = $flight->userId;
-                        $tracker->departureId =
-                            $flight->flightPlan->departureId;
-                        $tracker->arrivalId = $flight->flightPlan->arrivalId;
-                        $tracker->aircraftId = $flight->flightPlan->aircraftId;
-                        $tracker->sessionId = $flight->id;
-                        $tracker->stateAircraft = $flight->lastTrack->state;
+                    $tracker->virtualairines_id = $va->id;
+                    $tracker->callsign = $flight->callsign;
+                    $tracker->userId = $flight->userId;
+                    $tracker->departureId = $flight->flightPlan->departureId;
+                    $tracker->arrivalId = $flight->flightPlan->arrivalId;
+                    $tracker->aircraftId = $flight->flightPlan->aircraftId;
+                    $tracker->sessionId = $flight->id;
+                    $tracker->stateAircraft = $flight->lastTrack->state;
 
-                        $tracker->groundSpeed = $flight->lastTrack->groundSpeed;
-                        $tracker->route = $flight->flightPlan->route;
-                        $tracker->remarks = $flight->flightPlan->remarks;
+                    $tracker->groundSpeed = $flight->lastTrack->groundSpeed;
+                    $tracker->route = $flight->flightPlan->route;
+                    $tracker->remarks = $flight->flightPlan->remarks;
 
-                        //si es el primer registro y no esta en tierra se registra como si estuviera en vuelo
-                        if($tracker->onGround == null && !$flight->lastTrack->onGround){
-                            $tracker->departureTime = \Carbon\Carbon::now();
+                    //si es el primer registro y no esta en tierra se registra como si estuviera en vuelo
+                    if (
+                        $tracker->onGround == null &&
+                        !$flight->lastTrack->onGround
+                    ) {
+                        $tracker->departureTime = \Carbon\Carbon::now();
+                    } elseif (
+                        !$flight->lastTrack->onGround &&
+                        $tracker->departureTime == null
+                    ) {
+                        //no esta en tierra y la hora de salida esta en null la agregamo
+                        $tracker->departureTime = \Carbon\Carbon::now();
+                    }
+                    $tracker->onGround = $flight->lastTrack->onGround;
 
-                        }
-                        $tracker->onGround = $flight->lastTrack->onGround;
+                    $tracker->onlineTime = $flight->time;
 
-                        $tracker->onlineTime = $flight->time;
-
-                        if ($tracker->departureTime != null && !$flight->lastTrack->onGround) {
-                            $tracker->arrivalTime = \Carbon\Carbon::now();
-                        }
+                    if (
+                        $tracker->departureTime != null &&
+                        !$flight->lastTrack->onGround
+                    ) {
+                        $tracker->arrivalTime = \Carbon\Carbon::now();
+                    }
 
                     $tracker->save();
                 }
