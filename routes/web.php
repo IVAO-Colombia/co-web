@@ -25,25 +25,28 @@ Route::get("locale/{locale}", function ($locale) {
 
 Route::controller(FrontController::class)->group(function () {
     Route::get("/", "index")->name("Home");
-    Route::get("/about", "about")->name("about")->name("front.about");
+    Route::get("/about", "about")->name("front.about");
+    Route::get("/event-detail/{slug}", "event_detail")->name(
+        "front.event_detail"
+    );
 
     Route::get("/contact/send", "sendcontact")->name("front.sendcontact");
 
-    Route::get('/fasttrack/{callsign}', 'fasttrack')->name('front.fasttrack');
+    Route::get("/fasttrack/{callsign}", "fasttrack")->name("front.fasttrack");
 });
 
 /*
 IVAO Login
 */
 
-Route::get('auth/ivao', [IvaoController::class, 'redirect'])->name('ivao.login');
-Route::get('auth/ivao/callback', [IvaoController::class, 'callback']);
-Route::get('auth/ivao/logout', function () {
+Route::get("auth/ivao", [IvaoController::class, "redirect"])->name(
+    "ivao.login"
+);
+Route::get("auth/ivao/callback", [IvaoController::class, "callback"]);
+Route::get("auth/ivao/logout", function () {
     Auth::logout();
-    return redirect()->route('Home');
-})->name('ivao.logout');
-
-
+    return redirect()->route("Home");
+})->name("ivao.logout");
 
 // Route::middleware([
 //     'auth:sanctum',
@@ -54,5 +57,3 @@ Route::get('auth/ivao/logout', function () {
 //         return view('dashboard');
 //     })->name('dashboard');
 // });
-
-

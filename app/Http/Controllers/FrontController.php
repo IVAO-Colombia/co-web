@@ -18,7 +18,13 @@ class FrontController extends Controller
 
     function index()
     {
-        // Virtualairline::tracking();
+        $featuredEvents = Event::whereRaw(
+            "? between start_publish_date and DATE_ADD(end_publish_date, INTERVAL 1 DAY)",
+            [Carbon::now()]
+        )
+            ->where("featured", true)
+            ->orderBy("start_publish_date", "ASC")
+            ->get();
 
         $flights = [];
         $flights = FlightIvao::flightsV2();
@@ -26,13 +32,15 @@ class FrontController extends Controller
         $sliders = Slider::where("status", 1)
             ->orderBy("order")
             ->get();
-        $events = Event::where("featured", true)
-            ->orderBy("id")
-            ->get();
+
         return view(
             "website.theme-1.index",
-            compact("flights", "sliders", "events")
+            compact("flights", "sliders", "featuredEvents")
         );
+    }
+
+    public function event_detail(Request $request, $slug)
+    {
     }
 
     public function fasttrack(Request $request, $callsign)

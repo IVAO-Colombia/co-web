@@ -52,78 +52,40 @@
                 <span class="lead">Nuestros proximos eventos. </span>
             </div>
             <div id="blog" class="grid-layout post-3-columns m-b-30" data-item="post-item">
-                <!-- Post item-->
-                <div class="post-item border">
-                    <div class="post-item-wrap">
-                        <div class="post-image">
-                            <a href="{{ route('Home') }}">
-                                <img alt="" src="{{ asset('theme-1/images/blog/12.jpg') }}">
-                            </a>
-                            @if (true)
-                                <span class="post-meta-category">
-                                    <a href="">Lifestyle</a>
-                                </span>
-                            @endif
-                        </div>
-                        <div class="post-item-description">
-                            <span class="post-meta-date"><i class="fa fa-calendar-o"></i>Jan 21, 2017</span>
-                            <span class="post-meta-comments"><a href=""><i class="fa fa-comments-o"></i></a></span>
-                            <h2>
-                                <a href="{{ route('Home') }}">Standard post with a single image
+                @foreach ($featuredEvents as $item)
+                    <!-- Post item-->
+                    <div class="post-item border">
+                        <div class="post-item-wrap">
+                            <div class="post-image">
+                                <a href="{{ route('front.event_detail', $item->slug) }}">
+                                    <img alt="{{ $item->title }}" src="{{ asset('storage/events/' . $item->image) }}">
                                 </a>
-                            </h2>
-                            <p>Curabitur pulvinar euismod ante, ac sagittis ante posuere ac. Vivamus luctus commodo
-                                dolor porta feugiat. Fusce at velit id ligula pharetra laoreet.</p>
-                            <a href="#" class="item-link">Read More <i class="icon-chevron-right"></i></a>
+                                @if (false)
+                                    <span class="post-meta-category">
+                                        <a href="">Lifestyle</a>
+                                    </span>
+                                @endif
+                            </div>
+                            <div class="post-item-description">
+                                <span class="post-meta-date"><i class="fa fa-calendar-o"></i>{{ $item->date_time }}</span>
+                                <span class="post-meta-comments"><a href=""><i
+                                            class="fa fa-comments-o"></i></a></span>
+                                <h2>
+                                    <a href="{{ route('front.event_detail', $item->slug) }}">{{ $item->title }}
+                                    </a>
+                                </h2>
+                                <p>{!! \Illuminate\Support\Str::limit(strip_tags($item->description), 200) !!}</p>
+                                <a href="{{ route('front.event_detail', $item->slug) }}" class='item-link'>Leer Más <i
+                                        class="icon-chevron-right"></i></a>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <!-- end: Post item-->
-                <!-- Post item-->
-                <div class="post-item border">
-                    <div class="post-item-wrap">
-                        <div class="post-image">
-                            <a href="#">
-                                <img alt="" src="{{ asset('theme-1/images/blog/17.jpg') }}">
-                            </a>
-                            <span class="post-meta-category"><a href="">Science</a></span>
-                        </div>
-                        <div class="post-item-description">
-                            <span class="post-meta-date"><i class="fa fa-calendar-o"></i>Jan 21, 2017</span>
-                            <span class="post-meta-comments"><a href=""><i class="fa fa-comments-o"></i></a></span>
-                            <h2><a href="#">Standard post with a single image
-                                </a></h2>
-                            <p>Curabitur pulvinar euismod ante, ac sagittis ante posuere ac. Vivamus luctus commodo
-                                dolor porta feugiat. Fusce at velit id ligula pharetra laoreet.</p>
-                            <a href="#" class="item-link">Read More <i class="icon-chevron-right"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <!-- end: Post item-->
-                <!-- Post item-->
-                <div class="post-item border">
-                    <div class="post-item-wrap">
-                        <div class="post-image">
-                            <a href="#">
-                                <img alt="" src="{{ asset('theme-1/images/blog/18.jpg') }}">
-                            </a>
-                            <span class="post-meta-category"><a href="">Science</a></span>
-                        </div>
-                        <div class="post-item-description">
-                            <span class="post-meta-date"><i class="fa fa-calendar-o"></i>Jan 21, 2017</span>
-                            <span class="post-meta-comments"><a href=""><i class="fa fa-comments-o"></i></a></span>
-                            <h2><a href="#">Standard post with a single image
-                                </a></h2>
-                            <p>Curabitur pulvinar euismod ante, ac sagittis ante posuere ac. Vivamus luctus commodo
-                                dolor porta feugiat. Fusce at velit id ligula pharetra laoreet.</p>
-                            <a href="#" class="item-link">Read More <i class="icon-chevron-right"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <!-- end: Post item-->
-
+                    <!-- end: Post item-->
+                @endforeach
             </div>
-
+            <div class="d-flex justify-content-center">
+                <a href="#" class="btn btn-light btn-lg">Ver Más Eventos</a>
+            </div>
         </div>
     </section>
     <!-- end: BLOG -->
