@@ -160,24 +160,24 @@
                                             <div class="col-md-7">
                                                 @php
                                                     $icao = mb_substr($item->callsign, 0, 4);
-                                                    $airport = \App\Models\Airport::where('icao', $icao)->first();
+
                                                 @endphp
                                                 <p class="fw-light mb-0" style="min-height: 95px;">
                                                     <a href="https://webeye.ivao.aero/?atcId={{ $item->id }}"
                                                         target="_blank" class="color--primary"
                                                         title="Webeye"><b>{{ $item->atcSession->position }} </b> -
-                                                        {{ $airport->icao }}</a>
+                                                        {{ $icao }}</a>
                                                     <br>
 
-                                                    {{ $airport->name }}
-                                                    <br>
+
                                                     <a href="https://www.ivao.aero/member?id={{ $item->userId }}"
                                                         target="_blank" class="color--primary"
                                                         title="Ver perfil controlador">
                                                         {{ $item->userId }}
                                                     </a>
-                                                    {{-- <img src="https://ivao.aero/data/images/ratings/atc/{{ $item->rating }}.gif"
-                                                        alt=""> --}}
+                                                    <br>
+                                                    <img src="https://ivao.aero/data/images/ratings/atc/{{ $item->rating }}.gif"
+                                                        alt="">
                                                 </p>
                                             </div>
                                         </div>

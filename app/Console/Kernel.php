@@ -20,6 +20,9 @@ class Kernel extends ConsoleKernel
 
         $schedule
             ->call(function () {
+                $time = time();
+                Virtualairline::Tracking();
+                sleep(30 - (time() - $time));
                 Virtualairline::Tracking();
             })
             ->everyMinute();
