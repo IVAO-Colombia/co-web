@@ -71,6 +71,19 @@
                                 </td>
                             </tr>
                             <tr>
+                                <td><b>Nivel:</b></td>
+                                <td>
+                                    {{ $flight->flightPlan->level }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><b>Velocidad:</b></td>
+                                <td>
+                                    {{ $flight->flightPlan->speed }}
+                                </td>
+                            </tr>
+
+                            <tr>
                                 <td>
                                     <b> Origen:</b>
                                 </td>
@@ -82,6 +95,12 @@
                                 <td><b>Destino:</b></td>
                                 <td>
                                     {{ $arrivalAirport->municipality ?? '' }}/{{ $arrivalAirport->iata ?? '' }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><b>Alterno:</b></td>
+                                <td>
+                                    {{ $flight->flightPlan->alternativeId }}
                                 </td>
                             </tr>
                             <tr>
@@ -160,7 +179,7 @@
 
 
                 <div class="col-md-12 my-4 wow fadeLeft">
-                    <h3>Mapa</h3>
+                    <h1>Mapa</h1>
                     <div id="mapa" class="mapa"></div>
 
                 </div>
