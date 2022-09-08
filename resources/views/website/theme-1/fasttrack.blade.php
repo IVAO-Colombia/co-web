@@ -19,44 +19,131 @@
     </div>
     <!--end: Inspiro Slider -->
     @php
-    $icao1L = mb_substr($flight->callsign, 0, 1);
-    $icao3L = mb_substr($flight->callsign, 0, 3);
-    $icao2L = mb_substr($flight->callsign, 0, 2);
-    if ($icao1L == 'N' && $icao3L !== 'NSE' && $icao3L !== 'NKS') {
-        $airline = $icao1L;
-    } elseif ($icao2L == 'HK') {
-        $airline = $icao2L;
-    } else {
-        $airline = $icao3L;
-    }
+        $icao1L = mb_substr($flight->callsign, 0, 1);
+        $icao3L = mb_substr($flight->callsign, 0, 3);
+        $icao2L = mb_substr($flight->callsign, 0, 2);
+        if ($icao1L == 'N' && $icao3L !== 'NSE' && $icao3L !== 'NKS') {
+            $airline = $icao1L;
+        } elseif ($icao2L == 'HK') {
+            $airline = $icao2L;
+        } else {
+            $airline = $icao3L;
+        }
     @endphp
 
     <section>
         <div class="container">
             <div class="row ">
-                <div class="col-md-12">
-                    <h1>Datos del Vuelo:</h1>
-                </div>
-                <div class="col-md-6 my-2 text-center">
 
-                    <h2>Origen: {{ $departureAirport->municipality ?? '' }}/{{ $departureAirport->iata ?? '' }}</h2>
-                    <h2>Destino: {{ $arrivalAirport->municipality ?? '' }}/{{ $arrivalAirport->iata ?? '' }}</h2>
-                    @if (File::exists(public_path("logos-icao/$airline.png")))
-                        <img src="{{ asset("logos-icao/$airline.png") }}" />
-                    @endif
-                    <p class="lead">Estado: {{ __($flight->lastTrack->state) }}</p>
+                <div class="col-12 mb-2">
+                    <h1>Plan de Vuelo</h1>
+                </div>
+
+                <div class="col-12">
+                    <table class="table table-bordered">
+                        <tr>
+                            <td>
+                                <b>Estado:</b>
+                            </td>
+                            <td>
+                                {{ __($flight->lastTrack->state) }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><b>Operador:</b></td>
+                            <td>
+                                @if (File::exists(public_path("logos-icao/$airline.png")))
+                                    <img src="{{ asset("logos-icao/$airline.png") }}" style="max-height: 130px" />
+                                @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><b>Aeronave:</b></td>
+                            <td>
+                                {{ $flight->flightPlan->aircraftId }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b> Origen:</b>
+                            </td>
+                            <td>
+                                {{ $departureAirport->municipality ?? '' }}/{{ $departureAirport->iata ?? '' }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><b>Destino:</b></td>
+                            <td>
+                                {{ $arrivalAirport->municipality ?? '' }}/{{ $arrivalAirport->iata ?? '' }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>Ruta:</b>
+                            </td>
+                            <td>
+                                {{ $flight->flightPlan->route }}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <b>Remark:</b>
+                            </td>
+                            <td>
+                                {{ $flight->flightPlan->remarks }}
+                            </td>
+                        </tr>
+                    </table>
+                    <h1>Seguimiento del vuelo</h1>
+                    <br>
+                    <table class="table table-bordered">
+                        <tr>
+                            <td>
+                                <b>Velocidad de Tierra:</b>
+                            </td>
+                            <td>{{ $flight->lastTrack->groundSpeed }} kts</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>Altitud:</b>
+                            </td>
+                            <td>{{ $flight->lastTrack->altitude }} ft</td>
+                        </tr>
+                        <tr>
+                            <td><b>Transponder:</b></td>
+                            <td>{{ $flight->lastTrack->transponder }}</td>
+                        </tr>
+                        <tr>
+                            <td><b></b></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><b></b></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><b></b></td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="col-md-6 my-2 ">
+
                     <p class="lead">Regla de vuelo: {{ $flight->flightPlan->flightRules }} </p>
-                    <p class="lead">Altitud: {{ $flight->lastTrack->altitude }}</p>
-                    <p class="lead">GS: {{ $flight->lastTrack->groundSpeed }} kts</p>
-                    <p class="lead">Transponder: {{ $flight->lastTrack->transponder }}</p>
-                    <p class="lead">Ruta: {{ $flight->flightPlan->route }}</p>
-                    <p class="lead">Remark: {{ $flight->flightPlan->remarks }}</p>
+
+
+
                     <p class="lead">Personas abordo: {{ $flight->flightPlan->peopleOnBoard }}</p>
                     <p class="lead">Sesion: {{ $flight->pilotSession->simulatorId }}</p>
                     <p class="lead">Webeye: <a href="https://webeye.ivao.aero/?pilotId={{ $flight->id }}"
                             target="_blank" rel="noopener noreferrer">Ver</a></p>
 
                 </div>
+
+
+
                 <div class="col-md-12 my-4 wow fadeLeft">
                     <h3>Mapa</h3>
                     <div id="mapa" class="mapa"></div>
