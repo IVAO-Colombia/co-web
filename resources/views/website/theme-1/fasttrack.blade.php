@@ -40,115 +40,121 @@
                 </div>
 
                 <div class="col-12">
-                    <table class="table table-bordered">
-                        <tr>
-                            <td>
-                                <b>Estado:</b>
-                            </td>
-                            <td>
-                                {{ __($flight->lastTrack->state) }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><b>Operador:</b></td>
-                            <td>
-                                @if (File::exists(public_path("logos-icao/$airline.png")))
-                                    <img src="{{ asset("logos-icao/$airline.png") }}" style="max-height: 130px" />
-                                @endif
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><b>Aeronave:</b></td>
-                            <td>
-                                {{ $flight->flightPlan->aircraftId }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><b>Regla de Vuelo:</b></td>
-                            <td>
-                                {{ $flight->flightPlan->flightRules }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <b> Origen:</b>
-                            </td>
-                            <td>
-                                {{ $departureAirport->municipality ?? '' }}/{{ $departureAirport->iata ?? '' }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><b>Destino:</b></td>
-                            <td>
-                                {{ $arrivalAirport->municipality ?? '' }}/{{ $arrivalAirport->iata ?? '' }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <b>Ruta:</b>
-                            </td>
-                            <td>
-                                {{ $flight->flightPlan->route }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <b>Personas abordo:</b>
-                            </td>
-                            <td>
-                                {{ $flight->flightPlan->peopleOnBoard }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <b>Observaciones:</b>
-                            </td>
-                            <td>
-                                {{ $flight->flightPlan->remarks }}
-                            </td>
-                        </tr>
-                    </table>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <tr>
+                                <td>
+                                    <b>Estado:</b>
+                                </td>
+                                <td>
+                                    {{ __($flight->lastTrack->state) }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><b>Operador:</b></td>
+                                <td>
+                                    @if (File::exists(public_path("logos-icao/$airline.png")))
+                                        <img src="{{ asset("logos-icao/$airline.png") }}" style="max-height: 130px" />
+                                    @endif
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><b>Aeronave:</b></td>
+                                <td>
+                                    {{ $flight->flightPlan->aircraftId }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><b>Regla de Vuelo:</b></td>
+                                <td>
+                                    {{ $flight->flightPlan->flightRules }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <b> Origen:</b>
+                                </td>
+                                <td>
+                                    {{ $departureAirport->municipality ?? '' }}/{{ $departureAirport->iata ?? '' }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><b>Destino:</b></td>
+                                <td>
+                                    {{ $arrivalAirport->municipality ?? '' }}/{{ $arrivalAirport->iata ?? '' }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <b>Ruta:</b>
+                                </td>
+                                <td>
+                                    {{ $flight->flightPlan->route }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <b>Personas abordo:</b>
+                                </td>
+                                <td>
+                                    {{ $flight->flightPlan->peopleOnBoard }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <b>Observaciones:</b>
+                                </td>
+                                <td>
+                                    {{ $flight->flightPlan->remarks }}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
                     <h1>Seguimiento del vuelo</h1>
                     <br>
-                    <table class="table table-bordered">
-                        <tr>
-                            <td>
-                                <b>Velocidad de Tierra:</b>
-                            </td>
-                            <td>{{ $flight->lastTrack->groundSpeed }} kts</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <b>Altitud:</b>
-                            </td>
-                            <td>{{ $flight->lastTrack->altitude }} ft</td>
-                        </tr>
-                        <tr>
-                            <td><b>Rumbo:</b></td>
-                            <td>{{ $flight->lastTrack->heading }} </td>
-                        </tr>
-                        <tr>
-                            <td><b>Transponder:</b></td>
-                            <td>{{ $flight->lastTrack->transponder }}</td>
-                        </tr>
-                        <tr>
-                            <td><b>Coordenadas:</b></td>
-                            <td>
-                                [{{ $flight->lastTrack->longitude }},
-                                {{ $flight->lastTrack->latitude }}
-                                ]
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><b>Simulador</b></td>
-                            <td>{{ $flight->pilotSession->simulatorId }}</td>
-                        </tr>
-                        <tr>
-                            <td><b>Webeye</b></td>
-                            <td><a href="https://webeye.ivao.aero/?pilotId={{ $flight->id }}" target="_blank"
-                                    rel="noopener noreferrer">Ver</a></td>
-                        </tr>
-                    </table>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <tr>
+                                <td>
+                                    <b>Velocidad de Tierra:</b>
+                                </td>
+                                <td>{{ $flight->lastTrack->groundSpeed }} kts</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <b>Altitud:</b>
+                                </td>
+                                <td>{{ $flight->lastTrack->altitude }} ft</td>
+                            </tr>
+                            <tr>
+                                <td><b>Rumbo:</b></td>
+                                <td>{{ $flight->lastTrack->heading }} </td>
+                            </tr>
+                            <tr>
+                                <td><b>Transponder:</b></td>
+                                <td>{{ $flight->lastTrack->transponder }}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Coordenadas:</b></td>
+                                <td>
+                                    [{{ $flight->lastTrack->longitude }},
+                                    {{ $flight->lastTrack->latitude }}
+                                    ]
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><b>Simulador</b></td>
+                                <td>{{ $flight->pilotSession->simulatorId }}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Webeye</b></td>
+                                <td><a href="https://webeye.ivao.aero/?pilotId={{ $flight->id }}" target="_blank"
+                                        rel="noopener noreferrer">Ver</a></td>
+                            </tr>
+                        </table>
+                    </div>
+
                 </div>
 
 
