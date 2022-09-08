@@ -64,6 +64,12 @@
                             </td>
                         </tr>
                         <tr>
+                            <td><b>Regla de Vuelo:</b></td>
+                            <td>
+                                {{ $flight->flightPlan->flightRules }}
+                            </td>
+                        </tr>
+                        <tr>
                             <td>
                                 <b> Origen:</b>
                             </td>
@@ -85,10 +91,17 @@
                                 {{ $flight->flightPlan->route }}
                             </td>
                         </tr>
-
                         <tr>
                             <td>
-                                <b>Remark:</b>
+                                <b>Personas abordo:</b>
+                            </td>
+                            <td>
+                                {{ $flight->flightPlan->peopleOnBoard }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>Observaciones:</b>
                             </td>
                             <td>
                                 {{ $flight->flightPlan->remarks }}
@@ -111,35 +124,31 @@
                             <td>{{ $flight->lastTrack->altitude }} ft</td>
                         </tr>
                         <tr>
+                            <td><b>Rumbo:</b></td>
+                            <td>{{ $flight->lastTrack->heading }} </td>
+                        </tr>
+                        <tr>
                             <td><b>Transponder:</b></td>
                             <td>{{ $flight->lastTrack->transponder }}</td>
                         </tr>
                         <tr>
-                            <td><b></b></td>
-                            <td></td>
+                            <td><b>Coordenadas:</b></td>
+                            <td>
+                                [{{ $flight->lastTrack->longitude }},
+                                {{ $flight->lastTrack->latitude }}
+                                ]
+                            </td>
                         </tr>
                         <tr>
-                            <td><b></b></td>
-                            <td></td>
+                            <td><b>Simulador</b></td>
+                            <td>{{ $flight->pilotSession->simulatorId }}</td>
                         </tr>
                         <tr>
-                            <td><b></b></td>
-                            <td></td>
+                            <td><b>Webeye</b></td>
+                            <td><a href="https://webeye.ivao.aero/?pilotId={{ $flight->id }}" target="_blank"
+                                    rel="noopener noreferrer">Ver</a></td>
                         </tr>
                     </table>
-                </div>
-
-                <div class="col-md-6 my-2 ">
-
-                    <p class="lead">Regla de vuelo: {{ $flight->flightPlan->flightRules }} </p>
-
-
-
-                    <p class="lead">Personas abordo: {{ $flight->flightPlan->peopleOnBoard }}</p>
-                    <p class="lead">Sesion: {{ $flight->pilotSession->simulatorId }}</p>
-                    <p class="lead">Webeye: <a href="https://webeye.ivao.aero/?pilotId={{ $flight->id }}"
-                            target="_blank" rel="noopener noreferrer">Ver</a></p>
-
                 </div>
 
 
