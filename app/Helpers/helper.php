@@ -126,6 +126,39 @@ function syncTeams($user)
                 $teamwebmaster->users()->detach($user);
             }
         }
+
+        //tiene permiso de Miembros
+        if (in_array($rol, $miembros)) {
+            if (!$inteammiembros) {
+                $teammiembros->users()->attach($user, ["role" => "admin"]);
+            }
+        } else {
+            if ($inteammiembros) {
+                $teammiembros->users()->detach($user);
+            }
+        }
+        //tiene permiso de Operaciones Especiales
+        if (in_array($rol, $specialoperaciones)) {
+            if (!$inteamoperacionesespeciales) {
+                $teamoperacionesespeciales
+                    ->users()
+                    ->attach($user, ["role" => "admin"]);
+            }
+        } else {
+            if ($inteamoperacionesespeciales) {
+                $teamoperacionesespeciales->users()->detach($user);
+            }
+        }
+        //tiene permiso de Eventos
+        if (in_array($rol, $eventos)) {
+            if (!$inteameventos) {
+                $teameventos->users()->attach($user, ["role" => "admin"]);
+            }
+        } else {
+            if ($inteameventos) {
+                $teameventos->users()->detach($user);
+            }
+        }
     }
 }
 ?>
