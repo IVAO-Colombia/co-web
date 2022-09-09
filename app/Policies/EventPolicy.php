@@ -32,7 +32,7 @@ class EventPolicy
      */
     public function view(User $user, Event $event)
     {
-        return false;
+        return true;
     }
 
     /**
@@ -43,7 +43,7 @@ class EventPolicy
      */
     public function create(User $user)
     {
-        //
+        return true;
     }
 
     /**
@@ -55,7 +55,7 @@ class EventPolicy
      */
     public function update(User $user, Event $event)
     {
-        //
+        return true;
     }
 
     /**
@@ -67,7 +67,7 @@ class EventPolicy
      */
     public function delete(User $user, Event $event)
     {
-        //
+        return true;
     }
 
     /**
@@ -79,7 +79,7 @@ class EventPolicy
      */
     public function restore(User $user, Event $event)
     {
-        //
+        return true;
     }
 
     /**
@@ -91,6 +91,6 @@ class EventPolicy
      */
     public function forceDelete(User $user, Event $event)
     {
-        //
+        return true;
     }
 }

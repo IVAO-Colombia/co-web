@@ -60,7 +60,9 @@
                           <a href="#">{{ Auth::user()->firstname }} - {{ Auth::user()->id }}</a>
                           <ul class="dropdown-menu">
                               <li><a href="#" }}">Perfil</a></li>
-                              <li><a href="{{ route('dashboard') }}">Staff</a></li>
+                              @if (isStaff(auth()->user()))
+                                  <li><a href="{{ route('dashboard') }}">Staff</a></li>
+                              @endif
                               <li>
                                   <a href="{{ route('ivao.logout') }}">{{ __('Logout') }}</a>
                               </li>

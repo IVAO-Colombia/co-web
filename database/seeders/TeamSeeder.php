@@ -16,19 +16,12 @@ class TeamSeeder extends Seeder
     {
         $user = User::find(1);
 
-        // $user->switchTeam(
-        //     $team = $user->ownedTeams()->create([
-        //         "name" => $input["name"],
-        //         "personal_team" => false,
-        //     ])
-        // );
-
         $staff = $user->ownedTeams()->create([
             "name" => "Staff",
             "personal_team" => false,
         ]);
 
-        $user->switchTeam($staff);
+        // $staff->users()->attach($user, ["role" => null]);
 
         $miembros = $user->ownedTeams()->create([
             "name" => "Departamento de Miembros",
@@ -77,5 +70,7 @@ class TeamSeeder extends Seeder
             "name" => "Usuarios",
             "personal_team" => false,
         ]);
+
+        $user->switchTeam($usuarios);
     }
 }

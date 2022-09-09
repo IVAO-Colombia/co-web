@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use DB;
-
+use Database\Seeders\TeamSeeder;
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         \App\Models\User::factory(10)->create();
-        DB::unprepared(file_get_contents(__DIR__ . "/airports.sql"));
         $this->call(TeamSeeder::class);
+        DB::unprepared(file_get_contents(__DIR__ . "/airports.sql"));
     }
 }
