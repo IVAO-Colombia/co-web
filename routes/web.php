@@ -1,7 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{FrontController, IvaoController, EventController};
+use App\Http\Controllers\{
+    FrontController,
+    IvaoController,
+    EventController,
+    SliderController
+};
 
 /*
 |--------------------------------------------------------------------------
@@ -48,6 +53,9 @@ Route::get("auth/ivao/logout", function () {
     return redirect()->route("Home");
 })->name("ivao.logout");
 
+/**
+ * Staff panel
+ */
 Route::middleware([
     "auth:sanctum",
     config("jetstream.auth_session"),
@@ -58,4 +66,5 @@ Route::middleware([
     })->name("dashboard");
 
     Route::resource("/events", EventController::class);
+    Route::resource("/sliders", SliderController::class);
 });
