@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\Team;
+use App\Models\{Team, User};
 
 class TeamSeeder extends Seeder
 {
@@ -14,67 +14,67 @@ class TeamSeeder extends Seeder
      */
     public function run()
     {
-        $staff = Team::create([
+        $user = User::find(1);
+
+        // $user->switchTeam(
+        //     $team = $user->ownedTeams()->create([
+        //         "name" => $input["name"],
+        //         "personal_team" => false,
+        //     ])
+        // );
+
+        $staff = $user->ownedTeams()->create([
             "name" => "Staff",
-            "user_id" => 123456,
             "personal_team" => false,
         ]);
 
-        $miembros = Team::create([
+        $user->switchTeam($staff);
+
+        $miembros = $user->ownedTeams()->create([
             "name" => "Departamento de Miembros",
-            "user_id" => 123456,
             "personal_team" => false,
         ]);
 
-        $eventos = Team::create([
+        $eventos = $user->ownedTeams()->create([
             "name" => "Departamento de Eventos",
-            "user_id" => 123456,
             "personal_team" => false,
         ]);
 
-        $entrenamientos = Team::create([
+        $entrenamientos = $user->ownedTeams()->create([
             "name" => "Departamento de Entrenamiento",
-            "user_id" => 123456,
             "personal_team" => false,
         ]);
 
-        $operacionesatc = Team::create([
+        $operacionesatc = $user->ownedTeams()->create([
             "name" => "Departamento de Operaciones ATC",
-            "user_id" => 123456,
             "personal_team" => false,
         ]);
 
-        $especiales = Team::create([
+        $especiales = $user->ownedTeams()->create([
             "name" => "Departamento de Operaciones Especiales",
-            "user_id" => 123456,
             "personal_team" => false,
         ]);
-        $operacionesvuelo = Team::create([
+        $operacionesvuelo = $user->ownedTeams()->create([
             "name" => "Departamento de Operaciones de Vuelo",
-            "user_id" => 123456,
             "personal_team" => false,
         ]);
 
-        $relacionespublicas = Team::create([
+        $relacionespublicas = $user->ownedTeams()->create([
             "name" => "Departamento de Relaciones publicas",
-            "user_id" => 123456,
             "personal_team" => false,
         ]);
 
-        $hq = Team::create([
+        $hq = $user->ownedTeams()->create([
             "name" => "HQ",
-            "user_id" => 123456,
             "personal_team" => false,
         ]);
-        $hq = Team::create([
+        $hq = $user->ownedTeams()->create([
             "name" => "Webmaster",
-            "user_id" => 123456,
             "personal_team" => false,
         ]);
 
-        $usuarios = Team::create([
+        $usuarios = $user->ownedTeams()->create([
             "name" => "Usuarios",
-            "user_id" => 123456,
             "personal_team" => false,
         ]);
     }

@@ -52,20 +52,17 @@ function syncTeams($user)
     $eventos = ["CO-EC", "CO-EAC", "CO-EA1", "CO-EA2"];
     $relaciones = ["CO-PRC", "CO-PRAC", "CO-PRA1", "CO-PRA2"];
 
-    foreach ($teams as $team) {
-        switch ($rol) {
-            case "CO-EA2":
-                # code...
-                break;
+    /**
+     * validar todos los team y verificar si tiene el rol actual,
+     * si no lo tiene y esta asignado debe eliminar del team, sino lo tiene y el actual rol
+     * debe asignarse
+     */
 
-            default:
-                $teamusers = Team::find(10);
-                if (!$team->hasUser($user)) {
-                    $teamusers->users()->attach($user, ["role" => "Editor"]);
-                    $user->switchTeam($teamusers);
-                }
-
-                break;
+    foreach ($roles as $rol) {
+        $team = Team::find(10);
+        if (!$team->hasUser($user)) {
+            $team->users()->attach($user, ["role" => "Editor"]);
+            $user->switchTeam($team);
         }
     }
 }
