@@ -1,5 +1,6 @@
 <?php
 use App\Models\Team;
+use Laravel\Jetstream\Events\TeamMemberAdded;
 
 function clean($string)
 {
@@ -34,7 +35,7 @@ function getUserLocal()
     $user["ratingpilot"] = "4";
     $user["division"] = "CO";
     $user["country"] = "CO";
-    $user["staff"] = ["CO-EA2", "CO-PRA1", "SM3", "CO-AWM"];
+    $user["staff"] = ["CO-EA2", "CO-PRA1", "SM3"];
     // $user["staff"] = [];
     $user["va_staff_ids"] = [23141, 23144, 23146, 23162, 23165];
     $user["va_member_ids"] = [23141, 23144, 23146, 23162, 23165];
@@ -101,14 +102,16 @@ function syncTeams($user)
 
     if (!$inteamusuario) {
         $teamusuario->users()->attach($user, ["role" => "estandar"]);
-        $user->switchTeam($teamusuario);
     }
+
+    $user->switchTeam($teamusuario);
 
     foreach ($roles as $rol) {
         //tiene permiso de HQ
         if (in_array($rol, $hq)) {
             if (!$inteamhq) {
                 $teamhq->users()->attach($user, ["role" => "admin"]);
+                TeamMemberAdded::dispatch($teamhq, $user);
             }
         } else {
             if ($inteamhq) {
@@ -120,6 +123,7 @@ function syncTeams($user)
         if (in_array($rol, $webmaster)) {
             if (!$inteamwebmaster) {
                 $teamwebmaster->users()->attach($user, ["role" => "admin"]);
+                TeamMemberAdded::dispatch($teamwebmaster, $user);
             }
         } else {
             if ($inteamwebmaster) {
@@ -131,6 +135,7 @@ function syncTeams($user)
         if (in_array($rol, $miembros)) {
             if (!$inteammiembros) {
                 $teammiembros->users()->attach($user, ["role" => "admin"]);
+                TeamMemberAdded::dispatch($teammiembros, $user);
             }
         } else {
             if ($inteammiembros) {
@@ -143,6 +148,7 @@ function syncTeams($user)
                 $teamoperacionesespeciales
                     ->users()
                     ->attach($user, ["role" => "admin"]);
+                TeamMemberAdded::dispatch($teamoperacionesespeciales, $user);
             }
         } else {
             if ($inteamoperacionesespeciales) {
@@ -153,6 +159,7 @@ function syncTeams($user)
         if (in_array($rol, $eventos)) {
             if (!$inteameventos) {
                 $teameventos->users()->attach($user, ["role" => "admin"]);
+                TeamMemberAdded::dispatch($teameventos, $user);
             }
         } else {
             if ($inteameventos) {
