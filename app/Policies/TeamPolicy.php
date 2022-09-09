@@ -41,7 +41,9 @@ class TeamPolicy
      */
     public function create(User $user)
     {
-        return true;
+        $teamstaff = Team::find(1);
+
+        return $user->hasTeamPermission($teamstaff, "create");
     }
 
     /**

@@ -26,7 +26,19 @@ class User extends Authenticatable
      * @var string[]
      */
     protected $fillable = [
-        'id', 'firstname','lastname', 'email', 'rating', 'ratingatc', 'ratingpilot', 'division', 'country', 'staff', 'va_staff_ids', 'va_member_ids', 'password',
+        "id",
+        "firstname",
+        "lastname",
+        "email",
+        "rating",
+        "ratingatc",
+        "ratingpilot",
+        "division",
+        "country",
+        "staff",
+        "va_staff_ids",
+        "va_member_ids",
+        "password",
     ];
 
     /**
@@ -35,10 +47,10 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password',
-        'remember_token',
-        'two_factor_recovery_codes',
-        'two_factor_secret',
+        "password",
+        "remember_token",
+        "two_factor_recovery_codes",
+        "two_factor_secret",
     ];
 
     /**
@@ -47,7 +59,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        "email_verified_at" => "datetime",
     ];
 
     /**
@@ -55,7 +67,25 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $appends = [
-        'profile_photo_url',
-    ];
+    protected $appends = ["profile_photo_url"];
+
+    /**
+     * Get the default profile photo URL if no profile photo has been uploaded.
+     *
+     * @return string
+     */
+    protected function defaultProfilePhotoUrl()
+    {
+        $name = trim(
+            collect(explode(" ", $this->firstname))
+                ->map(function ($segment) {
+                    return mb_substr($segment, 0, 1);
+                })
+                ->join(" ")
+        );
+
+        return "https://ui-avatars.com/api/?name=" .
+            urlencode($name) .
+            "&color=7F9CF5&background=EBF4FF";
+    }
 }
