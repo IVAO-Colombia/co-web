@@ -47,6 +47,7 @@ IVAO Login
 Route::get("auth/ivao", [IvaoController::class, "redirect"])->name(
     "ivao.login"
 );
+
 Route::get("auth/ivao/callback", [IvaoController::class, "callback"]);
 Route::get("auth/ivao/logout", function () {
     Auth::logout();
@@ -67,4 +68,8 @@ Route::middleware([
 
     Route::resource("/events", EventController::class);
     Route::resource("/sliders", SliderController::class);
+});
+
+Route::get("login", function () {
+    return redirect("/auth/ivao/callback");
 });
