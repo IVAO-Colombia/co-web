@@ -38,7 +38,7 @@ function getUserLocal()
     $user["ratingpilot"] = "4";
     $user["division"] = "CO";
     $user["country"] = "CO";
-    $user["staff"] = ["CO-EA2", "CO-PRA1", "SM3"];
+    $user["staff"] = ["CO-EA2", "CO-PRA1", "SM3", "CO-AWM"];
     // $user["staff"] = [];
     $user["va_staff_ids"] = [23141, 23144, 23146, 23162, 23165];
     $user["va_member_ids"] = [23141, 23144, 23146, 23162, 23165];
@@ -122,72 +122,141 @@ function syncTeams($user)
     $user->switchTeam($teamusuario);
     $departamentosAsignado = [];
     foreach ($departamentos as $key => $departamento) {
-        if (in_array($departamento, $roles)) {
-            $departamentosAsignado[] = $key;
+        foreach ($departamento as $key2 => $item) {
+            if (in_array($item, $roles)) {
+                $departamentosAsignado[$key] = true;
+                break;
+            } else {
+                $departamentosAsignado[$key] = false;
+            }
+        }
+    }
+
+    foreach ($departamentosAsignado as $key => $item) {
+        switch ($key) {
+            case "hq":
+                if ($item) {
+                    if (!$inteamhq) {
+                        $teamhq->users()->attach($user, ["role" => "admin"]);
+                        TeamMemberAdded::dispatch($teamhq, $user);
+                    }
+                } else {
+                    if ($inteamhq) {
+                        $teamhq->users()->detach($user);
+                    }
+                }
+                break;
+            case "specialoperaciones":
+                if ($item) {
+                    if (!$inteamoperacionesespeciales) {
+                        $teamoperacionesespeciales
+                            ->users()
+                            ->attach($user, ["role" => "admin"]);
+                        TeamMemberAdded::dispatch(
+                            $teamoperacionesespeciales,
+                            $user
+                        );
+                    }
+                } else {
+                    if ($inteamoperacionesespeciales) {
+                        $teamoperacionesespeciales->users()->detach($user);
+                    }
+                }
+                break;
+            case "operacionescoordinacion":
+                if ($item) {
+                    if (!$inteamhq) {
+                        $teamhq->users()->attach($user, ["role" => "admin"]);
+                        TeamMemberAdded::dispatch($teamhq, $user);
+                    }
+                } else {
+                    if ($inteamhq) {
+                        $teamhq->users()->detach($user);
+                    }
+                }
+                break;
+            case "webmaster":
+                if ($item) {
+                    if (!$inteamwebmaster) {
+                        $teamwebmaster
+                            ->users()
+                            ->attach($user, ["role" => "admin"]);
+                        TeamMemberAdded::dispatch($teamwebmaster, $user);
+                    }
+                } else {
+                    if ($inteamwebmaster) {
+                        $teamhq->users()->detach($user);
+                    }
+                }
+                break;
+            case "operacionesATC":
+                if ($item) {
+                    if (!$inteamhq) {
+                        $teamhq->users()->attach($user, ["role" => "admin"]);
+                        TeamMemberAdded::dispatch($teamhq, $user);
+                    }
+                } else {
+                    if ($inteamhq) {
+                        $teamhq->users()->detach($user);
+                    }
+                }
+                break;
+            case "entrenamiento":
+                if ($item) {
+                    if (!$inteamhq) {
+                        $teamhq->users()->attach($user, ["role" => "admin"]);
+                        TeamMemberAdded::dispatch($teamhq, $user);
+                    }
+                } else {
+                    if ($inteamhq) {
+                        $teamhq->users()->detach($user);
+                    }
+                }
+                break;
+            case "miembros":
+                if ($item) {
+                    if (!$inteammiembros) {
+                        $teammiembros
+                            ->users()
+                            ->attach($user, ["role" => "admin"]);
+                        TeamMemberAdded::dispatch($teammiembros, $user);
+                    }
+                } else {
+                    if ($inteammiembros) {
+                        $teammiembros->users()->detach($user);
+                    }
+                }
+                break;
+            case "eventos":
+                if ($item) {
+                    if (!$inteameventos) {
+                        $teameventos
+                            ->users()
+                            ->attach($user, ["role" => "admin"]);
+                        TeamMemberAdded::dispatch($teameventos, $user);
+                    }
+                } else {
+                    if ($inteameventos) {
+                        $teameventos->users()->detach($user);
+                    }
+                }
+                break;
+            case "relaciones":
+                if ($item) {
+                    if (!$inteamrelaciones) {
+                        $teamrelaciones
+                            ->users()
+                            ->attach($user, ["role" => "admin"]);
+                        TeamMemberAdded::dispatch($teamrelaciones, $user);
+                    }
+                } else {
+                    if ($inteamrelaciones) {
+                        $teamrelaciones->users()->detach($user);
+                    }
+                }
+                break;
         }
     }
 }
 
-function validarDepartamentos()
-{
-    //tiene permiso de HQ
-    if (in_array($rol, $hq)) {
-        if (!$inteamhq) {
-            $teamhq->users()->attach($user, ["role" => "admin"]);
-            TeamMemberAdded::dispatch($teamhq, $user);
-        }
-    } else {
-        if ($inteamhq) {
-            $teamhq->users()->detach($user);
-        }
-    }
-
-    //tiene permiso de WEBMASTER
-    if (in_array($rol, $webmaster)) {
-        if (!$inteamwebmaster) {
-            $teamwebmaster->users()->attach($user, ["role" => "admin"]);
-            TeamMemberAdded::dispatch($teamwebmaster, $user);
-        }
-    } else {
-        if ($inteamwebmaster) {
-            $teamwebmaster->users()->detach($user);
-        }
-    }
-
-    //tiene permiso de Miembros
-    if (in_array($rol, $miembros)) {
-        if (!$inteammiembros) {
-            $teammiembros->users()->attach($user, ["role" => "admin"]);
-            TeamMemberAdded::dispatch($teammiembros, $user);
-        }
-    } else {
-        if ($inteammiembros) {
-            $teammiembros->users()->detach($user);
-        }
-    }
-    //tiene permiso de Operaciones Especiales
-    if (in_array($rol, $specialoperaciones)) {
-        if (!$inteamoperacionesespeciales) {
-            $teamoperacionesespeciales
-                ->users()
-                ->attach($user, ["role" => "admin"]);
-            TeamMemberAdded::dispatch($teamoperacionesespeciales, $user);
-        }
-    } else {
-        if ($inteamoperacionesespeciales) {
-            $teamoperacionesespeciales->users()->detach($user);
-        }
-    }
-    //tiene permiso de Eventos
-    if (in_array($rol, $eventos)) {
-        if (!$inteameventos) {
-            $teameventos->users()->attach($user, ["role" => "admin"]);
-            TeamMemberAdded::dispatch($teameventos, $user);
-        }
-    } else {
-        if ($inteameventos) {
-            $teameventos->users()->detach($user);
-        }
-    }
-}
 ?>
