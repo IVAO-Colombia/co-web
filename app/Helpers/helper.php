@@ -27,6 +27,9 @@ function isStaff($user)
 
 function getUserLocal()
 {
+    /**
+     * Para pruebas en local
+     */
     $user["vid"] = "123457";
     $user["firstname"] = "User";
     $user["lastname"] = "Local";
@@ -70,6 +73,18 @@ function syncTeams($user)
     $eventos = ["CO-EC", "CO-EAC", "CO-EA1", "CO-EA2"];
     $relaciones = ["CO-PRC", "CO-PRAC", "CO-PRA1", "CO-PRA2"];
 
+    $departamentos = [
+        "hq" => $hq,
+        "specialoperaciones" => $specialoperaciones,
+        "operacionescoordinacion" => $operacionescoordinacion,
+        "webmaster" => $webmaster,
+        "operacionesATC" => $operacionesATC,
+        "entrenamiento" => $entrenamiento,
+        "miembros" => $miembros,
+        "eventos" => $eventos,
+        "relaciones" => $relaciones,
+    ];
+
     /**
      * validar todos los team y verificar si tiene el rol actual,
      * si no lo tiene y esta asignado debe eliminar del team, sino lo tiene y el actual rol
@@ -105,66 +120,73 @@ function syncTeams($user)
     }
 
     $user->switchTeam($teamusuario);
+    $departamentosAsignado = [];
+    foreach ($departamentos as $key => $departamento) {
+        if (in_array($departamento, $roles)) {
+            $departamentosAsignado[] = $key;
+        }
+    }
+}
 
-    foreach ($roles as $rol) {
-        //tiene permiso de HQ
-        if (in_array($rol, $hq)) {
-            if (!$inteamhq) {
-                $teamhq->users()->attach($user, ["role" => "admin"]);
-                TeamMemberAdded::dispatch($teamhq, $user);
-            }
-        } else {
-            if ($inteamhq) {
-                $teamhq->users()->detach($user);
-            }
+function validarDepartamentos()
+{
+    //tiene permiso de HQ
+    if (in_array($rol, $hq)) {
+        if (!$inteamhq) {
+            $teamhq->users()->attach($user, ["role" => "admin"]);
+            TeamMemberAdded::dispatch($teamhq, $user);
         }
+    } else {
+        if ($inteamhq) {
+            $teamhq->users()->detach($user);
+        }
+    }
 
-        //tiene permiso de WEBMASTER
-        if (in_array($rol, $webmaster)) {
-            if (!$inteamwebmaster) {
-                $teamwebmaster->users()->attach($user, ["role" => "admin"]);
-                TeamMemberAdded::dispatch($teamwebmaster, $user);
-            }
-        } else {
-            if ($inteamwebmaster) {
-                $teamwebmaster->users()->detach($user);
-            }
+    //tiene permiso de WEBMASTER
+    if (in_array($rol, $webmaster)) {
+        if (!$inteamwebmaster) {
+            $teamwebmaster->users()->attach($user, ["role" => "admin"]);
+            TeamMemberAdded::dispatch($teamwebmaster, $user);
         }
+    } else {
+        if ($inteamwebmaster) {
+            $teamwebmaster->users()->detach($user);
+        }
+    }
 
-        //tiene permiso de Miembros
-        if (in_array($rol, $miembros)) {
-            if (!$inteammiembros) {
-                $teammiembros->users()->attach($user, ["role" => "admin"]);
-                TeamMemberAdded::dispatch($teammiembros, $user);
-            }
-        } else {
-            if ($inteammiembros) {
-                $teammiembros->users()->detach($user);
-            }
+    //tiene permiso de Miembros
+    if (in_array($rol, $miembros)) {
+        if (!$inteammiembros) {
+            $teammiembros->users()->attach($user, ["role" => "admin"]);
+            TeamMemberAdded::dispatch($teammiembros, $user);
         }
-        //tiene permiso de Operaciones Especiales
-        if (in_array($rol, $specialoperaciones)) {
-            if (!$inteamoperacionesespeciales) {
-                $teamoperacionesespeciales
-                    ->users()
-                    ->attach($user, ["role" => "admin"]);
-                TeamMemberAdded::dispatch($teamoperacionesespeciales, $user);
-            }
-        } else {
-            if ($inteamoperacionesespeciales) {
-                $teamoperacionesespeciales->users()->detach($user);
-            }
+    } else {
+        if ($inteammiembros) {
+            $teammiembros->users()->detach($user);
         }
-        //tiene permiso de Eventos
-        if (in_array($rol, $eventos)) {
-            if (!$inteameventos) {
-                $teameventos->users()->attach($user, ["role" => "admin"]);
-                TeamMemberAdded::dispatch($teameventos, $user);
-            }
-        } else {
-            if ($inteameventos) {
-                $teameventos->users()->detach($user);
-            }
+    }
+    //tiene permiso de Operaciones Especiales
+    if (in_array($rol, $specialoperaciones)) {
+        if (!$inteamoperacionesespeciales) {
+            $teamoperacionesespeciales
+                ->users()
+                ->attach($user, ["role" => "admin"]);
+            TeamMemberAdded::dispatch($teamoperacionesespeciales, $user);
+        }
+    } else {
+        if ($inteamoperacionesespeciales) {
+            $teamoperacionesespeciales->users()->detach($user);
+        }
+    }
+    //tiene permiso de Eventos
+    if (in_array($rol, $eventos)) {
+        if (!$inteameventos) {
+            $teameventos->users()->attach($user, ["role" => "admin"]);
+            TeamMemberAdded::dispatch($teameventos, $user);
+        }
+    } else {
+        if ($inteameventos) {
+            $teameventos->users()->detach($user);
         }
     }
 }
