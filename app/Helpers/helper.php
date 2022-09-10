@@ -165,13 +165,15 @@ function syncTeams($user)
                 break;
             case "operacionescoordinacion":
                 if ($item) {
-                    if (!$inteamhq) {
-                        $teamhq->users()->attach($user, ["role" => "admin"]);
-                        TeamMemberAdded::dispatch($teamhq, $user);
+                    if (!$inteamoperacionesvuelo) {
+                        $teamoperacionesvuelo
+                            ->users()
+                            ->attach($user, ["role" => "admin"]);
+                        TeamMemberAdded::dispatch($teamoperacionesvuelo, $user);
                     }
                 } else {
-                    if ($inteamhq) {
-                        $teamhq->users()->detach($user);
+                    if ($inteamoperacionesvuelo) {
+                        $teamoperacionesvuelo->users()->detach($user);
                     }
                 }
                 break;
@@ -191,25 +193,29 @@ function syncTeams($user)
                 break;
             case "operacionesATC":
                 if ($item) {
-                    if (!$inteamhq) {
-                        $teamhq->users()->attach($user, ["role" => "admin"]);
-                        TeamMemberAdded::dispatch($teamhq, $user);
+                    if (!$inteamoperacionesatc) {
+                        $teamoperacionesatc
+                            ->users()
+                            ->attach($user, ["role" => "admin"]);
+                        TeamMemberAdded::dispatch($teamoperacionesatc, $user);
                     }
                 } else {
-                    if ($inteamhq) {
-                        $teamhq->users()->detach($user);
+                    if ($inteamoperacionesatc) {
+                        $teamoperacionesatc->users()->detach($user);
                     }
                 }
                 break;
             case "entrenamiento":
                 if ($item) {
-                    if (!$inteamhq) {
-                        $teamhq->users()->attach($user, ["role" => "admin"]);
-                        TeamMemberAdded::dispatch($teamhq, $user);
+                    if (!$inteamentrenamiento) {
+                        $teamentrenamiento
+                            ->users()
+                            ->attach($user, ["role" => "admin"]);
+                        TeamMemberAdded::dispatch($teamentrenamiento, $user);
                     }
                 } else {
-                    if ($inteamhq) {
-                        $teamhq->users()->detach($user);
+                    if ($inteamentrenamiento) {
+                        $teamentrenamiento->users()->detach($user);
                     }
                 }
                 break;
