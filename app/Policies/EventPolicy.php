@@ -20,7 +20,16 @@ class EventPolicy
      */
     public function viewAny(User $user)
     {
-        return true;
+        $teameventos = Team::find(3);
+
+        if (
+            $user->currentTeam == $teameventos &&
+            $teameventos->hasUser($user)
+        ) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**

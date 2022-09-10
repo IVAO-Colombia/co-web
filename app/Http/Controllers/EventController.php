@@ -15,6 +15,7 @@ class EventController extends Controller
      */
     public function index()
     {
+        $this->authorize("viewAny", App\Models\Event::class);
         return view("admin.events.index");
     }
 
