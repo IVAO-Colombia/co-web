@@ -9,6 +9,6 @@ class EventsHome extends Component
     public $events;
     public function render()
     {
-        return view('livewire.events-home');
+        return view("livewire.events");
     }
 }

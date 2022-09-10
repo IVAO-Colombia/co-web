@@ -8,6 +8,8 @@ use App\Http\Controllers\{
     SliderController
 };
 
+use App\Http\Livewire\Events;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -66,8 +68,8 @@ Route::middleware([
         return view("dashboard");
     })->name("dashboard");
 
-    Route::resource("/events", EventController::class);
-    Route::resource("/sliders", SliderController::class);
+    Route::get("/staff/events", Events::class)->name("events.index");
+    Route::resource("/staff/sliders", SliderController::class);
 });
 
 Route::get("login", function () {
