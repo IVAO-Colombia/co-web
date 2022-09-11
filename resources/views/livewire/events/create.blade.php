@@ -11,6 +11,17 @@
             role="dialog" aria-modal="true" aria-labelledby="modal-headline">
             <form>
                 <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+
+                    {{-- $table->string('title',255);
+            $table->string('slug',255)->unique();
+            $table->string('image')->nullable();
+            $table->string('date_time',255)->nullable();
+            $table->date('start_publish_date')->nullable();
+            $table->date('end_publish_date')->nullable();
+            $table->text('description')->nullable();
+            $table->boolean('has_booking')->default(false);
+            $table->boolean('confirm_booking')->default(false);
+            $table->boolean('featured')->default(false); --}}
                     <div class="mb-4">
                         <label for="title" class="block text-gray-700 text-sm font-bold mb-2">Title:</label>
                         <input type="text"
@@ -19,10 +30,26 @@
                     </div>
 
                     <div class="mb-4">
-                        <label for="cantidad" class="block text-gray-700 text-sm font-bold mb-2">Cantidad:</label>
-                        <input type="number"
+                        <label for="title" class="block text-gray-700 text-sm font-bold mb-2">Slug:</label>
+                        <input type="text"
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            id="cantidad" wire:model="cantidad">
+                            id="title" wire:model="slug">
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="date_time" class="block text-gray-700 text-sm font-bold mb-2">Date | Time:</label>
+                        <input type="text"
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            id="date_time" wire:model="date_time">
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="start_publish_date" class="block text-gray-700 text-sm font-bold mb-2">Start Date
+                            Publish:</label>
+                        <input type="date"
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            id="start_publish_date" wire:model="start_publish_date">
+
                     </div>
 
                     <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">

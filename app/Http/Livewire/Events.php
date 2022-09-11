@@ -2,12 +2,26 @@
 
 namespace App\Http\Livewire;
 
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+
 use Livewire\Component;
 use App\Models\Event;
 
 class Events extends Component
 {
-    public $events, $title, $slug, $date_text;
+    use AuthorizesRequests;
+
+    public $events,
+        $title,
+        $slug,
+        $date_time,
+        $image,
+        $start_publish_date,
+        $end_publish_date,
+        $description,
+        $has_booking = false,
+        $confirm_booking = false,
+        $featured = false;
     public $modal = false;
 
     public function render()
@@ -16,7 +30,7 @@ class Events extends Component
         return view("livewire.events.view");
     }
 
-    public function crear()
+    public function create()
     {
         $this->clearFields();
         $this->openModal();
@@ -34,5 +48,15 @@ class Events extends Component
 
     public function clearFields()
     {
+        $this->slug = "";
+        $this->title = "";
+        $this->date_time = "";
+        $this->image = "";
+        $this->start_publish_date = "";
+        $this->end_publish_date = "";
+        $this->description = "";
+        $this->has_booking = false;
+        $this->confirm_booking = false;
+        $this->featured = false;
     }
 }
