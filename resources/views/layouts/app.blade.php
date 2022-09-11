@@ -28,7 +28,7 @@
             document.documentElement.classList.remove('dark')
         }
     </script>
-
+    @stack('styles')
 </head>
 
 <body class="font-sans antialiased">

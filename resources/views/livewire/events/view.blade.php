@@ -22,8 +22,9 @@
             @endif
 
 
-            <button wire:click="create()"
-                class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 my-3">New</button>
+            <button wire:click="create()" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 my-3">
+                New
+            </button>
             @if ($modal)
                 @include('livewire.events.create')
             @endif
@@ -58,12 +59,12 @@
                             <td class="border px-4 py-2">{{ $item->id }}</td>
                             <td class="border px-4 py-2">{{ $item->image }}</td>
                             <td class="border px-4 py-2">{{ $item->title }}</td>
-                            <td class="border px-4 py-2">{{ $item->slug }}</td>
+                            <td class="border px-4 py-2">{{ $item->slug }}</td>z
                             <td class="border px-4 py-2">{{ $item->description }}</td>
                             <td class="border px-4 py-2 text-center">
-                                <button wire:click="editar({{ $item->id }})"
+                                <button wire:click="edit({{ $item->id }})"
                                     class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4">Edit</button>
-                                <button wire:click="borrar({{ $item->id }})"
+                                <button wire:click="delete({{ $item->id }})"
                                     class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4">Delete</button>
                             </td>
                         </tr>
