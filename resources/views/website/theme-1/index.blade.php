@@ -48,7 +48,7 @@
     <section class="content" id="events">
         <div class="container">
             <div class="heading-text heading-section">
-                <h2 class="">Eventos</h2>
+                <h2 class="">{{ __('Events') }}</h2>
                 <span class="lead">Nuestros proximos eventos. </span>
             </div>
             <div id="blog" class="grid-layout post-3-columns m-b-30" data-item="post-item">
@@ -96,7 +96,7 @@
         <div class="shape-divider" data-style="8"></div>
         <div class="container">
             <div class="heading-text heading-section">
-                <h2 class="">Controladores en Colombia</h2>
+                <h2 class="">{{ __('Controllers in Colombia') }}</h2>
                 <span class="lead">Aquí puedes ver el control online en Colombia </span>
             </div>
             <div class="row">
@@ -172,7 +172,7 @@
         {{-- <div class="shape-divider" data-style="18" data-position="top" data-flip-vertical="true"></div> --}}
         <div class="container ">
             <div class="heading-text heading-section">
-                <h2 class="">Vuelos en Vivo</h2>
+                <h2 class="">{{ __('Live Flights') }}</h2>
                 <span class="lead"> Aquí verás todos los vuelos en IVAO desde y hacia Colombia </span>
             </div>
 
