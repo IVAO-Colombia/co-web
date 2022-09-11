@@ -59,7 +59,7 @@
                             <td class="border px-4 py-2">{{ $item->id }}</td>
                             <td class="border px-4 py-2">{{ $item->image }}</td>
                             <td class="border px-4 py-2">{{ $item->title }}</td>
-                            <td class="border px-4 py-2">{{ $item->slug }}</td>z
+                            <td class="border px-4 py-2">{{ $item->slug }}</td>
                             <td class="border px-4 py-2">{{ $item->description }}</td>
                             <td class="border px-4 py-2 text-center">
                                 <button wire:click="edit({{ $item->id }})"

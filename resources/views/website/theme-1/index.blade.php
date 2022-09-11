@@ -255,7 +255,7 @@
                                                             <td>{{ $item->flightPlan->departureId }}</td>
                                                             <td>{{ $item->flightPlan->arrivalId }}</td>
                                                             <td>{{ $item->flightPlan->aircraft->icaoCode }}</td>
-                                                            <td>{{ __($item->lastTrack->state) }}</td>
+                                                            <td>{{ __(optional($item->lastTrack)->state) }}</td>
                                                             <td><a href="{{ route('front.fasttrack', $item->callsign) }}"
                                                                     class=""> Ver</a>
                                                             </td>

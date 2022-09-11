@@ -1710,9 +1710,13 @@ input:checked + .toggle-bg {
   bottom: 0px;
   left: 0px;
 }
-.inset-y-0 {
-  top: 0px;
-  bottom: 0px;
+.inset-y-2 {
+  top: 0.5rem;
+  bottom: 0.5rem;
+}
+.inset-y-4 {
+  top: 1rem;
+  bottom: 1rem;
 }
 .left-0 {
   left: 0px;

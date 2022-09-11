@@ -49,6 +49,7 @@ class Events extends Component
 
     public function clearFields()
     {
+        $this->event_id = null;
         $this->slug = "";
         $this->title = "";
         $this->date_time = "";
