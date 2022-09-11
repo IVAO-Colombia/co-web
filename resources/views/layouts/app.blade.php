@@ -32,6 +32,8 @@
 </head>
 
 <body class="font-sans antialiased">
+    <script src="https://unpkg.com/flowbite@1.5.3/dist/flowbite.js"></script>
+    <script src="https://unpkg.com/flowbite@1.5.3/dist/datepicker.js"></script>
     <x-jet-banner />
 
     <div class="min-h-screen bg-gray-100">
