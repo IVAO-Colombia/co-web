@@ -59,7 +59,7 @@
                             <tr>
                                 <td class="border px-4 py-2" NOWRAP>{{ $item->id }}</td>
                                 <td class="border px-4 py-2">
-                                    <img src="{{ asset('events/' . $item->image) }}" class="w-32">
+                                    <img src="{{ asset('events/' . $item->image) }}" class="w-40">
                                 </td>
                                 <td class="border px-4 py-2">{{ $item->title }}</td>
                                 <td class="border px-4 py-2">{{ $item->date_time }}</td>
