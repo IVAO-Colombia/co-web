@@ -29,10 +29,20 @@ class Events extends Component
         $editing = false;
     public $modal = false;
 
+    protected $rules = [
+        "title" => "required",
+        "imagename" => "image|max:5096", // 5MB Max
+    ];
+
     public function render()
     {
         $this->events = Event::all();
         return view("livewire.events.view");
+    }
+
+    public function updated($propertyName)
+    {
+        $this->validateOnly($propertyName);
     }
 
     public function create()
@@ -70,11 +80,9 @@ class Events extends Component
 
     public function store()
     {
-        $this->validate([
-            "image" => "image|max:5096", // 5MB Max
-        ]);
+        $this->validate();
 
-        $this->image = $this->imagename->storeAs("events");
+        $this->image = $this->imagename->store(null, "events");
 
         Event::updateOrCreate(
             ["id" => $this->event_id],

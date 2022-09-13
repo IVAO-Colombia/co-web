@@ -52,13 +52,16 @@
                 <span class="lead">Nuestros proximos eventos. </span>
             </div>
             <div id="blog" class="grid-layout post-3-columns m-b-30" data-item="post-item">
+                @php
+                    $counter = 0;
+                @endphp
                 @foreach ($featuredEvents as $item)
                     <!-- Post item-->
-                    <div class="post-item border">
+                    <div class="post-item border wow" data-animate="fadeInLeft" data-animate-delay="{{ $counter * 400 }}">
                         <div class="post-item-wrap">
                             <div class="post-image">
                                 <a href="{{ route('front.event_detail', $item->slug) }}">
-                                    <img alt="{{ $item->title }}" src="{{ asset('storage/events/' . $item->image) }}">
+                                    <img alt="{{ $item->title }}" src="{{ asset('events/' . $item->image) }}">
                                 </a>
                                 @if (false)
                                     <span class="post-meta-category">
@@ -71,7 +74,8 @@
                                 <span class="post-meta-comments"><a href=""><i
                                             class="fa fa-comments-o"></i></a></span>
                                 <h2>
-                                    <a href="{{ route('front.event_detail', $item->slug) }}">{{ $item->title }}
+                                    <a href="{{ route('front.event_detail', $item->slug) }}"
+                                        class="text-capitalize">{{ $item->title }}
                                     </a>
                                 </h2>
                                 <p>{!! \Illuminate\Support\Str::limit(strip_tags($item->description), 200) !!}</p>
@@ -81,10 +85,13 @@
                         </div>
                     </div>
                     <!-- end: Post item-->
+                    @php
+                        $counter++;
+                    @endphp
                 @endforeach
             </div>
             <div class="d-flex justify-content-center">
-                <a href="#" class="btn btn-light btn-lg">Ver Más Eventos</a>
+                <a href="#" class="btn btn-light btn-lg">Más Eventos</a>
             </div>
         </div>
     </section>

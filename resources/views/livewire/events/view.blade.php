@@ -57,7 +57,9 @@
                     @foreach ($events as $item)
                         <tr>
                             <td class="border px-4 py-2">{{ $item->id }}</td>
-                            <td class="border px-4 py-2">{{ $item->image }}</td>
+                            <td class="border px-4 py-2"><img src="{{ asset('events/' . $item->image) }}"
+                                    alt="">
+                            </td>
                             <td class="border px-4 py-2">{{ $item->title }}</td>
                             <td class="border px-4 py-2">{{ $item->slug }}</td>
                             <td class="border px-4 py-2">{{ $item->description }}</td>

@@ -36,7 +36,7 @@
 
 
                     <div class="mb-4 ">
-                        <label for="start_publish_date" class="block text-gray-700 text-sm font-bold mb-2">Start
+                        <label for="datePickerElId" class="block text-gray-700 text-sm font-bold mb-2">Start
                             Date
                             Publish:</label>
                         <div class="relative">
@@ -55,12 +55,25 @@
                     </div>
 
                     <div class="mb-4">
-                        <label datepicker for="end_publish_date" class="block text-gray-700 text-sm font-bold mb-2">End
+                        <label datepicker for="datePickerElId2" class="block text-gray-700 text-sm font-bold mb-2">End
                             Date
                             Publish:</label>
-                        <input datepicker type="text"
-                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            id="end_publish_date" wire:model="end_publish_date">
+
+
+
+                        <div class="relative">
+                            <div class="flex absolute inset-y-4 left-0 items-center pl-3 pointer-events-none">
+                                <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400"
+                                    fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd"
+                                        d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
+                                        clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <input datepicker type="text" wire:model="end_publish_date"
+                                class="shadow text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                placeholder="Select date" id="datePickerElId2">
+                        </div>
                     </div>
 
                     <div class="mb-4">
@@ -70,6 +83,23 @@
                             id="description" wire:model="description"></textarea>
                     </div>
 
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2 dark:text-gray-300"
+                            for="file_input">Image:</label>
+                        <input
+                            class="block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                            aria-describedby="file_input_help" id="file_input" type="file" wire:model='imagename'>
+                        <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG, JPG or
+                            GIF (Size. 1920x1080px).</p>
+                        @error('imagename')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    @if ($image)
+                        <div class="mb-4">
+                            <img src="{{ asset('events/' . $image) }}" alt="">
+                        </div>
+                    @endif
 
                     <div class="mb-4">
                         <label for="default-toggle" class="inline-flex relative items-center cursor-pointer">
@@ -127,11 +157,14 @@
 
 @once
     <script>
-        const datePickerEl = document.getElementById('datePickerElId');
-        const date = new Datepicker(datePickerEl, {
+        const options = {
             format: "yyyy-mm-dd",
             autohide: true,
             buttons: true,
-        });
+        };
+        const datePickerEl = document.getElementById('datePickerElId');
+        const datePickerEl2 = document.getElementById('datePickerElId2');
+        const date = new Datepicker(datePickerEl, options);
+        const date2 = new Datepicker(datePickerEl2, options);
     </script>
 @endonce
