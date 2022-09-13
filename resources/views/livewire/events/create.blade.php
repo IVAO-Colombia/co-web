@@ -36,7 +36,7 @@
 
 
                     <div class="mb-4 ">
-                        <label for="datePickerElId" class="block text-gray-700 text-sm font-bold mb-2">Start
+                        <label for="start_publish_date" class="block text-gray-700 text-sm font-bold mb-2">Start
                             Date
                             Publish:</label>
                         <div class="relative">
@@ -50,12 +50,12 @@
                             </div>
                             <input datepicker type="text" wire:model="start_publish_date"
                                 class="shadow text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                placeholder="Select date" id="datePickerElId">
+                                placeholder="Select date" id="start_publish_date">
                         </div>
                     </div>
 
                     <div class="mb-4">
-                        <label datepicker for="datePickerElId2" class="block text-gray-700 text-sm font-bold mb-2">End
+                        <label datepicker for="end_publish_date" class="block text-gray-700 text-sm font-bold mb-2">End
                             Date
                             Publish:</label>
 
@@ -72,7 +72,7 @@
                             </div>
                             <input datepicker type="text" wire:model="end_publish_date"
                                 class="shadow text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                placeholder="Select date" id="datePickerElId2">
+                                placeholder="Select date" id="end_publish_date">
                         </div>
                     </div>
 
@@ -162,8 +162,8 @@
             autohide: true,
             buttons: true,
         };
-        const datePickerEl = document.getElementById('datePickerElId');
-        const datePickerEl2 = document.getElementById('datePickerElId2');
+        const datePickerEl = document.getElementById('start_publish_date');
+        const datePickerEl2 = document.getElementById('end_publish_date');
         const date = new Datepicker(datePickerEl, options);
         const date2 = new Datepicker(datePickerEl2, options);
     </script>
