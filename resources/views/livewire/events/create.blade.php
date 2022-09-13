@@ -166,5 +166,6 @@
         const datePickerEl2 = document.getElementById('end_publish_date');
         const date = new Datepicker(datePickerEl, options);
         const date2 = new Datepicker(datePickerEl2, options);
+        console.log("ejecutado")
     </script>
 @endonce
