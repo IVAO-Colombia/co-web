@@ -42,6 +42,9 @@
                             Title
                         </td>
                         <td class="px-4 py-2">
+                            Date
+                        </td>
+                        <td class="px-4 py-2">
                             Slug
                         </td>
                         <td class="px-4 py-2">
@@ -56,11 +59,12 @@
 
                     @foreach ($events as $item)
                         <tr>
-                            <td class="border px-4 py-2">{{ $item->id }}</td>
+                            <td class="border px-4 py-2" NOWRAP>{{ $item->id }}</td>
                             <td class="border px-4 py-2"><img src="{{ asset('events/' . $item->image) }}"
                                     alt="">
                             </td>
                             <td class="border px-4 py-2">{{ $item->title }}</td>
+                            <td class="border px-4 py-2">{{ $item->date_time }}</td>
                             <td class="border px-4 py-2">{{ $item->slug }}</td>
                             <td class="border px-4 py-2">{{ $item->description }}</td>
                             <td class="border px-4 py-2 text-center">
@@ -75,8 +79,11 @@
                 </tbody>
             </table>
 
-
+            {{ $events->links() }}
         </div>
+
+    </div>
+    <div class="py-12">
 
     </div>
 </div>

@@ -22,8 +22,10 @@ class FrontController extends Controller
             "? between start_publish_date and DATE_ADD(end_publish_date, INTERVAL 1 DAY)",
             [Carbon::now()]
         )
-            ->where("featured", true)
+
             ->orderBy("start_publish_date", "ASC")
+            ->orderBy("featured", "DESC")
+            ->limit(3)
             ->get();
 
         $flights = [];

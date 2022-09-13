@@ -2055,6 +2055,11 @@ input:checked + .toggle-bg {
 .cursor-not-allowed {
   cursor: not-allowed;
 }
+.select-none {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+}
 .resize {
   resize: both;
 }
@@ -2315,10 +2320,6 @@ input:checked + .toggle-bg {
 .bg-red-500 {
   --tw-bg-opacity: 1;
   background-color: rgb(240 82 82 / var(--tw-bg-opacity));
-}
-.bg-purple-600 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(126 58 242 / var(--tw-bg-opacity));
 }
 .bg-blue-700 {
   --tw-bg-opacity: 1;

@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\WithFileUploads;
+use Livewire\WithPagination;
 
 use Livewire\Component;
 use App\Models\Event;
@@ -12,9 +13,9 @@ class Events extends Component
 {
     use AuthorizesRequests;
     use WithFileUploads;
+    use WithPagination;
 
-    public $events,
-        $event_id,
+    public $event_id,
         $title,
         $slug,
         $date_time,
@@ -36,8 +37,9 @@ class Events extends Component
 
     public function render()
     {
-        $this->events = Event::all();
-        return view("livewire.events.view");
+        return view("livewire.events.view", [
+            "events" => Event::orderBy("id", "desc")->paginate(10),
+        ]);
     }
 
     public function updated($propertyName)
@@ -82,7 +84,9 @@ class Events extends Component
     {
         $this->validate();
 
-        $this->image = $this->imagename->store(null, "events");
+        if ($this->imagename) {
+            $this->image = $this->imagename->store(null, "events");
+        }
 
         Event::updateOrCreate(
             ["id" => $this->event_id],
