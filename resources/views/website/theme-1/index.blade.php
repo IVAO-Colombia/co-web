@@ -207,7 +207,7 @@
                                             <thead>
                                                 <tr>
                                                     <th>ETA</th>
-                                                    <th>Aerolinea</th>
+                                                    <th>Operador</th>
                                                     <th>Callsign</th>
                                                     <th>Origen</th>
                                                     <th>Destino</th>
@@ -245,6 +245,8 @@
                                                                 @if (File::exists(public_path("logos-icao/$airline.png")))
                                                                     <img class="airlineslogo"
                                                                         src="{{ asset("logos-icao/$airline.png") }}" />
+                                                                @else
+                                                                    {{ __('Unknown') }}
                                                                 @endif
                                                             </td>
                                                             <td><a href="https://www.ivao.aero/member?id={{ $item->userId }}"
@@ -277,7 +279,7 @@
                                             <thead>
                                                 <tr>
                                                     <th>ETOD</th>
-                                                    <th>Aerolinea</th>
+                                                    <th>Operador</th>
                                                     <th>Callsign</th>
                                                     <th>Origen</th>
                                                     <th>Destino</th>
@@ -311,6 +313,8 @@
                                                                 @if (File::exists(public_path("logos-icao/$airline.png")))
                                                                     <img class="airlineslogo"
                                                                         src="{{ asset("logos-icao/$airline.png") }}" />
+                                                                @else
+                                                                    {{ __('Unknown') }}
                                                                 @endif
 
 
@@ -322,7 +326,7 @@
                                                             <td>{{ $item->flightPlan->departureId }}</td>
                                                             <td>{{ $item->flightPlan->arrivalId }}</td>
                                                             <td>{{ $item->flightPlan->aircraft->icaoCode }}</td>
-                                                            <td>{{ __($item->lastTrack->state) }}</td>
+                                                            <td>{{ __(optional($item->lastTrack)->state) }}</td>
                                                             <td><a href="{{ route('front.fasttrack', $item->callsign) }}"
                                                                     class=""> Ver</a>
                                                             </td>

@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Livewire\WithFileUploads;
 
 use Livewire\Component;
 use App\Models\Event;
@@ -10,6 +11,7 @@ use App\Models\Event;
 class Events extends Component
 {
     use AuthorizesRequests;
+    use WithFileUploads;
 
     public $events,
         $event_id,
@@ -17,12 +19,14 @@ class Events extends Component
         $slug,
         $date_time,
         $image,
+        $imagename,
         $start_publish_date,
         $end_publish_date,
         $description,
         $has_booking = false,
         $confirm_booking = false,
-        $featured = false;
+        $featured = false,
+        $editing = false;
     public $modal = false;
 
     public function render()
@@ -33,6 +37,7 @@ class Events extends Component
 
     public function create()
     {
+        $this->editing = false;
         $this->clearFields();
         $this->openModal();
     }
@@ -54,6 +59,7 @@ class Events extends Component
         $this->title = "";
         $this->date_time = "";
         $this->image = "";
+        $this->imagename = "";
         $this->start_publish_date = "";
         $this->end_publish_date = "";
         $this->description = "";
@@ -64,6 +70,12 @@ class Events extends Component
 
     public function store()
     {
+        $this->validate([
+            "image" => "image|max:5096", // 5MB Max
+        ]);
+
+        $this->image = $this->imagename->storeAs("events");
+
         Event::updateOrCreate(
             ["id" => $this->event_id],
             [
@@ -80,6 +92,8 @@ class Events extends Component
             ]
         );
 
+        $this->editing = false;
+
         session()->flash(
             "message",
             $this->event_id ? "¡Actualización exitosa!" : "¡Alta Exitosa!"
@@ -91,6 +105,7 @@ class Events extends Component
 
     public function edit($id)
     {
+        $this->editing = true;
         $this->clearFields();
         $event = Event::findOrFail($id);
         $this->event_id = $id;

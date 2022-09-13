@@ -18,13 +18,14 @@
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             id="title" wire:model="title">
                     </div>
-
-                    <div class="mb-4">
-                        <label for="title" class="block text-gray-700 text-sm font-bold mb-2">Slug:</label>
-                        <input type="text"
-                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            id="title" wire:model="slug">
-                    </div>
+                    @if ($editing)
+                        <div class="mb-4">
+                            <label for="title" class="block text-gray-700 text-sm font-bold mb-2">Slug:</label>
+                            <input type="text"
+                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                id="title" wire:model="slug">
+                        </div>
+                    @endif
 
                     <div class="mb-4">
                         <label for="date_time" class="block text-gray-700 text-sm font-bold mb-2">Date | Time:</label>
