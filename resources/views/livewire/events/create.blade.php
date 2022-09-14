@@ -50,7 +50,7 @@
                             </div>
                             <input datepicker type="text" wire:model="start_publish_date"
                                 class="shadow text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                placeholder="Select date" id="start_publish_date">
+                                placeholder="yyyy-mm-dd" id="start_publish_date">
                         </div>
                     </div>
 
@@ -72,7 +72,7 @@
                             </div>
                             <input datepicker type="text" wire:model="end_publish_date"
                                 class="shadow text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                placeholder="Select date" id="end_publish_date">
+                                placeholder="yyyy-mm-dd" id="end_publish_date">
                         </div>
                     </div>
 
@@ -156,7 +156,7 @@
 </div>
 
 @once
-    <script>
+    {{-- <script>
         const options = {
             format: "yyyy-mm-dd",
             autohide: true,
@@ -167,5 +167,5 @@
         const date = new Datepicker(datePickerEl, options);
         const date2 = new Datepicker(datePickerEl2, options);
         console.log("ejecutado")
-    </script>
+    </script> --}}
 @endonce
