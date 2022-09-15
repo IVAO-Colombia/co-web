@@ -28,12 +28,8 @@ class Events extends Component
         $confirm_booking = false,
         $featured = false,
         $editing = false;
-    public $modal = false;
 
-    protected $rules = [
-        "title" => "required",
-        "imagename" => "image|max:5096", // 5MB Max
-    ];
+    public $modal = false;
 
     public function render()
     {
@@ -66,7 +62,7 @@ class Events extends Component
         $this->title = "";
         $this->date_time = "";
         $this->image = "";
-        $this->imagename = "";
+        $this->imagename = null;
         $this->start_publish_date = "";
         $this->end_publish_date = "";
         $this->description = "";
