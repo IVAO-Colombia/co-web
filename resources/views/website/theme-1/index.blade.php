@@ -52,9 +52,12 @@
                 <span class="lead">{{ __('Our next events.') }}</span>
             </div>
             <div id="blog" class="grid-layout post-3-columns m-b-30" data-item="post-item">
+                @php
+                    $counter = 0;
+                @endphp
                 @foreach ($featuredEvents as $item)
                     <!-- Post item-->
-                    <div class="post-item border">
+                    <div class="post-item border wow" data-animate="fadeInLeft" data-animate-delay="{{ $counter * 400 }}">
                         <div class="post-item-wrap">
                             <div class="post-image">
                                 <a href="{{ route('front.event_detail', $item->slug) }}">
@@ -71,7 +74,8 @@
                                 <span class="post-meta-comments"><a href=""><i
                                             class="fa fa-comments-o"></i></a></span>
                                 <h2>
-                                    <a href="{{ route('front.event_detail', $item->slug) }}">{{ $item->title }}
+                                    <a href="{{ route('front.event_detail', $item->slug) }}"
+                                        class="text-capitalize">{{ $item->title }}
                                     </a>
                                 </h2>
                                 <p>{!! \Illuminate\Support\Str::limit(strip_tags($item->description), 200) !!}</p>
@@ -81,10 +85,13 @@
                         </div>
                     </div>
                     <!-- end: Post item-->
+                    @php
+                        $counter++;
+                    @endphp
                 @endforeach
             </div>
             <div class="d-flex justify-content-center">
-                <a href="#" class="btn btn-light btn-lg">Ver Más Eventos</a>
+                <a href="#" class="btn btn-light btn-lg">Más Eventos</a>
             </div>
         </div>
     </section>
@@ -207,7 +214,7 @@
                                             <thead>
                                                 <tr>
                                                     <th>ETA</th>
-                                                    <th>Aerolinea</th>
+                                                    <th>Operador</th>
                                                     <th>Callsign</th>
                                                     <th>Origen</th>
                                                     <th>Destino</th>
@@ -245,6 +252,8 @@
                                                                 @if (File::exists(public_path("logos-icao/$airline.png")))
                                                                     <img class="airlineslogo"
                                                                         src="{{ asset("logos-icao/$airline.png") }}" />
+                                                                @else
+                                                                    {{ __('Unknown') }}
                                                                 @endif
                                                             </td>
                                                             <td><a href="https://www.ivao.aero/member?id={{ $item->userId }}"
@@ -255,7 +264,7 @@
                                                             <td>{{ $item->flightPlan->departureId }}</td>
                                                             <td>{{ $item->flightPlan->arrivalId }}</td>
                                                             <td>{{ $item->flightPlan->aircraft->icaoCode }}</td>
-                                                            <td>{{ __($item->lastTrack->state) }}</td>
+                                                            <td>{{ __(optional($item->lastTrack)->state) }}</td>
                                                             <td><a href="{{ route('front.fasttrack', $item->callsign) }}"
                                                                     class=""> Ver</a>
                                                             </td>
@@ -277,7 +286,7 @@
                                             <thead>
                                                 <tr>
                                                     <th>ETOD</th>
-                                                    <th>Aerolinea</th>
+                                                    <th>Operador</th>
                                                     <th>Callsign</th>
                                                     <th>Origen</th>
                                                     <th>Destino</th>
@@ -311,6 +320,8 @@
                                                                 @if (File::exists(public_path("logos-icao/$airline.png")))
                                                                     <img class="airlineslogo"
                                                                         src="{{ asset("logos-icao/$airline.png") }}" />
+                                                                @else
+                                                                    {{ __('Unknown') }}
                                                                 @endif
 
 
@@ -322,7 +333,7 @@
                                                             <td>{{ $item->flightPlan->departureId }}</td>
                                                             <td>{{ $item->flightPlan->arrivalId }}</td>
                                                             <td>{{ $item->flightPlan->aircraft->icaoCode }}</td>
-                                                            <td>{{ __($item->lastTrack->state) }}</td>
+                                                            <td>{{ __(optional($item->lastTrack)->state) }}</td>
                                                             <td><a href="{{ route('front.fasttrack', $item->callsign) }}"
                                                                     class=""> Ver</a>
                                                             </td>

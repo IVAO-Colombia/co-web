@@ -19,12 +19,26 @@
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <script src="{{ asset('js/app.js') }}" defer></script>
 
+    <script>
+        // On page load or when changing themes, best to add inline in `head` to avoid FOUC
+        // if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia(
+        //         '(prefers-color-scheme: dark)').matches)) {
+        //     console.log("estamos aqui")
+        //     document.documentElement.classList.add('dark');
+        // } else {
+
+        //     document.documentElement.classList.remove('dark')
+        // }
+    </script>
+    @stack('styles')
 </head>
 
-<body class="font-sans antialiased">
+<body class="font-sans antialiased dark:bg-slate-900 dark:text-slate-400">
+    <script src="https://unpkg.com/flowbite@1.5.3/dist/flowbite.js"></script>
+    <script src="https://unpkg.com/flowbite@1.5.3/dist/datepicker.js"></script>
     <x-jet-banner />
 
-    <div class="min-h-screen bg-gray-100">
+    <div class="min-h-screen bg-gray-100 dark:bg-slate-900 dark:text-slate-400">
         @livewire('navigation-menu')
 
         <!-- Page Heading -->
@@ -39,12 +53,16 @@
         <!-- Page Content -->
         <main>
             {{ $slot }}
+
         </main>
+
+
     </div>
 
     @stack('modals')
 
     @livewireScripts
+    @stack('scripts')
 </body>
 
 </html>

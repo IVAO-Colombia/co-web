@@ -16,6 +16,8 @@
         "alpinejs": "^3.0.6",
         "autoprefixer": "^10.4.7",
         "axios": "^0.21",
+        "flowbite": "^1.5.3",
+        "flowbite-datepicker": "^1.2.2",
         "laravel-mix": "^6.0.6",
         "lodash": "^4.17.19",
         "postcss": "^8.4.14",
