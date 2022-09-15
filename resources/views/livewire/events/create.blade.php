@@ -16,7 +16,7 @@
                         <label for="title" class="block text-gray-700 text-sm font-bold mb-2">Title:</label>
                         <input type="text"
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            id="title" wire:model="title">
+                            id="title" wire:model.defer="title">
                         @error('title')
                             <span class="text-red-600">{{ $message }}</span>
                         @enderror
@@ -26,7 +26,7 @@
                             <label for="title" class="block text-gray-700 text-sm font-bold mb-2">Slug:</label>
                             <input type="text"
                                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                id="title" wire:model="slug">
+                                id="title" wire:model.defer="slug">
                             @error('slug')
                                 <span class="text-red-600">{{ $message }}</span>
                             @enderror
@@ -37,7 +37,7 @@
                         <label for="date_time" class="block text-gray-700 text-sm font-bold mb-2">Date | Time:</label>
                         <input type="text"
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            id="date_time" wire:model="date_time">
+                            id="date_time" wire:model.defer="date_time">
                     </div>
 
 
@@ -54,7 +54,7 @@
                                         clip-rule="evenodd"></path>
                                 </svg>
                             </div>
-                            <input datepicker type="text" wire:model="start_publish_date"
+                            <input datepicker type="text" wire:model.defer="start_publish_date"
                                 class="shadow text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 placeholder="yyyy-mm-dd" id="start_publish_date">
                         </div>
@@ -76,7 +76,7 @@
                                         clip-rule="evenodd"></path>
                                 </svg>
                             </div>
-                            <input datepicker type="text" wire:model="end_publish_date"
+                            <input datepicker type="text" wire:model.defer="end_publish_date"
                                 class="shadow text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 placeholder="yyyy-mm-dd" id="end_publish_date">
                         </div>
@@ -86,7 +86,7 @@
                         <label for="description" class="block text-gray-700 text-sm font-bold mb-2">Description:</label>
                         <textarea
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            id="description" wire:model="description"></textarea>
+                            id="description" wire:model.defer="description"></textarea>
                     </div>
 
                     <div class="mb-4">
@@ -94,7 +94,8 @@
                             for="file_input">Image:</label>
                         <input
                             class="block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                            aria-describedby="file_input_help" id="file_input" type="file" wire:model='imagename'>
+                            aria-describedby="file_input_help" id="file_input" type="file"
+                            wire:model.defer='imagename'>
                         <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG, JPG or
                             GIF (Size. 1920x1080px).</p>
                         @error('imagename')
@@ -110,7 +111,7 @@
                     <div class="mb-4">
                         <label for="default-toggle" class="inline-flex relative items-center cursor-pointer">
                             <input type="checkbox" value="" id="default-toggle" class="sr-only peer"
-                                wire:model="has_booking">
+                                wire:model.defer="has_booking">
                             <div
                                 class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600">
                             </div>
@@ -121,7 +122,7 @@
                     <div class="mb-4">
                         <label for="confirm_booking" class="inline-flex relative items-center cursor-pointer">
                             <input type="checkbox" id="confirm_booking" class="sr-only peer"
-                                wire:model="confirm_booking">
+                                wire:model.defer="confirm_booking">
                             <div
                                 class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600">
                             </div>
@@ -131,7 +132,7 @@
                     </div>
                     <div class="mb-4">
                         <label for="featured" class="inline-flex relative items-center cursor-pointer">
-                            <input type="checkbox" id="featured" class="sr-only peer" wire:model="featured">
+                            <input type="checkbox" id="featured" class="sr-only peer" wire:model.defer="featured">
                             <div
                                 class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600">
                             </div>
@@ -161,8 +162,8 @@
     </div>
 </div>
 
-@once
-    {{-- <script>
+{{-- @once('modals')
+    <script>
         const options = {
             format: "yyyy-mm-dd",
             autohide: true,
@@ -172,6 +173,5 @@
         const datePickerEl2 = document.getElementById('end_publish_date');
         const date = new Datepicker(datePickerEl, options);
         const date2 = new Datepicker(datePickerEl2, options);
-        console.log("ejecutado")
-    </script> --}}
-@endonce
+    </script>
+@endonce --}}
