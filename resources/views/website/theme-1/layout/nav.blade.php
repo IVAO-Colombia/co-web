@@ -4,7 +4,7 @@
           <nav>
               <ul>
                   <li><a href="{{ url('/') }}">{{ __('Home') }}</a></li>
-                  <li class="dropdown"><a href="#">Piloto</a>
+                  <li class="dropdown"><a href="#">{{ __('Pilot') }}</a>
                       <ul class="dropdown-menu">
                           <li><a target="_blank" href="https://wiki.ivao.aero/en/home/training/main/pilot_rank">Rangos</a>
                           </li>

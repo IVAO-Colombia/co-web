@@ -13,7 +13,7 @@
                 <div class="container">
                     <div class="slide-captions text-start text-light">
                         <!-- Captions -->
-                        <h2 class="text-uppercase text-lg ">Bienvenido
+                        <h2 class="text-uppercase text-lg ">{{ __('Welcome') }}
                             {{ auth()->user()->firstname }}
                         </h2>
                         <p class="fw-light">¡Despega tu pasión en los cielos colombianos!
@@ -49,7 +49,7 @@
         <div class="container">
             <div class="heading-text heading-section">
                 <h2 class="">{{ __('Events') }}</h2>
-                <span class="lead">Nuestros proximos eventos. </span>
+                <span class="lead">{{ __('Our next events.') }}</span>
             </div>
             <div id="blog" class="grid-layout post-3-columns m-b-30" data-item="post-item">
                 @foreach ($featuredEvents as $item)
@@ -97,7 +97,7 @@
         <div class="container">
             <div class="heading-text heading-section">
                 <h2 class="">{{ __('Controllers in Colombia') }}</h2>
-                <span class="lead">Aquí puedes ver el control online en Colombia </span>
+                <span class="lead">{{ __('Here you can see the online control in Colombia') }}</span>
             </div>
             <div class="row">
 
@@ -173,7 +173,7 @@
         <div class="container ">
             <div class="heading-text heading-section">
                 <h2 class="">{{ __('Live Flights') }}</h2>
-                <span class="lead"> Aquí verás todos los vuelos en IVAO desde y hacia Colombia </span>
+                <span class="lead">{{ __('Here you will see all IVAO flights to and from Colombia') }}</span>
             </div>
 
             <div class="row justify-content-center" style="background-color: white">
@@ -186,14 +186,14 @@
                                     <a class="nav-link active" id="arrival-tab" data-bs-toggle="tab" href="#arrival"
                                         role="tab" aria-controls="arrival" aria-selected="true"> <i
                                             class="icon icon--sm block fas fa-plane-arrival"></i>
-                                        <span class="h5">LLegadas</span>
+                                        <span class="h5">{{ __('Arrivals') }}</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link " id="departure-tab" data-bs-toggle="tab" href="#departure"
                                         role="tab" aria-controls="departure" aria-selected="false">
                                         <i class="icon icon--sm block fas fa-plane-departure"></i>
-                                        <span class="h5">Salidas</span>
+                                        <span class="h5">{{ __('Departures') }}</span>
                                     </a>
                                 </li>
 

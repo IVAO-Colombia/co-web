@@ -3,6 +3,8 @@
     "En Route" : "Crucero",
     "Approach" : "Aproximación Final",
     "On Blocks" : "Aterrizó",
+    "Arrivals":"Llegadas",
+    "Departures":"Salidas",
     "Departing" : "Rodando",
     "Initial Climb" : "En Ascenso",
     "Landed" : "Aterrizó",
@@ -23,5 +25,8 @@
     "Events": "Eventos",
     "Create": "Crear",
     "Live Flights": "Vuelos en Vivo",
-    "Controllers in Colombia": "Controladores en Colombia"
+    "Controllers in Colombia": "Controladores en Colombia",
+    "Our next events.":"Nuestros próximos eventos.",
+    "Here you can see the online control in Colombia":"Aquí puedes ver el control online en Colombia",
+    "Here you will see all IVAO flights to and from Colombia": "Aquí verás todos los vuelos en IVAO desde y hacia Colombia"
 }
