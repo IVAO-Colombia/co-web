@@ -48,7 +48,7 @@ return [
         "sliders" => [
             "driver" => "local",
             "root" => storage_path("app/public/sliders"),
-            "url" => env("APP_URL") . "/events",
+            "url" => env("APP_URL") . "/sliders",
             "visibility" => "public",
         ],
 
