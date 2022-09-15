@@ -33,7 +33,7 @@ class Events extends Component
 
     protected $rules = [
         "title" => "required",
-        "imagename" => "image",
+        "imagename" => "nullable|image",
         "start_publish_date" => "required",
         "end_publish_date" => "required",
         "description" => "required",
