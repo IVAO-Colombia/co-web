@@ -23,9 +23,6 @@
 
             <x-jet-button wire:click="create">New</x-jet-button>
 
-            {{-- <button wire:click="create()" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 my-3">
-                New
-            </button> --}}
             @if ($modal)
                 @include('livewire.events.create')
             @endif
@@ -33,13 +30,13 @@
                 <table class="table-auto w-full my-2 max-w-full">
                     <thead>
                         <tr class="bg-indigo-600 text-white">
-                            <td class="px-4 py-2">
+                            <td class="px-4 py-2 cursor-pointer">
                                 ID
                             </td>
                             <td class="px-4 py-2">
                                 Image
                             </td>
-                            <td class="px-4 py-2">
+                            <td class="px-4 py-2 cursor-pointer">
                                 Title
                             </td>
                             <td class="px-4 py-2">
@@ -55,7 +52,6 @@
                         </tr>
                     </thead>
                     <tbody>
-
                         @foreach ($events as $item)
                             <tr>
                                 <td class="border px-4 py-2" NOWRAP>{{ $item->id }}</td>
@@ -65,7 +61,13 @@
                                 <td class="border px-4 py-2">{{ $item->title }}</td>
                                 <td class="border px-4 py-2">{{ $item->date_time }}</td>
 
-                                <td class="border px-4 py-2">{{ $item->description }}</td>
+                                <td class="border px-4 py-2 max-w-xs">
+                                    <p class="truncate">
+                                        {{ $item->description }}
+                                    </p>
+
+
+                                </td>
                                 <td class="border px-2 py-2 text-center">
                                     <button wire:click="edit({{ $item->id }})"
                                         class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4">Edit</button>

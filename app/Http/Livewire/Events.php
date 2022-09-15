@@ -29,6 +29,10 @@ class Events extends Component
         $featured = false,
         $editing = false;
 
+    public $search,
+        $sort = "desc",
+        $sort_id = "id";
+
     public $modal = false;
 
     protected $rules = [
@@ -47,7 +51,9 @@ class Events extends Component
     public function render()
     {
         return view("livewire.events.view", [
-            "events" => Event::orderBy("id", "desc")->paginate(10),
+            "events" => Event::where("title", "like", "%" . $this->search . "%")
+                ->orderBy($this->sort_id, $this->sort)
+                ->paginate(10),
         ]);
     }
 
