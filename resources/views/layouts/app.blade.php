@@ -56,13 +56,7 @@
 
         </main>
 
-        <footer
-            class="fixed bottom-0 left-0 z-9 w-full p-4 bg-white rounded-lg shadow md:px-6 md:py-4 dark:bg-gray-900">
 
-            <span class="block text-sm text-gray-500 sm:text-center dark:text-gray-400 md:py-4">© 2022 <a
-                    href="https://co.ivao.aero/" class="hover:underline">IVAO CO</a>. All Rights Reserved.
-            </span>
-        </footer>
     </div>
 
     @stack('modals')

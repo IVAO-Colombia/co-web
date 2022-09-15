@@ -31,6 +31,15 @@ class Events extends Component
 
     public $modal = false;
 
+    protected $rules = [
+        "title" => "required",
+        "imagename" => "required|image",
+    ];
+    public function updated($propertyName)
+    {
+        $this->validateOnly($propertyName);
+    }
+
     public function render()
     {
         return view("livewire.events.view", [
@@ -73,7 +82,7 @@ class Events extends Component
 
     public function store()
     {
-        // $this->validate();
+        $this->validate();
 
         if ($this->imagename) {
             $this->image = $this->imagename->store(null, "events");

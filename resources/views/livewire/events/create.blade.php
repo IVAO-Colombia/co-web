@@ -17,6 +17,9 @@
                         <input type="text"
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             id="title" wire:model="title">
+                        @error('title')
+                            <span class="text-red-600">{{ $message }}</span>
+                        @enderror
                     </div>
                     @if ($editing)
                         <div class="mb-4">
@@ -24,6 +27,9 @@
                             <input type="text"
                                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                 id="title" wire:model="slug">
+                            @error('slug')
+                                <span class="text-red-600">{{ $message }}</span>
+                            @enderror
                         </div>
                     @endif
 
@@ -92,7 +98,7 @@
                         <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG, JPG or
                             GIF (Size. 1920x1080px).</p>
                         @error('imagename')
-                            <span class="text-danger">{{ $message }}</span>
+                            <span class="text-red-600">{{ $message }}</span>
                         @enderror
                     </div>
                     @if ($image)
