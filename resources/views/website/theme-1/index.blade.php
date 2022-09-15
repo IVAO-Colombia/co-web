@@ -61,7 +61,7 @@
                         <div class="post-item-wrap">
                             <div class="post-image">
                                 <a href="{{ route('front.event_detail', $item->slug) }}">
-                                    <img alt="{{ $item->title }}" src="{{ asset('events/' . $item->image) }}">
+                                    <img alt="{{ $item->title }}" src="{{ asset('storage/events/' . $item->image) }}">
                                 </a>
                                 @if (false)
                                     <span class="post-meta-category">
