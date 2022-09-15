@@ -103,7 +103,7 @@
                     </div>
                     @if ($image)
                         <div class="mb-4">
-                            <img src="{{ asset('events/' . $image) }}" alt="">
+                            <img src="{{ asset('/storage/events/' . $image) }}">
                         </div>
                     @endif
 

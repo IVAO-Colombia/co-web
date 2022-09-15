@@ -33,8 +33,12 @@ class Events extends Component
 
     protected $rules = [
         "title" => "required",
-        "imagename" => "required|image",
+        "imagename" => "image",
+        "start_publish_date" => "required",
+        "end_publish_date" => "required",
+        "description" => "required",
     ];
+
     public function updated($propertyName)
     {
         $this->validateOnly($propertyName);
