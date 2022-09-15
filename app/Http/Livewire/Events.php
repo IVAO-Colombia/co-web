@@ -42,11 +42,6 @@ class Events extends Component
         ]);
     }
 
-    public function updated($propertyName)
-    {
-        $this->validateOnly($propertyName);
-    }
-
     public function create()
     {
         $this->editing = false;
@@ -82,7 +77,7 @@ class Events extends Component
 
     public function store()
     {
-        $this->validate();
+        // $this->validate();
 
         if ($this->imagename) {
             $this->image = $this->imagename->store(null, "events");
