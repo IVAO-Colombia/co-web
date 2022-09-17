@@ -21,8 +21,8 @@ class Events extends Component
         $date_time = null,
         $image = null,
         $imagename = null,
-        $start_publish_date = null,
-        $end_publish_date = null,
+        // $start_publish_date = null,
+        // $end_publish_date = null,
         $description = null,
         $has_booking = false,
         $confirm_booking = false,
@@ -79,8 +79,8 @@ class Events extends Component
         $this->date_time = null;
         $this->image = null;
         $this->imagename = null;
-        $this->start_publish_date = null;
-        $this->end_publish_date = null;
+        // $this->start_publish_date = null;
+        // $this->end_publish_date = null;
         $this->description = null;
         $this->has_booking = false;
         $this->confirm_booking = false;
@@ -102,8 +102,8 @@ class Events extends Component
                 "slug" => $this->slug,
                 "image" => $this->image,
                 "date_time" => $this->date_time,
-                "start_publish_date" => $this->start_publish_date,
-                "end_publish_date" => $this->end_publish_date,
+                // "start_publish_date" => $this->start_publish_date,
+                // "end_publish_date" => $this->end_publish_date,
                 "description" => $this->description,
                 "has_booking" => $this->has_booking,
                 "confirm_booking" => $this->confirm_booking,
@@ -132,8 +132,8 @@ class Events extends Component
         $this->slug = $event->slug;
         $this->image = $event->image;
         $this->date_time = $event->date_time;
-        $this->start_publish_date = $event->start_publish_date;
-        $this->end_publish_date = $event->end_publish_date;
+        // $this->start_publish_date = $event->start_publish_date;
+        // $this->end_publish_date = $event->end_publish_date;
         $this->description = $event->description;
         $this->has_booking = $event->has_booking;
         $this->confirm_booking = $event->confirm_booking;

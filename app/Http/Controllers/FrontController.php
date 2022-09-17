@@ -18,13 +18,12 @@ class FrontController extends Controller
 
     function index()
     {
-        $featuredEvents = Event::whereRaw(
-            "? between start_publish_date and DATE_ADD(end_publish_date, INTERVAL 1 DAY)",
-            [Carbon::now()]
-        )
-
-            ->orderBy("start_publish_date", "ASC")
-            ->orderBy("featured", "DESC")
+        // whereRaw(
+        //     "? between start_publish_date and DATE_ADD(end_publish_date, INTERVAL 1 DAY)",
+        //     [Carbon::now()]
+        // )
+        $featuredEvents = Event::orderBy("featured", "DESC")
+            ->orderBy("id", "DESC")
             ->limit(3)
             ->get();
 

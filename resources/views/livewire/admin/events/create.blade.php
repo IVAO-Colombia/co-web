@@ -41,7 +41,7 @@
                     </div>
 
 
-                    <div class="mb-4" wire:ignore wire:key='start_publish_date'>
+                    {{-- <div class="mb-4" wire:ignore wire:key='start_publish_date'>
                         <label for="start_publish_date" class="block text-gray-700 text-sm font-bold mb-2">
                             Start
                             Date
@@ -61,9 +61,9 @@
                                 placeholder="yyyy-mm-dd" id="start_publish_date" autocomplete="off">
                         </div>
 
-                    </div>
+                    </div> --}}
 
-                    <div class="mb-4" wire:ignore wire:key='end_publish_date'>
+                    {{-- <div class="mb-4" wire:ignore wire:key='end_publish_date'>
                         <label for="end_publish_date" class="block text-gray-700 text-sm font-bold mb-2">
                             End Date Publish:
                         </label>
@@ -81,7 +81,7 @@
                                 class="shadow text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 placeholder="yyyy-mm-dd" id="end_publish_date" autocomplete="off">
                         </div>
-                    </div>
+                    </div> --}}
 
                     <div class="mb-4" wire:ignore wire:key='description'>
                         <label for="description" class="block text-gray-700 text-sm font-bold mb-2">Description:</label>
@@ -167,7 +167,10 @@
 @once
     <script>
         ClassicEditor
-            .create(document.querySelector('#description'))
+            .create(document.querySelector('#description'), {
+
+                // toolbar: ['sourceEditing']
+            })
             .then(function(editor) {
                 editor.model.document.on("change:data", () => {
                     @this.set("description", editor.getData());
