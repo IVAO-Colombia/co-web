@@ -33,7 +33,7 @@ Route::get("locale/{locale}", function ($locale) {
 Route::controller(FrontController::class)->group(function () {
     Route::get("/", "index")->name("Home");
     Route::get("/about", "about")->name("front.about");
-    Route::get("/event-detail/{slug}", "event_detail")->name(
+    Route::get("/event-detail/{event:slug}", "event_detail")->name(
         "front.event_detail"
     );
 

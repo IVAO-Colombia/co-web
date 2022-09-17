@@ -18,12 +18,12 @@ class Events extends Component
     public $event_id,
         $title,
         $slug,
-        $date_time,
-        $image,
-        $imagename,
-        $start_publish_date,
-        $end_publish_date,
-        $description,
+        $date_time = null,
+        $image = null,
+        $imagename = null,
+        $start_publish_date = null,
+        $end_publish_date = null,
+        $description = null,
         $has_booking = false,
         $confirm_booking = false,
         $featured = false,
@@ -38,9 +38,6 @@ class Events extends Component
     protected $rules = [
         "title" => "required",
         "imagename" => "nullable|image",
-        "start_publish_date" => "required",
-        "end_publish_date" => "required",
-        "description" => "required",
     ];
 
     public function updated($propertyName)
@@ -77,14 +74,14 @@ class Events extends Component
     public function clearFields()
     {
         $this->event_id = null;
-        $this->slug = "";
-        $this->title = "";
-        $this->date_time = "";
-        $this->image = "";
+        $this->slug = null;
+        $this->title = null;
+        $this->date_time = null;
+        $this->image = null;
         $this->imagename = null;
-        $this->start_publish_date = "";
-        $this->end_publish_date = "";
-        $this->description = "";
+        $this->start_publish_date = null;
+        $this->end_publish_date = null;
+        $this->description = null;
         $this->has_booking = false;
         $this->confirm_booking = false;
         $this->featured = false;

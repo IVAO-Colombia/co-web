@@ -41,8 +41,9 @@ class FrontController extends Controller
         );
     }
 
-    public function event_detail(Request $request, $slug)
+    public function event_detail(Request $request, Event $event)
     {
+        return view("website.theme-1.event-detail", compact("event"));
     }
 
     public function fasttrack(Request $request, $callsign)

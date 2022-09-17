@@ -24,7 +24,7 @@
                 @include('livewire.admin.events.create')
             @endif
             <div class="overflow-x-auto w-full">
-                <table class="table-auto w-full my-2 max-w-full">
+                <table class="table-auto w-full my-2 max-w-full divide-y divide-gray-200">
                     <thead>
                         <tr class="bg-indigo-600 text-white">
                             <td class="px-4 py-2 cursor-pointer">
@@ -60,7 +60,7 @@
 
                                 <td class="border px-4 py-2 max-w-xs">
                                     <p class="truncate">
-                                        {{ $item->description }}
+                                        {{ strip_tags($item->description) }}
                                     </p>
 
 
