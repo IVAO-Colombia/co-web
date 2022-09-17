@@ -41,10 +41,12 @@
                     </div>
 
 
-                    <div class="mb-4 ">
-                        <label for="start_publish_date" class="block text-gray-700 text-sm font-bold mb-2">Start
+                    <div class="mb-4 " wire:ignore>
+                        <label for="start_publish_date" class="block text-gray-700 text-sm font-bold mb-2">
+                            Start
                             Date
-                            Publish:</label>
+                            Publish:
+                        </label>
                         <div class="relative">
                             <div class="flex absolute inset-y-4 left-0 items-center pl-3 pointer-events-none">
                                 <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400"
@@ -60,12 +62,10 @@
                         </div>
                     </div>
 
-                    <div class="mb-4">
-                        <label datepicker for="end_publish_date" class="block text-gray-700 text-sm font-bold mb-2">End
-                            Date
-                            Publish:</label>
-
-
+                    <div class="mb-4" wire:ignore>
+                        <label datepicker for="end_publish_date" class="block text-gray-700 text-sm font-bold mb-2">
+                            End Date Publish:
+                        </label>
 
                         <div class="relative">
                             <div class="flex absolute inset-y-4 left-0 items-center pl-3 pointer-events-none">
@@ -82,7 +82,7 @@
                         </div>
                     </div>
 
-                    <div class="mb-4">
+                    <div class="mb-4" wire:ignore>
                         <label for="description" class="block text-gray-700 text-sm font-bold mb-2">Description:</label>
                         <textarea
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -160,18 +160,35 @@
             </form>
         </div>
     </div>
-</div>
 
-{{-- @once('modals')
-    <script>
-        const options = {
-            format: "yyyy-mm-dd",
-            autohide: true,
-            buttons: true,
-        };
-        const datePickerEl = document.getElementById('start_publish_date');
-        const datePickerEl2 = document.getElementById('end_publish_date');
-        const date = new Datepicker(datePickerEl, options);
-        const date2 = new Datepicker(datePickerEl2, options);
-    </script>
-@endonce --}}
+    @once
+        <script src="https://cdn.ckeditor.com/ckeditor5/35.1.0/classic/ckeditor.js"></script>
+        <script>
+            ClassicEditor
+                .create(document.querySelector('#description'))
+                .then(function(editor) {
+                    editor.model.document.on("change:data", () => {
+                        @this.set("description", editor.getData());
+                    })
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        </script>
+    @endonce
+
+    @once
+        <script>
+            const options = {
+                format: "yyyy-mm-dd",
+                autohide: true,
+                buttons: true,
+            };
+            const datePickerEl = document.getElementById('start_publish_date');
+            const datePickerEl2 = document.getElementById('end_publish_date');
+            const date = new Datepicker(datePickerEl, options);
+            const date2 = new Datepicker(datePickerEl2, options);
+        </script>
+    @endonce
+
+</div>

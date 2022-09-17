@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\Admin;
 
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\WithFileUploads;
@@ -50,7 +50,7 @@ class Events extends Component
 
     public function render()
     {
-        return view("livewire.events.view", [
+        return view("livewire.admin.events.view", [
             "events" => Event::where("title", "like", "%" . $this->search . "%")
                 ->orderBy($this->sort_id, $this->sort)
                 ->paginate(10),

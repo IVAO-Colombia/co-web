@@ -1,7 +1,7 @@
 <div>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Events') }}
+            {{ __('Sliders') }}
         </h2>
     </x-slot>
 
@@ -21,7 +21,7 @@
             <x-jet-button wire:click="create">New</x-jet-button>
 
             @if ($modal)
-                @include('livewire.events.create')
+                @include('livewire.admin.sliders.create')
             @endif
             <div class="overflow-x-auto w-full">
                 <table class="table-auto w-full my-2 max-w-full">
@@ -49,7 +49,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($events as $item)
+                        @foreach ($sliders as $item)
                             <tr>
                                 <td class="border px-4 py-2" NOWRAP>{{ $item->id }}</td>
                                 <td class="border px-4 py-2">
@@ -80,7 +80,7 @@
 
 
 
-            {{ $events->links() }}
+            {{ $sliders->links() }}
         </div>
 
     </div>
