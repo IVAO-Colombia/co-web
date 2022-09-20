@@ -23,7 +23,7 @@
         <div class="container">
             <div class="row justify-content-around">
                 <div class="col-md-12 my-4 wow fadeLeft">
-                    <p class="lead">Los siguientes son los aeropuertos que puedes controlar segun tu rango</p>
+                    <p class="lead">Los siguientes son los aeropuertos que puedes controlar según tu rango</p>
                     <div class="table-responsive" id="vue">
                         <div class="col-md-5 mb-3">
 
