@@ -8,7 +8,7 @@ use App\Http\Controllers\{
     SliderController
 };
 
-use App\Http\Livewire\Events;
+use App\Http\Livewire\Admin\{Events, Sliders};
 
 /*
 |--------------------------------------------------------------------------
@@ -33,7 +33,8 @@ Route::get("locale/{locale}", function ($locale) {
 Route::controller(FrontController::class)->group(function () {
     Route::get("/", "index")->name("Home");
     Route::get("/about", "about")->name("front.about");
-    Route::get("/event-detail/{slug}", "event_detail")->name(
+    Route::get("/fra", "fra")->name("front.fra");
+    Route::get("/event-detail/{event:slug}", "event_detail")->name(
         "front.event_detail"
     );
 
@@ -69,7 +70,7 @@ Route::middleware([
     })->name("dashboard");
 
     Route::get("/staff/events", Events::class)->name("events.index");
-    Route::resource("/staff/sliders", SliderController::class);
+    Route::get("/staff/sliders", Sliders::class)->name("sliders.index");
 });
 
 Route::get("login", function () {

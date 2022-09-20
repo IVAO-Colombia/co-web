@@ -25,30 +25,28 @@
             <div class="row justify-content-around">
                 <div class="col-md-12 my-4 wow fadeLeft">
                     <p class="lead">Los siguientes son los aeropuertos que puedes controlar segun tu rango</p>
-                    {{-- table-responsive --}}
                     <div class="table-responsive" id="vue">
-
-
-                        <table class="border--round">
+                        <table class="rounded">
                             <thead>
-                                <tr class="bg--primary text-white" role="row">
-                                    <td rowspan="2" class="sorting_disabled" colspan="1" style="width: 82px;">Position
+                                <tr class="bg-primary text-white" role="row">
+                                    <td rowspan="2" class="sorting_disabled" colspan="1" style="width: 82px;">
+                                        Position
                                     </td>
                                     <td colspan="2" align="center" rowspan="1">Time</td>
                                     <td colspan="8" align="center" rowspan="1">Day</td>
                                     <td align="center" rowspan="1" colspan="1">Requirements</td>
                                 </tr>
-                                <tr class="bg--primary text-white" role="row">
+                                <tr class="bg-primary text-white" role="row">
                                     <td class="sorting_disabled" rowspan="1" colspan="1" style="width: 32px;">Start
                                     </td>
                                     <td class="sorting_disabled" rowspan="1" colspan="1" style="width: 25px;">End</td>
                                     <td class="sorting_disabled" rowspan="1" colspan="1">Mon</td>
                                     <td class="sorting_disabled" rowspan="1" colspan="1">Tue</td>
-                                    <td class="sorting_disabled" rowspan="1" colspan="1">Wed&nbsp;</td>
-                                    <td class="sorting_disabled" rowspan="1" colspan="1">Thu&nbsp;</td>
-                                    <td class="sorting_disabled" rowspan="1" colspan="1">Fri&nbsp;</td>
-                                    <td class="sorting_disabled" rowspan="1" colspan="1">Sat&nbsp;</td>
-                                    <td class="sorting_disabled" rowspan="1" colspan="1">Sun&nbsp;</td>
+                                    <td class="sorting_disabled" rowspan="1" colspan="1">Wed</td>
+                                    <td class="sorting_disabled" rowspan="1" colspan="1">Thu</td>
+                                    <td class="sorting_disabled" rowspan="1" colspan="1">Fri</td>
+                                    <td class="sorting_disabled" rowspan="1" colspan="1">Sat</td>
+                                    <td class="sorting_disabled" rowspan="1" colspan="1">Sun</td>
                                     <td class="sorting_disabled" rowspan="1" colspan="1">Date</td>
                                     <td width="105" align="center" class="sorting_disabled" rowspan="1" colspan="1"
                                         style="width: 92px;">ATC Rating
@@ -79,8 +77,6 @@
                                     <td><img :src="`https://www.ivao.aero/data/images/ratings/atc/${item.minAtc}.gif`"></td>
                                 </tr>
                             </tbody>
-
-
                         </table>
                     </div>
                 </div>

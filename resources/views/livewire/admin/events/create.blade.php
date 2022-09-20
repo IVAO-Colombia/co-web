@@ -7,7 +7,7 @@
 
         <span class="hidden sm:inline-block sm:align-middle sm:h-screen"></span>
 
-        <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
+        <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-3xl sm:w-full"
             role="dialog" aria-modal="true" aria-labelledby="modal-headline">
             <form>
                 <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
@@ -41,10 +41,12 @@
                     </div>
 
 
-                    <div class="mb-4 ">
-                        <label for="start_publish_date" class="block text-gray-700 text-sm font-bold mb-2">Start
+                    {{-- <div class="mb-4" wire:ignore wire:key='start_publish_date'>
+                        <label for="start_publish_date" class="block text-gray-700 text-sm font-bold mb-2">
+                            Start
                             Date
-                            Publish:</label>
+                            Publish:
+                        </label>
                         <div class="relative">
                             <div class="flex absolute inset-y-4 left-0 items-center pl-3 pointer-events-none">
                                 <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400"
@@ -54,18 +56,17 @@
                                         clip-rule="evenodd"></path>
                                 </svg>
                             </div>
-                            <input datepicker type="text" wire:model.defer="start_publish_date"
+                            <input type="text" wire:model.defer="start_publish_date"
                                 class="shadow text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                placeholder="yyyy-mm-dd" id="start_publish_date">
+                                placeholder="yyyy-mm-dd" id="start_publish_date" autocomplete="off">
                         </div>
-                    </div>
 
-                    <div class="mb-4">
-                        <label datepicker for="end_publish_date" class="block text-gray-700 text-sm font-bold mb-2">End
-                            Date
-                            Publish:</label>
+                    </div> --}}
 
-
+                    {{-- <div class="mb-4" wire:ignore wire:key='end_publish_date'>
+                        <label for="end_publish_date" class="block text-gray-700 text-sm font-bold mb-2">
+                            End Date Publish:
+                        </label>
 
                         <div class="relative">
                             <div class="flex absolute inset-y-4 left-0 items-center pl-3 pointer-events-none">
@@ -78,18 +79,19 @@
                             </div>
                             <input datepicker type="text" wire:model.defer="end_publish_date"
                                 class="shadow text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                placeholder="yyyy-mm-dd" id="end_publish_date">
+                                placeholder="yyyy-mm-dd" id="end_publish_date" autocomplete="off">
                         </div>
-                    </div>
+                    </div> --}}
 
-                    <div class="mb-4">
+                    <div class="mb-4" wire:ignore wire:key='description'>
                         <label for="description" class="block text-gray-700 text-sm font-bold mb-2">Description:</label>
                         <textarea
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            id="description" wire:model.defer="description"></textarea>
+                            id="description" wire:model.lazy='description'></textarea>
+
                     </div>
 
-                    <div class="mb-4">
+                    <div class="mb-4" wire:ignore>
                         <label class="block text-gray-700 text-sm font-bold mb-2 dark:text-gray-300"
                             for="file_input">Image:</label>
                         <input
@@ -108,7 +110,7 @@
                         </div>
                     @endif
 
-                    <div class="mb-4">
+                    {{-- <div class="mb-4">
                         <label for="default-toggle" class="inline-flex relative items-center cursor-pointer">
                             <input type="checkbox" value="" id="default-toggle" class="sr-only peer"
                                 wire:model.defer="has_booking">
@@ -117,9 +119,9 @@
                             </div>
                             <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">Has Booking</span>
                         </label>
-                    </div>
+                    </div> --}}
 
-                    <div class="mb-4">
+                    {{-- <div class="mb-4">
                         <label for="confirm_booking" class="inline-flex relative items-center cursor-pointer">
                             <input type="checkbox" id="confirm_booking" class="sr-only peer"
                                 wire:model.defer="confirm_booking">
@@ -129,7 +131,7 @@
                             <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">Has Confirm
                                 Booking?</span>
                         </label>
-                    </div>
+                    </div> --}}
                     <div class="mb-4">
                         <label for="featured" class="inline-flex relative items-center cursor-pointer">
                             <input type="checkbox" id="featured" class="sr-only peer" wire:model.defer="featured">
@@ -162,16 +164,30 @@
     </div>
 </div>
 
-{{-- @once('modals')
+@once
     <script>
-        const options = {
-            format: "yyyy-mm-dd",
-            autohide: true,
-            buttons: true,
-        };
-        const datePickerEl = document.getElementById('start_publish_date');
-        const datePickerEl2 = document.getElementById('end_publish_date');
-        const date = new Datepicker(datePickerEl, options);
-        const date2 = new Datepicker(datePickerEl2, options);
+        ClassicEditor
+            .create(document.querySelector('#description'), {
+
+                // toolbar: ['sourceEditing']
+            })
+            .then(function(editor) {
+                editor.model.document.on("change:data", () => {
+                    @this.set("description", editor.getData());
+                })
+            })
+            .catch(error => {
+                console.error(error);
+            });
+
+        // const options = {
+        //     format: "yyyy-mm-dd",
+        //     autohide: true,
+        //     buttons: true,
+        // };
+        // const datePickerEl = document.getElementById('start_publish_date');
+        // const datePickerEl2 = document.getElementById('end_publish_date');
+        // const date = new Datepicker(datePickerEl, options);
+        // const date2 = new Datepicker(datePickerEl2, options);
     </script>
-@endonce --}}
+@endonce

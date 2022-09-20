@@ -18,13 +18,12 @@ class FrontController extends Controller
 
     function index()
     {
-        $featuredEvents = Event::whereRaw(
-            "? between start_publish_date and DATE_ADD(end_publish_date, INTERVAL 1 DAY)",
-            [Carbon::now()]
-        )
-
-            ->orderBy("start_publish_date", "ASC")
-            ->orderBy("featured", "DESC")
+        // whereRaw(
+        //     "? between start_publish_date and DATE_ADD(end_publish_date, INTERVAL 1 DAY)",
+        //     [Carbon::now()]
+        // )
+        $featuredEvents = Event::orderBy("featured", "DESC")
+            ->orderBy("id", "DESC")
             ->limit(3)
             ->get();
 
@@ -41,8 +40,9 @@ class FrontController extends Controller
         );
     }
 
-    public function event_detail(Request $request, $slug)
+    public function event_detail(Request $request, Event $event)
     {
+        return view("website.theme-1.event-detail", compact("event"));
     }
 
     public function fasttrack(Request $request, $callsign)
@@ -72,6 +72,11 @@ class FrontController extends Controller
     function about()
     {
         return view("website.theme-1.about");
+    }
+
+    function fra()
+    {
+        return view("website.theme-1.fra");
     }
 
     function sendcontact(Request $request)

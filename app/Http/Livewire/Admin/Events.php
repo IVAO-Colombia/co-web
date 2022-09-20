@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\Admin;
 
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\WithFileUploads;
@@ -18,12 +18,12 @@ class Events extends Component
     public $event_id,
         $title,
         $slug,
-        $date_time,
-        $image,
-        $imagename,
-        $start_publish_date,
-        $end_publish_date,
-        $description,
+        $date_time = null,
+        $image = null,
+        $imagename = null,
+        // $start_publish_date = null,
+        // $end_publish_date = null,
+        $description = null,
         $has_booking = false,
         $confirm_booking = false,
         $featured = false,
@@ -38,9 +38,6 @@ class Events extends Component
     protected $rules = [
         "title" => "required",
         "imagename" => "nullable|image",
-        "start_publish_date" => "required",
-        "end_publish_date" => "required",
-        "description" => "required",
     ];
 
     public function updated($propertyName)
@@ -50,7 +47,7 @@ class Events extends Component
 
     public function render()
     {
-        return view("livewire.events.view", [
+        return view("livewire.admin.events.view", [
             "events" => Event::where("title", "like", "%" . $this->search . "%")
                 ->orderBy($this->sort_id, $this->sort)
                 ->paginate(10),
@@ -77,14 +74,14 @@ class Events extends Component
     public function clearFields()
     {
         $this->event_id = null;
-        $this->slug = "";
-        $this->title = "";
-        $this->date_time = "";
-        $this->image = "";
+        $this->slug = null;
+        $this->title = null;
+        $this->date_time = null;
+        $this->image = null;
         $this->imagename = null;
-        $this->start_publish_date = "";
-        $this->end_publish_date = "";
-        $this->description = "";
+        // $this->start_publish_date = null;
+        // $this->end_publish_date = null;
+        $this->description = null;
         $this->has_booking = false;
         $this->confirm_booking = false;
         $this->featured = false;
@@ -105,8 +102,8 @@ class Events extends Component
                 "slug" => $this->slug,
                 "image" => $this->image,
                 "date_time" => $this->date_time,
-                "start_publish_date" => $this->start_publish_date,
-                "end_publish_date" => $this->end_publish_date,
+                // "start_publish_date" => $this->start_publish_date,
+                // "end_publish_date" => $this->end_publish_date,
                 "description" => $this->description,
                 "has_booking" => $this->has_booking,
                 "confirm_booking" => $this->confirm_booking,
@@ -135,8 +132,8 @@ class Events extends Component
         $this->slug = $event->slug;
         $this->image = $event->image;
         $this->date_time = $event->date_time;
-        $this->start_publish_date = $event->start_publish_date;
-        $this->end_publish_date = $event->end_publish_date;
+        // $this->start_publish_date = $event->start_publish_date;
+        // $this->end_publish_date = $event->end_publish_date;
         $this->description = $event->description;
         $this->has_booking = $event->has_booking;
         $this->confirm_booking = $event->confirm_booking;
