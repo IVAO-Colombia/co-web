@@ -19,37 +19,36 @@
     </div>
     <!--end: Inspiro Slider -->
 
-
     <section>
         <div class="container">
             <div class="row justify-content-around">
                 <div class="col-md-12 my-4 wow fadeLeft">
                     <p class="lead">Los siguientes son los aeropuertos que puedes controlar segun tu rango</p>
                     <div class="table-responsive" id="vue">
-                        <table class="rounded">
+                        <table class="table  table-bordered rounded w-100">
                             <thead>
-                                <tr class="bg-primary text-white" role="row">
-                                    <td rowspan="2" class="sorting_disabled" colspan="1" style="width: 82px;">
+                                <tr class="bg-primary text-white text-center" role="row">
+                                    <td rowspan="2" class="sorting_disabled" colspan="1" style="width: 115px;">
                                         Position
                                     </td>
-                                    <td colspan="2" align="center" rowspan="1">Time</td>
-                                    <td colspan="8" align="center" rowspan="1">Day</td>
-                                    <td align="center" rowspan="1" colspan="1">Requirements</td>
+                                    <td colspan="2" align="center">Time</td>
+                                    <td colspan="8" align="center">Day</td>
+                                    <td align="center">Requirements</td>
                                 </tr>
-                                <tr class="bg-primary text-white" role="row">
-                                    <td class="sorting_disabled" rowspan="1" colspan="1" style="width: 32px;">Start
+                                <tr class="bg-primary text-white text-center" role="row">
+                                    <td class="sorting_disabled" style="width: 95px;">Start
                                     </td>
-                                    <td class="sorting_disabled" rowspan="1" colspan="1" style="width: 25px;">End</td>
-                                    <td class="sorting_disabled" rowspan="1" colspan="1">Mon</td>
-                                    <td class="sorting_disabled" rowspan="1" colspan="1">Tue</td>
-                                    <td class="sorting_disabled" rowspan="1" colspan="1">Wed</td>
-                                    <td class="sorting_disabled" rowspan="1" colspan="1">Thu</td>
-                                    <td class="sorting_disabled" rowspan="1" colspan="1">Fri</td>
-                                    <td class="sorting_disabled" rowspan="1" colspan="1">Sat</td>
-                                    <td class="sorting_disabled" rowspan="1" colspan="1">Sun</td>
-                                    <td class="sorting_disabled" rowspan="1" colspan="1">Date</td>
-                                    <td width="105" align="center" class="sorting_disabled" rowspan="1" colspan="1"
-                                        style="width: 92px;">ATC Rating
+                                    <td class="sorting_disabled" style="width: 95px;">End</td>
+                                    <td class="sorting_disabled">Mon</td>
+                                    <td class="sorting_disabled">Tue</td>
+                                    <td class="sorting_disabled">Wed</td>
+                                    <td class="sorting_disabled">Thu</td>
+                                    <td class="sorting_disabled">Fri</td>
+                                    <td class="sorting_disabled">Sat</td>
+                                    <td class="sorting_disabled">Sun</td>
+                                    <td class="sorting_disabled" colspan="1">Date</td>
+                                    <td width="105" align="center" class="sorting_disabled" style="width: 120px;">ATC
+                                        Rating
                                     </td>
                                 </tr>
                             </thead>
@@ -66,13 +65,34 @@
                                     </td>
                                     <td>@{{ item.startTime }}</td>
                                     <td>@{{ item.endTime }}</td>
-                                    <td><span class="badge badge-success uppercase">@{{ item.dayMon }}</span></td>
-                                    <td><span class="badge badge-success uppercase">@{{ item.dayTue }}</span></td>
-                                    <td><span class="badge badge-success uppercase">@{{ item.dayWed }}</span></td>
-                                    <td><span class="badge badge-success uppercase">@{{ item.dayThu }}</span></td>
-                                    <td><span class="badge badge-success uppercase">@{{ item.dayFri }}</span></td>
-                                    <td><span class="badge badge-success uppercase">@{{ item.daySat }}</span></td>
-                                    <td><span class="badge badge-success uppercase">@{{ item.daySun }}</span></td>
+                                    <td><span :class="{ 'badge-success': item.dayMon, 'badge-danger': !item.dayMon }"
+                                            class="badge uppercase"> <i v-if="item.dayMon" class="icon-check"></i> <i
+                                                v-if="!item.dayMon" class="icon-x"></i></span>
+                                    </td>
+                                    <td><span :class="{ 'badge-success': item.dayTue, 'badge-danger': !item.dayTue }"
+                                            class="badge uppercase"> <i v-if="item.dayTue" class="icon-check"></i> <i
+                                                v-if="!item.dayTue" class="icon-x"></i></span>
+                                    </td>
+                                    <td><span :class="{ 'badge-success': item.dayWed, 'badge-danger': !item.dayWed }"
+                                            class="badge uppercase"> <i v-if="item.dayWed" class="icon-check"></i> <i
+                                                v-if="!item.dayWed" class="icon-x"></i></span>
+                                    </td>
+                                    <td><span :class="{ 'badge-success': item.dayThu, 'badge-danger': !item.dayThu }"
+                                            class="badge uppercase"> <i v-if="item.dayThu" class="icon-check"></i> <i
+                                                v-if="!item.dayThu" class="icon-x"></i></span>
+                                    </td>
+                                    <td><span :class="{ 'badge-success': item.dayFri, 'badge-danger': !item.dayFri }"
+                                            class="badge uppercase"> <i v-if="item.dayFri" class="icon-check"></i> <i
+                                                v-if="!item.dayFri" class="icon-x"></i></span>
+                                    </td>
+                                    <td><span :class="{ 'badge-success': item.daySat, 'badge-danger': !item.daySat }"
+                                            class="badge uppercase"> <i v-if="item.daySat" class="icon-check"></i> <i
+                                                v-if="!item.daySat" class="icon-x"></i></span>
+                                    </td>
+                                    <td><span :class="{ 'badge-success': item.daySun, 'badge-danger': !item.daySun }"
+                                            class="badge uppercase"> <i v-if="item.daySun" class="icon-check"></i> <i
+                                                v-if="!item.daySun" class="icon-x"></i></span>
+                                    </td>
                                     <td>@{{ item.date }}</td>
                                     <td><img :src="`https://www.ivao.aero/data/images/ratings/atc/${item.minAtc}.gif`"></td>
                                 </tr>

@@ -18,7 +18,7 @@
                     @if (!Auth::check())
                         <li class="d-none d-xl-block d-lg-block mx-1">
                             <a href="{{ route('ivao.login') }}" }}"
-                                class="btn btn-rounded btn-sm">{{ __('Login') }}</a>
+                                class="btn btn-rounded btn-sm btn-primary">{{ __('Login') }}</a>
                         </li>
 
                         <li class="d-none d-xl-block d-lg-block mx-1">

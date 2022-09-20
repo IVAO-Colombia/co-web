@@ -52,3 +52,20 @@
   .airlineslogo{
     max-width: 70px;
   }
+
+  .bg-primary {
+    background-color: #0D2C99 !important;
+}
+.badge-success {
+    color: #fff;
+    background-color: #2EC662;
+}
+
+.badge-danger {
+    color: #fff;
+    background-color: #E93434;
+}
+button.btn.btn-primary, .btn:not(.close):not(.mfp-close).btn-primary, a.btn:not([href]):not([tabindex]).btn-primary {
+    background-color: #0D2C99;
+    border-color: #0D2C99;
+}

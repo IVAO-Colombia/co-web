@@ -23,7 +23,7 @@
                           <li> <a target="_blank"
                                   href="https://wiki.ivao.aero/en/home/training/main/rank_atc">Rangos</a>
                           </li>
-                          <li> <a href="{{ url('/') }}">¿Qué aeropuerto puedo controlar?</a> </li>
+                          <li> <a href="{{ url('/fra') }}">¿Qué aeropuerto puedo controlar?</a> </li>
                           <li> <a href="{{ url('/') }}">{{ __('Guest Controller Approval') }}</a> </li>
                           <li> <a target="_blank"
                                   href="http://www.aerocivil.gov.co/servicios-a-la-navegacion/servicio-de-informacion-aeronautica-ais">Cartas
