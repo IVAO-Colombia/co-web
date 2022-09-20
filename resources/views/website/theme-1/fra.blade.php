@@ -25,7 +25,12 @@
                 <div class="col-md-12 my-4 wow fadeLeft">
                     <p class="lead">Los siguientes son los aeropuertos que puedes controlar segun tu rango</p>
                     <div class="table-responsive" id="vue">
-                        <table class="table  table-bordered rounded w-100">
+                        <div class="col-md-5 mb-3">
+
+                            <input type="text" v-model="search" class="form-control" placeholder="search for position"
+                                id="filter">
+                        </div>
+                        <table class="table  table-bordered rounded w-100" id="table1">
                             <thead>
                                 <tr class="bg-primary text-white text-center" role="row">
                                     <td rowspan="2" class="sorting_disabled" colspan="1" style="width: 115px;">
@@ -54,7 +59,7 @@
                             </thead>
                             <tbody>
 
-                                <tr v-for="item in items" class="text-center">
+                                <tr v-for="item in filteredItems" class="text-center">
                                     <td>
                                         <div v-if="item.atcPosition">
                                             @{{ item.atcPosition.composePosition }}
@@ -105,7 +110,13 @@
     </section>
 @endsection
 @push('scripts')
+    {{-- <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script> --}}
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <script src="{{ asset('/js/custom.js') }}"></script>
+    {{-- <script>
+        $(document).ready(function() {
+            $('#table1').DataTable();
+        });
+    </script> --}}
 @endpush
