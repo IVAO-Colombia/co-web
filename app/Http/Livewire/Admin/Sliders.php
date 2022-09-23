@@ -39,6 +39,7 @@ class Sliders extends Component
 
     public function render()
     {
+        $this->authorize("viewAny", App\Models\Slider::class);
         return view("livewire.admin.sliders.view", [
             "sliders" => Slider::orderBy($this->sort_id, $this->sort)->paginate(
                 10

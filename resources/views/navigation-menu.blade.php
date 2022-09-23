@@ -20,9 +20,12 @@
                             {{ __('Events') }}
                         </x-jet-nav-link>
                     @endcan
-                    <x-jet-nav-link href="{{ route('sliders.index') }}" :active="request()->routeIs('sliders.index')">
-                        {{ __('Sliders') }}
-                    </x-jet-nav-link>
+                    @can('viewAny', App\Models\Slider::class)
+                        <x-jet-nav-link href="{{ route('sliders.index') }}" :active="request()->routeIs('sliders.index')">
+                            {{ __('Sliders') }}
+                        </x-jet-nav-link>
+                    @endcan
+
                 </div>
             </div>
 
@@ -168,9 +171,11 @@
                     {{ __('Events') }}
                 </x-jet-responsive-nav-link>
             @endcan
-            <x-jet-responsive-nav-link href="{{ route('sliders.index') }}" :active="request()->routeIs('sliders.index')">
-                {{ __('Sliders') }}
-            </x-jet-responsive-nav-link>
+            @can('viewAny', App\Models\Slider::class)
+                <x-jet-responsive-nav-link href="{{ route('sliders.index') }}" :active="request()->routeIs('sliders.index')">
+                    {{ __('Sliders') }}
+                </x-jet-responsive-nav-link>
+            @endcan
         </div>
 
         <!-- Responsive Settings Options -->
