@@ -59,7 +59,7 @@ class IvaoController extends Controller
                     "staff" => implode(",", $user["staff"]),
                     "va_staff_ids" => implode(",", $user["va_staff_ids"]),
                     "va_member_ids" => implode(",", $user["va_member_ids"]),
-                    "password" => encrypt("colombia"),
+                    "password" => bcrypt("colombia"),
                 ]);
 
                 Auth::login($newUser);
