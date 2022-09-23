@@ -40,13 +40,9 @@ class Sliders extends Component
     public function render()
     {
         return view("livewire.admin.sliders.view", [
-            "sliders" => Slider::where(
-                "title",
-                "like",
-                "%" . $this->search . "%"
-            )
-                ->orderBy($this->sort_id, $this->sort)
-                ->paginate(10),
+            "sliders" => Slider::orderBy($this->sort_id, $this->sort)->paginate(
+                10
+            ),
         ]);
     }
 
