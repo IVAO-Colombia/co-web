@@ -47,6 +47,7 @@ class Events extends Component
 
     public function render()
     {
+        $this->authorize("viewAny", Event::class);
         return view("livewire.admin.events.view", [
             "events" => Event::where("title", "like", "%" . $this->search . "%")
                 ->orderBy($this->sort_id, $this->sort)
