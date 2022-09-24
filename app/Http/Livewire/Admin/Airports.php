@@ -36,7 +36,7 @@ class Airports extends Component
                 ->Orwhere("iata", "like", "%" . $this->search . "%")
                 ->Orwhere("name", "like", "%" . $this->search . "%")
                 ->orderBy($this->sort_id, $this->sort)
-                ->paginate(50),
+                ->paginate(15),
         ]);
     }
 
