@@ -11,6 +11,17 @@ class Virtualairline extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        "icao",
+        "iata",
+        "name",
+        "code",
+        "description",
+        "website",
+        "imagen",
+        "status",
+    ];
+
     public static function tracking()
     {
         $solovuelos = true;

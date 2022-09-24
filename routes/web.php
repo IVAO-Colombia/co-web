@@ -8,7 +8,7 @@ use App\Http\Controllers\{
     SliderController
 };
 
-use App\Http\Livewire\Admin\{Events, Sliders, Airports};
+use App\Http\Livewire\Admin\{Events, Sliders, Airports, Virtualairlines};
 
 /*
 |--------------------------------------------------------------------------
@@ -72,6 +72,9 @@ Route::middleware([
     Route::get("/staff/events", Events::class)->name("events.index");
     Route::get("/staff/sliders", Sliders::class)->name("sliders.index");
     Route::get("/staff/airports", Airports::class)->name("airports.index");
+    Route::get("/staff/virtualairlines", Virtualairlines::class)->name(
+        "virtualairlines.index"
+    );
 });
 
 Route::get("login", function () {
