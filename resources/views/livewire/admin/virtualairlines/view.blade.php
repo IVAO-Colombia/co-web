@@ -38,7 +38,7 @@
                             </td>
 
                             <td class="px-4 py-2">
-                                ICAO
+                                ICAO/IATA
                             </td>
                             <td class="px-4 py-2">
                                 STATUS
@@ -58,7 +58,7 @@
                                 <td class="border px-4 py-2">{{ $item->name }}</td>
 
                                 <td class="border px-4 py-2 max-w-xs">
-                                    {{ $item->icao }}
+                                    {{ $item->icao ?? '-' }}/ {{ $item->iata ?? '-' }}
                                 </td>
 
                                 <td class="border px-4 py-2 max-w-xs ">
