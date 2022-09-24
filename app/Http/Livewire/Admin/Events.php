@@ -18,12 +18,12 @@ class Events extends Component
     public $event_id,
         $title,
         $slug,
-        $date_time = null,
-        $image = null,
-        $imagename = null,
-        // $start_publish_date = null,
-        // $end_publish_date = null,
-        $description = null,
+        $date_time,
+        $image,
+        $imagename,
+        // $start_publish_date,
+        // $end_publish_date,
+        $description,
         $has_booking = false,
         $confirm_booking = false,
         $featured = false,
@@ -57,8 +57,7 @@ class Events extends Component
 
     public function create()
     {
-        $this->editing = false;
-        $this->clearFields();
+        $this->resetExcept("search");
         $this->openModal();
     }
 
@@ -70,22 +69,6 @@ class Events extends Component
     public function closeModal()
     {
         $this->modal = false;
-    }
-
-    public function clearFields()
-    {
-        $this->event_id = null;
-        $this->slug = null;
-        $this->title = null;
-        $this->date_time = null;
-        $this->image = null;
-        $this->imagename = null;
-        // $this->start_publish_date = null;
-        // $this->end_publish_date = null;
-        $this->description = null;
-        $this->has_booking = false;
-        $this->confirm_booking = false;
-        $this->featured = false;
     }
 
     public function store()
@@ -120,13 +103,13 @@ class Events extends Component
         );
 
         $this->closeModal();
-        $this->clearFields();
+        $this->resetExcept("search");
     }
 
     public function edit($id)
     {
+        $this->resetExcept("search");
         $this->editing = true;
-        $this->clearFields();
         $event = Event::findOrFail($id);
         $this->event_id = $id;
         $this->title = $event->title;

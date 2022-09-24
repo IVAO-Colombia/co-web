@@ -53,6 +53,12 @@ class Airports extends Component
         ]);
     }
 
+    public function create()
+    {
+        $this->resetExcept("search");
+        $this->openModal();
+    }
+
     public function order($field)
     {
         if ($this->sort_id == $field) {
