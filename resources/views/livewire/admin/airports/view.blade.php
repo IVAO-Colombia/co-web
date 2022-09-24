@@ -18,8 +18,18 @@
                 </div>
             @endif
 
-            <x-jet-button wire:click="create">New</x-jet-button>
-            <x-jet-input wire:model="search" type="text" placeholder="Search by ICAO, IATA, Name"></x-jet-input>
+            <div class="flex justify-between">
+                <div>
+                    <label for=""> Search:
+                        <x-jet-input wire:model="search" type="text" placeholder="Search by ICAO, IATA, Name"
+                            class="w-xl">
+                        </x-jet-input>
+                    </label>
+                </div>
+
+                <x-jet-button wire:click="create">New</x-jet-button>
+            </div>
+
             @if ($modal)
                 @include('livewire.admin.airports.create')
             @endif
@@ -68,9 +78,9 @@
                                 </td>
                                 <td class="border px-2 py-2 text-center">
                                     <button wire:click="edit({{ $item->id }})"
-                                        class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4">Edit</button>
+                                        class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 mb-2">Edit</button>
                                     <button wire:click="delete({{ $item->id }})"
-                                        class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4">Delete</button>
+                                        class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 mb-2">Delete</button>
                                 </td>
                             </tr>
                         @endforeach

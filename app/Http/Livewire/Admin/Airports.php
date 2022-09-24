@@ -26,6 +26,7 @@ class Airports extends Component
 
     public function render()
     {
+        $this->authorize("viewAny", App\Models\Airport::class);
         return view("livewire.admin.airports.view", [
             "airports" => Airport::where(
                 "icao",

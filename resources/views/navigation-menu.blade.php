@@ -26,6 +26,12 @@
                         </x-jet-nav-link>
                     @endcan
 
+                    @can('viewAny', App\Models\Airport::class)
+                        <x-jet-nav-link href="{{ route('airports.index') }}" :active="request()->routeIs('airports.index')">
+                            {{ __('Airports') }}
+                        </x-jet-nav-link>
+                    @endcan
+
                 </div>
             </div>
 
@@ -174,6 +180,11 @@
             @can('viewAny', App\Models\Slider::class)
                 <x-jet-responsive-nav-link href="{{ route('sliders.index') }}" :active="request()->routeIs('sliders.index')">
                     {{ __('Sliders') }}
+                </x-jet-responsive-nav-link>
+            @endcan
+            @can('viewAny', App\Models\Airport::class)
+                <x-jet-responsive-nav-link href="{{ route('airports.index') }}" :active="request()->routeIs('airports.index')">
+                    {{ __('Airports') }}
                 </x-jet-responsive-nav-link>
             @endcan
         </div>

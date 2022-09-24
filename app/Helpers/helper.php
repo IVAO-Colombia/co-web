@@ -38,7 +38,7 @@ function getUserLocal()
     $user["ratingpilot"] = "4";
     $user["division"] = "CO";
     $user["country"] = "CO";
-    $user["staff"] = ["CO-EA2", "CO-PRA1", "SM3"];
+    $user["staff"] = ["CO-EA2", "CO-PRA1", "SM3", "CO-WM"];
     // $user["staff"] = [];
     $user["va_staff_ids"] = [23141, 23144, 23146, 23162, 23165];
     $user["va_member_ids"] = [23141, 23144, 23146, 23162, 23165];
