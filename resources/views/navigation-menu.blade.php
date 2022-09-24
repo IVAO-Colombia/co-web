@@ -31,7 +31,7 @@
                             {{ __('Airports') }}
                         </x-jet-nav-link>
                     @endcan
-                    @can('viewAny', App\Models\VirtualAirline::class)
+                    @can('viewAny', App\Models\Virtualairline::class)
                         <x-jet-nav-link href="{{ route('virtualairlines.index') }}" :active="request()->routeIs('virtualairlines.index')">
                             {{ __('Virtual Airlines') }}
                         </x-jet-nav-link>
@@ -192,7 +192,7 @@
                     {{ __('Airports') }}
                 </x-jet-responsive-nav-link>
             @endcan
-            @can('viewAny', App\Models\VirtualAirline::class)
+            @can('viewAny', App\Models\Virtualairline::class)
                 <x-jet-responsive-nav-link href="{{ route('virtualairlines.index') }}" :active="request()->routeIs('virtualairlines.index')">
                     {{ __('Virtual Airlines') }}
                 </x-jet-responsive-nav-link>
