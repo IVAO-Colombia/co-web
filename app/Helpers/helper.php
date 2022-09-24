@@ -121,6 +121,7 @@ function syncTeams($user)
 
     $user->switchTeam($teamusuario);
     $departamentosAsignado = [];
+    //revisamos en cual departamento esta agregado...usando true y false
     foreach ($departamentos as $key => $departamento) {
         foreach ($departamento as $key2 => $item) {
             if (in_array($item, $roles)) {
@@ -132,6 +133,7 @@ function syncTeams($user)
         }
     }
 
+    //asignamos los departamentos y quitamos los que no pertecene, mediante el array del paso anterior
     foreach ($departamentosAsignado as $key => $item) {
         switch ($key) {
             case "hq":
@@ -261,6 +263,14 @@ function syncTeams($user)
                     }
                 }
                 break;
+        }
+    } //end foreach
+
+    //caso especial Julian
+    if ($user->id === "653841") {
+        if (!$inteamwebmaster) {
+            $teamwebmaster->users()->attach($user, ["role" => "admin"]);
+            TeamMemberAdded::dispatch($teamwebmaster, $user);
         }
     }
 }
