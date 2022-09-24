@@ -15,6 +15,15 @@ class Airports extends Component
 
     public $editing = false;
 
+    public $icao,
+        $iata,
+        $name,
+        $country,
+        $latitude,
+        $longitude,
+        $airport_id,
+        $municipality;
+
     public $modal = false,
         $search = "",
         $sort_id = "id",
@@ -51,5 +60,32 @@ class Airports extends Component
         } else {
             $this->sort_id = $field;
         }
+    }
+
+    public function openModal()
+    {
+        $this->modal = true;
+    }
+
+    public function closeModal()
+    {
+        $this->modal = false;
+    }
+
+    public function edit($id)
+    {
+        $this->resetExcept("search");
+        $this->editing = true;
+
+        $airport = Airport::findOrFail($id);
+        $this->airport_id = $id;
+        $this->name = $airport->name;
+        $this->icao = $airport->icao;
+        $this->iata = $airport->iata;
+        $this->country = $airport->country;
+        $this->municipality = $airport->municipality;
+        $this->latitude = $airport->latitude;
+        $this->longitude = $airport->longitude;
+        $this->openModal();
     }
 }
