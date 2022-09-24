@@ -85,6 +85,7 @@ class Virtualairlines extends Component
 
         if ($this->imagename) {
             $this->imagen = $this->imagename->store(null, "virtualairlines");
+            dd($this->imagen);
         }
 
         Virtualairline::updateOrCreate(
