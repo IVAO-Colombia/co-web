@@ -27,7 +27,7 @@
                     <div class="table-responsive" id="vue">
                         <div class="col-md-5 mb-3">
 
-                            <input type="text" v-model="search" class="form-control" placeholder="search for position"
+                            <input type="text" v-model="search" class="form-control" placeholder="search by position"
                                 id="filter">
                         </div>
                         <table class="table  table-bordered rounded w-100" id="table1">
