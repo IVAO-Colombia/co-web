@@ -40,6 +40,12 @@ class FrontController extends Controller
         );
     }
 
+    public function events()
+    {
+        $events = Event::paginate(12);
+        return view("website.theme-1.events", compact("events"));
+    }
+
     public function event_detail(Request $request, Event $event)
     {
         return view("website.theme-1.event-detail", compact("event"));

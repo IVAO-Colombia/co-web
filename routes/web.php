@@ -34,6 +34,7 @@ Route::controller(FrontController::class)->group(function () {
     Route::get("/", "index")->name("Home");
     Route::get("/about", "about")->name("front.about");
     Route::get("/fra", "fra")->name("front.fra");
+    Route::get("/events", "events")->name("front.events");
     Route::get("/event-detail/{event:slug}", "event_detail")->name(
         "front.event_detail"
     );

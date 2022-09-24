@@ -44,7 +44,7 @@
 
 
 
-    <!-- BLOG -->
+    <!-- EVENTS -->
     <section class="content" id="events">
         <div class="container">
             <div class="heading-text heading-section">
@@ -78,7 +78,11 @@
                                         class="text-capitalize">{{ $item->title }}
                                     </a>
                                 </h2>
-                                <p>{!! \Illuminate\Support\Str::limit(strip_tags($item->description), 200) !!}</p>
+                                <p
+                                    style=" white-space: nowrap;
+                                overflow: hidden;
+                                text-overflow: ellipsis;">
+                                    {!! \Illuminate\Support\Str::limit(strip_tags($item->description), 200) !!}</p>
                                 <a href="{{ route('front.event_detail', $item->slug) }}" class='item-link'>Leer Más <i
                                         class="icon-chevron-right"></i></a>
                             </div>
@@ -91,11 +95,11 @@
                 @endforeach
             </div>
             <div class="d-flex justify-content-center">
-                <a href="#" class="btn btn-light btn-lg">Más Eventos</a>
+                <a href="{{ route('front.events') }}" class="btn btn-light btn-lg">{{ __('More Events') }}</a>
             </div>
         </div>
     </section>
-    <!-- end: BLOG -->
+    <!-- end: EVENTS -->
 
     <!-- ATC -->
     <section>
