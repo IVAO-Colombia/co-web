@@ -44,7 +44,6 @@
                 </div>
 
 
-
                 <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2 dark:text-gray-300"
                         for="file_input">IMAGE:</label>
@@ -56,12 +55,21 @@
                     @error('imagename')
                         <span class="text-red-600">{{ $message }}</span>
                     @enderror
+
+                    <div wire:loading wire:target="photo">Uploading...</div>
+
+                    @if ($imagename)
+                        <div class="mb-4">
+                            <label class="block text-gray-700 text-sm font-bold mb-2 dark:text-gray-300"
+                                for="file_input">Preview:</label>
+                            <img src="{{ $imagename->temporaryUrl() }}">
+                        </div>
+                    @endif
                 </div>
-                @if ($imagename)
-                    <div class="mb-4">
-                        <img src="{{ $imagename->temporaryUrl() }}">
-                    </div>
-                @endif
+
+
+
+
 
                 @if ($imagen)
                     <div class="mb-4">
