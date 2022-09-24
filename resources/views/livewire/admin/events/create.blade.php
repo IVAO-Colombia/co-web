@@ -41,11 +41,9 @@
                     </div>
 
 
-                    {{-- <div class="mb-4" wire:ignore wire:key='start_publish_date'>
+                    <div class="mb-4" wire:ignore wire:key='start_publish_date'>
                         <label for="start_publish_date" class="block text-gray-700 text-sm font-bold mb-2">
-                            Start
-                            Date
-                            Publish:
+                            Date:
                         </label>
                         <div class="relative">
                             <div class="flex absolute inset-y-4 left-0 items-center pl-3 pointer-events-none">
@@ -61,7 +59,7 @@
                                 placeholder="yyyy-mm-dd" id="start_publish_date" autocomplete="off">
                         </div>
 
-                    </div> --}}
+                    </div>
 
                     {{-- <div class="mb-4" wire:ignore wire:key='end_publish_date'>
                         <label for="end_publish_date" class="block text-gray-700 text-sm font-bold mb-2">

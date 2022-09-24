@@ -21,7 +21,7 @@ class Events extends Component
         $date_time,
         $image,
         $imagename,
-        // $start_publish_date,
+        $start_publish_date,
         // $end_publish_date,
         $description,
         $has_booking = false,
@@ -86,7 +86,7 @@ class Events extends Component
                 "slug" => $this->slug,
                 "image" => $this->image,
                 "date_time" => $this->date_time,
-                // "start_publish_date" => $this->start_publish_date,
+                "start_publish_date" => $this->start_publish_date,
                 // "end_publish_date" => $this->end_publish_date,
                 "description" => $this->description,
                 "has_booking" => $this->has_booking,
@@ -116,7 +116,7 @@ class Events extends Component
         $this->slug = $event->slug;
         $this->image = $event->image;
         $this->date_time = $event->date_time;
-        // $this->start_publish_date = $event->start_publish_date;
+        $this->start_publish_date = $event->start_publish_date;
         // $this->end_publish_date = $event->end_publish_date;
         $this->description = $event->description;
         $this->has_booking = $event->has_booking;

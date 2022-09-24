@@ -52,8 +52,8 @@
                                 </h2>
                                 <p
                                     style=" white-space: nowrap;
-                                overflow: hidden;
-                                text-overflow: ellipsis;">
+                                    overflow: hidden;
+                                    text-overflow: ellipsis;">
                                     {!! \Illuminate\Support\Str::limit(strip_tags($item->description), 200) !!}</p>
                                 <a href="{{ route('front.event_detail', $item->slug) }}" class='item-link'>Leer Más <i
                                         class="icon-chevron-right"></i></a>

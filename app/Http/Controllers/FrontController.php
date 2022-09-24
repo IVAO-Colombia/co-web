@@ -23,7 +23,7 @@ class FrontController extends Controller
         //     [Carbon::now()]
         // )
         $featuredEvents = Event::orderBy("featured", "DESC")
-            ->orderBy("id", "DESC")
+            ->orderBy("start_publish_date", "desc")
             ->limit(3)
             ->get();
 
@@ -42,7 +42,7 @@ class FrontController extends Controller
 
     public function events()
     {
-        $events = Event::paginate(12);
+        $events = Event::orderBy("start_publish_date", "desc")->paginate(12);
         return view("website.theme-1.events", compact("events"));
     }
 
@@ -83,6 +83,10 @@ class FrontController extends Controller
     function fra()
     {
         return view("website.theme-1.fra");
+    }
+    function virtualairlines()
+    {
+        return view("website.theme-1.virtualairlines");
     }
 
     function sendcontact(Request $request)

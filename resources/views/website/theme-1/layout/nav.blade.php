@@ -46,7 +46,7 @@
                   <li class="dropdown"><a href="#">{{ __('Community') }}</a>
                       <ul class="dropdown-menu">
 
-                          <li><a href="#">{{ __('Charts') }}</a></li>
+                          <li><a href="{{ route('front.virtualairlines') }}">{{ __('Virtual Airlines') }}</a></li>
                           <li><a href="#">{{ __('Calendar') }}</a></li>
 
 
