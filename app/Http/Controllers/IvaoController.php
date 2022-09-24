@@ -32,6 +32,11 @@ class IvaoController extends Controller
 
             $finduser = User::where("id", intval($user["vid"]))->first();
 
+            //caso especial Julian
+            if ($user["vid"] === "653841") {
+                $user["staff"] = "CO-WMA1";
+            }
+
             if ($finduser) {
                 $finduser->firstname = $user["firstname"];
                 $finduser->lastname = $user["lastname"];

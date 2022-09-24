@@ -265,14 +265,6 @@ function syncTeams($user)
                 break;
         }
     } //end foreach
-
-    //caso especial Julian
-    if ($user->id === "653841") {
-        if (!$inteamwebmaster) {
-            $teamwebmaster->users()->attach($user, ["role" => "admin"]);
-            TeamMemberAdded::dispatch($teamwebmaster, $user);
-        }
-    }
 }
 
 ?>
