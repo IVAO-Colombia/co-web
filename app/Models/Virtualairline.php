@@ -49,9 +49,13 @@ class Virtualairline extends Model
                     $tracker->arrivalId = $flight->flightPlan->arrivalId;
                     $tracker->aircraftId = $flight->flightPlan->aircraftId;
                     $tracker->sessionId = $flight->id;
-                    $tracker->stateAircraft = $flight->lastTrack->state;
+                    $tracker->stateAircraft = optional(
+                        $flight->lastTrack
+                    )->state;
 
-                    $tracker->groundSpeed = $flight->lastTrack->groundSpeed;
+                    $tracker->groundSpeed = optional(
+                        $flight->lastTrack
+                    )->groundSpeed;
                     $tracker->route = $flight->flightPlan->route;
                     $tracker->remarks = $flight->flightPlan->remarks;
 
