@@ -34,7 +34,7 @@ class IvaoController extends Controller
 
             //caso especial Julian
             if ($user["vid"] == "653841") {
-                $user["staff"] = "CO-WMA1";
+                $user["staff"] = ["CO-WMA1"];
             }
 
             if ($finduser) {
