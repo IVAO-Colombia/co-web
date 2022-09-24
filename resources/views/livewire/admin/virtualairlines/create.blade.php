@@ -56,7 +56,8 @@
                         <span class="text-red-600">{{ $message }}</span>
                     @enderror
 
-                    <div wire:loading wire:target="photo">Uploading...</div>
+                    <div wire:loading wire:target="imagename" class=""><img
+                            src="{{ asset('img/Spinner-1s-200px.svg') }}" alt=""></div>
 
                     @if ($imagename)
                         <div class="mb-4">
