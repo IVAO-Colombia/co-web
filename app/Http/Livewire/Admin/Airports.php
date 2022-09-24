@@ -118,4 +118,10 @@ class Airports extends Component
         $this->longitude = $airport->longitude;
         $this->openModal();
     }
+
+    public function delete($id)
+    {
+        Airport::find($id)->delete();
+        session()->flash("message", "Registro eliminado correctamente");
+    }
 }
