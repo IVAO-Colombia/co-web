@@ -21,7 +21,7 @@
             <div class="flex justify-between">
                 <div>
                     <label for=""> Search:
-                        <x-jet-input wire:model="search" type="text" placeholder="Search by ICAO, IATA, Name"
+                        <x-jet-input wire:model.lazy="search" type="text" placeholder="Search by ICAO, IATA, Name"
                             class="w-xl">
                         </x-jet-input>
                     </label>
