@@ -35,6 +35,7 @@ class Virtualairlines extends Component
     protected $rules = [
         "name" => "required",
         "icao" => "required",
+        "iata" => "required",
     ];
 
     public function render()
@@ -82,7 +83,7 @@ class Virtualairlines extends Component
         $this->validate();
 
         if ($this->imagename) {
-            $this->imagen = $this->imagename->store(null, "sliders");
+            $this->imagen = $this->imagename->store(null, "virtualairlines");
         }
 
         Virtualairline::updateOrCreate(

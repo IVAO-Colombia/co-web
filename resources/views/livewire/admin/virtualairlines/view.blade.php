@@ -53,7 +53,7 @@
                             <tr>
                                 <td class="border px-4 py-2" NOWRAP>{{ $item->id }}</td>
                                 <td class="border px-4 py-2">
-                                    <img src="{{ asset('storage/virtualairlines/' . $item->image) }}" class="w-40">
+                                    <img src="{{ asset('storage/virtualairlines/' . $item->imagen) }}" class="w-40">
                                 </td>
                                 <td class="border px-4 py-2">{{ $item->name }}</td>
 

@@ -51,6 +51,12 @@ return [
             "url" => env("APP_URL") . "/sliders",
             "visibility" => "public",
         ],
+        "virtualairlines" => [
+            "driver" => "local",
+            "root" => storage_path("app/public/virtualairlines"),
+            "url" => env("APP_URL") . "/virtualairlines",
+            "visibility" => "public",
+        ],
 
         "s3" => [
             "driver" => "s3",
