@@ -91,7 +91,7 @@
 
                     </div>
 
-                    <div class="mb-4" wire:ignore>
+                    <div class="mb-4">
                         <label class="block text-gray-700 text-sm font-bold mb-2 dark:text-gray-300"
                             for="file_input">Image:</label>
                         <input
@@ -103,6 +103,16 @@
                         @error('imagename')
                             <span class="text-red-600">{{ $message }}</span>
                         @enderror
+                        <div wire:loading wire:target="imagename" class=""><img
+                                src="{{ asset('img/Spinner-1s-200px.svg') }}" alt=""></div>
+
+                        @if ($imagename)
+                            <div class="mb-4">
+                                <label class="block text-gray-700 text-sm font-bold mb-2 dark:text-gray-300"
+                                    for="file_input">Preview:</label>
+                                <img src="{{ $imagename->temporaryUrl() }}">
+                            </div>
+                        @endif
                     </div>
                     @if ($image)
                         <div class="mb-4">
