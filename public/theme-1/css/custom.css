@@ -69,3 +69,8 @@ button.btn.btn-primary, .btn:not(.close):not(.mfp-close).btn-primary, a.btn:not(
     background-color: #0D2C99;
     border-color: #0D2C99;
 }
+
+.event-text img{
+    max-width: 100%;
+    margin-bottom: 15px;
+}

@@ -37,11 +37,7 @@
             <div class="row">
 
                 <div class="col-lg-12">
-                    <div class="text-center">
-
-                    </div>
-
-                    <div class="py-5">
+                    <div class="py-5 event-text">
                         {!! $event->description !!}
                     </div>
                 </div>
