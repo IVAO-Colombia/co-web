@@ -30,7 +30,11 @@ class Airports extends Component
         $sort = "desc";
 
     protected $rules = [
-        "title" => "required",
+        "name" => "required",
+        "longitude" => "required",
+        "latitude" => "required",
+        "country" => "required",
+        "municipality" => "required",
     ];
 
     public function render()
@@ -70,6 +74,32 @@ class Airports extends Component
     public function closeModal()
     {
         $this->modal = false;
+    }
+
+    public function store()
+    {
+        $this->validate();
+
+        Airport::updateOrCreate(
+            ["id" => $this->airport_id],
+            [
+                "icao" => $this->icao,
+                "iata" => $this->iata,
+                "name" => $this->name,
+                "country" => $this->country,
+                "municipality" => $this->municipality,
+                "latitude" => $this->latitude,
+                "longitude" => $this->longitude,
+            ]
+        );
+
+        session()->flash(
+            "message",
+            $this->airport_id ? "¡Actualización exitosa!" : "¡Alta Exitosa!"
+        );
+
+        $this->closeModal();
+        $this->resetExcept("search");
     }
 
     public function edit($id)

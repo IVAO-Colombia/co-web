@@ -1842,11 +1842,11 @@ input:checked + .toggle-bg {
 .-mt-px {
   margin-top: -1px;
 }
-.mb-0 {
-  margin-bottom: 0px;
-}
 .mb-2 {
   margin-bottom: 0.5rem;
+}
+.mb-0 {
+  margin-bottom: 0px;
 }
 .mb-3 {
   margin-bottom: 0.75rem;
@@ -2865,6 +2865,11 @@ input:checked + .toggle-bg {
   background-color: rgb(249 250 251 / var(--tw-bg-opacity));
 }
 
+.hover\:bg-purple-800:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(85 33 181 / var(--tw-bg-opacity));
+}
+
 .hover\:bg-blue-600:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(28 100 242 / var(--tw-bg-opacity));
@@ -2873,11 +2878,6 @@ input:checked + .toggle-bg {
 .hover\:bg-red-700:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(200 30 30 / var(--tw-bg-opacity));
-}
-
-.hover\:bg-purple-800:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(85 33 181 / var(--tw-bg-opacity));
 }
 
 .hover\:bg-blue-800:hover {

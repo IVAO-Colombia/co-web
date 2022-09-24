@@ -19,10 +19,10 @@
             @endif
 
             <div class="flex justify-between">
-                <div>
+                <div class="max-w-full">
                     <label for=""> Search:
                         <x-jet-input wire:model.debounce.500ms="search" type="text"
-                            placeholder="Search by ICAO, IATA, Name" class="w-xl">
+                            placeholder="Search by ICAO, IATA, Name" class="max-w-full">
                         </x-jet-input>
                     </label>
                 </div>
