@@ -92,7 +92,9 @@ class FrontController extends Controller
     }
     function virtualairlines()
     {
-        $virtualairlines = Virtualairline::where("status", 1)->get();
+        $virtualairlines = Virtualairline::where("status", 1)
+            ->orderBy("name")
+            ->get();
         return view(
             "website.theme-1.virtualairlines",
             compact("virtualairlines")
