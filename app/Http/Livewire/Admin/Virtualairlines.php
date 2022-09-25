@@ -36,7 +36,7 @@ class Virtualairlines extends Component
         "name" => "required",
         "icao" => "required",
         "iata" => "required",
-        "webiste" => "required",
+        "website" => "required",
         "imagename" => "nullable|image",
     ];
 
