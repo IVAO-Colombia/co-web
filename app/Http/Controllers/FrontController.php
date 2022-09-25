@@ -46,6 +46,12 @@ class FrontController extends Controller
         return view("website.theme-1.events", compact("events"));
     }
 
+    public function eventscalendar()
+    {
+        $events = Event::orderBy("start_publish_date", "desc")->get();
+        return view("website.theme-1.eventscalendar", compact("events"));
+    }
+
     public function event_detail(Request $request, Event $event)
     {
         return view("website.theme-1.event-detail", compact("event"));
