@@ -51,61 +51,17 @@
             },
             defaultDate: Date.now(),
             navLinks: true, // can click day/week names to navigate views
-            editable: true,
+            editable: false,
             eventLimit: true, // allow "more" link when too many events
             events: [
                 @foreach ($events as $item)
                     {
                         title: '{{ $item->title }}',
-                        start: '{{ $item->start_publish_date }} ',
-                        className: 'fc-event-primary'
+                        start: '{{ $item->start_publish_date }}',
+                        className: 'fc-event-primary',
+                        url: '{{ route('front.event_detail', $item->slug) }}',
                     },
                 @endforeach
-                //, {
-                //     title: 'Long Event',
-                //     start: '2021-01-07',
-                //     end: '2021-01-10',
-                //     className: 'fc-event-primary'
-                // }, {
-                //     id: 999,
-                //     title: 'Repeating Event',
-                //     start: '2021-01-09T16:00:00'
-                // }, {
-                //     id: 999,
-                //     title: 'Repeating Event',
-                //     start: '2021-01-16T16:00:00'
-                // }, {
-                //     title: 'Conference',
-                //     start: '2021-01-11',
-                //     end: '2021-01-13',
-                //     className: 'fc-event-warning',
-                //     description: "Lorem ipsum dolor sit incid idunt ut",
-                // }, {
-                //     title: 'Meeting',
-                //     start: '2021-01-12T10:30:00',
-                //     end: '2021-01-12T12:30:00'
-                // }, {
-                //     title: 'Lunch',
-                //     start: '2021-01-12T12:00:00'
-                // }, {
-                //     title: 'Meeting',
-                //     start: '2021-01-12T14:30:00'
-                // }, {
-                //     title: 'Happy Hour',
-                //     start: '2021-01-12T17:30:00'
-                // }, {
-                //     title: 'Dinner',
-                //     start: '2021-01-12T20:00:00'
-                // }, {
-                //     title: 'Birthday Party',
-                //     start: '2021-01-13T07:00:00',
-                //     className: 'fc-event-danger'
-                // }, {
-                //     title: 'Click for Google',
-                //     url: 'http://google.com/',
-                //     start: '2021-01-28',
-                //     className: 'fc-event-info'
-                // }
             ]
         });
     </script>
