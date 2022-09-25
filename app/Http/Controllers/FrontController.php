@@ -92,7 +92,11 @@ class FrontController extends Controller
     }
     function virtualairlines()
     {
-        return view("website.theme-1.virtualairlines");
+        $virtualairlines = Virtualairline::where("status", 1)->get();
+        return view(
+            "website.theme-1.virtualairlines",
+            compact("virtualairlines")
+        );
     }
 
     function sendcontact(Request $request)
