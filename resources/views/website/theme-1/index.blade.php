@@ -130,7 +130,7 @@
                                                 {{ Carbon\Carbon::parse($item->time)->format('H:i') }}
 
                                             </div>
-                                            <div class="col-md-7">
+                                            <div class="col-md-7 text-center">
                                                 @php
                                                     $icao = mb_substr($item->callsign, 0, 4);
 
@@ -146,7 +146,7 @@
                                                     <a href="https://www.ivao.aero/member?id={{ $item->userId }}"
                                                         target="_blank" class="color--primary"
                                                         title="Ver perfil controlador">
-                                                        {{ $item->userId }}
+                                                        <b>VID</b> {{ $item->userId }}
                                                     </a>
                                                     <br>
                                                     <img src="https://ivao.aero/data/images/ratings/atc/{{ $item->rating }}.gif"
