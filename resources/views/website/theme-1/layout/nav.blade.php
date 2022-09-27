@@ -34,11 +34,12 @@
 
 
                   </li>
-                  <li class="dropdown"><a href="#">{{ __('Traning') }}</a>
+                  <li class="dropdown">
+                      <a href="#">{{ __('Traning') }}</a>
                       <ul class="dropdown-menu">
 
-                          <li><a href="#">{{ __('Charts') }}</a></li>
-                          <li><a href="#">{{ __('Calendar') }}</a></li>
+                          {{-- <li><a href="#">{{ __('Charts') }}</a></li> --}}
+                          <li><a href="{{ route('front.training') }}">{{ __('Request Training') }}</a></li>
 
 
                       </ul>

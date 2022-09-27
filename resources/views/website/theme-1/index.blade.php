@@ -23,9 +23,6 @@
                                 <span class="text-rotator">Los Mejores Pilotos,Los Mejores Controladores, La Mejor
                                     División</span>
                             </b>
-
-
-
                         </p>
 
                         <!-- end: Captions -->
