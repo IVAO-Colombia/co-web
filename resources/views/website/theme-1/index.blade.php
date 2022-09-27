@@ -101,6 +101,7 @@
     </section>
     <!-- end: EVENTS -->
 
+
     <!-- ATC -->
     <section>
         <div class="bg-overlay"></div>
@@ -529,46 +530,55 @@
     </section>
     <!-- end: COUNTERS -->
 
-    {{-- <!-- CLIENTS -->
+
+
+
+    <!-- CLIENTS -->
     <section class="p-t-60">
         <div class="container">
             <div class="heading-text heading-section text-center">
-                <h2>CLIENTS</h2>
-                <span class="lead">Our awesome clients we've had the pleasure to work with! </span>
+                <h2>{{ __('STAFF') }}</h2>
+                <span class="lead">{{ __('Our staff online') }} </span>
             </div>
-            <div class="carousel client-logos" data-items="6" data-items-sm="4" data-items-xs="3" data-items-xxs="2"
+            <div class="carousel client-logos" data-items="3" data-items-sm="3" data-items-xs="3" data-items-xxs="2"
                 data-margin="20" data-arrows="false" data-autoplay="true" data-autoplay="3000" data-loop="true">
-                <div>
-                    <a href="#"><img alt="" src="{{ asset('theme-1/images/clients/1.png') }}"> </a>
-                </div>
-                <div>
-                    <a href="#"><img alt="" src="{{ asset('theme-1/images/clients/2.png') }}"> </a>
-                </div>
-                <div>
-                    <a href="#"><img alt="" src="{{ asset('theme-1/images/clients/3.png') }}"> </a>
-                </div>
-                <div>
-                    <a href="#"><img alt="" src="{{ asset('theme-1/images/clients/4.png') }}"> </a>
-                </div>
-                <div>
-                    <a href="#"><img alt="" src="{{ asset('theme-1/images/clients/5.png') }}"> </a>
-                </div>
-                <div>
-                    <a href="#"><img alt="" src="{{ asset('theme-1/images/clients/6.png') }}"> </a>
-                </div>
-                <div>
-                    <a href="#"><img alt="" src="{{ asset('theme-1/images/clients/7.png') }}"> </a>
-                </div>
-                <div>
-                    <a href="#"><img alt="" src="{{ asset('theme-1/images/clients/8.png') }}"> </a>
-                </div>
-                <div>
-                    <a href="#"><img alt="" src="{{ asset('theme-1/images/clients/9.png') }}"> </a>
-                </div>
+
+
+                @if (count($flights['staff']) > 0)
+                    @foreach ($flights['staff'] as $item)
+                        <div class="widget border-box p-cb" style="cursor: initial">
+                            <div class="boxed bg--light ">
+                                <div class="row">
+                                    <div class="col-md-5 text-center">
+                                        <i class="icon icon--sm block fas fa-broadcast-tower"
+                                            style="color: gray; font-size:30px;"></i>
+                                        {{ Carbon\Carbon::parse($item->time)->format('H:i') }}
+
+                                    </div>
+                                    <div class="col-md-7 text-center">
+                                        <p class="fw-light mb-0" style="min-height: 95px;">
+                                            <a href="https://www.ivao.aero/member?id={{ $item->userId }}" target="_blank"
+                                                class="color--primary" title="Webeye">
+                                                <b>
+                                                    {{ $item->callsign }}</b></a>
+                                            <br>
+                                            <a href="https://www.ivao.aero/member?id={{ $item->userId }}" target="_blank"
+                                                class="color--primary" title="Ver perfil controlador">
+                                                <b>VID</b> {{ $item->userId }}
+                                            </a>
+                                            <br>
+                                            <img src="https://ivao.aero/data/images/ratings/atc/{{ $item->rating }}.gif">
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                @endif
             </div>
         </div>
     </section>
-    <!-- end: CLIENTS --> --}}
+    <!-- end: CLIENTS -->
     {{-- <!-- TEAM -->
     <section class="background-grey">
         <div class="container">

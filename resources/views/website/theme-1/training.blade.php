@@ -20,7 +20,7 @@
     </div>
     <!--end: Inspiro Slider -->
 
-    @if (auth()->user()->division == env('DIVISION'))
+    @if (auth()->user()->division == env('APP_DIVISION'))
         <section>
             <div class="container">
                 <div class="row justify-content-around">
@@ -102,6 +102,22 @@
 
                     </div>
                     {{ $trainings->links() }}
+                </div>
+            </div>
+        </section>
+    @else
+        <section>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="alert alert-danger" role="alert">
+                            {{ __('you do not belong to the division, request training in your division.') }}
+                            <a href="https://{{ auth()->user()->division }}.ivao.aero"
+                                class="text-white text-bold">Here</a>
+                        </div>
+
+
+                    </div>
                 </div>
             </div>
         </section>
