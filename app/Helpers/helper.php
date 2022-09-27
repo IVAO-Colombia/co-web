@@ -36,7 +36,8 @@ function isStaff($user)
 
     foreach ($roles as $rol) {
         $staffdivision = substr($rol, 0, 3);
-        if ($staffdivision === env("DIVISION") . "-") {
+        // dd($staffdivision);
+        if ($staffdivision == env("APP_DIVISION") . "-") {
             $esStaff = true;
             break;
         }
@@ -59,10 +60,10 @@ function getUserLocal()
     $user["division"] = "CO";
     $user["country"] = "CO";
     $user["staff"] = [
-        env("DIVISION") . "EA2",
-        env("DIVISION") . "PRA1",
+        env("APP_DIVISION") . "-EA2",
+        env("APP_DIVISION") . "-PRA1",
         "SM3",
-        env("DIVISION") . "WM",
+        env("APP_DIVISION") . "-WM",
     ];
     // $user["staff"] = [];
     $user["va_staff_ids"] = [23141, 23144, 23146, 23162, 23165];
@@ -75,48 +76,51 @@ function syncTeams($user)
 {
     $roles = explode(",", $user->staff);
 
-    $hq = [env("DIVISION") . "DIR", env("DIVISION") . "ADIR"];
+    $hq = [env("APP_DIVISION") . "-DIR", env("APP_DIVISION") . "-ADIR"];
     $specialoperaciones = [
-        env("DIVISION") . "SOC",
-        env("DIVISION") . "SOAC",
-        env("DIVISION") . "SOA1",
+        env("APP_DIVISION") . "-SOC",
+        env("APP_DIVISION") . "-SOAC",
+        env("APP_DIVISION") . "-SOA1",
     ];
     $operacionescoordinacion = [
-        env("DIVISION") . "FOC",
-        env("DIVISION") . "FOAC",
+        env("APP_DIVISION") . "-FOC",
+        env("APP_DIVISION") . "-FOAC",
     ];
     $webmaster = [
-        env("DIVISION") . "WM",
-        env("DIVISION") . "AWM",
-        env("DIVISION") . "WMA1",
+        env("APP_DIVISION") . "-WM",
+        env("APP_DIVISION") . "-AWM",
+        env("APP_DIVISION") . "-WMA1",
     ];
-    $operacionesATC = [env("DIVISION") . "AOC", env("DIVISION") . "AOAC"];
+    $operacionesATC = [
+        env("APP_DIVISION") . "-AOC",
+        env("APP_DIVISION") . "-AOAC",
+    ];
     $entrenamiento = [
-        env("DIVISION") . "TC",
-        env("DIVISION") . "TAC",
-        env("DIVISION") . "TA1",
-        env("DIVISION") . "TA2",
-        env("DIVISION") . "TA3",
-        env("DIVISION") . "TA4",
-        env("DIVISION") . "TA5",
-        env("DIVISION") . "TA6",
-        env("DIVISION") . "TA7",
-        env("DIVISION") . "TA8",
-        env("DIVISION") . "TA9",
-        env("DIVISION") . "T01",
+        env("APP_DIVISION") . "-TC",
+        env("APP_DIVISION") . "-TAC",
+        env("APP_DIVISION") . "-TA1",
+        env("APP_DIVISION") . "-TA2",
+        env("APP_DIVISION") . "-TA3",
+        env("APP_DIVISION") . "-TA4",
+        env("APP_DIVISION") . "-TA5",
+        env("APP_DIVISION") . "-TA6",
+        env("APP_DIVISION") . "-TA7",
+        env("APP_DIVISION") . "-TA8",
+        env("APP_DIVISION") . "-TA9",
+        env("APP_DIVISION") . "-T01",
     ];
-    $miembros = [env("DIVISION") . "MC", env("DIVISION") . "MAC"];
+    $miembros = [env("APP_DIVISION") . "-MC", env("APP_DIVISION") . "-MAC"];
     $eventos = [
-        env("DIVISION") . "EC",
-        env("DIVISION") . "EAC",
-        env("DIVISION") . "EA1",
-        env("DIVISION") . "EA2",
+        env("APP_DIVISION") . "-EC",
+        env("APP_DIVISION") . "-EAC",
+        env("APP_DIVISION") . "-EA1",
+        env("APP_DIVISION") . "-EA2",
     ];
     $relaciones = [
-        env("DIVISION") . "PRC",
-        env("DIVISION") . "PRAC",
-        env("DIVISION") . "PRA1",
-        env("DIVISION") . "PRA2",
+        env("APP_DIVISION") . "-PRC",
+        env("APP_DIVISION") . "-PRAC",
+        env("APP_DIVISION") . "-PRA1",
+        env("APP_DIVISION") . "-PRA2",
     ];
 
     $departamentos = [
