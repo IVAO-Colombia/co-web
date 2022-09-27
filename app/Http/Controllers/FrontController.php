@@ -63,7 +63,6 @@ class FrontController extends Controller
         $ratingPilot = Training::ratingPilot();
 
         $nextRatingPilot = auth()->user()->ratingpilot + 1;
-
         if ($nextRatingPilot < 11) {
             $textratingpilot = $ratingPilot[$nextRatingPilot];
         }
@@ -75,15 +74,17 @@ class FrontController extends Controller
 
         $trainings = Training::where("user_id", auth()->user()->id)
             ->orderBy("id", "DESC")
-            ->get();
+            ->paginate(15);
 
         $trainingAtcOpen = Training::where("user_id", auth()->user()->id)
             ->where("typetraining", "ATC")
             ->where("status", 1)
+            ->OrWhere("status", 2)
             ->get();
         $trainingPilotOpen = Training::where("user_id", auth()->user()->id)
             ->where("typetraining", "PILOTO")
             ->where("status", 1)
+            ->OrWhere("status", 2)
             ->get();
 
         return view(
@@ -104,6 +105,7 @@ class FrontController extends Controller
     {
         $trainingATC = Training::where("typetraining", "ATC")
             ->where("status", 1)
+            ->OrWhere("status", 2)
             ->where("user_id", auth()->user()->id)
             ->get();
         if (count($trainingATC) > 0) {
@@ -128,6 +130,7 @@ class FrontController extends Controller
         $trainingpiloto = Training::where("typetraining", "PILOTO")
             ->where("user_id", auth()->user()->id)
             ->where("status", 1)
+            ->OrWhere("status", 2)
             ->get();
         if (count($trainingpiloto) > 0) {
             return redirect()

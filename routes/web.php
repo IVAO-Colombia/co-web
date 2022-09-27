@@ -8,7 +8,13 @@ use App\Http\Controllers\{
     SliderController
 };
 
-use App\Http\Livewire\Admin\{Events, Sliders, Airports, Virtualairlines};
+use App\Http\Livewire\Admin\{
+    Events,
+    Sliders,
+    Airports,
+    Virtualairlines,
+    Trainings
+};
 
 /*
 |--------------------------------------------------------------------------
@@ -67,7 +73,9 @@ Route::get("auth/ivao", [IvaoController::class, "redirect"])->name(
     "ivao.login"
 );
 
-Route::get("auth/ivao/callback", [IvaoController::class, "callback"]);
+Route::get("auth/ivao/callback", [IvaoController::class, "callback"])->name(
+    "ivao.callback"
+);
 Route::get("auth/ivao/logout", function () {
     Auth::logout();
     return redirect()->route("Home");
@@ -88,11 +96,12 @@ Route::middleware([
     Route::get("/staff/events", Events::class)->name("events.index");
     Route::get("/staff/sliders", Sliders::class)->name("sliders.index");
     Route::get("/staff/airports", Airports::class)->name("airports.index");
+    Route::get("/staff/trainings", Trainings::class)->name("trainings.index");
     Route::get("/staff/virtualairlines", Virtualairlines::class)->name(
         "virtualairlines.index"
     );
 });
 
 Route::get("login", function () {
-    return redirect("/auth/ivao/callback");
+    return redirect("/auth/ivao");
 });

@@ -13,6 +13,13 @@ class IvaoController extends Controller
     public function redirect()
     {
         session(["url.intended" => url()->previous()]);
+        if (
+            session("url.intended") == config("app.url") . "/login" ||
+            session("url.intended") == config("app.url") . "/auth/ivao/callback"
+        ) {
+            session(["url.intended" => "/"]);
+        }
+
         return Socialite::driver("ivao")->redirect();
     }
 
@@ -74,7 +81,7 @@ class IvaoController extends Controller
             $userlog = Auth::user();
             syncTeams($userlog);
 
-            return redirect("/");
+            return redirect(session("url.intended"));
         } catch (Exception $e) {
             dd($e->getMessage());
         }

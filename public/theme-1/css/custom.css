@@ -104,3 +104,8 @@ button.btn.btn-primary, .btn:not(.close):not(.mfp-close).btn-primary, a.btn:not(
     width: 100%;
     height: 100%;
 }
+
+.bg-overlay[data-style="2"] {
+    background: #0D2C99;
+    opacity: .9;
+}

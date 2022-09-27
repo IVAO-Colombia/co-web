@@ -9,6 +9,26 @@ function clean($string)
     return strtolower(preg_replace("/[^a-zA-Z0-9_.]/", "", $string)); // Removes special chars.
 }
 
+function getStatusTraining($status)
+{
+    $response = "";
+    switch ($status) {
+        case 1:
+            $response = "Created";
+            break;
+        case 2:
+            $response = "Assigned";
+            break;
+        case 3:
+            $response = "Finished";
+            break;
+        case 4:
+            $response = "Cancelled";
+            break;
+    }
+    return $response;
+}
+
 function isStaff($user)
 {
     $roles = explode(",", $user->staff);
