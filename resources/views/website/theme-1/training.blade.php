@@ -20,90 +20,92 @@
     </div>
     <!--end: Inspiro Slider -->
 
-
-    <section>
-        <div class="container">
-            <div class="row justify-content-around">
-                <div class="col-md-12 my-4 wow fadeLeft">
-                    <p class="">Solo podrás pedir un entrenamiento a la vez.</p>
-                    @if ($textratingATC != null)
-                        @if (count($trainingAtcOpen) < 1)
-                            <a class="btn modal-trigger" href="#" data-bs-toggle="modal" data-bs-target="#atc">
-                                <span class="btn__text">
-                                    Solicitar Entrenamiento ATC
-                                </span>
-                            </a>
+    @if (auth()->user()->division == env('DIVISION'))
+        <section>
+            <div class="container">
+                <div class="row justify-content-around">
+                    <div class="col-md-12 my-4 wow fadeLeft">
+                        <p class="">Solo podrás pedir un entrenamiento a la vez.</p>
+                        @if ($textratingATC != null)
+                            @if (count($trainingAtcOpen) < 1)
+                                <a class="btn modal-trigger" href="#" data-bs-toggle="modal" data-bs-target="#atc">
+                                    <span class="btn__text">
+                                        Solicitar Entrenamiento ATC
+                                    </span>
+                                </a>
+                            @endif
                         @endif
-                    @endif
-                    @if ($textratingpilot != null)
-                        @if (count($trainingPilotOpen) < 1)
-                            <a class="btn modal-trigger" href="#" data-bs-toggle="modal" data-bs-target="#piloto">
-                                <span class="btn__text">
-                                    Solicitar Entrenamiento Piloto
-                                </span>
-                            </a>
+                        @if ($textratingpilot != null)
+                            @if (count($trainingPilotOpen) < 1)
+                                <a class="btn modal-trigger" href="#" data-bs-toggle="modal" data-bs-target="#piloto">
+                                    <span class="btn__text">
+                                        Solicitar Entrenamiento Piloto
+                                    </span>
+                                </a>
+                            @endif
                         @endif
-                    @endif
+                    </div>
                 </div>
-            </div>
 
-            <div class="row">
-                <div class="col-md-12 my-2 table-responsive">
-                    <table class="table table-border">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Tipo entrenamiento</th>
-                                <th>Rango</th>
-                                <th>Fecha Solicitud</th>
-                                <th>Fecha Entrenamiento</th>
-                                <th>Entrenador</th>
-                                <th>Obs.</th>
-                                <th>Estado</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($trainings as $item)
+                <div class="row">
+                    <div class="col-md-12 my-2 table-responsive">
+                        <table class="table table-border">
+                            <thead>
                                 <tr>
-                                    <td>{{ $item->id }}</td>
-                                    <td>{{ $item->typetraining }}</td>
-                                    <td>
-                                        @if ($item->typetraining == 'PILOTO')
-                                            {{ $ratingPilot[$item->rating] }}
-                                        @else
-                                            {{ $ratingATC[$item->rating] }}
-                                        @endif
-                                    </td>
-
-                                    <td>{{ $item->created_at->locale('es')->isoFormat('LLL') }}z</td>
-                                    <td>{{ $item->date_training ? $item->date_training->locale('es')->isoFormat('LLL') . 'z' : 'Esperando asignación' }}
-                                    </td>
-                                    <td>
-                                        @if ($item->trainer)
-                                            {{ optional($item->trainer)->firstname }}
-                                            {{ optional($item->trainer)->lastname }}
-                                        @else
-                                            Esperando asignación
-                                        @endif
-                                    </td>
-                                    <td>
-                                        {{ $item->note }}
-                                    </td>
-                                    <td>
-                                        {{ __(getStatusTraining($item->status)) }}</td>
+                                    <th>#</th>
+                                    <th>Tipo entrenamiento</th>
+                                    <th>Rango</th>
+                                    <th>Fecha Solicitud</th>
+                                    <th>Fecha Entrenamiento</th>
+                                    <th>Entrenador</th>
+                                    <th>Obs.</th>
+                                    <th>Estado</th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @foreach ($trainings as $item)
+                                    <tr>
+                                        <td>{{ $item->id }}</td>
+                                        <td>{{ $item->typetraining }}</td>
+                                        <td>
+                                            @if ($item->typetraining == 'PILOTO')
+                                                {{ $ratingPilot[$item->rating] }}
+                                            @else
+                                                {{ $ratingATC[$item->rating] }}
+                                            @endif
+                                        </td>
 
+                                        <td>{{ $item->created_at->locale('es')->isoFormat('LLL') }}z</td>
+                                        <td>{{ $item->date_training ? $item->date_training->locale('es')->isoFormat('LLL') . 'z' : 'Esperando asignación' }}
+                                        </td>
+                                        <td>
+                                            @if ($item->trainer)
+                                                {{ optional($item->trainer)->firstname }}
+                                                {{ optional($item->trainer)->lastname }}
+                                            @else
+                                                Esperando asignación
+                                            @endif
+                                        </td>
+                                        <td>
+                                            {{ $item->note }}
+                                        </td>
+                                        <td>
+                                            <span>
+
+                                            </span>
+                                            {{ __(getStatusTraining($item->status)) }}
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+
+                    </div>
+                    {{ $trainings->links() }}
                 </div>
-                {{ $trainings->links() }}
             </div>
-        </div>
-
-
-    </section>
-
+        </section>
+    @endif
 
 
     <section class="" data-bg-parallax="{{ asset('img/sksm-exterior.jpg') }}">
