@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 
 use App\Mail\{Sendcontact};
-use App\Models\{FlightIvao, Slider, Airport, Event, Virtualairline};
+use App\Models\{FlightIvao, Slider, Airport, Event, Virtualairline, Training};
 use Mail;
 
 class FrontController extends Controller
@@ -55,6 +55,95 @@ class FrontController extends Controller
     public function event_detail(Request $request, Event $event)
     {
         return view("website.theme-1.event-detail", compact("event"));
+    }
+
+    public function training()
+    {
+        $ratingATC = Training::ratingAtc();
+        $ratingPilot = Training::ratingPilot();
+
+        $nextRatingPilot = auth()->user()->ratingpilot + 1;
+
+        if ($nextRatingPilot < 11) {
+            $textratingpilot = $ratingPilot[$nextRatingPilot];
+        }
+
+        $nextRatingATC = auth()->user()->ratingatc + 1;
+        if ($nextRatingATC < 11) {
+            $textratingATC = $ratingATC[$nextRatingATC];
+        }
+
+        $trainings = Training::where("user_id", auth()->user()->id)
+            ->orderBy("id", "DESC")
+            ->get();
+
+        $trainingAtcOpen = Training::where("user_id", auth()->user()->id)
+            ->where("typetraining", "ATC")
+            ->where("status", 1)
+            ->get();
+        $trainingPilotOpen = Training::where("user_id", auth()->user()->id)
+            ->where("typetraining", "PILOTO")
+            ->where("status", 1)
+            ->get();
+
+        return view(
+            "website.theme-1.training",
+            compact(
+                "ratingPilot",
+                "ratingATC",
+                "textratingpilot",
+                "textratingATC",
+                "trainings",
+                "trainingAtcOpen",
+                "trainingPilotOpen"
+            )
+        );
+    }
+
+    public function trainingatc(Request $request)
+    {
+        $trainingATC = Training::where("typetraining", "ATC")
+            ->where("status", 1)
+            ->where("user_id", auth()->user()->id)
+            ->get();
+        if (count($trainingATC) > 0) {
+            return redirect()
+                ->back()
+                ->with("danger", "Ya tiene un entrenamiento para piloto");
+        }
+        $trainingATC = new Training();
+        $trainingATC->user_id = auth()->user()->id;
+        $trainingATC->typetraining = "ATC";
+        $trainingATC->rating = auth()->user()->ratingatc + 1;
+        $trainingATC->status = 1;
+        $trainingATC->save();
+
+        return redirect()
+            ->back()
+            ->with("success", "Entrenamiento solicitado exitosamente!");
+    }
+
+    public function trainingpilot(Request $request)
+    {
+        $trainingpiloto = Training::where("typetraining", "PILOTO")
+            ->where("user_id", auth()->user()->id)
+            ->where("status", 1)
+            ->get();
+        if (count($trainingpiloto) > 0) {
+            return redirect()
+                ->back()
+                ->with("danger", "Ya tiene un entrenamiento para piloto");
+        }
+        $trainingpiloto = new Training();
+        $trainingpiloto->user_id = auth()->user()->id;
+        $trainingpiloto->typetraining = "PILOTO";
+        $trainingpiloto->rating = auth()->user()->ratingpilot + 1;
+        $trainingpiloto->status = 1;
+        $trainingpiloto->save();
+
+        return redirect()
+            ->back()
+            ->with("success", "Entrenamiento solicitado exitosamente!");
     }
 
     public function fasttrack(Request $request, $callsign)

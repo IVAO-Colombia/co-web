@@ -46,6 +46,15 @@ Route::controller(FrontController::class)->group(function () {
     );
 
     Route::get("/contact/send", "sendcontact")->name("front.sendcontact");
+    Route::get("/training", "training")
+        ->name("front.training")
+        ->middleware(["auth"]);
+    Route::post("/trainingatc", "trainingatc")
+        ->name("front.trainingatc")
+        ->middleware(["auth"]);
+    Route::post("/trainingpilot", "trainingpilot")
+        ->name("front.trainingpilot")
+        ->middleware(["auth"]);
 
     Route::get("/fasttrack/{callsign}", "fasttrack")->name("front.fasttrack");
 });
