@@ -142,9 +142,9 @@ class FrontController extends Controller
         $trainingATC->status = 1;
         $trainingATC->save();
 
-        Mail::to("edgardoalvarez100@gmail.com")->send(
-            new SendNewTrainingMail($trainingATC)
-        );
+        Mail::to("co-tc@ivao.aero")
+            ->cc("co-tac@ivao.aero")
+            ->send(new SendNewTrainingMail($trainingATC));
 
         return redirect()
             ->back()
@@ -170,9 +170,9 @@ class FrontController extends Controller
         $trainingpiloto->status = 1;
         $trainingpiloto->save();
 
-        Mail::to("co-training@ivao.aero")->send(
-            new SendNewTrainingMail($trainingpiloto)
-        );
+        Mail::to("co-tc@ivao.aero")
+            ->cc("co-tac@ivao.aero")
+            ->send(new SendNewTrainingMail($trainingpiloto));
 
         return redirect()
             ->back()
