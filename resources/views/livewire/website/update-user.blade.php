@@ -22,7 +22,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <h2>Personal Information</h2>
+                    <h2>{{ __('Personal Information') }}</h2>
 
                     <form class="form">
                         <div class="row">
@@ -72,9 +72,9 @@
                         <div>
 
                             @if ($editing)
-                                <button class="btn btn-danger" wire:click="update">Update</button>
+                                <button class="btn btn-danger" wire:click="update">{{ __('Update') }}</button>
                             @else
-                                <button class="btn btn-primary" wire:click="edit">Edit</button>
+                                <button class="btn btn-primary" wire:click="edit">{{ __('Edit') }}</button>
                             @endif
 
                         </div>
