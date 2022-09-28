@@ -55,6 +55,9 @@ Route::controller(FrontController::class)->group(function () {
     Route::get("/training", "training")
         ->name("front.training")
         ->middleware(["auth"]);
+    Route::put("/user-update", "usersUpdate")
+        ->name("front.usersUpdate")
+        ->middleware(["auth"]);
     Route::post("/trainingatc", "trainingatc")
         ->name("front.trainingatc")
         ->middleware(["auth"]);

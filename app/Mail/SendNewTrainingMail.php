@@ -7,18 +7,22 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
+use App\Models\Training;
+
 class SendNewTrainingMail extends Mailable
 {
     use Queueable, SerializesModels;
+
+    public Training $training;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Training $training)
     {
-        //
+        $this->training = $training;
     }
 
     /**

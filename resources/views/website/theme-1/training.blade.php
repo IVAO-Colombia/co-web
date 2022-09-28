@@ -68,11 +68,8 @@
                                         <td>{{ $item->id }}</td>
                                         <td>{{ $item->typetraining }}</td>
                                         <td>
-                                            @if ($item->typetraining == 'PILOTO')
-                                                {{ $ratingPilot[$item->rating] }}
-                                            @else
-                                                {{ $ratingATC[$item->rating] }}
-                                            @endif
+                                            {{ getRatingTraining($item) }}
+
                                         </td>
 
                                         <td>{{ $item->created_at->locale('es')->isoFormat('LLL') }}z</td>
@@ -184,10 +181,12 @@
                                             <span class="">
                                                 {{ $textratingpilot }}
                                             </span>
+
+                                            <p>{{ auth()->user()->email }}</p>
                                         </div>
 
                                         <button type="submit" class="btn btn--sm btn--primary type--uppercase btn--icon">
-                                            <span>Solicitar</span>
+                                            <span>{{ __('Request') }}</span>
                                         </button>
                                     </div>
                                 </div>

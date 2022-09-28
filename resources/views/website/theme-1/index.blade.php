@@ -571,6 +571,10 @@
                             </div>
                         </div>
                     @endforeach
+                @else
+                    <div>
+                        {{ __('Nobody connected') }}
+                    </div>
                 @endif
             </div>
         </div>

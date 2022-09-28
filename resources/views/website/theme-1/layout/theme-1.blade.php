@@ -4,6 +4,9 @@
 @include('website.theme-1.layout.head')
 
 <body data-icon="1">
+
+    @include('website.theme-1.layout.email')
+
     <x-jet-banner />
     <!-- Body Inner -->
     <div class="body-inner">

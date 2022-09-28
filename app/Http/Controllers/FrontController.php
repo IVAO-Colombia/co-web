@@ -5,8 +5,16 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
-use App\Mail\{Sendcontact};
-use App\Models\{FlightIvao, Slider, Airport, Event, Virtualairline, Training};
+use App\Mail\{Sendcontact, SendNewTrainingMail};
+use App\Models\{
+    FlightIvao,
+    Slider,
+    Airport,
+    Event,
+    Virtualairline,
+    Training,
+    User
+};
 use Mail;
 
 class FrontController extends Controller
@@ -14,6 +22,20 @@ class FrontController extends Controller
     function comingsoon()
     {
         return view("website.theme-1.comingsoon");
+    }
+
+    function usersUpdate(Request $request)
+    {
+        $request->validate([
+            "email" => "required",
+        ]);
+        $user = User::where("id", auth()->user()->id)->first();
+        $user->email = $request->email;
+        $user->save();
+
+        return redirect()
+            ->back()
+            ->with("success", "Update Successfuly");
     }
 
     function index()
@@ -120,6 +142,10 @@ class FrontController extends Controller
         $trainingATC->status = 1;
         $trainingATC->save();
 
+        Mail::to("edgardoalvarez100@gmail.com")->send(
+            new SendNewTrainingMail($trainingATC)
+        );
+
         return redirect()
             ->back()
             ->with("success", "Entrenamiento solicitado exitosamente!");
@@ -143,6 +169,10 @@ class FrontController extends Controller
         $trainingpiloto->rating = auth()->user()->ratingpilot + 1;
         $trainingpiloto->status = 1;
         $trainingpiloto->save();
+
+        Mail::to("co-training@ivao.aero")->send(
+            new SendNewTrainingMail($trainingpiloto)
+        );
 
         return redirect()
             ->back()

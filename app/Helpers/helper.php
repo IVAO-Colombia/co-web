@@ -1,5 +1,5 @@
 <?php
-use App\Models\Team;
+use App\Models\{Team, Training};
 use Laravel\Jetstream\Events\TeamMemberAdded;
 
 function clean($string)
@@ -7,6 +7,16 @@ function clean($string)
     $user[""] = str_replace(" ", "-", $string); // Replaces all spaces with hyphens = ".
 
     return strtolower(preg_replace("/[^a-zA-Z0-9_.]/", "", $string)); // Removes special chars.
+}
+
+function getRatingTraining($item)
+{
+    $ratingATC = Training::ratingAtc();
+    $ratingPilot = Training::ratingPilot();
+
+    return $item->typetraining == "PILOTO"
+        ? $ratingPilot[$item->rating]
+        : $ratingATC[$item->rating];
 }
 
 function getStatusTraining($status)
