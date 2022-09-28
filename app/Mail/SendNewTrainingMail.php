@@ -32,6 +32,8 @@ class SendNewTrainingMail extends Mailable
      */
     public function build()
     {
-        return $this->markdown("mail.newtraining");
+        return $this->markdown("mail.newtraining")->subject(
+            "New training request. VID: " . $this->training->member->id
+        );
     }
 }
