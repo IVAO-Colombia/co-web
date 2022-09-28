@@ -216,13 +216,13 @@
                                             <thead>
                                                 <tr>
                                                     <th>ETA</th>
-                                                    <th>Operador</th>
-                                                    <th>Callsign</th>
-                                                    <th>Origen</th>
-                                                    <th>Destino</th>
-                                                    <th>Aeronave</th>
-                                                    <th>Estado</th>
-                                                    <th>Información</th>
+                                                    <th>{{ __('Operator') }}</th>
+                                                    <th>{{ __('Callsign') }}</th>
+                                                    <th>{{ __('Departure') }}</th>
+                                                    <th>{{ __('Arrival') }}</th>
+                                                    <th>{{ __('Aircraft') }}</th>
+                                                    <th>{{ 'Status' }}</th>
+                                                    <th>{{ 'Information' }}</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -268,7 +268,7 @@
                                                             <td>{{ $item->flightPlan->aircraft->icaoCode }}</td>
                                                             <td>{{ __(optional($item->lastTrack)->state) }}</td>
                                                             <td><a href="{{ route('front.fasttrack', $item->callsign) }}"
-                                                                    class=""> Ver</a>
+                                                                    class=""> {{ __('Show') }}</a>
                                                             </td>
                                                         </tr>
                                                     @endforeach
@@ -288,13 +288,13 @@
                                             <thead>
                                                 <tr>
                                                     <th>ETOD</th>
-                                                    <th>Operador</th>
-                                                    <th>Callsign</th>
-                                                    <th>Origen</th>
-                                                    <th>Destino</th>
-                                                    <th>Aeronave</th>
-                                                    <th>Estado</th>
-                                                    <th>Información</th>
+                                                    <th>{{ __('Operator') }}</th>
+                                                    <th>{{ __('Callsign') }}</th>
+                                                    <th>{{ __('Departure') }}</th>
+                                                    <th>{{ __('Arrival') }}</th>
+                                                    <th>{{ __('Aircraft') }}</th>
+                                                    <th>{{ 'Status' }}</th>
+                                                    <th>{{ 'Information' }}</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -482,8 +482,8 @@
         <div class="shape-divider" data-style="4"></div>
         <div class="container">
             <div class="heading-text heading-section text-center m-b-40" data-animate="fadeInUp">
-                <h2>Estadisticas</h2>
-                <span class="lead">Las principales estadísticas de nuestra división</span>
+                <h2>{{ __('Statistics') }}</h2>
+                <span class="lead">{{ __('Main statistics of our division') }}</span>
             </div>
             <div class="row">
                 <div class="col-lg-3">
@@ -492,7 +492,7 @@
                         <div class="counter"> <span data-speed="1500" data-refresh-interval="400" data-to="857"
                                 data-from="1000" data-seperator="true"></span> </div>
                         <div class="seperator seperator-small"></div>
-                        <p>Miembros Activos</p>
+                        <p>{{ __('Active Members') }}</p>
                     </div>
                 </div>
                 <div class="col-lg-3">
@@ -501,7 +501,7 @@
                         <div class="counter"> <span data-speed="1500" data-refresh-interval="400" data-to="7979"
                                 data-from="100" data-seperator="true"></span> </div>
                         <div class="seperator seperator-small"></div>
-                        <p>Pilotos</p>
+                        <p>{{ __('Pilots') }}</p>
                     </div>
                 </div>
                 <div class="col-lg-3">
@@ -510,7 +510,7 @@
                         <div class="counter"> <span data-speed="1500" data-refresh-interval="400" data-to="4167"
                                 data-from="100" data-seperator="true"></span> </div>
                         <div class="seperator seperator-small"></div>
-                        <p>Controladores</p>
+                        <p>{{ __('Controllers') }}</p>
                     </div>
                 </div>
                 <div class="col-lg-3">
@@ -519,7 +519,7 @@
                         <div class="counter"> <span data-speed="1500" data-refresh-interval="400" data-to="7"
                                 data-from="100" data-seperator="true"></span> </div>
                         <div class="seperator seperator-small"></div>
-                        <p>Puesto de la división</p>
+                        <p>{{ __('Division position') }}</p>
                     </div>
                 </div>
             </div>
