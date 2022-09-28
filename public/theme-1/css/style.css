@@ -513,6 +513,7 @@ Topbar
 #header[data-transparent="true"]:not(.sticky-active) .header-inner, #header[data-transparent="true"]:not(.sticky-active) #header-wrap, #header[data-transparent="true"]:not(.sticky-active).dark .header-inner, #header[data-transparent="true"]:not(.sticky-active).dark #header-wrap { background-color: transparent; }
 
 #header[data-transparent="true"] + .inspiro-slider, #header[data-transparent="true"] + #slider, #header[data-transparent="true"] + .fullscreen, #header[data-transparent="true"] + .halfscreen, #header[data-transparent="true"] + #google-map { top: -80px; margin-bottom: -80px; }
+#header[data-transparent="true"] + div .inspiro-slider, #header[data-transparent="true"] + #slider, #header[data-transparent="true"] + .fullscreen, #header[data-transparent="true"] + .halfscreen, #header[data-transparent="true"] + #google-map { top: -80px; margin-bottom: -80px; }
 
 #header.header-sticky .header-inner, #header.header-sticky #header-wrap { -webkit-transition: top .8s ease-in-out; transition: top .8s ease-in-out; top: -140px; }
 

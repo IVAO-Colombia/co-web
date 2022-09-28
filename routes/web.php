@@ -8,6 +8,8 @@ use App\Http\Controllers\{
     SliderController
 };
 
+use App\Http\Livewire\Website\UpdateUser;
+
 use App\Http\Livewire\Admin\{
     Events,
     Sliders,
@@ -52,6 +54,9 @@ Route::controller(FrontController::class)->group(function () {
     );
 
     Route::get("/contact/send", "sendcontact")->name("front.sendcontact");
+    Route::get("/updateuser", UpdateUser::class)
+        ->name("front.updateuser")
+        ->middleware(["auth"]);
     Route::get("/training", "training")
         ->name("front.training")
         ->middleware(["auth"]);

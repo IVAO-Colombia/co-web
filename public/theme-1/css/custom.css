@@ -109,3 +109,12 @@ button.btn.btn-primary, .btn:not(.close):not(.mfp-close).btn-primary, a.btn:not(
     background: #0D2C99;
     opacity: .9;
 }
+
+button.close {
+    padding: 0;
+    background-color: transparent;
+    border: 0;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}

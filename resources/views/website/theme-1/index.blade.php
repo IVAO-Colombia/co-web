@@ -530,7 +530,7 @@
 
 
 
-    <!-- CLIENTS -->
+    <!-- STAFF ONLINE -->
     <section class="p-t-60">
         <div class="container">
             <div class="heading-text heading-section text-center">
@@ -579,154 +579,11 @@
             </div>
         </div>
     </section>
-    <!-- end: CLIENTS -->
-    {{-- <!-- TEAM -->
-    <section class="background-grey">
-        <div class="container">
-            <div class="heading-text heading-section text-center">
-                <h2>MEET OUR TEAM</h2>
-                <p>Lorem ipsum dolor sit amet, consecte adipiscing elit. Suspendisse condimentum porttitor cursumus.
-                </p>
-            </div>
-            <div class="row team-members">
-                <div class="col-lg-3">
-                    <div class="team-member">
-                        <div class="team-image">
-                            <img src="{{ asset('theme-1/images/team/6.jpg') }}">
-                        </div>
-                        <div class="team-desc">
-                            <h3>Alea Smith</h3>
-                            <span>Software Developer</span>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing tristique hendrerit laoreet. </p>
-                            <div class="align-center">
-                                <a class="btn btn-xs btn-slide btn-light" href="#">
-                                    <i class="fab fa-facebook-f"></i>
-                                    <span>Facebook</span>
-                                </a>
-                                <a class="btn btn-xs btn-slide btn-light" href="#" data-width="100">
-                                    <i class="fab fa-twitter"></i>
-                                    <span>Twitter</span>
-                                </a>
-                                <a class="btn btn-xs btn-slide btn-light" href="#" data-width="118">
-                                    <i class="fab fa-instagram"></i>
-                                    <span>Instagram</span>
-                                </a>
-                                <a class="btn btn-xs btn-slide btn-light" href="mailto:#" data-width="80">
-                                    <i class="icon-mail"></i>
-                                    <span>Mail</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3">
-                    <div class="team-member">
-                        <div class="team-image">
-                            <img src="{{ asset('theme-1/images/team/7.jpg') }}">
-                        </div>
-                        <div class="team-desc">
-                            <h3>Ariol Doe</h3>
-                            <span>Software Developer</span>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing tristique hendrerit laoreet. </p>
-                            <div class="align-center">
-                                <a class="btn btn-xs btn-slide btn-light" href="#">
-                                    <i class="fab fa-facebook-f"></i>
-                                    <span>Facebook</span>
-                                </a>
-                                <a class="btn btn-xs btn-slide btn-light" href="#" data-width="100">
-                                    <i class="fab fa-twitter"></i>
-                                    <span>Twitter</span>
-                                </a>
-                                <a class="btn btn-xs btn-slide btn-light" href="#" data-width="118">
-                                    <i class="fab fa-instagram"></i>
-                                    <span>Instagram</span>
-                                </a>
-                                <a class="btn btn-xs btn-slide btn-light" href="mailto:#" data-width="80">
-                                    <i class="icon-mail"></i>
-                                    <span>Mail</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3">
-                    <div class="team-member">
-                        <div class="team-image">
-                            <img src="{{ asset('theme-1/images/team/8.jpg') }}">
-                        </div>
-                        <div class="team-desc">
-                            <h3>Emma Ross</h3>
-                            <span>Software Developer</span>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing tristique hendrerit laoreet. </p>
-                            <div class="align-center">
-                                <a class="btn btn-xs btn-slide btn-light" href="#">
-                                    <i class="fab fa-facebook-f"></i>
-                                    <span>Facebook</span>
-                                </a>
-                                <a class="btn btn-xs btn-slide btn-light" href="#" data-width="100">
-                                    <i class="fab fa-twitter"></i>
-                                    <span>Twitter</span>
-                                </a>
-                                <a class="btn btn-xs btn-slide btn-light" href="#" data-width="118">
-                                    <i class="fab fa-instagram"></i>
-                                    <span>Instagram</span>
-                                </a>
-                                <a class="btn btn-xs btn-slide btn-light" href="mailto:#" data-width="80">
-                                    <i class="icon-mail"></i>
-                                    <span>Mail</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3">
-                    <div class="team-member">
-                        <div class="team-image">
-                            <img src="{{ asset('theme-1/images/team/9.jpg') }}">
-                        </div>
-                        <div class="team-desc">
-                            <h3>Victor Loda</h3>
-                            <span>Software Developer</span>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing tristique hendrerit laoreet. </p>
-                            <div class="align-center">
-                                <a class="btn btn-xs btn-slide btn-light" href="#">
-                                    <i class="fab fa-facebook-f"></i>
-                                    <span>Facebook</span>
-                                </a>
-                                <a class="btn btn-xs btn-slide btn-light" href="#" data-width="100">
-                                    <i class="fab fa-twitter"></i>
-                                    <span>Twitter</span>
-                                </a>
-                                <a class="btn btn-xs btn-slide btn-light" href="#" data-width="118">
-                                    <i class="fab fa-instagram"></i>
-                                    <span>Instagram</span>
-                                </a>
-                                <a class="btn btn-xs btn-slide btn-light" href="mailto:#" data-width="80">
-                                    <i class="icon-mail"></i>
-                                    <span>Mail</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- end: TEAM --> --}}
+    <!-- end: STAFF ONLINE -->
 @endsection
 @push('scripts')
     <!-- Partical js base file  -->
     <script src="{{ asset('theme-1/plugins/particles/particles.js') }}" type="text/javascript"></script>
     <!--Particles-->
     <script src="{{ asset('theme-1/plugins/particles/particles-dots.js') }}" type="text/javascript"></script>
-    {{-- <script>
-        $(function() {
-            $('a[href*=#]').on('click', function(e) {
-                e.preventDefault();
-                $('html, body').animate({
-                    scrollTop: $($(this).attr('href')).offset().top
-                }, 500, 'linear');
-            });
-        });
-    </script> --}}
 @endpush
