@@ -489,7 +489,7 @@
                 <div class="col-lg-3">
                     <div class="text-center">
                         <div class="icon"><i class="fa fa-3x fa-users"></i></div>
-                        <div class="counter"> <span data-speed="1500" data-refresh-interval="400" data-to="2087"
+                        <div class="counter"> <span data-speed="1500" data-refresh-interval="400" data-to="857"
                                 data-from="1000" data-seperator="true"></span> </div>
                         <div class="seperator seperator-small"></div>
                         <p>Miembros Activos</p>
@@ -498,7 +498,7 @@
                 <div class="col-lg-3">
                     <div class="text-center">
                         <div class="icon"><i class="fa fa-3x fa-user"></i></div>
-                        <div class="counter"> <span data-speed="1500" data-refresh-interval="400" data-to="1331"
+                        <div class="counter"> <span data-speed="1500" data-refresh-interval="400" data-to="7979"
                                 data-from="100" data-seperator="true"></span> </div>
                         <div class="seperator seperator-small"></div>
                         <p>Pilotos</p>
@@ -507,7 +507,7 @@
                 <div class="col-lg-3">
                     <div class="text-center">
                         <div class="icon"><i class="fa fa-3x fa-broadcast-tower"></i></div>
-                        <div class="counter"> <span data-speed="1500" data-refresh-interval="400" data-to="612"
+                        <div class="counter"> <span data-speed="1500" data-refresh-interval="400" data-to="4167"
                                 data-from="100" data-seperator="true"></span> </div>
                         <div class="seperator seperator-small"></div>
                         <p>Controladores</p>
