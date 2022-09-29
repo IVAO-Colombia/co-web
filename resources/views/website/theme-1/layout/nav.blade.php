@@ -23,8 +23,8 @@
                           <li> <a target="_blank"
                                   href="https://wiki.ivao.aero/en/home/training/main/rank_atc">{{ __('Ratings') }}</a>
                           </li>
-                          <li> <a href="{{ url('/fra') }}">{{ __('Which airport can I control?') }}</a> </li>
-                          <li> <a href="{{ url('/') }}">{{ __('Guest Controller Approval') }}</a> </li>
+                          <li> <a href="{{ route('front.fra') }}">{{ __('Which airport can I control?') }}</a> </li>
+                          <li> <a href="{{ route('front.gca') }}">{{ __('Guest Controller Approval') }}</a> </li>
                           <li> <a target="_blank"
                                   href="https://www.aerocivil.gov.co/servicios-a-la-navegacion/servicio-de-informacion-aeronautica-ais/aerodromos">{{ __('Navigation Charts') }}</a>
                           </li>

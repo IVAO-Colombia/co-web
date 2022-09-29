@@ -208,6 +208,11 @@ class FrontController extends Controller
         return view("website.theme-1.about");
     }
 
+    function gca()
+    {
+        return view("website.theme-1.gca");
+    }
+
     function fra()
     {
         return view("website.theme-1.fra");
