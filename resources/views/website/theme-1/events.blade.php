@@ -45,7 +45,10 @@
                                 <span class="post-meta-date"><i class="fa fa-calendar-o"></i>{{ $item->date_time }}</span>
                                 <span class="post-meta-comments"><a href=""><i
                                             class="fa fa-comments-o"></i></a></span>
-                                <h2>
+                                <h2
+                                    style=" white-space: nowrap;
+                                overflow: hidden;
+                                text-overflow: ellipsis;">
                                     <a href="{{ route('front.event_detail', $item->slug) }}"
                                         class="text-capitalize">{{ $item->title }}
                                     </a>
