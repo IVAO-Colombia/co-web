@@ -76,11 +76,13 @@
                                     {{ $item->municipality }}
 
                                 </td>
-                                <td class="border px-2 py-2 text-center">
-                                    <button wire:click="edit({{ $item->id }})"
-                                        class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 mb-2">Edit</button>
-                                    <button wire:click="delete({{ $item->id }})"
-                                        class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 mb-2">Delete</button>
+                                <td class="border px-2 py-2 text-center w-100">
+                                    <button wire:click="edit({{ $item->id }})" class="btn btn-green">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button wire:click="delete({{ $item->id }})" class="btn btn-red">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
                                 </td>
                             </tr>
                         @endforeach
