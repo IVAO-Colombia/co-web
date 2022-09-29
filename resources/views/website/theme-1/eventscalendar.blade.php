@@ -5,7 +5,7 @@
 
         <!-- Slide 2 -->
         <div class="slide kenburns" style="background-image:url('{{ asset('img/0103.jpg') }}');">
-            <div class="bg-overlay" data-style="2"></div>
+            <div class="bg-overlay" data-style="10"></div>
             <div class="container">
                 <div class="slide-captions text-center text-light">
                     <!-- Captions -->

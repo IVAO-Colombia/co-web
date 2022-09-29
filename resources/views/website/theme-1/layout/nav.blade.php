@@ -6,7 +6,8 @@
                   <li><a href="{{ url('/') }}">{{ __('Home') }}</a></li>
                   <li class="dropdown"><a href="#">{{ __('Pilot') }}</a>
                       <ul class="dropdown-menu">
-                          <li><a target="_blank" href="https://wiki.ivao.aero/en/home/training/main/pilot_rank">Rangos</a>
+                          <li><a target="_blank"
+                                  href="https://wiki.ivao.aero/en/home/training/main/pilot_rank">{{ __('Ratings') }}</a>
                           </li>
                           <li><a target="_blank"
                                   href="http://www.aerocivil.gov.co/servicios-a-la-navegacion/servicio-de-informacion-aeronautica-ais">Cartas
@@ -21,7 +22,7 @@
 
                       <ul class="dropdown-menu">
                           <li> <a target="_blank"
-                                  href="https://wiki.ivao.aero/en/home/training/main/rank_atc">Rangos</a>
+                                  href="https://wiki.ivao.aero/en/home/training/main/rank_atc">{{ __('Ratings') }}</a>
                           </li>
                           <li> <a href="{{ url('/fra') }}">¿Cual aeropuerto puedo controlar?</a> </li>
                           <li> <a href="{{ url('/') }}">{{ __('Guest Controller Approval') }}</a> </li>
