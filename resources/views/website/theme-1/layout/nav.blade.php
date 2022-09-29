@@ -10,8 +10,7 @@
                                   href="https://wiki.ivao.aero/en/home/training/main/pilot_rank">{{ __('Ratings') }}</a>
                           </li>
                           <li><a target="_blank"
-                                  href="http://www.aerocivil.gov.co/servicios-a-la-navegacion/servicio-de-informacion-aeronautica-ais">Cartas
-                                  de Navegación</a>
+                                  href="https://www.aerocivil.gov.co/servicios-a-la-navegacion/servicio-de-informacion-aeronautica-ais/aerodromos">{{ __('Navigation Charts') }}</a>
                           </li>
                           <li><a target="_blank" href="https://www.ivao.aero/software/altitude">Altitude
                                   Software</a>
@@ -24,11 +23,11 @@
                           <li> <a target="_blank"
                                   href="https://wiki.ivao.aero/en/home/training/main/rank_atc">{{ __('Ratings') }}</a>
                           </li>
-                          <li> <a href="{{ url('/fra') }}">¿Cual aeropuerto puedo controlar?</a> </li>
+                          <li> <a href="{{ url('/fra') }}">{{ __('Which airport can I control?') }}</a> </li>
                           <li> <a href="{{ url('/') }}">{{ __('Guest Controller Approval') }}</a> </li>
                           <li> <a target="_blank"
-                                  href="http://www.aerocivil.gov.co/servicios-a-la-navegacion/servicio-de-informacion-aeronautica-ais">Cartas
-                                  de Navegación</a> </li>
+                                  href="https://www.aerocivil.gov.co/servicios-a-la-navegacion/servicio-de-informacion-aeronautica-ais/aerodromos">{{ __('Navigation Charts') }}</a>
+                          </li>
                           <li> <a target="_blank" href="https://www.ivao.aero/software/aurora">Aurora
                                   Software</a> </li>
                       </ul>
