@@ -4,7 +4,7 @@
     <div id="slider" class="inspiro-slider dots-creative" data-height-xs="200">
 
         <!-- Slide 2 -->
-        <div class="slide kenburns" style="background-image:url('{{ asset('img/0060.jpg') }}');">
+        <div class="slide kenburns" style="background-image:url('{{ asset('img/0091.jpg') }}');">
             <div class="bg-overlay" data-style="10"></div>
             <div class="container">
                 <div class="slide-captions text-center text-light">
