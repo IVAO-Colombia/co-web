@@ -118,3 +118,5 @@ button.close {
     -moz-appearance: none;
     appearance: none;
 }
+
+#header[data-transparent="true"] + div .inspiro-slider, #header[data-transparent="true"] + #slider, #header[data-transparent="true"] + .fullscreen, #header[data-transparent="true"] + .halfscreen, #header[data-transparent="true"] + #google-map { top: -80px; margin-bottom: -80px; }

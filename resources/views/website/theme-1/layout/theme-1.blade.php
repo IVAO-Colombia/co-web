@@ -52,7 +52,6 @@
             });
         });
     </script>
-
     @stack('scripts')
 
 </body>

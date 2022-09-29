@@ -29,7 +29,7 @@
                 @endphp
                 @foreach ($events as $item)
                     <!-- Post item-->
-                    <div class="post-item border wow" data-animate="fadeInLeft" data-animate-delay="{{ $counter * 400 }}">
+                    <div class="post-item border" data-animate="fadeInLeft" data-animate-delay="{{ $counter * 400 }}">
                         <div class="post-item-wrap">
                             <div class="post-image">
                                 <a href="{{ route('front.event_detail', $item->slug) }}">
