@@ -76,7 +76,7 @@
                                     {{ $item->municipality }}
 
                                 </td>
-                                <td class="border px-2 py-2 text-center w-100">
+                                <td class="border px-2 py-2 text-center w-40">
                                     <button wire:click="edit({{ $item->id }})" class="btn btn-green">
                                         <i class="fas fa-edit"></i>
                                     </button>
