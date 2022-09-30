@@ -6,6 +6,7 @@ use Livewire\Component;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
+use DB;
 
 use App\Models\Virtualairline;
 
@@ -16,6 +17,7 @@ class Virtualairlines extends Component
     use WithPagination;
 
     public $virtualairline_id,
+        $airline_tracker,
         $icao,
         $iata,
         $name,
@@ -28,6 +30,7 @@ class Virtualairlines extends Component
     public $editing = false;
 
     public $modal = false,
+        $modalinfo = false,
         $search = "",
         $sort_id = "id",
         $sort = "desc";
@@ -54,6 +57,27 @@ class Virtualairlines extends Component
     public function openModal()
     {
         $this->modal = true;
+    }
+
+    public function information($id)
+    {
+        $this->modalinfo = true;
+        $this->airline_tracker = DB::table("trackervas")
+            ->selectRaw(
+                "trackervas.virtualairines_id, CONCAT('week ',WEEK(created_at)) weeks, TIMESTAMPDIFF(SECOND, departureTime, arrivalTime ) as secondFlight"
+            )
+            ->whereBetween("created_at", [
+                "DATE_SUB(NOW(), INTERVAL 3 WEEK)",
+                "NOW()",
+            ])
+            ->where("virtualairines_id", $id)
+            ->groupByRaw("trackervas.virtualairines_id, WEEK(created_at)")
+            ->get();
+    }
+
+    public function closeModalInfo()
+    {
+        $this->modalinfo = false;
     }
 
     public function closeModal()

@@ -23,6 +23,9 @@
             @if ($modal)
                 @include('livewire.admin.virtualairlines.create')
             @endif
+            @if ($modalinfo)
+                @include('livewire.admin.virtualairlines.tracker_airline')
+            @endif
             <div class="overflow-x-auto w-full">
                 <table class="table-auto w-full my-2 max-w-full">
                     <thead>
@@ -62,7 +65,6 @@
                                 </td>
 
                                 <td class="border px-4 py-2 max-w-xs ">
-
                                     @if ($item->status)
                                         <svg class="w-6 h-6 mx-auto text-green-500" fill="none" stroke="currentColor"
                                             viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -77,10 +79,11 @@
                                             </path>
                                         </svg>
                                     @endif
-
-
                                 </td>
                                 <td class="border px-2 py-2 text-center w-40">
+                                    <button wire:click="information({{ $item->id }})" class="btn btn-blue">
+                                        <i class="fa-solid fa-circle-info"></i>
+                                    </button>
                                     <button wire:click="edit({{ $item->id }})" class="btn btn-green">
                                         <i class="fas fa-edit"></i>
                                     </button>
