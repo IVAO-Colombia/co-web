@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 @import "buttons.css";
+@import "custom.css";
 
 .ck-editor__editable[role="textbox"] {
     /* editing area */
