@@ -114,6 +114,9 @@ class Virtualairlines extends Component
         $this->validate();
 
         if ($this->imagename) {
+            if ($this->image) {
+                Storage::disk("virtualairlines")->delete($this->image);
+            }
             $this->imagen = $this->imagename->store(null, "virtualairlines");
         }
 

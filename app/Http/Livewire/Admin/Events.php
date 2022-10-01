@@ -8,6 +8,7 @@ use Livewire\WithPagination;
 
 use Livewire\Component;
 use App\Models\Event;
+use Storage;
 
 class Events extends Component
 {
@@ -76,6 +77,9 @@ class Events extends Component
         $this->validate();
 
         if ($this->imagename) {
+            if ($this->image) {
+                Storage::disk("events")->delete($this->image);
+            }
             $this->image = $this->imagename->store(null, "events");
         }
 

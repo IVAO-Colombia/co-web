@@ -83,6 +83,9 @@ class Sliders extends Component
         $this->validate();
 
         if ($this->imagename) {
+            if ($this->image) {
+                Storage::disk("sliders")->delete($this->image);
+            }
             $this->image = $this->imagename->store(null, "sliders");
         }
 
