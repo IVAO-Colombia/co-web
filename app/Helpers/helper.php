@@ -80,6 +80,7 @@ function getUserLocal()
     $user["country"] = "CO";
     $user["staff"] = [
         env("APP_DIVISION") . "-EA2",
+        env("APP_DIVISION") . "-FOC",
         env("APP_DIVISION") . "-PRA1",
         "SM3",
         env("APP_DIVISION") . "-WM",

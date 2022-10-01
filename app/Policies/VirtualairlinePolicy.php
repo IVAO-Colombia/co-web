@@ -18,10 +18,13 @@ class VirtualairlinePolicy
     public function viewAny(User $user)
     {
         $teamewebmaster = Team::find(10);
+        $teamoperacionesvuelo = Team::find(7);
 
         if (
-            $user->currentTeam == $teamewebmaster &&
-            $teamewebmaster->hasUser($user)
+            ($user->currentTeam == $teamewebmaster &&
+                $teamewebmaster->hasUser($user)) ||
+            ($user->currentTeam == $teamoperacionesvuelo &&
+                $teamoperacionesvuelo->hasUser($user))
         ) {
             return true;
         } else {
