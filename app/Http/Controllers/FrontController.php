@@ -210,7 +210,6 @@ class FrontController extends Controller
 
     function gca()
     {
-        // app()->getLocale()
         if (app()->isLocale("es")) {
             return view("website.theme-1.gca");
         } else {
