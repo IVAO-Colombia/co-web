@@ -9,18 +9,19 @@
                 </div>
 
                 <div class="mb-4" wire:ignore wire:key='code'>
-                    <table class="table border">
+                    <table class="border-collapse table-fixed w-full text-sm">
                         <thead>
                             <tr>
-                                <td>Week</td>
-                                <td>Time</td>
+                                <th>Week</th>
+                                <th>Time</th>
                             </tr>
                         </thead>
 
-                        <tbody>
+                        <tbody class="bg-white dark:bg-slate-800">
                             @foreach ($airline_tracker as $item)
                                 <tr>
-                                    <td>
+                                    <td
+                                        class="border-b border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400">
                                         @php
                                             $week_start = (new DateTime())->setISODate(date('Y'), $item->week)->format('Y-m-d H:i:s');
 
@@ -37,7 +38,9 @@
                                         {{ $end }}
 
                                     </td>
-                                    <td>{{ secontsToHours($item->secondFlight, true) }}</td>
+                                    <td
+                                        class="border-b border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400">
+                                        {{ secontsToHours($item->secondFlight, true) }}</td>
                                 </tr>
                             @endforeach
 
