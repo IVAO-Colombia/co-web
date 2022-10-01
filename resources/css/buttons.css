@@ -1,5 +1,5 @@
 .btn{
-    @apply font-bold text-white py-1 px-3 rounded cursor-pointer;
+    @apply font-bold text-white py-1 px-3 rounded cursor-pointer m-0.5;
 }
 
 .btn-red{
