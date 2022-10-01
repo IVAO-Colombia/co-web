@@ -1,6 +1,8 @@
 <?php
 use App\Models\{Team, Training};
 use Laravel\Jetstream\Events\TeamMemberAdded;
+use Carbon\Carbon;
+use Carbon\CarbonInterval;
 
 function clean($string)
 {
@@ -9,10 +11,29 @@ function clean($string)
     return strtolower(preg_replace("/[^a-zA-Z0-9_.]/", "", $string)); // Removes special chars.
 }
 
-function secontsToHours($seconds, $detail = false)
+function secondsToHours($seconds, $detail = false)
 {
     if ($detail) {
-        return Carbon\Carbon::parse($seconds)->format("H\h:i");
+        $value = $seconds;
+        $dt = Carbon::now();
+        $days = $dt->diffInDays($dt->copy()->addSeconds($value));
+        $hours = $dt->diffInHours(
+            $dt
+                ->copy()
+                ->addSeconds($value)
+                ->subDays($days)
+        );
+        $minutes = $dt->diffInMinutes(
+            $dt
+                ->copy()
+                ->addSeconds($value)
+                ->subDays($days)
+                ->subHours($hours)
+        );
+        return CarbonInterval::days($days)
+            ->hours($hours)
+            ->minutes($minutes)
+            ->forHumans();
     } else {
         return Carbon\Carbon::parse($seconds)->format("H:i");
     }

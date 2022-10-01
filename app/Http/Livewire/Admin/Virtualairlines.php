@@ -67,7 +67,7 @@ class Virtualairlines extends Component
             "virtualairines_id, WEEK(created_at) week, TIMESTAMPDIFF(SECOND, departureTime, arrivalTime ) as secondFlight"
         )
             ->whereBetween("created_at", [
-                DB::raw("DATE_SUB(NOW(), INTERVAL 12 WEEK)"),
+                DB::raw("DATE_SUB(NOW(), INTERVAL 60 DAY)"),
                 DB::raw("NOW()"),
             ])
             ->where("virtualairines_id", $id)
@@ -81,6 +81,7 @@ class Virtualairlines extends Component
     public function closeModalInfo()
     {
         $this->modalinfo = false;
+        $this->reset();
     }
 
     public function closeModal()
