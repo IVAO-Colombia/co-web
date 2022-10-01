@@ -12,8 +12,14 @@
                     <table class="border-collapse table-fixed w-full text-sm">
                         <thead>
                             <tr>
-                                <th>Week</th>
-                                <th>Time</th>
+                                <th
+                                    class="border-b dark:border-slate-600 font-medium p-4 pl-8 pt-0 pb-3 text-slate-400
+                                dark:text-slate-200 text-left">
+                                    Week</th>
+                                <th
+                                    class="border-b dark:border-slate-600 font-medium p-4 pl-8 pt-0 pb-3 text-slate-400
+                                dark:text-slate-200 text-left">
+                                    Time</th>
                             </tr>
                         </thead>
 
@@ -34,8 +40,9 @@
 
                                             $end = $start->copy()->endOfWeek();
                                         @endphp
-                                        {{ $start->format('Y-m-d') }} -
-                                        {{ $end->format('Y-m-d') }}
+                                        <b>{{ $start->format('Y-m-d') }}</b>
+                                        / <b>{{ $end->format('Y-m-d') }}</b>
+
 
                                     </td>
                                     <td

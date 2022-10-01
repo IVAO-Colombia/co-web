@@ -71,6 +71,8 @@ class Virtualairlines extends Component
                 DB::raw("NOW()"),
             ])
             ->where("virtualairines_id", $id)
+            ->whereNotNull("departureTime")
+            ->whereNotNull("arrivalTime")
             ->groupByRaw("virtualairines_id, WEEK(created_at)")
             ->get();
         // dd(\DB::getQueryLog());
