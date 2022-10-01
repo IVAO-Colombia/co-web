@@ -74,7 +74,7 @@ class Virtualairlines extends Component
             ->whereNotNull("departureTime")
             ->whereNotNull("arrivalTime")
             ->groupByRaw("WEEK(created_at)")
-            ->orderByRaw("week")
+            ->orderByRaw("week desc")
             ->get();
         // dd(\DB::getQueryLog());
     }
