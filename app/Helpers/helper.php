@@ -115,7 +115,7 @@ function getUserLocal()
     ];
     // $user["staff"] = [];
     $user["va_staff_ids"] = [23141, 23144, 23146, 23162, 23165];
-    $user["va_member_ids"] = [23141, 23144, 23146, 23162, 23165];
+    $user["va_member_ids"] = [23141, 23144, 23146, 23162, 23165, 23182];
 
     return $user;
 }
