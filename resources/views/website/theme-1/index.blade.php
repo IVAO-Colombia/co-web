@@ -148,7 +148,7 @@
                                                     </a>
                                                     <br>
                                                     <img src="https://ivao.aero/data/images/ratings/atc/{{ $item->rating }}.gif"
-                                                        alt="">
+                                                        class="m-auto"">
                                                 </p>
                                             </div>
                                         </div>
