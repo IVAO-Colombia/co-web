@@ -16,26 +16,24 @@ function secondsToHours($seconds, $detail = false)
     if ($detail) {
         $value = $seconds;
         $dt = Carbon::now();
-        $days = $dt->diffInDays($dt->copy()->addSeconds($value));
+        // $days = $dt->diffInDays($dt->copy()->addSeconds($value));
         $hours = $dt->diffInHours(
-            $dt
-                ->copy()
-                ->addSeconds($value)
-                ->subDays($days)
+            $dt->copy()->addSeconds($value)
+            // ->subDays($days)
         );
         $minutes = $dt->diffInMinutes(
             $dt
                 ->copy()
                 ->addSeconds($value)
-                ->subDays($days)
+                // ->subDays($days)
                 ->subHours($hours)
         );
-        return CarbonInterval::days($days)
-            ->hours($hours)
+        // days($days)
+        return CarbonInterval::hours($hours)
             ->minutes($minutes)
             ->forHumans();
     } else {
-        return Carbon\Carbon::parse($seconds)->format("H:i");
+        return Carbon::parse($seconds)->format("H:i");
     }
 }
 

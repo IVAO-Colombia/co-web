@@ -67,7 +67,7 @@ class Virtualairlines extends Component
             "virtualairines_id, WEEK(created_at) week, SUM(TIMESTAMPDIFF(SECOND, departureTime, arrivalTime )) as secondFlight"
         )
             ->whereBetween("created_at", [
-                DB::raw("DATE_SUB(NOW(), INTERVAL 90 DAY)"),
+                DB::raw("DATE_SUB(NOW(), INTERVAL 60 DAY)"),
                 DB::raw("NOW()"),
             ])
             ->where("virtualairines_id", $id)
