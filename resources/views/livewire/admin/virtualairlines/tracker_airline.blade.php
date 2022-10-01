@@ -1,5 +1,5 @@
 <div>
-    <x-jet-modal wire:model='modal'>
+    <x-jet-modal wire:model='modalinfo'>
         <form>
             <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                 <div class="mb-4">
@@ -9,7 +9,42 @@
                 </div>
 
                 <div class="mb-4" wire:ignore wire:key='code'>
-                    {{ dd($airline_tracker) }}
+                    <table class="table border">
+                        <thead>
+                            <tr>
+                                <td>Week</td>
+                                <td>Time</td>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach ($airline_tracker as $item)
+                                <tr>
+                                    <td>
+                                        @php
+                                            $week_start = (new DateTime())->setISODate(date('Y'), $item->week)->format('Y-m-d H:i:s');
+
+                                            $start = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $week_start);
+
+                                            $start
+                                                ->hour(0)
+                                                ->minute(0)
+                                                ->second(0);
+
+                                            $end = $start->copy()->endOfWeek();
+                                        @endphp
+                                        {{ $start }} -
+                                        {{ $end }}
+
+                                    </td>
+                                    <td>{{ secontsToHours($item->secondFlight, true) }}</td>
+                                </tr>
+                            @endforeach
+
+
+                        </tbody>
+                    </table>
+
 
                 </div>
 

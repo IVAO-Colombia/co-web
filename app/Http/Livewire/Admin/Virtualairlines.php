@@ -8,7 +8,7 @@ use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 use DB;
 
-use App\Models\Virtualairline;
+use App\Models\{Virtualairline, Trackerva};
 
 class Virtualairlines extends Component
 {
@@ -62,17 +62,18 @@ class Virtualairlines extends Component
     public function information($id)
     {
         $this->modalinfo = true;
-        $this->airline_tracker = DB::table("trackervas")
-            ->selectRaw(
-                "trackervas.virtualairines_id, CONCAT('week ',WEEK(created_at)) weeks, TIMESTAMPDIFF(SECOND, departureTime, arrivalTime ) as secondFlight"
-            )
+        // \DB::enableQueryLog();
+        $this->airline_tracker = Trackerva::selectRaw(
+            "virtualairines_id, WEEK(created_at) week, TIMESTAMPDIFF(SECOND, departureTime, arrivalTime ) as secondFlight"
+        )
             ->whereBetween("created_at", [
-                "DATE_SUB(NOW(), INTERVAL 3 WEEK)",
-                "NOW()",
+                DB::raw("DATE_SUB(NOW(), INTERVAL 3 WEEK)"),
+                DB::raw("NOW()"),
             ])
             ->where("virtualairines_id", $id)
-            ->groupByRaw("trackervas.virtualairines_id, WEEK(created_at)")
+            ->groupByRaw("virtualairines_id, WEEK(created_at)")
             ->get();
+        // dd(\DB::getQueryLog());
     }
 
     public function closeModalInfo()

@@ -9,6 +9,15 @@ function clean($string)
     return strtolower(preg_replace("/[^a-zA-Z0-9_.]/", "", $string)); // Removes special chars.
 }
 
+function secontsToHours($seconds, $detail = false)
+{
+    if ($detail) {
+        return Carbon\Carbon::parse($seconds)->format("H\h:i");
+    } else {
+        return Carbon\Carbon::parse($seconds)->format("H:i");
+    }
+}
+
 function getRatingTraining($item)
 {
     $ratingATC = Training::ratingAtc();
