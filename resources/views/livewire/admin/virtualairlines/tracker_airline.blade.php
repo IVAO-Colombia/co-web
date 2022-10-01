@@ -8,7 +8,7 @@
                     </h1>
                 </div>
 
-                <div class="mb-4" wire:ignore wire:key='code'>
+                <div class="mb-4">
                     <table class="border-collapse table-fixed w-full text-sm">
                         <thead>
                             <tr>
