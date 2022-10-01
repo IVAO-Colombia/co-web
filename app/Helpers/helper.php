@@ -28,9 +28,18 @@ function secondsToHours($seconds, $detail = false)
                 // ->subDays($days)
                 ->subHours($hours)
         );
+        $segs = $dt->diffInSeconds(
+            $dt
+                ->copy()
+                ->addSeconds($value)
+                // ->subDays($days)
+                ->subHours($hours)
+                ->subMinutes($minutes)
+        );
         // days($days)
         return CarbonInterval::hours($hours)
             ->minutes($minutes)
+            ->seconds($segs)
             ->forHumans();
     } else {
         return Carbon::parse($seconds)->format("H:i");
