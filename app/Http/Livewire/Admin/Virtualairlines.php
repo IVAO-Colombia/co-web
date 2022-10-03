@@ -18,6 +18,7 @@ class Virtualairlines extends Component
 
     public $virtualairline_id,
         $airline_tracker,
+        $airline_tracker_name,
         $icao,
         $iata,
         $name,
@@ -59,9 +60,10 @@ class Virtualairlines extends Component
         $this->modal = true;
     }
 
-    public function information($id)
+    public function information(Virtualairline $virtualiarline)
     {
         $this->modalinfo = true;
+        $this->airline_tracker_name = $virtualiarline->name;
         // \DB::enableQueryLog();
         $this->airline_tracker = Trackerva::selectRaw(
             "virtualairines_id, WEEK(created_at) week, SUM(TIMESTAMPDIFF(SECOND, departureTime, arrivalTime )) as secondFlight"
@@ -70,7 +72,7 @@ class Virtualairlines extends Component
                 DB::raw("DATE_SUB(NOW(), INTERVAL 90 DAY)"),
                 DB::raw("NOW()"),
             ])
-            ->where("virtualairines_id", $id)
+            ->where("virtualairines_id", $virtualiarline->id)
             ->whereNotNull("departureTime")
             ->whereNotNull("arrivalTime")
             ->groupByRaw("WEEK(created_at)")

@@ -81,7 +81,7 @@
                                     @endif
                                 </td>
                                 <td class="border px-2 py-2 text-center w-40">
-                                    <button wire:click="information({{ $item->id }})" class="btn btn-blue"
+                                    <button wire:click="information({{ $item }})" class="btn btn-blue"
                                         wire:key='$item->id'>
                                         <i class="fa-solid fa-circle-info"></i>
                                     </button>

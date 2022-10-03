@@ -4,7 +4,7 @@
             <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                 <div class="mb-4">
                     <h1 class="text-gray-900 text-2xl font-bold ">
-                        Information
+                        Information for {{ $airline_tracker_name }}
                     </h1>
                 </div>
 
