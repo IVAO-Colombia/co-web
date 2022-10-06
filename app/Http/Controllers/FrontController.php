@@ -224,6 +224,7 @@ class FrontController extends Controller
     function virtualairlines()
     {
         $virtualairlines = Virtualairline::where("status", 1)
+            ->where("show_in_web", 1)
             ->orderBy("name")
             ->get();
         return view(

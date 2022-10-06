@@ -27,6 +27,7 @@ class Virtualairlines extends Component
         $website,
         $imagen,
         $imagename,
+        $show_in_web = true,
         $status = true;
     public $editing = false;
 
@@ -132,6 +133,7 @@ class Virtualairlines extends Component
                 "imagen" => $this->imagen,
                 "code" => $this->code,
                 "description" => $this->description,
+                "show_in_web" => $this->show_in_web,
                 "status" => $this->status,
             ]
         );
@@ -161,6 +163,7 @@ class Virtualairlines extends Component
         $this->imagen = $virtualirline->imagen;
         $this->website = $virtualirline->website;
         $this->code = $virtualirline->code;
+        $this->show_in_web = $virtualirline->show_in_web;
         $this->status = $virtualirline->status;
         $this->openModal();
     }
