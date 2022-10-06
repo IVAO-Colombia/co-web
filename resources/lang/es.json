@@ -36,5 +36,19 @@
     "Update" : "Actualizar",
     "Ratings":"Rangos",
     "Navigation Charts":"Cartas de Navegación",
-    "Which airport can I control?": "¿Cual aeropuerto puedo controlar?"
+    "Which airport can I control?": "¿Cual aeropuerto puedo controlar?",
+    "Status":"Estado",
+    "Information":"Información",
+    "Departure":"Origen",
+    "Arrival":"LLegada",
+    "Operator":"Operador",
+    "Callsign":"Vuelo",
+    "Aircraft":"Aeronave",
+    "Statistics":"Estadisticas",
+    "Main statistics of our division": "Principales estadísticas de nuestra división",
+    "Active Members": "Miembros Activos",
+    "Pilots": "Pilotos",
+    "Controllers" : "Controladores",
+    "Division position":"Posición de la división",
+    "Our staff online" : "Nuestro Staff En Línea"
 }

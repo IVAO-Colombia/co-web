@@ -65,6 +65,14 @@
                                 </td>
                             </tr>
                             <tr>
+                                <td><b>Piloto:</b></td>
+                                <td>
+                                    <a href="https://www.ivao.aero/Member.aspx?ID={{ $flight->userId }}" target="_blank"
+                                        title="Ver perfil del piloto">{{ $flight->userId }}</a>
+
+                                </td>
+                            </tr>
+                            <tr>
                                 <td><b>Regla de Vuelo:</b></td>
                                 <td>
                                     {{ $flight->flightPlan->flightRules }}

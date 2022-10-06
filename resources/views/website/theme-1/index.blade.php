@@ -141,7 +141,7 @@
                                                     <br>
 
 
-                                                    <a href="https://www.ivao.aero/member?id={{ $item->userId }}"
+                                                    <a href="https://www.ivao.aero/Member.aspx?ID={{ $item->userId }}"
                                                         target="_blank" class="color--primary"
                                                         title="Ver perfil controlador">
                                                         <b>VID</b> {{ $item->userId }}
@@ -221,8 +221,8 @@
                                                     <th>{{ __('Departure') }}</th>
                                                     <th>{{ __('Arrival') }}</th>
                                                     <th>{{ __('Aircraft') }}</th>
-                                                    <th>{{ 'Status' }}</th>
-                                                    <th>{{ 'Information' }}</th>
+                                                    <th>{{ __('Status') }}</th>
+                                                    <th>{{ __('Information') }}</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -258,7 +258,7 @@
                                                                     {{ __('Unknown') }}
                                                                 @endif
                                                             </td>
-                                                            <td><a href="https://www.ivao.aero/member?id={{ $item->userId }}"
+                                                            <td><a href="https://www.ivao.aero/Member.aspx?ID={{ $item->userId }}"
                                                                     target="_blank"
                                                                     title="Ver perfil del piloto">{{ $item->callsign }}</a>
                                                             </td>
@@ -293,8 +293,8 @@
                                                     <th>{{ __('Departure') }}</th>
                                                     <th>{{ __('Arrival') }}</th>
                                                     <th>{{ __('Aircraft') }}</th>
-                                                    <th>{{ 'Status' }}</th>
-                                                    <th>{{ 'Information' }}</th>
+                                                    <th>{{ __('Status') }}</th>
+                                                    <th>{{ __('Information') }}</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -328,7 +328,8 @@
 
 
                                                             </td>
-                                                            <td><a href="https://www.ivao.aero/member?id={{ $item->userId }}"
+                                                            <td>
+                                                                <a href="https://www.ivao.aero/Member.aspx?ID={{ $item->userId }}"
                                                                     target="_blank"
                                                                     title="Ver perfil del piloto">{{ $item->callsign }}</a>
                                                             </td>
@@ -554,13 +555,13 @@
                                     </div>
                                     <div class="col-md-7 text-center">
                                         <p class="fw-light mb-0" style="min-height: 95px;">
-                                            <a href="https://www.ivao.aero/member?id={{ $item->userId }}" target="_blank"
-                                                class="color--primary" title="Webeye">
+                                            <a href="https://www.ivao.aero/Member.aspx?ID={{ $item->userId }}"
+                                                target="_blank" class="color--primary" title="Webeye">
                                                 <b>
                                                     {{ $item->callsign }}</b></a>
                                             <br>
-                                            <a href="https://www.ivao.aero/member?id={{ $item->userId }}" target="_blank"
-                                                class="color--primary" title="Ver perfil controlador">
+                                            <a href="https://www.ivao.aero/Member.aspx?ID={{ $item->userId }}"
+                                                target="_blank" class="color--primary" title="Ver perfil controlador">
                                                 <b>VID</b> {{ $item->userId }}
                                             </a>
                                             <br>
