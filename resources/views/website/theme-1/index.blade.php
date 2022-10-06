@@ -252,7 +252,7 @@
                                                                     }
                                                                 @endphp
                                                                 @if (File::exists(public_path("logos-icao/$airline.png")))
-                                                                    <img class="airlineslogo"
+                                                                    <img class="airlineslogo m-auto"
                                                                         src="{{ asset("logos-icao/$airline.png") }}" />
                                                                 @else
                                                                     {{ __('Unknown') }}
@@ -320,7 +320,7 @@
                                                                     }
                                                                 @endphp
                                                                 @if (File::exists(public_path("logos-icao/$airline.png")))
-                                                                    <img class="airlineslogo"
+                                                                    <img class="airlineslogo m-auto"
                                                                         src="{{ asset("logos-icao/$airline.png") }}" />
                                                                 @else
                                                                     {{ __('Unknown') }}
