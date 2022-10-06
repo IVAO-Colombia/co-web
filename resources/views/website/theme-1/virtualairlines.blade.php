@@ -25,7 +25,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12 mb-4">
-                    <h2> Nuestras Aerolineas Virtuales</h2>
+                    <h2> {{ __('Our Virtual Airlines') }}</h2>
 
                 </div>
             </div>
@@ -62,8 +62,8 @@
                                     overflow: hidden;
                                     text-overflow: ellipsis;">
                                     {!! \Illuminate\Support\Str::limit(strip_tags($item->description), 200) !!}</p>
-                                <a href="{{ url($item->website) }}" class='item-link' target="_blank">{{ __('Website') }} <i
-                                        class="icon-chevron-right"></i></a>
+                                <a href="{{ url($item->website) }}" class='item-link' target="_blank">{{ __('Website') }}
+                                    <i class="icon-chevron-right"></i></a>
                             </div>
                         </div>
                     </div>
