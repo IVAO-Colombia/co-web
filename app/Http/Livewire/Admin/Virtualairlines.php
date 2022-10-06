@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 use DB;
+use Illuminate\Support\Facades\Storage;
 
 use App\Models\{Virtualairline, Trackerva};
 

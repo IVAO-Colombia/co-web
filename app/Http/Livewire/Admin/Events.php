@@ -8,7 +8,7 @@ use Livewire\WithPagination;
 
 use Livewire\Component;
 use App\Models\Event;
-use Storage;
+use Illuminate\Support\Facades\Storage;
 
 class Events extends Component
 {

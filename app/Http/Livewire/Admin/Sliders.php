@@ -6,6 +6,7 @@ use Livewire\Component;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\Storage;
 
 use App\Models\Slider;
 
