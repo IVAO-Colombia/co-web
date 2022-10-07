@@ -28,9 +28,11 @@
             <div class="row justify-center flex">
                 <div class="content col-md-10 my-2 text-left ">
 
-                    <div class="tag-box tag-box-v1 margin-bottom-40 heading-text heading-light font-light text-xl">
-                        <p>The training department informs the interested parties about the modification in the division's regulations regarding the 
-                            Guest Controller Approval or GCA for its acronym. IVAO Colombia has been under the program since 2018 under regulations T.2, T.2.1, T2.2.2 and T.2.3.
+                    <div class="tag-box tag-box-v1 margin-bottom-40 heading-text heading-light font-light">
+                        <p>The training department informs the interested parties about the modification in the division's
+                            regulations regarding the
+                            Guest Controller Approval or GCA for its acronym. IVAO Colombia has been under the program since
+                            2018 under regulations T.2, T.2.1, T2.2.2 and T.2.3.
 
                         </p>
 
@@ -41,17 +43,21 @@
 
 
                         <p>
-                            <b>GCA:</b> Acronym for Guest Controller Approval, it is an approval that allows members of other divisions to control in Colombian airspace.
+                            <b>GCA:</b> Acronym for Guest Controller Approval, it is an approval that allows members of
+                            other divisions to control in Colombian airspace.
                             <br>
 
-                            <b>FRA:</b> Facility Rating Assignments, establishes the minimum requirements to control a specific ATC facility.
+                            <b>FRA:</b> Facility Rating Assignments, establishes the minimum requirements to control a
+                            specific ATC facility.
                         </p>
 
                         <h2 class=" ">Requirements</h2>
 
                         <p>
-                        The Colombian division expects GCA applicants to have a rank that is equivalent to the position they wish to control. 
-                        For this reason, only users with an ADC (Aerodrome Controller) rank or higher will be considered. The following table shows the positions that can be covered according to the rank:
+                            The Colombian division expects GCA applicants to have a rank that is equivalent to the position
+                            they wish to control.
+                            For this reason, only users with an ADC (Aerodrome Controller) rank or higher will be
+                            considered. The following table shows the positions that can be covered according to the rank:
                         </p>
 
                         <div class="col-md-8">
@@ -106,7 +112,11 @@
 
                         <br>
                         <p>
-                            <b>Note:</b> Due to the structure of the FRA, some positions allow ADC-ranked controllers in approach dependencies and APC-ranked controllers in Center dependencies. To opt for these positions, depending on the rank, the user must perform a check in addition to the GCA in the requested position and this can be requested only after one calendar month of having obtained the GCA.
+                            <b>Note:</b> Due to the structure of the FRA, some positions allow ADC-ranked controllers in
+                            approach dependencies and APC-ranked controllers in Center dependencies. To opt for these
+                            positions, depending on the rank, the user must perform a check in addition to the GCA in the
+                            requested position and this can be requested only after one calendar month of having obtained
+                            the GCA.
                         </p>
                         <ul class="list-disc ml-4 pl-4">
                             <li>Speak, write, and read both English and Spanish.</li>
@@ -125,9 +135,9 @@
 
                         <h4 class=" ">Request:</h4>
                         <p>
-                            To apply for Guest Controller Approval the user must send an email to  <a
+                            To apply for Guest Controller Approval the user must send an email to <a
                                 href="mailto:co-tc@ivao.aero" class="text-blue-800 font-semibold">co-tc@ivao.aero</a> and
-                            <a href="mailto:co-tac@ivao.aero" class="text-blue-800 font-semibold">co-tac@ivao.aero</a> 
+                            <a href="mailto:co-tac@ivao.aero" class="text-blue-800 font-semibold">co-tac@ivao.aero</a>
                             with subject “GCA Request VID XXXXXX” and include in the message:
                         </p>
 
@@ -142,8 +152,10 @@
 
                         <h4 class=" ">Training:</h4>
                         <p>
-                        Once the request has been sent, the training department will assign a trainer to clarify doubts about local 
-                        regulations and procedures through a theoretical session. Subsequently, practical training will be carried out in the unit where the control will be carried out.
+                            Once the request has been sent, the training department will assign a trainer to clarify doubts
+                            about local
+                            regulations and procedures through a theoretical session. Subsequently, practical training will
+                            be carried out in the unit where the control will be carried out.
                             <br><br>
                             Cada una de estas secciones se realizará de la siguiente manera:
                         </p>
@@ -153,7 +165,10 @@
 
                             <li>
                                 <p>
-                                    <b>Sesión teórica:</b> It comprises a talk with the trainer completely focused on local regulations; the trainer will introduce the main points of the Colombian regulations and will resolve any concerns that may arise during the reading process of the GCA applicant.  The session should not last more than 60 minutes.
+                                    <b>Sesión teórica:</b> It comprises a talk with the trainer completely focused on local
+                                    regulations; the trainer will introduce the main points of the Colombian regulations and
+                                    will resolve any concerns that may arise during the reading process of the GCA
+                                    applicant. The session should not last more than 60 minutes.
                                     <br><br>
                                     <b> Nota: </b>
                                     Puesto que el aspirante ya cuenta con el rango en la red, el entrenamiento bajo
