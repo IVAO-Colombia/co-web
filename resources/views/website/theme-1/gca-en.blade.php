@@ -29,32 +29,29 @@
                 <div class="content col-md-10 my-2 text-left ">
 
                     <div class="tag-box tag-box-v1 margin-bottom-40 heading-text heading-light font-light text-xl">
-                        <p>ingles formation
+                        <p>The training department informs the interested parties about the modification in the division's regulations regarding the 
+                            Guest Controller Approval or GCA for its acronym. IVAO Colombia has been under the program since 2018 under regulations T.2, T.2.1, T2.2.2 and T.2.3.
+
                         </p>
 
 
 
-                        <h2>Definiciones</h2>
+                        <h2>Definitions</h2>
 
 
 
                         <p>
-                            <b>GCA:</b> Acrónimo de Guest Controller Approval, es una aprobación que le permite a miembros
-                            de otras
-                            divisiones controlar en el espacio aéreo colombiano.
+                            <b>GCA:</b> Acronym for Guest Controller Approval, it is an approval that allows members of other divisions to control in Colombian airspace.
                             <br>
 
-                            <b>FRA:</b> Facility Rating Assignments, establece los requerimientos mínimos para controlar una
-                            dependencia en específico.
+                            <b>FRA:</b> Facility Rating Assignments, establishes the minimum requirements to control a specific ATC facility.
                         </p>
 
-                        <h2 class=" ">Requisitos</h2>
+                        <h2 class=" ">Requirements</h2>
 
                         <p>
-                            La división colombiana espera que los aspirantes al GCA cuenten con una calificación que sea
-                            equivalente a la posición que desea controlar. Por esto solo se tendrán en cuenta los usuarios
-                            que ostenten rango ADC (Aerodrome Controller) o superior. La siguiente tabla muestra las
-                            posiciones que se pueden cubrir según el rango:
+                        The Colombian division expects GCA applicants to have a rank that is equivalent to the position they wish to control. 
+                        For this reason, only users with an ADC (Aerodrome Controller) rank or higher will be considered. The following table shows the positions that can be covered according to the rank:
                         </p>
 
                         <div class="col-md-8">
@@ -63,12 +60,12 @@
                                     <tr>
                                         <td>
                                             <p>
-                                                <strong>Rango</strong>
+                                                <strong>Rating</strong>
                                             </p>
                                         </td>
                                         <td>
                                             <p>
-                                                <strong>Posici&oacute;n de Control</strong>
+                                                <strong>ATC Facility</strong>
                                             </p>
                                         </td>
                                     </tr>
@@ -95,7 +92,7 @@
                                     <tr>
                                         <td>
                                             <p>
-                                                Center Controller (ACC) o superior</p>
+                                                Center Controller (ACC) or higher</p>
                                         </td>
                                         <td>
                                             <p>
@@ -109,23 +106,17 @@
 
                         <br>
                         <p>
-                            <b>Nota:</b> Debido a la estructura de los FRA, algunas posiciones permiten controladores con
-                            rango ADC
-                            en dependencias de aproximación y controladores con rango APC en dependencias de Centro. Para
-                            optar por estas posiciones, dependiendo del rango el usuario deberá realizar un chequeo
-                            adicional al del GCA en la posición solicitada y este se podrá solicitar únicamente después de
-                            un mes calendario de haber obtenido el GCA.
-                            Adicionalmente, el solicitante deberá:
+                            <b>Note:</b> Due to the structure of the FRA, some positions allow ADC-ranked controllers in approach dependencies and APC-ranked controllers in Center dependencies. To opt for these positions, depending on the rank, the user must perform a check in addition to the GCA in the requested position and this can be requested only after one calendar month of having obtained the GCA.
                         </p>
 
                         <ul class="list-disc ml-4 pl-4">
-                            <li>Hablar, escribir y leer los idiomas español e inglés.</li>
+                            <li>Speak, write, and read both English and Spanish.</li>
                             <li>Conocer los procedimientos locales y cartas de acuerdo aplicables en la división (disponible
                                 en el foro de ATC de IVAO Colombia).</li>
                         </ul>
 
                         <br>
-                        <h2 class=" ">Proceso de obtención del GCA</h2>
+                        <h2 class=" ">Process for obtaining the GCA</h2>
                         <p>
                             A continuación, se describen los pasos a seguir para el proceso de solicitud, entrenamiento,
                             cheques y posterior aprobación del GCA en la división colombiana.
@@ -133,30 +124,27 @@
 
                         <br>
 
-                        <h4 class=" ">Solicitud</h4>
+                        <h4 class=" ">Request:</h4>
                         <p>
-                            Para aplicar al Guest Controller Approval el usuario deberá enviar un correo a <a
-                                href="mailto:co-tc@ivao.aero" class="text-blue-800 font-semibold">co-tc@ivao.aero</a> y
-                            <a href="mailto:co-tac@ivao.aero" class="text-blue-800 font-semibold">co-tac@ivao.aero</a> con
-                            asunto
-                            <b>“Solicitud GCA VID XXXXXX”</b> e incluir en el mensaje:
+                            To apply for Guest Controller Approval the user must send an email to  <a
+                                href="mailto:co-tc@ivao.aero" class="text-blue-800 font-semibold">co-tc@ivao.aero</a> and
+                            <a href="mailto:co-tac@ivao.aero" class="text-blue-800 font-semibold">co-tac@ivao.aero</a> 
+                            with subject “GCA Request VID XXXXXX” and include in the message:
                         </p>
 
                         <ul class="list-disc ml-4 pl-4">
 
-                            <li>Nombre y apellido</li>
+                            <li>Name and Last name</li>
                             <li>IVAO VID</li>
                             <li>Explicación breve de por qué solicita el GCA en Colombia.</li>
                         </ul>
 
                         <br>
 
-                        <h4 class=" ">Entrenamiento</h4>
+                        <h4 class=" ">Training:</h4>
                         <p>
-                            Una vez enviada la solicitud el departamento de entrenamiento asignará un entrenador con el fin
-                            de aclarar dudas sobre la reglamentación y procedimientos locales por medio de una sesión
-                            teórica. Posteriormente, se realizará un entrenamiento práctico en la dependencia en que se
-                            llevará a cabo el chequeo.
+                        Once the request has been sent, the training department will assign a trainer to clarify doubts about local 
+                        regulations and procedures through a theoretical session. Subsequently, practical training will be carried out in the unit where the control will be carried out.
                             <br><br>
                             Cada una de estas secciones se realizará de la siguiente manera:
                         </p>
@@ -166,10 +154,7 @@
 
                             <li>
                                 <p>
-                                    <b>Sesión teórica:</b> Comprende una charla con el entrenador completamente enfocada a
-                                    regulaciones locales; el entrenador, expondrá la introducción a los principales puntos
-                                    de las regulaciones colombianas y resolverá las inquietudes que puedan surgir durante el
-                                    proceso de lectura el solicitante del GCA. La sesión no debe durar más de 60 minutos.
+                                    <b>Sesión teórica:</b> It comprises a talk with the trainer completely focused on local regulations; the trainer will introduce the main points of the Colombian regulations and will resolve any concerns that may arise during the reading process of the GCA applicant.  The session should not last more than 60 minutes.
                                     <br><br>
                                     <b> Nota: </b>
                                     Puesto que el aspirante ya cuenta con el rango en la red, el entrenamiento bajo
@@ -198,7 +183,7 @@
                         </p>
 
 
-                        <h4 class=" ">Chequeo final</h4>
+                        <h4 class=" ">Final check:</h4>
                         <p>
                             Al igual que el entrenamiento, el chequeo final se dividirá en dos partes, una teórica y una
                             práctica que se llevarán a cabo de la siguiente manera:
@@ -218,7 +203,7 @@
                                 </p>
                             </li>
                             <li>
-                                <b>Sesión práctica:</b>
+                                <b>Practical session:</b>
                                 <p>
                                     Esta sesión se llevará a cabo en la dependencia de Torre El Dorado (SKBO_TWR) en caso de
                                     que

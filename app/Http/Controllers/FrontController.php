@@ -217,6 +217,17 @@ class FrontController extends Controller
         }
     }
 
+    /*   Cambio de lenguaje a ingles en los solicitudes de Tr
+
+     function trainingEn(){
+            if (app()->isLocale("es")) {
+            return view("website.theme-1.training");
+            } else {
+            return view("website.theme-1.training-en");
+        }
+        
+    }
+*/
     function fra()
     {
         return view("website.theme-1.fra");
