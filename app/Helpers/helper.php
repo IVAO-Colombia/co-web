@@ -98,7 +98,7 @@ function getUserLocal()
     /**
      * Para pruebas en local
      */
-    $user["vid"] = "123457";
+    $user["vid"] = "123455";
     $user["firstname"] = "User";
     $user["lastname"] = "Local";
     $user["rating"] = "4";
@@ -107,9 +107,9 @@ function getUserLocal()
     $user["division"] = "CO";
     $user["country"] = "CO";
     $user["staff"] = [
-        env("APP_DIVISION") . "-EA2",
+        env("APP_DIVISION") . "-PRC",
         env("APP_DIVISION") . "-FOC",
-        env("APP_DIVISION") . "-PRA1",
+        // env("APP_DIVISION") . "-PRA1",
         "SM3",
         env("APP_DIVISION") . "-WM",
     ];
@@ -215,9 +215,9 @@ function syncTeams($user)
 
     if (!$inteamusuario) {
         $teamusuario->users()->attach($user, ["role" => "estandar"]);
+        $user->switchTeam($teamusuario);
     }
 
-    $user->switchTeam($teamusuario);
     $departamentosAsignado = [];
     //revisamos en cual departamento esta agregado...usando true y false
     foreach ($departamentos as $key => $departamento) {
@@ -363,6 +363,13 @@ function syncTeams($user)
                 break;
         }
     } //end foreach
+
+    /** Validamos si esta dentro del equipo actual **/
+    // $temcurrent->hasUser($user) : bool
+    $temcurrent = Team::find($user->currentTeam->id);
+    if (!$temcurrent->hasUser($user)) {
+        $user->switchTeam($teamusuario);
+    }
 }
 
 ?>

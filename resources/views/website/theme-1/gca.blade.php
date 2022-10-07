@@ -28,7 +28,7 @@
             <div class="row justify-center flex">
                 <div class="content col-md-10 my-2 text-left ">
 
-                    <div class="tag-box tag-box-v1 margin-bottom-40 heading-text heading-light font-light text-xl">
+                    <div class="tag-box tag-box-v1 margin-bottom-40 heading-text heading-light font-light">
                         <p>El departamento de entrenamiento informa a los
                             interesados acerca de
                             la modificación en las regulaciones de la división respecto a la Aprobación para Controladores

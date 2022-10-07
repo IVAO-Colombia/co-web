@@ -20,6 +20,7 @@ class Virtualairline extends Model
         "website",
         "imagen",
         "status",
+        "show_in_web",
     ];
 
     public static function tracking()
