@@ -108,7 +108,6 @@
                         <p>
                             <b>Note:</b> Due to the structure of the FRA, some positions allow ADC-ranked controllers in approach dependencies and APC-ranked controllers in Center dependencies. To opt for these positions, depending on the rank, the user must perform a check in addition to the GCA in the requested position and this can be requested only after one calendar month of having obtained the GCA.
                         </p>
-
                         <ul class="list-disc ml-4 pl-4">
                             <li>Speak, write, and read both English and Spanish.</li>
                             <li>Conocer los procedimientos locales y cartas de acuerdo aplicables en la división (disponible
