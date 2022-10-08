@@ -107,7 +107,7 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <small>Tabla 1. Rangos Mínimos</small>
+                            <small>Table 1. Minimun ATC Ranks</small>
                         </div>
 
                         <br>
@@ -120,15 +120,15 @@
                         </p>
                         <ul class="list-disc ml-4 pl-4">
                             <li>Speak, write, and read both English and Spanish.</li>
-                            <li>Conocer los procedimientos locales y cartas de acuerdo aplicables en la división (disponible
-                                en el foro de ATC de IVAO Colombia).</li>
+                            <li>Know the local procedures and letters of 
+                                agreement applicable in the division (available in the IVAO Colombia ATC forum).</li>
                         </ul>
 
                         <br>
                         <h2 class=" ">Process for obtaining the GCA</h2>
                         <p>
-                            A continuación, se describen los pasos a seguir para el proceso de solicitud, entrenamiento,
-                            cheques y posterior aprobación del GCA en la división colombiana.
+                            The following is a description of the steps to follow for the application process, training, 
+                            checks and subsequent approval of the GCA in the Colombian division.
                         </p>
 
                         <br>
@@ -145,7 +145,7 @@
 
                             <li>Name and Last name</li>
                             <li>IVAO VID</li>
-                            <li>Explicación breve de por qué solicita el GCA en Colombia.</li>
+                            <li>Short explanation including why you are applying for the GCA in Colombia.</li>
                         </ul>
 
                         <br>
@@ -157,7 +157,7 @@
                             regulations and procedures through a theoretical session. Subsequently, practical training will
                             be carried out in the unit where the control will be carried out.
                             <br><br>
-                            Cada una de estas secciones se realizará de la siguiente manera:
+                            Each of these sections will be carried out as follows:
                         </p>
 
                         <br>
@@ -165,84 +165,101 @@
 
                             <li>
                                 <p>
-                                    <b>Sesión teórica:</b> It comprises a talk with the trainer completely focused on local
-                                    regulations; the trainer will introduce the main points of the Colombian regulations and
-                                    will resolve any concerns that may arise during the reading process of the GCA
-                                    applicant. The session should not last more than 60 minutes.
+                                    <b>Theoretical session: </b> It comprises a talk with the trainer completely focused on local regulations; 
+                                    the trainer will introduce the main points of the Colombian regulations and will resolve any concerns that may arise during the reading process of the GCA applicant.  
+                                    The session should not last more than 60 minutes.
                                     <br><br>
-                                    <b> Nota: </b>
-                                    Puesto que el aspirante ya cuenta con el rango en la red, el entrenamiento bajo
-                                    ninguna medida deberá encaminarse a fundamentos OACI.
+                                    <b> Note: </b>
+                                    Since the applicant already has the rank in the network, 
+                                    the training should under no circumstances be directed to ICAO fundamentals.
 
                                 </p>
                             </li>
                             <li>
-                                <b>Sesión práctica:</b>
-                                Tendrá una duración máxima de 90 minutos, en los que se comprende el
-                                tiempo de control y el destinado para las correspondientes correcciones y/o sugerencias del
-                                entrenador.
+                                <b>Practical session: </b>
+                                It will have a maximum duration of 90 minutes, 
+                                including control time and time for corrections and/or suggestions from the trainer.
                             </li>
 
                         </ul>
                         <br>
                         <p>
-                            Es importante resaltar que las sesiones de entrenamiento son solamente una herramienta propuesta
-                            por la división, no es obligatoria durante el proceso.
+                            It is important to highlight that the training sessions are only a 
+                            tool proposed by the division, they are not mandatory during the process.
                             <br><br>
-                            <b> Nota: </b>
-                            Solamente se debe omitir el entrenamiento bajo solicitud del aspirante; las sesiones se
-                            agendarán directamente con el entrenador por medio de los canales oficiales o cualquier otro
-                            siempre y cuando sea acordado por ambas partes.
+                            <b> Note: </b>
+                            Training should only be omitted at the applicant's request; sessions will be scheduled directly with the trainer through official channels, or any other channel as long as agreed by both parties.
 
                         </p>
 
 
                         <h4 class=" ">Final check:</h4>
                         <p>
-                            Al igual que el entrenamiento, el chequeo final se dividirá en dos partes, una teórica y una
-                            práctica que se llevarán a cabo de la siguiente manera:
+                        As in the training, the final check-up will be carried out in two parts, one theoretical and one practical, which will be performed as follows:
                         </p>
                         <br>
                         <ul class="list-disc ml-4 pl-4">
 
                             <li>
                                 <p>
-                                    <b>Sesión teórica:</b> Estará compuesta de una evaluación teórica vía comunicación
-                                    verbal directa, en esta se tratará principalmente lo relacionado con las regulaciones
-                                    locales, sin embargo, si el entrenador lo ve conveniente puede realizar preguntas sobre
-                                    procedimientos de control en general con base en el rango del aspirante. No debe durar
-                                    más de 45 minutos, debe hacerse antes de la parte práctica pero no es mandatorio que
-                                    ambas sesiones se realicen el mismo día.
+                                    <b>Theoretical session:</b> This will be composed of a theoretical evaluation via direct verbal communication, which will be mainly focused on local regulations, however, if the trainer considers it convenient, he/she may ask questions about control procedures in general based on the applicant's rank. It should not last more than 45 minutes, it should be done before the practical part, but it is not mandatory that both sessions are held on the same day.
 
                                 </p>
                             </li>
                             <li>
                                 <b>Practical session:</b>
                                 <p>
-                                    Esta sesión se llevará a cabo en la dependencia de Torre El Dorado (SKBO_TWR) en caso de
-                                    que
-                                    el solicitante del GCA aspire a controlar en las diferentes torres del país. Se
-                                    realizará en
-                                    aproximación Bogotá (SKBO_APP) si el aspirante es rango APC o superior, busca controlar
-                                    en
-                                    las dependencias de aproximación del país o cuenta con su GCA por un periodo no menor a
-                                    30
-                                    días calendario. Finalmente, tomará lugar en Bogotá Control (SKED_CTR) si el aspirante
-                                    cuenta con rango ACC o superior. La parte práctica no deberá durar más de 120 minutos,
-                                    comprendida la sesión de control y los comentarios finales por parte del evaluador.
+                                This session will take place at Torre El Dorado (SKBO_TWR) in case the GCA applicant aspires to control in the different towers of the country. It will take place in Bogotá Approach (SKBO_APP) if the applicant is APC rank or higher, seeks to control in the approach facilities of the country or has his GCA for a period not less than 30 calendar days. Finally, it will take place in Bogotá Control (SKED_CTR) if the applicant has ACC rank or higher. The practical part shall not last more than 120 minutes, including the control session and the final comments by the evaluator.
                                     <br> <br>
-                                    <b> Nota:</b>
-                                    Miembros con el rango APC que ostenten el GCA no pueden aplicar al chequeo de control de
-                                    dependencias de área.
+                                    <b> Note:</b>
+                                    APC-ranked members holding the GCA cannot apply for the area facility control check.
                                 </p>
 
                             </li>
 
                         </ul>
                         <p>
-                            Es importante aclarar que no es un examen del rango del aspirante, es un chequeo de técnicas de
-                            control y conocimiento de regulaciones locales, por lo que no se maneja un puntaje, el resultado
-                            es la valoración del evaluador.
+                        It is important to clarify that it is not an exam of the applicant's rank, it is a check of control techniques and knowledge of local regulations, so there is no score, the result is the evaluator's assessment.
+                        </p>
+                        <h4 class=" "> Result</h4>
+                        <p>
+                        At the end of the check-up, the evaluator will inform the applicant whether the result was satisfactory or not. If the result was satisfactory, the examiner will notify the training department coordinators of the result so that the GCA can become effective within a maximum of 15 calendar days from the day after the check-up.
+                            <br><br>
+                            If the applicant does not pass the check-up, he/she must wait 15 calendar days from the day after the check-up to request a new evaluation. In this case, the training part is omitted, and it will be up to the trainer to decide whether or not to provide it after a unsatisfactory check-up.
+                            <br><br>
+                            <b>Note:</b> The applicant must wait for the GCA confirmation mail from the training department coordination in order to be able to connect in the country's dependencies, if he/she fails to comply with this regulation, the member will not obtain his/her GCA and must wait 90 calendar days to resubmit his/her application.    
+                        </p>
+                        
+                        <h4 class=" ">Rules for maintaining the GCA</h4>
+
+                        <ul class="list-disc ml-4 pl-4">
+                                <li>
+                                    <p>
+                                        The GCA user must complete a minimum of 6 hours of monitoring within 30 calendar days, for a total of 18 hours per quarter. In case of not complying with the minimum number of quarterly hours, the GCA will be removed, and the user must wait at least 90 calendar days to make a new application.  
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        If the user fails to comply with any of IVAO's R&R the GCA will be removed and the time to submit a new application shall not be less than twice the penalty established by the network.
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        If the user does not present adequate knowledge of the local procedures and control standards the GCA will be removed, the waiting time for a new application will be determined by the coordination of the training department of the Colombia division and its HQ.
+                                    </p>    
+                                </li>
+                            </ul>
+                        <h4 class=" ">Final considerations</h4>
+                        <p>
+                        The GCA is a tool provided by IVAO to increase member participation and encourage community involvement, however, it is at the discretion of the training department and divisional HQ to freely remove the rating.
+                            <br><br>
+                            For former members of the division, the training department, together with the divisional HQ, may make the decision to grant the GCA without the need for a check, as long as the rank with which he/she aspires to control has been obtained in the Colombian division.  
+                            <br><br>
+                            Furthermore, the training department and the divisional HQ have the power to add and remove ratings to other facilities based on their evaluation criteria.  
+                            <br><br>
+                            For APC-ranked members, holders, or applicants to the GCA who are interested in controlling superior control facilities must have obtained the rank in the Colombia division.
+                            <br><br>
+                            It is not necessary for the applicant to perform the initial check in the highest unit that his/her rank allows, for example, a member with ACC rank can apply for the GCA by applying for a tower check, however, he/she must complete the entire process for the other dependencies.
                         </p>
                     </div>
                 </div>
