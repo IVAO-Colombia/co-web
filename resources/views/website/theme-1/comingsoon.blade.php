@@ -28,7 +28,7 @@
     <!-- Body Inner -->
     <div class="body-inner">
         <section class="text-center p-t-50 p-b-50 text-light h-100"
-            style="background-image:url('{{ asset('theme-1/images/twotter.jpg') }}');  background-size: cover; height: 100vh !important;">
+            style="background-image:url('{{ asset('theme-1/images/twotter.jpeg') }}');  background-size: cover; height: 100vh !important;">
             <div class="bg-overlay" style="opacity: 1"></div>
             <div class="container">
 
@@ -40,7 +40,7 @@
                     <h1>{{ __('comingsoon.welaunch') }}</h1>
                 </div>
 
-                <div class="countdown countdown-light m-b-40" data-countdown="2022/10/10 00:00:00"
+                <div class="countdown countdown-light m-b-40" data-countdown="2022/10/10 00:00:00z"
                     data-animate="fadeInUp"></div>
 
                 <div data-animate-delay="600" data-animate="fadeInUp">
