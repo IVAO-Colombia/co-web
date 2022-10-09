@@ -42,7 +42,7 @@ Route::controller(FrontController::class)->group(function () {
     if (time() > strtotime("October 09 2022 23:59")) {
         Route::get("/", "index")->name("Home");
     } else {
-        Route::get("/", "comingsoon")->name("comingsoon");
+        Route::get("/", "comingsoon")->name("Home");
     }
 
     Route::get("/gca", "gca")->name("front.gca");
