@@ -39,7 +39,12 @@ Route::get("locale/{locale}", function ($locale) {
 });
 
 Route::controller(FrontController::class)->group(function () {
-    Route::get("/", "index")->name("Home");
+    if (time() > strtotime("October 10 2022 00:00")) {
+        Route::get("/", "index")->name("Home");
+    } else {
+        Route::get("/", "comingsoon")->name("comingsoon");
+    }
+
     Route::get("/gca", "gca")->name("front.gca");
     Route::get("/about", "about")->name("front.about");
     Route::get("/fra", "fra")->name("front.fra");
