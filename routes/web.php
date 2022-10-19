@@ -15,7 +15,8 @@ use App\Http\Livewire\Admin\{
     Sliders,
     Airports,
     Virtualairlines,
-    Trainings
+    Trainings,
+    Teams
 };
 
 /*
@@ -39,11 +40,7 @@ Route::get("locale/{locale}", function ($locale) {
 });
 
 Route::controller(FrontController::class)->group(function () {
-    if (time() > strtotime("October 09 2022 23:59")) {
-        Route::get("/", "index")->name("Home");
-    } else {
-        Route::get("/", "comingsoon")->name("Home");
-    }
+    Route::get("/", "index")->name("Home");
 
     Route::get("/gca", "gca")->name("front.gca");
     Route::get("/about", "about")->name("front.about");
@@ -107,6 +104,7 @@ Route::middleware([
         return view("dashboard");
     })->name("dashboard");
 
+    Route::get("/staff/teams", Teams::class)->name("teams.index");
     Route::get("/staff/events", Events::class)->name("events.index");
     Route::get("/staff/sliders", Sliders::class)->name("sliders.index");
     Route::get("/staff/airports", Airports::class)->name("airports.index");
