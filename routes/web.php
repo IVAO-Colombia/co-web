@@ -80,9 +80,9 @@ Route::controller(FrontController::class)->group(function () {
 IVAO Login
 */
 
-Route::get("auth/ivao", [IvaoController::class, "redirect"])->name(
-    "ivao.login"
-);
+// Route::get("auth/ivao", [IvaoController::class, "redirect"])->name(
+//     "ivao.login"
+// );
 
 Route::get("auth/ivao-sso", [IvaoController::class, "sso"])->name(
     "ivao.login-sso"
@@ -91,6 +91,8 @@ Route::get("auth/ivao-sso", [IvaoController::class, "sso"])->name(
 Route::get("auth/callback", [IvaoController::class, "sso"])->name(
     "ivao.login-sso-callback"
 );
+
+Route::get("auth/ivao", [IvaoController::class, "sso"])->name("ivao.login");
 
 Route::get("auth/ivao/callback", [IvaoController::class, "callback"])->name(
     "ivao.callback"

@@ -153,6 +153,19 @@ class IvaoController extends Controller
 
     public function sso()
     {
+        session(["url.intended" => url()->previous()]);
+        if (
+            session("url.intended") == config("app.url") . "/login" ||
+            session("url.intended") == config("app.url") . "/auth/ivao/callback"
+        ) {
+            session(["url.intended" => "/"]);
+        }
+
+        // Now we can take care of the actual authentication
+        $client_id = env("IVAO_CLIENTID");
+        $client_secret = env("IVAO_SECRET");
+        $redirect_uri = route("ivao.login-sso-callback");
+
         // Get all URLs we need from the server
         $openid_url = "https://api.ivao.aero/.well-known/openid-configuration";
         $openid_result = file_get_contents($openid_url, false);
@@ -162,10 +175,13 @@ class IvaoController extends Controller
         }
         $openid_data = json_decode($openid_result, true);
 
-        // Now we can take care of the actual authentication
-        $client_id = env("IVAO_CLIENTID");
-        $client_secret = env("IVAO_SECRET");
-        $redirect_uri = route("ivao.login-sso-callback");
+        $base_url = $openid_data["authorization_endpoint"];
+        $reponse_type = "code";
+        $scopes = "profile configuration email";
+        $state = "1234567890"; // Random string to prevent CSRF attacks
+
+        $full_url = "$base_url?response_type=$reponse_type&client_id=$client_id&scope=$scopes&redirect_uri=$redirect_uri&state=$state";
+
         // dd($redirect_uri);
 
         if (isset($_GET["code"]) && isset($_GET["state"])) {
@@ -214,7 +230,7 @@ class IvaoController extends Controller
                 ]),
                 time() + 60 * 60 * 24 * 30
             ); // 30 days
-
+            return redirect($full_url);
             // header("Location: user.php"); // Remove the code and state from URL since they aren't valid anymore
         } elseif (isset($_COOKIE["ivao_tokens"])) {
             // User has already logged in
@@ -241,9 +257,12 @@ class IvaoController extends Controller
             $user_res_data = json_decode($user_result, true);
 
             if (
-                isset($user_res_data["description"]) &&
-                $user_res_data["description"] ===
-                    "This auth token has been revoked or expired"
+                (isset($user_res_data["description"]) &&
+                    $user_res_data["description"] ===
+                        "This auth token has been revoked or expired") ||
+                (isset($user_res_data["description"]) &&
+                    $user_res_data["description"] ===
+                        "Couldn't decode auth token")
             ) {
                 // Access token expired, using refresh token to get a new one
 
@@ -288,21 +307,66 @@ class IvaoController extends Controller
                     time() + 60 * 60 * 24 * 30
                 ); // 30 days
 
-                header("Location: user.php"); // Try to use the access token again
+                return redirect($full_url);
+                // header("Location: user.php"); // Try to use the access token again
+            } else {
+                dd($user_res_data); // Display user data fetched with the access token
+                $this->handlerLogin($user_res_data);
             }
-
-            var_dump($user_res_data); // Display user data fetched with the access token
         } else {
             // First visit : Unauthenticated user
 
-            $base_url = $openid_data["authorization_endpoint"];
-            $reponse_type = "code";
-            $scopes = "profile configuration email";
-            $state = "1234567890"; // Random string to prevent CSRF attacks
-
-            $full_url = "$base_url?response_type=$reponse_type&client_id=$client_id&scope=$scopes&redirect_uri=$redirect_uri&state=$state";
             // dd($full_url);
             return redirect($full_url);
         }
+    }
+
+    public function handlerLogin($user)
+    {
+        $finduser = User::where("id", intval($user["id"]))->first();
+
+        //caso especial Julian
+        if ($user["id"] == "653841") {
+            $user["staff"] = ["CO-WMA1"];
+        }
+
+        if ($finduser) {
+            $finduser->firstname = $user["firstName"];
+            $finduser->lastname = $user["lastName"];
+            $finduser->email = $user["email"];
+            $finduser->rating = implode($user["rating"]);
+            $finduser->ratingatc = intval($user["ratingatc"]);
+            // $finduser->ratingpilot = intval($user["ratingpilot"]);
+            $finduser->division = $user["divisionId"];
+            $finduser->country = $user["countryId"];
+            // $finduser->staff = implode(",", $user["staff"]);
+            // $finduser->va_staff_ids = implode(",", $user["va_staff_ids"]);
+            // $finduser->va_member_ids = implode(",", $user["va_member_ids"]);
+            $finduser->save();
+            Auth::login($finduser);
+        } else {
+            $newUser = User::create([
+                "id" => intval($user["id"]),
+                "firstname" => $user["firstName"],
+                "lastname" => $user["lastName"],
+                "email" => $user["email"],
+                "rating" => intval($user["rating"]),
+                // "ratingatc" => intval($user["ratingatc"]),
+                // "ratingpilot" => intval($user["ratingpilot"]),
+                "division" => $user["divisionId"],
+                "country" => $user["countryId"],
+                // "staff" => implode(",", $user["staff"]),
+                // "va_staff_ids" => implode(",", $user["va_staff_ids"]),
+                // "va_member_ids" => implode(",", $user["va_member_ids"]),
+                "password" => bcrypt("colombia"),
+            ]);
+
+            Auth::login($newUser);
+        }
+
+        $userlog = Auth::user();
+        syncTeams($userlog);
+        dd(session("url.intended"));
+        return redirect(session("url.intended"));
     }
 }
