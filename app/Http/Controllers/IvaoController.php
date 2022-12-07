@@ -180,8 +180,16 @@ class IvaoController extends Controller
         $scopes = "profile configuration email";
         $state = "1234567890"; // Random string to prevent CSRF attacks
 
-        $full_url = "$base_url?response_type=$reponse_type&client_id=$client_id&scope=$scopes&redirect_uri=$redirect_uri&state=$state";
+        // $full_url = "$base_url?response_type=$reponse_type&client_id=$client_id&scope=$scopes&redirect_uri=$redirect_uri&state=$state";
 
+        $query = [
+            "response_type" => $reponse_type,
+            "client_id" => $client_id,
+            "scope" => $scopes,
+            "redirect_uri" => $redirect_uri,
+            "state" => $state,
+        ];
+        $full_url = "$base_url?" . http_build_query($query);
         // dd($redirect_uri);
 
         if (isset($_GET["code"]) && isset($_GET["state"])) {
