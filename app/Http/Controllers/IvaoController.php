@@ -163,9 +163,9 @@ class IvaoController extends Controller
         $openid_data = json_decode($openid_result, true);
 
         // Now we can take care of the actual authentication
-        $client_id = "57b2d957-38ff-4d1e-8d8f-7e5aa8d0d5fe";
-        $client_secret = "VUFqej5bLDOBngOtUcQCF97U1o7MQDbu";
-        $redirect_uri = "http://dev.ivao.aero";
+        $client_id = env("IVAO_CLIENTID");
+        $client_secret = env("IVAO_SECRET");
+        $redirect_uri = route("ivao.login-sso");
 
         if (isset($_GET["code"]) && isset($_GET["state"])) {
             // User has been redirected back from the login page
@@ -214,7 +214,7 @@ class IvaoController extends Controller
                 time() + 60 * 60 * 24 * 30
             ); // 30 days
 
-            header("Location: user.php"); // Remove the code and state from URL since they aren't valid anymore
+            // header("Location: user.php"); // Remove the code and state from URL since they aren't valid anymore
         } elseif (isset($_COOKIE["ivao_tokens"])) {
             // User has already logged in
 
@@ -300,8 +300,8 @@ class IvaoController extends Controller
             $state = "1234567890"; // Random string to prevent CSRF attacks
 
             $full_url = "$base_url?response_type=$reponse_type&client_id=$client_id&scope=$scopes&redirect_uri=$redirect_uri&state=$state";
-
-            echo "<a href=\"$full_url\">Login</a>";
+            // dd($full_url);
+            return redirect($full_url);
         }
     }
 }
