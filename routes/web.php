@@ -88,6 +88,10 @@ Route::get("auth/ivao-sso", [IvaoController::class, "sso"])->name(
     "ivao.login-sso"
 );
 
+Route::get("auth/callback", [IvaoController::class, "sso"])->name(
+    "ivao.login-sso-callback"
+);
+
 Route::get("auth/ivao/callback", [IvaoController::class, "callback"])->name(
     "ivao.callback"
 );

@@ -165,7 +165,8 @@ class IvaoController extends Controller
         // Now we can take care of the actual authentication
         $client_id = env("IVAO_CLIENTID");
         $client_secret = env("IVAO_SECRET");
-        $redirect_uri = route("ivao.login-sso");
+        $redirect_uri = route("ivao.login-sso-callback");
+        // dd($redirect_uri);
 
         if (isset($_GET["code"]) && isset($_GET["state"])) {
             // User has been redirected back from the login page
