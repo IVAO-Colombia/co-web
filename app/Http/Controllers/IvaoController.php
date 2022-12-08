@@ -234,7 +234,7 @@ class IvaoController extends Controller
                     "refresh_token" => $refresh_token,
                 ]),
             ]);
-            return redirect("/");
+            return redirect()->route("ivao.login-sso");
             // header("Location: user.php"); // Remove the code and state from URL since they aren't valid anymore
         } elseif (session()->has("ivao_tokens")) {
             // User has already logged in
@@ -310,7 +310,7 @@ class IvaoController extends Controller
                     ]),
                 ]);
 
-                return redirect($full_url);
+                return redirect()->route("ivao.login-sso");
                 // header("Location: user.php"); // Try to use the access token again
             } else {
                 // dd($user_res_data); // Display user data fetched with the access token
