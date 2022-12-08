@@ -233,8 +233,8 @@ class IvaoController extends Controller
                     "access_token" => $access_token,
                     "refresh_token" => $refresh_token,
                 ]),
-            ]); // 30 days
-            return redirect($full_url);
+            ]);
+            return redirect("/");
             // header("Location: user.php"); // Remove the code and state from URL since they aren't valid anymore
         } elseif (session()->has("ivao_tokens")) {
             // User has already logged in
