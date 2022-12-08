@@ -153,6 +153,7 @@ class IvaoController extends Controller
 
     public function sso()
     {
+        // dd(session("ivao_tokens"));
         session(["url.intended" => url()->previous()]);
         if (
             session("url.intended") == config("app.url") . "/login" ||
@@ -180,8 +181,6 @@ class IvaoController extends Controller
         $scopes = "profile configuration email";
         $state = "1234567890"; // Random string to prevent CSRF attacks
 
-        // $full_url = "$base_url?response_type=$reponse_type&client_id=$client_id&scope=$scopes&redirect_uri=$redirect_uri&state=$state";
-
         $query = [
             "response_type" => $reponse_type,
             "client_id" => $client_id,
@@ -190,7 +189,6 @@ class IvaoController extends Controller
             "state" => $state,
         ];
         $full_url = "$base_url?" . http_build_query($query);
-        // dd($redirect_uri);
 
         if (isset($_GET["code"]) && isset($_GET["state"])) {
             // User has been redirected back from the login page
@@ -230,20 +228,18 @@ class IvaoController extends Controller
             $access_token = $token_res_data["access_token"]; // Here is the access token
             $refresh_token = $token_res_data["refresh_token"]; // Here is the refresh token
 
-            setcookie(
-                "ivao_tokens",
-                json_encode([
+            session([
+                "ivao_tokens" => json_encode([
                     "access_token" => $access_token,
                     "refresh_token" => $refresh_token,
                 ]),
-                time() + 60 * 60 * 24 * 30
-            ); // 30 days
+            ]); // 30 days
             return redirect($full_url);
             // header("Location: user.php"); // Remove the code and state from URL since they aren't valid anymore
-        } elseif (isset($_COOKIE["ivao_tokens"])) {
+        } elseif (session()->has("ivao_tokens")) {
             // User has already logged in
 
-            $tokens = json_decode($_COOKIE["ivao_tokens"], true);
+            $tokens = json_decode(session("ivao_tokens"), true);
             $access_token = $tokens["access_token"];
             $refresh_token = $tokens["refresh_token"];
 
@@ -306,25 +302,21 @@ class IvaoController extends Controller
                 $access_token = $token_res_data["access_token"]; // Here is the new access token
                 $refresh_token = $token_res_data["refresh_token"]; // Here is the new refresh token
 
-                setcookie(
-                    "ivao_tokens",
-                    json_encode([
+                session([
+                    "ivao_tokens" => json_encode([
                         "access_token" => $access_token,
                         "refresh_token" => $refresh_token,
                     ]),
-                    time() + 60 * 60 * 24 * 30
-                ); // 30 days
+                ]);
 
                 return redirect($full_url);
                 // header("Location: user.php"); // Try to use the access token again
             } else {
-                dd($user_res_data); // Display user data fetched with the access token
-                $this->handlerLogin($user_res_data);
+                // dd($user_res_data); // Display user data fetched with the access token
+                return $this->handlerLogin($user_res_data);
             }
         } else {
             // First visit : Unauthenticated user
-
-            // dd($full_url);
             return redirect($full_url);
         }
     }
@@ -342,12 +334,14 @@ class IvaoController extends Controller
             $finduser->firstname = $user["firstName"];
             $finduser->lastname = $user["lastName"];
             $finduser->email = $user["email"];
-            $finduser->rating = implode($user["rating"]);
-            $finduser->ratingatc = intval($user["ratingatc"]);
-            // $finduser->ratingpilot = intval($user["ratingpilot"]);
+            // $finduser->rating = implode($user["rating"]);
+            $finduser->ratingatc = intval($user["rating"]["atcRating"]["id"]);
+            $finduser->ratingpilot = intval(
+                $user["rating"]["pilotRating"]["id"]
+            );
             $finduser->division = $user["divisionId"];
             $finduser->country = $user["countryId"];
-            // $finduser->staff = implode(",", $user["staff"]);
+            $finduser->staff = staffLogin($user["userStaffPositions"]);
             // $finduser->va_staff_ids = implode(",", $user["va_staff_ids"]);
             // $finduser->va_member_ids = implode(",", $user["va_member_ids"]);
             $finduser->save();
@@ -358,12 +352,12 @@ class IvaoController extends Controller
                 "firstname" => $user["firstName"],
                 "lastname" => $user["lastName"],
                 "email" => $user["email"],
-                "rating" => intval($user["rating"]),
-                // "ratingatc" => intval($user["ratingatc"]),
-                // "ratingpilot" => intval($user["ratingpilot"]),
+                // "rating" => intval($user["rating"]),
+                "ratingatc" => intval($user["rating"]["atcRating"]["id"]),
+                "ratingpilot" => intval($user["rating"]["pilotRating"]["id"]),
                 "division" => $user["divisionId"],
                 "country" => $user["countryId"],
-                // "staff" => implode(",", $user["staff"]),
+                "staff" => staffLogin($user["userStaffPositions"]),
                 // "va_staff_ids" => implode(",", $user["va_staff_ids"]),
                 // "va_member_ids" => implode(",", $user["va_member_ids"]),
                 "password" => bcrypt("colombia"),
@@ -374,7 +368,7 @@ class IvaoController extends Controller
 
         $userlog = Auth::user();
         syncTeams($userlog);
-        dd(session("url.intended"));
+
         return redirect(session("url.intended"));
     }
 }

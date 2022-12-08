@@ -11,6 +11,17 @@ function clean($string)
     return strtolower(preg_replace("/[^a-zA-Z0-9_.]/", "", $string)); // Removes special chars.
 }
 
+function staffLogin($data)
+{
+    $staff = [];
+    foreach ($data as $key => $value) {
+        $staff[] = $value["id"];
+    }
+
+    $staff = implode(",", $staff);
+    return $staff;
+}
+
 function secondsToHours($seconds, $detail = false)
 {
     if ($detail) {
