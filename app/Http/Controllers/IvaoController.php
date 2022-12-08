@@ -261,12 +261,13 @@ class IvaoController extends Controller
             $user_res_data = json_decode($user_result, true);
 
             if (
-                (isset($user_res_data["description"]) &&
-                    $user_res_data["description"] ===
-                        "This auth token has been revoked or expired") ||
-                (isset($user_res_data["description"]) &&
-                    $user_res_data["description"] ===
-                        "Couldn't decode auth token")
+                isset($user_res_data["description"]) &&
+                $user_res_data["description"] ===
+                    "This auth token has been revoked or expired"
+                //         ||
+                // (isset($user_res_data["description"]) &&
+                //     $user_res_data["description"] ===
+                //         "Couldn't decode auth token")
             ) {
                 // Access token expired, using refresh token to get a new one
 
