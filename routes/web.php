@@ -99,6 +99,7 @@ Route::get("auth/ivao/callback", [IvaoController::class, "callback"])->name(
 );
 Route::get("auth/ivao/logout", function () {
     Auth::logout();
+    session()->forget("ivao_tokens");
     return redirect()->route("Home");
 })->name("ivao.logout");
 
