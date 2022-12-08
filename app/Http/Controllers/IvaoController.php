@@ -157,7 +157,7 @@ class IvaoController extends Controller
         session(["url.intended" => url()->previous()]);
         if (
             session("url.intended") == config("app.url") . "/login" ||
-            session("url.intended") == config("app.url") . "/auth/ivao/callback"
+            session("url.intended") == config("app.url") . "/auth/callback"
         ) {
             session(["url.intended" => "/"]);
         }
