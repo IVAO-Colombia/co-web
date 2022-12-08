@@ -153,7 +153,6 @@ class IvaoController extends Controller
 
     public function sso()
     {
-        // dd(session("ivao_tokens"));
         // session(["url.intended" => url()->previous()]);
         // if (
         //     session("url.intended") == config("app.url") . "/login" ||
@@ -179,7 +178,7 @@ class IvaoController extends Controller
         $base_url = $openid_data["authorization_endpoint"];
         $reponse_type = "code";
         $scopes = "profile configuration email";
-        $state = "1234567890"; // Random string to prevent CSRF attacks
+        $state = rand(100000, 999999); // Random string to prevent CSRF attacks
 
         $query = [
             "response_type" => $reponse_type,
