@@ -2,165 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use App\Models\{User};
-use Socialite;
-use Auth;
-use Exception;
 
-class IvaoController extends Controller
+class IvaoSsoController extends Controller
 {
-    public function redirect()
+    public function sso(Request $request)
     {
-        session(["url.intended" => url()->previous()]);
-        if (
-            session("url.intended") == config("app.url") . "/login" ||
-            session("url.intended") == config("app.url") . "/auth/ivao/callback"
-        ) {
-            session(["url.intended" => "/"]);
-        }
-
-        return Socialite::driver("ivao")->redirect();
-    }
-
-    public function callback()
-    {
-        try {
-            if (config("app.env") == "local") {
-                $user = getUserLocal();
-            } else {
-                $user = Socialite::driver("ivao")
-                    ->user()
-                    ->getRaw();
-            }
-
-            if (!$user) {
-                return redirect()->away("/");
-            }
-
-            $finduser = User::where("id", intval($user["vid"]))->first();
-
-            //caso especial Julian
-            if ($user["vid"] == "653841") {
-                $user["staff"] = ["CO-WMA1"];
-            }
-
-            if ($finduser) {
-                $finduser->firstname = $user["firstname"];
-                $finduser->lastname = $user["lastname"];
-                $finduser->rating = intval($user["rating"]);
-                $finduser->ratingatc = intval($user["ratingatc"]);
-                $finduser->ratingpilot = intval($user["ratingpilot"]);
-                $finduser->division = $user["division"];
-                $finduser->country = $user["country"];
-                $finduser->staff = implode(",", $user["staff"]);
-                $finduser->va_staff_ids = implode(",", $user["va_staff_ids"]);
-                $finduser->va_member_ids = implode(",", $user["va_member_ids"]);
-                $finduser->save();
-                Auth::login($finduser);
-            } else {
-                $newUser = User::create([
-                    "id" => intval($user["vid"]),
-                    "firstname" => $user["firstname"],
-                    "lastname" => $user["lastname"],
-                    "email" => $user["vid"],
-                    "rating" => intval($user["rating"]),
-                    "ratingatc" => intval($user["ratingatc"]),
-                    "ratingpilot" => intval($user["ratingpilot"]),
-                    "division" => $user["division"],
-                    "country" => $user["country"],
-                    "staff" => implode(",", $user["staff"]),
-                    "va_staff_ids" => implode(",", $user["va_staff_ids"]),
-                    "va_member_ids" => implode(",", $user["va_member_ids"]),
-                    "password" => bcrypt("colombia"),
-                ]);
-
-                Auth::login($newUser);
-            }
-
-            $userlog = Auth::user();
-            syncTeams($userlog);
-
-            return redirect(session("url.intended"));
-        } catch (Exception $e) {
-            dd($e->getMessage());
-        }
-    }
-
-    public function sso_application()
-    {
-        // Get all URLs we need from the server
-        $openid_url = "https://api.ivao.aero/.well-known/openid-configuration";
-        $openid_result = file_get_contents($openid_url, false);
-        if ($openid_result === false) {
-            /* Handle error */
-            die("Error while getting openid data");
-        }
-        $openid_data = json_decode($openid_result, true);
-
-        $token_req_data = [
-            "grant_type" => "client_credentials",
-            "client_id" => env("IVAO_CLIENTID"),
-            "client_secret" => env("IVAO_SECRET"),
-            "scope" => "profile",
-        ];
-
-        // use key 'http' even if you send the request to https://...
-        $token_options = [
-            "http" => [
-                "header" =>
-                    "Content-type: application/x-www-form-urlencoded\r\n",
-                "method" => "POST",
-                "content" => http_build_query($token_req_data),
-            ],
-        ];
-        $token_context = stream_context_create($token_options);
-        $token_result = file_get_contents(
-            $openid_data["token_endpoint"],
-            false,
-            $token_context
-        );
-        if ($token_result === false) {
-            /* Handle error */
-            die("Error while getting token");
-        }
-        $token_res_data = json_decode($token_result, true);
-        $access_token = $token_res_data["access_token"]; // Here is the access token
-
-        // Now we can use the access token to get the data
-
-        $tracker_url = "https://api.ivao.aero/v2/tracker/now/pilots/summary";
-        $tracker_options = [
-            "http" => [
-                "header" => "Authorization: Bearer $access_token\r\n",
-                "method" => "GET",
-            ],
-        ];
-        $tracker_context = stream_context_create($tracker_options);
-        $tracker_result = file_get_contents(
-            $tracker_url,
-            false,
-            $tracker_context
-        );
-        if ($tracker_result === false) {
-            /* Handle error */
-            die("Error while getting tracker data");
-        }
-        $tracker_res_data = json_decode($tracker_result, true);
-
-        dd($tracker_res_data); // Display data fetched with the application token
-    }
-
-    public function sso()
-    {
-        // session(["url.intended" => url()->previous()]);
-        // if (
-        //     session("url.intended") == config("app.url") . "/login" ||
-        //     session("url.intended") == config("app.url") . "/auth/callback"
-        // ) {
-        //     session(["url.intended" => "/"]);
-        // }
-
         // Now we can take care of the actual authentication
         $client_id = env("IVAO_CLIENTID");
         $client_secret = env("IVAO_SECRET");
@@ -189,10 +37,10 @@ class IvaoController extends Controller
         ];
         $full_url = "$base_url?" . http_build_query($query);
 
-        if (isset($_GET["code"]) && isset($_GET["state"])) {
+        if (isset($request->code) && isset($request->state)) {
             // User has been redirected back from the login page
 
-            $code = $_GET["code"]; // Valid only 15 seconds
+            $code = $request->code; // Valid only 15 seconds
 
             $token_req_data = [
                 "grant_type" => "authorization_code",
@@ -263,10 +111,6 @@ class IvaoController extends Controller
                 isset($user_res_data["description"]) &&
                 $user_res_data["description"] ===
                     "This auth token has been revoked or expired"
-                //         ||
-                // (isset($user_res_data["description"]) &&
-                //     $user_res_data["description"] ===
-                //         "Couldn't decode auth token")
             ) {
                 // Access token expired, using refresh token to get a new one
 
@@ -324,16 +168,10 @@ class IvaoController extends Controller
     {
         $finduser = User::where("id", intval($user["id"]))->first();
 
-        //caso especial Julian
-        if ($user["id"] == "653841") {
-            $user["staff"] = ["CO-WMA1"];
-        }
-
         if ($finduser) {
             $finduser->firstname = $user["firstName"];
             $finduser->lastname = $user["lastName"];
             $finduser->email = $user["email"];
-            // $finduser->rating = implode($user["rating"]);
             $finduser->ratingatc = intval($user["rating"]["atcRating"]["id"]);
             $finduser->ratingpilot = intval(
                 $user["rating"]["pilotRating"]["id"]
@@ -341,8 +179,7 @@ class IvaoController extends Controller
             $finduser->division = $user["divisionId"];
             $finduser->country = $user["countryId"];
             $finduser->staff = staffLogin($user["userStaffPositions"]);
-            // $finduser->va_staff_ids = implode(",", $user["va_staff_ids"]);
-            // $finduser->va_member_ids = implode(",", $user["va_member_ids"]);
+
             $finduser->save();
             Auth::login($finduser);
         } else {
@@ -351,14 +188,11 @@ class IvaoController extends Controller
                 "firstname" => $user["firstName"],
                 "lastname" => $user["lastName"],
                 "email" => $user["email"],
-                // "rating" => intval($user["rating"]),
                 "ratingatc" => intval($user["rating"]["atcRating"]["id"]),
                 "ratingpilot" => intval($user["rating"]["pilotRating"]["id"]),
                 "division" => $user["divisionId"],
                 "country" => $user["countryId"],
                 "staff" => staffLogin($user["userStaffPositions"]),
-                // "va_staff_ids" => implode(",", $user["va_staff_ids"]),
-                // "va_member_ids" => implode(",", $user["va_member_ids"]),
                 "password" => bcrypt("colombia"),
             ]);
 
@@ -366,9 +200,7 @@ class IvaoController extends Controller
         }
 
         $userlog = Auth::user();
-        syncTeams($userlog);
 
-        // return redirect(session("url.intended"));
         return redirect()->route("Home");
     }
 }
