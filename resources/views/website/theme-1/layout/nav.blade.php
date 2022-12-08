@@ -12,7 +12,7 @@
                           <li><a target="_blank"
                                   href="https://www.aerocivil.gov.co/servicios-a-la-navegacion/servicio-de-informacion-aeronautica-ais/aerodromos">{{ __('Navigation Charts') }}</a>
                           </li>
-                          <li><a target="_blank" href="https://www.ivao.aero/software/altitude">Altitude
+                          <li><a target="_blank" href="https://www.ivao.aero/softdev/software/altitude.asp">Altitude
                                   Software</a>
                           </li>
                       </ul>
@@ -28,7 +28,7 @@
                           <li> <a target="_blank"
                                   href="https://www.aerocivil.gov.co/servicios-a-la-navegacion/servicio-de-informacion-aeronautica-ais/aerodromos">{{ __('Navigation Charts') }}</a>
                           </li>
-                          <li> <a target="_blank" href="https://www.ivao.aero/software/aurora">Aurora
+                          <li> <a target="_blank" href="https://www.ivao.aero/softdev/software/aurora.asp">Aurora
                                   Software</a> </li>
                       </ul>
 
