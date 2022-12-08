@@ -311,7 +311,6 @@ class IvaoController extends Controller
                 ]);
 
                 return redirect()->route("ivao.login-sso");
-                // header("Location: user.php"); // Try to use the access token again
             } else {
                 // dd($user_res_data); // Display user data fetched with the access token
                 return $this->handlerLogin($user_res_data);
