@@ -154,13 +154,13 @@ class IvaoController extends Controller
     public function sso()
     {
         // dd(session("ivao_tokens"));
-        session(["url.intended" => url()->previous()]);
-        if (
-            session("url.intended") == config("app.url") . "/login" ||
-            session("url.intended") == config("app.url") . "/auth/callback"
-        ) {
-            session(["url.intended" => "/"]);
-        }
+        // session(["url.intended" => url()->previous()]);
+        // if (
+        //     session("url.intended") == config("app.url") . "/login" ||
+        //     session("url.intended") == config("app.url") . "/auth/callback"
+        // ) {
+        //     session(["url.intended" => "/"]);
+        // }
 
         // Now we can take care of the actual authentication
         $client_id = env("IVAO_CLIENTID");
@@ -370,6 +370,7 @@ class IvaoController extends Controller
         $userlog = Auth::user();
         syncTeams($userlog);
 
-        return redirect(session("url.intended"));
+        // return redirect(session("url.intended"));
+        return redirect()->route("Home");
     }
 }
