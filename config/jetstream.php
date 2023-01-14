@@ -55,7 +55,6 @@ return [
     | these features or you can even remove all of these if you need to.
     |
     */
-
     "features" => [
         // Features::termsAndPrivacyPolicy(),
         Features::profilePhotos(),

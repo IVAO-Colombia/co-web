@@ -37,9 +37,8 @@
                   <li class="dropdown">
                       <a href="#">{{ __('Trainings') }}</a>
                       <ul class="dropdown-menu">
-                          <li><a href="https://www.ivao.aero/training/training/statustraining.asp"
-                                  target="_blank">{{ __('Request Training') }}</a></li>
-
+                     
+                          <li><a href="https://www.ivao.aero/training/training/statustraining.asp" target="_blank">{{ __('Request Training') }}</a></li>
 
                       </ul>
                   </li>
@@ -52,9 +51,16 @@
 
                       </ul>
                   </li>
-                  <li><a href="http://co.forum.ivao.aero/" target="_blank">{{ __('Forum') }}</a>
+                  
                   </li>
-
+                  <li class="dropdown"><a href="#">{{ __('utilities') }}</a>
+                    <ul class="dropdown-menu">
+                        <li> <a href="" title="{{__('Any problem? ask for support on our official discord')}}">{{ __('Discord') }}</a>
+                        <li><a href="http://co.forum.ivao.aero/" target="_blank">{{ __('Forum') }}</a>        
+                        <li><a href="https://tours.at.ivao.aero/index.php?div=CO" target="_blank">{{ __('Tours') }}</a>
+                        <li><a href="https://eaip-colombia.atnaerocivil.gov.co/eaip/AIRAC%20AMDT%2064-22_2022_12_29/index.html" target="_blank">{{ __('eAIP') }}</a>
+                    </ul>
+                </li>
                   @if (Auth::check())
                       <li class="dropdown">
                           <a href="#">{{ Auth::user()->firstname }} - {{ Auth::user()->id }}</a>
