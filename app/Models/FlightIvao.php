@@ -13,9 +13,14 @@ class FlightIvao extends Model
     public static function flightsV2($soloVuelos = false)
     {
         $whazzupivao = Cache::remember("whazzupivao", 20, function () {
-            $filecontents = file_get_contents(
-                "https://api.ivao.aero/v2/tracker/whazzup"
-            );
+            try {
+                $filecontents = file_get_contents(
+                    "https://api.ivao.aero/v2/tracker/whazzup"
+                );
+            } catch (\Throwable $th) {
+                $filecontents = null;
+            }
+
             return $filecontents;
         });
 
@@ -74,15 +79,17 @@ class FlightIvao extends Model
     private static function flightsOut($data, $countryicao)
     {
         $arrayDeparture = [];
-        foreach ($data->clients->pilots as $key => $value) {
-            if (
-                substr(
-                    $value->flightPlan->departureId,
-                    0,
-                    strlen($countryicao)
-                ) == $countryicao
-            ) {
-                $arrayDeparture[] = $value;
+        if ($data) {
+            foreach ($data->clients->pilots as $key => $value) {
+                if (
+                    substr(
+                        $value->flightPlan->departureId,
+                        0,
+                        strlen($countryicao)
+                    ) == $countryicao
+                ) {
+                    $arrayDeparture[] = $value;
+                }
             }
         }
 
@@ -92,15 +99,17 @@ class FlightIvao extends Model
     private static function flightsIn($data, $countryicao)
     {
         $arrayIn = [];
-        foreach ($data->clients->pilots as $key => $value) {
-            if (
-                substr(
-                    $value->flightPlan->arrivalId,
-                    0,
-                    strlen($countryicao)
-                ) == $countryicao
-            ) {
-                $arrayIn[] = $value;
+        if ($data) {
+            foreach ($data->clients->pilots as $key => $value) {
+                if (
+                    substr(
+                        $value->flightPlan->arrivalId,
+                        0,
+                        strlen($countryicao)
+                    ) == $countryicao
+                ) {
+                    $arrayIn[] = $value;
+                }
             }
         }
 
@@ -110,28 +119,34 @@ class FlightIvao extends Model
     private static function atcs($data, $countryicao)
     {
         $arrayatc = [];
-        foreach ($data->clients->atcs as $key => $value) {
-            if (
-                substr($value->callsign, 0, strlen($countryicao)) ==
-                $countryicao
-            ) {
-                $arrayatc[] = $value;
+        if ($data) {
+            foreach ($data->clients->atcs as $key => $value) {
+                if (
+                    substr($value->callsign, 0, strlen($countryicao)) ==
+                    $countryicao
+                ) {
+                    $arrayatc[] = $value;
+                }
             }
         }
+
         return $arrayatc;
     }
 
     private static function staff($data, $staffcountry)
     {
         $arraystaff = [];
-        foreach ($data->clients->observers as $key => $value) {
-            if (
-                substr($value->callsign, 0, strlen($staffcountry)) ==
-                $staffcountry
-            ) {
-                $arraystaff[] = $value;
+        if ($data) {
+            foreach ($data->clients->observers as $key => $value) {
+                if (
+                    substr($value->callsign, 0, strlen($staffcountry)) ==
+                    $staffcountry
+                ) {
+                    $arraystaff[] = $value;
+                }
             }
         }
+
         return $arraystaff;
     }
 }

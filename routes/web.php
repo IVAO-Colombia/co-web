@@ -15,7 +15,8 @@ use App\Http\Livewire\Admin\{
     Sliders,
     Airports,
     Virtualairlines,
-    Trainings
+    Trainings,
+    Teams
 };
 
 /*
@@ -40,6 +41,7 @@ Route::get("locale/{locale}", function ($locale) {
 
 Route::controller(FrontController::class)->group(function () {
     Route::get("/", "index")->name("Home");
+
     Route::get("/gca", "gca")->name("front.gca");
     Route::get("/about", "about")->name("front.about");
     Route::get("/fra", "fra")->name("front.fra");
@@ -78,15 +80,26 @@ Route::controller(FrontController::class)->group(function () {
 IVAO Login
 */
 
-Route::get("auth/ivao", [IvaoController::class, "redirect"])->name(
-    "ivao.login"
+// Route::get("auth/ivao", [IvaoController::class, "redirect"])->name(
+//     "ivao.login"
+// );
+
+Route::get("auth/ivao-sso", [IvaoController::class, "sso"])->name(
+    "ivao.login-sso"
 );
+
+Route::get("auth/callback", [IvaoController::class, "sso"])->name(
+    "ivao.login-sso-callback"
+);
+
+Route::get("auth/ivao", [IvaoController::class, "sso"])->name("ivao.login");
 
 Route::get("auth/ivao/callback", [IvaoController::class, "callback"])->name(
     "ivao.callback"
 );
 Route::get("auth/ivao/logout", function () {
     Auth::logout();
+    session()->forget("ivao_tokens");
     return redirect()->route("Home");
 })->name("ivao.logout");
 
@@ -102,6 +115,7 @@ Route::middleware([
         return view("dashboard");
     })->name("dashboard");
 
+    Route::get("/staff/teams", Teams::class)->name("teams.index");
     Route::get("/staff/events", Events::class)->name("events.index");
     Route::get("/staff/sliders", Sliders::class)->name("sliders.index");
     Route::get("/staff/airports", Airports::class)->name("airports.index");
