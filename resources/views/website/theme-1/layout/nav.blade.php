@@ -53,7 +53,13 @@
                   </li>
                   <li><a href="http://co.forum.ivao.aero/" target="_blank">{{ __('Forum') }}</a>
                   </li>
-
+                  <li class="dropdown"><a href="#">{{ __('Social') }}</a>
+                    <ul class="dropdown-menu">
+                        <li></a></li>
+                        <li> <a href="{{ route('front.fra') }}">{{ __('Which airport can I control?') }}</a> </li>
+                        <li> <a href="{{ route('front.gca') }}">{{ __('Guest Controller Approval') }}</a> </li>
+                    </ul>
+                </li>
                   @if (Auth::check())
                       <li class="dropdown">
                           <a href="#">{{ Auth::user()->firstname }} - {{ Auth::user()->id }}</a>
