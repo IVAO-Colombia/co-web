@@ -38,8 +38,6 @@
                       <a href="#">{{ __('Traning') }}</a>
                       <ul class="dropdown-menu">
                           <li><a href="https://www.ivao.aero/training/training/statustraining.asp" target="_blank">{{ __('Request Training') }}</a></li>
-
-
                       </ul>
                   </li>
                   <li class="dropdown"><a href="#">{{ __('Community') }}</a>
