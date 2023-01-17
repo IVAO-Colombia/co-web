@@ -10,12 +10,12 @@ use App\Models\{
     FlightIvao,
     Slider,
     Airport,
+    Documentation,
     Event,
     Virtualairline,
     Training,
     User
 };
-use Mail;
 
 class FrontController extends Controller
 {
@@ -37,6 +37,8 @@ class FrontController extends Controller
             ->back()
             ->with("success", "Update Successfuly");
     }
+
+    
 
     function index()
     {
@@ -66,6 +68,13 @@ class FrontController extends Controller
     {
         $events = Event::orderBy("start_publish_date", "desc")->paginate(12);
         return view("website.theme-1.events", compact("events"));
+    }
+
+    public function docs()
+    {
+        $documents = Documentation::all();
+
+        return view('website.theme-1.docs', compact('documents'));
     }
 
     public function eventscalendar()
@@ -122,7 +131,7 @@ class FrontController extends Controller
             )
         );
     }
-
+/*
     public function trainingatc(Request $request)
     {
         $trainingATC = Training::where("typetraining", "ATC")
@@ -177,7 +186,7 @@ class FrontController extends Controller
         return redirect()
             ->back()
             ->with("success", "Entrenamiento solicitado exitosamente!");
-    }
+    } */
 
     public function fasttrack(Request $request, $callsign)
     {
@@ -217,7 +226,7 @@ class FrontController extends Controller
         }
     }
 
-    /*   Cambio de lenguaje a ingles en los solicitudes de Tr
+    /*   Cambio de lenguaje a ingles en los solicitudes de Tr */
 
      function trainingEn(){
             if (app()->isLocale("es")) {
@@ -227,7 +236,7 @@ class FrontController extends Controller
         }
         
     }
-*/
+
     function fra()
     {
         return view("website.theme-1.fra");
@@ -244,9 +253,4 @@ class FrontController extends Controller
         );
     }
 
-    function sendcontact(Request $request)
-    {
-        Mail::to("edgardoalvarez100@gmail.com")->send(new Sendcontact());
-        echo "Enviado";
-    }
 }
