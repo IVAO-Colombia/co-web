@@ -42,14 +42,14 @@
                                             </p>
                                         </td>
                                     </tr>
-                                @foreach ($documents as $documents)
-                                    @if($documents->type == "controller")
+                                @foreach ($documents as $document)
+                                    @if($document->type == "controller")
                                     <tr>
                                         <td>
-                                            <p>{{ $documents->name}}</p>
+                                            <p>{{ $document->name}}</p>
                                         </td>
                                         <td>
-                                            <a href="{{ asset($documents->route ) }}" target="_blank">PDF</a>
+                                            <a href="{{ asset($document->route ) }}" target="_blank">PDF</a>
                                         </td>
                                     </tr>                  
                                     @endif
@@ -73,14 +73,14 @@
                                             </p>
                                         </td>
                                     </tr>
-                                @foreach ($documents as $documents)
-                                    @if($documents->type == "pilot")
+                                @foreach ($documents as $document)
+                                    @if($document->type == "pilot")
                                     <tr>
                                         <td>
-                                            <p>{{ $documents->name}}</p>
+                                            <p>{{ $document->name}}</p>
                                         </td>
                                         <td>
-                                            <a href="{{ asset($documents->route ) }}" target="_blank">PDF</a>
+                                            <a href="{{ asset($document->route ) }}" target="_blank">PDF</a>
                                         </td>
                                     </tr>                  
                                     @endif
