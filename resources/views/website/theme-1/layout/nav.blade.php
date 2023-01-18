@@ -22,6 +22,7 @@
                           </li>
                           <li> <a href="{{ route('front.fra') }}">{{ __('Which airport can I control?') }}</a> </li>
                           <li> <a href="{{ route('front.gca') }}">{{ __('Guest Controller Approval') }}</a> </li>
+                          <li> <a href="{{ asset('theme-1/docs/public/Manual Sectorfile SKED-EC.pdf') }}">{{ __('Manual Aurora') }}</a> </li>
                           <li> <a target="_blank" href="https://www.ivao.aero/softdev/software/aurora.asp">Aurora
                                   Software</a> </li>
                       </ul>
@@ -55,7 +56,7 @@
                         <li><a href="http://co.forum.ivao.aero/" target="_blank">{{ __('Forum') }}</a>        
                         <li><a href="https://tours.at.ivao.aero/index.php?div=CO" target="_blank">{{ __('Tours') }}</a>
                         <li><a href="https://eaip-colombia.atnaerocivil.gov.co/eaip/AIRAC%20AMDT%2064-22_2022_12_29/index.html" target="_blank">{{ __('eAIP') }}</a>
-                        <li><a href="{{ route('front.docs') }}">{{ __('Docs') }}</a>
+                        <li><a href="{{ route('front.docs') }}">{{ __('Documentation') }}</a>
                     </ul>
                 </li>
                   @if (Auth::check())
