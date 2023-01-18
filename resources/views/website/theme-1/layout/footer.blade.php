@@ -8,11 +8,11 @@
                             <div class="widget">
                                 <div class="widget-title">{{ __('Social Networks') }}</div>
                                 <ul class="list">
-                                    <li> <a href="" target="_blank">{{ __('Instagram') }}</a> </li>
-                                    <li> <a href="" target="_blank">{{ __('Facebook') }}</a> </li>
+                                    <li> <a href="https://www.instagram.com/ivao.co/" target="_blank">{{ __('Instagram') }}</a> </li>
+                                    <li> <a href="https://www.facebook.com/ivaoco" target="_blank">{{ __('Facebook') }}</a> </li>
                                     <li> <a href="" target="_blank">{{ __('Twitch') }}</a> </li>
-                                    <li> <a href="" target="_blank">{{ __('YouTube') }}</a> </li>
-                                    <li> <a href="" target="_blank">{{ __('Twitter') }}</a> </li>
+                                    <li> <a href="https://www.youtube.com/@IVAOColombia/videos" target="_blank">{{ __('YouTube') }}</a> </li>
+                                    <li> <a href="https://twitter.com/IVAOCO" target="_blank">{{ __('Twitter') }}</a> </li>
                                 </ul>
                             </div>
                         </div>

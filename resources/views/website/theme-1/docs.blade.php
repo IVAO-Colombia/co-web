@@ -10,7 +10,7 @@
                 <div class="slide-captions text-center text-light">
                     <!-- Captions -->
 
-                    <h1>{{ __('Docs') }}</h1>
+                    <h1>{{ __('Documentation') }}</h1>
                     <!-- end: Captions -->
                 </div>
             </div>
@@ -26,23 +26,29 @@
 
 
             <div class="row justify-center flex">
-                    <h2 class="col-md-8">Controladores</h2>
+                @if (count($documents) > 0)
+                    <h2 class="col-md-8">{{__('ATC')}}</h2>
                         <div class="col-md-8">
                             <table class="table table-bordered">
                                 <tbody>
                                     <tr>
                                         <td>
                                             <p>
-                                                <strong>Documento</strong>
+                                                <strong>{{__('Document')}}</strong>
                                             </p>
                                         </td>
                                         <td>
                                             <p>
-                                                <strong>Descarga</strong>
+                                                <strong>{{__('Download')}}</strong>
                                             </p>
                                         </td>
                                     </tr>
                                 @foreach ($documents as $document)
+                                
+
+
+                                    
+                                
                                     @if($document->type == "controller")
                                     <tr>
                                         <td>
@@ -57,19 +63,19 @@
                                 </tbody>
                             </table>
                         </div>
-                        <h2 class="col-md-8">Piloto</h2>
+                        <h2 class="col-md-8">{{__('Pilot')}}</h2>
                         <div class="col-md-8">
                             <table class="table table-bordered">
                                 <tbody>
                                     <tr>
                                         <td>
                                             <p>
-                                                <strong>Documento</strong>
+                                                <strong>{{__('Document')}}</strong>
                                             </p>
                                         </td>
                                         <td>
                                             <p>
-                                                <strong>Descarga</strong>
+                                                <strong>{{__('Download')}}</strong>
                                             </p>
                                         </td>
                                     </tr>
@@ -87,6 +93,9 @@
                                 @endforeach           
                                 </tbody>
                             </table>
+                            @else
+                            <h3>No hay ningun documento disponible ahora mismo</h3>
+                            @endif
                         </div>              
                 </div>
             </div>
