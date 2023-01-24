@@ -68,7 +68,7 @@ class Virtualairlines extends Component
         $this->airline_tracker_name = $virtualiarline->name;
         // \DB::enableQueryLog();
         $this->airline_tracker = Trackerva::selectRaw(
-            "virtualairines_id, WEEK(created_at, 1) week, SUM(TIMESTAMPDIFF(SECOND, departureTime, arrivalTime )) as secondFlight"
+            "virtualairines_id, WEEK(created_at, 1) week,YEAR(created_at) anno, SUM(TIMESTAMPDIFF(SECOND, departureTime, arrivalTime )) as secondFlight"
         )
             ->whereBetween("created_at", [
                 DB::raw("DATE_SUB(NOW(), INTERVAL 90 DAY)"),
@@ -78,7 +78,7 @@ class Virtualairlines extends Component
             ->whereNotNull("departureTime")
             ->whereNotNull("arrivalTime")
             ->groupByRaw("week")
-            ->orderByRaw("week desc")
+            ->orderByRaw("anno desc,week desc")
             ->get();
         // dd(\DB::getQueryLog());
     }

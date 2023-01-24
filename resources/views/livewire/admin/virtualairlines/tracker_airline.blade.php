@@ -29,7 +29,8 @@
                                     <td
                                         class="border-b border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400">
                                         @php
-                                            $week_start = (new DateTime())->setISODate(date('Y'), $item->week)->format('Y-m-d H:i:s');
+                                            // dd($item->week);
+                                            $week_start = (new DateTime())->setISODate($item->anno, $item->week)->format('Y-m-d H:i:s');
 
                                             $start = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $week_start);
 
