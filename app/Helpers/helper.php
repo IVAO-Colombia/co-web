@@ -167,6 +167,10 @@ function syncTeams($user)
         env("APP_DIVISION") . "-TA8",
         env("APP_DIVISION") . "-TA9",
         env("APP_DIVISION") . "-T01",
+        env("APP_DIVISION") . "-T02",
+        env("APP_DIVISION") . "-T03",
+        env("APP_DIVISION") . "-T04",
+        env("APP_DIVISION") . "-T05",
     ];
     $miembros = [env("APP_DIVISION") . "-MC", env("APP_DIVISION") . "-MAC"];
     $eventos = [
