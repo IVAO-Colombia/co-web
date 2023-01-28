@@ -44,7 +44,8 @@ class FrontController extends Controller
         //     "? between start_publish_date and DATE_ADD(end_publish_date, INTERVAL 1 DAY)",
         //     [Carbon::now()]
         // )
-        $featuredEvents = Event::orderBy("featured", "DESC")
+        $featuredEvents = Event::where("public", true)
+            ->orderBy("featured", "DESC")
             ->orderBy("start_publish_date", "desc")
             ->limit(3)
             ->get();
@@ -64,7 +65,9 @@ class FrontController extends Controller
 
     public function events()
     {
-        $events = Event::orderBy("start_publish_date", "desc")->paginate(12);
+        $events = Event::orderBy("start_publish_date", "desc")
+            ->where("public", true)
+            ->paginate(12);
         return view("website.theme-1.events", compact("events"));
     }
 
