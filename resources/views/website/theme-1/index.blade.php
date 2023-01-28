@@ -93,6 +93,7 @@
             </div>
             <div class="d-flex justify-content-center">
                 <a href="{{ route('front.events') }}" class="btn btn-light btn-lg">{{ __('More Events') }}</a>
+                <a href="{{ route('front.eventscalendar') }}" class="btn btn-light btn-lg">{{ __('Calendar') }}</a>
             </div>
         </div>
     </section>
