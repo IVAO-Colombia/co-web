@@ -54,7 +54,7 @@
             editable: false,
             eventLimit: true, // allow "more" link when too many events
             events: [
-                @foreach ($events as $item)
+                @foreach ($publicEvents as $item)
                     {
                         title: '{{ $item->title }}',
                         start: '{{ $item->start_publish_date }}',
@@ -62,6 +62,16 @@
                         url: '{{ route('front.event_detail', $item->slug) }}',
                     },
                 @endforeach
+                @if (isStaff(auth()->user()))
+                    @foreach ($privateEvents as $item)
+                        {
+                            title: '{{ $item->title }}',
+                            start: '{{ $item->start_publish_date }}',
+                            className: 'fc-event-secondary',
+                            url: '{{ route('front.event_detail', $item->slug) }}',
+                        },
+                    @endforeach
+                @endif
             ]
         });
     </script>

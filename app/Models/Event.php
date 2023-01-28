@@ -30,6 +30,7 @@ class Event extends Model
         "has_booking",
         "confirm_booking",
         "featured",
+        "public",
     ];
 
     /**

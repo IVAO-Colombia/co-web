@@ -28,6 +28,7 @@ class Events extends Component
         $has_booking = false,
         $confirm_booking = false,
         $featured = false,
+        $public = true,
         $editing = false;
 
     public $search,
@@ -96,6 +97,7 @@ class Events extends Component
                 "has_booking" => $this->has_booking,
                 "confirm_booking" => $this->confirm_booking,
                 "featured" => $this->featured,
+                "public" => $this->public,
             ]
         );
 
@@ -126,6 +128,7 @@ class Events extends Component
         $this->has_booking = $event->has_booking;
         $this->confirm_booking = $event->confirm_booking;
         $this->featured = $event->featured;
+        $this->public = $event->public;
         $this->openModal();
     }
 

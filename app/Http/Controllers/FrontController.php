@@ -38,8 +38,6 @@ class FrontController extends Controller
             ->with("success", "Update Successfuly");
     }
 
-    
-
     function index()
     {
         // whereRaw(
@@ -74,13 +72,21 @@ class FrontController extends Controller
     {
         $documents = Documentation::all();
 
-        return view('website.theme-1.docs', compact('documents'));
+        return view("website.theme-1.docs", compact("documents"));
     }
 
     public function eventscalendar()
     {
-        $events = Event::orderBy("start_publish_date", "desc")->get();
-        return view("website.theme-1.eventscalendar", compact("events"));
+        $publicEvents = Event::orderBy("start_publish_date", "desc")
+            ->where("public", true)
+            ->get();
+        $privateEvents = Event::orderBy("start_publish_date", "desc")
+            ->where("public", false)
+            ->get();
+        return view(
+            "website.theme-1.eventscalendar",
+            compact("publicEvents", "privateEvents")
+        );
     }
 
     public function event_detail(Request $request, Event $event)
@@ -131,7 +137,7 @@ class FrontController extends Controller
             )
         );
     }
-/*
+    /*
     public function trainingatc(Request $request)
     {
         $trainingATC = Training::where("typetraining", "ATC")
@@ -228,13 +234,13 @@ class FrontController extends Controller
 
     /*   Cambio de lenguaje a ingles en los solicitudes de Tr */
 
-     function trainingEn(){
-            if (app()->isLocale("es")) {
+    function trainingEn()
+    {
+        if (app()->isLocale("es")) {
             return view("website.theme-1.training");
-            } else {
+        } else {
             return view("website.theme-1.training-en");
         }
-        
     }
 
     function fra()
@@ -252,5 +258,4 @@ class FrontController extends Controller
             compact("virtualairlines")
         );
     }
-
 }
