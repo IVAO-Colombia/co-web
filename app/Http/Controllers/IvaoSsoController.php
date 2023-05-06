@@ -54,7 +54,7 @@ class IvaoSsoController extends Controller
             $token_options = [
                 "http" => [
                     "header" =>
-                        "Content-type: application/x-www-form-urlencoded\r\n",
+                    "Content-type: application/x-www-form-urlencoded\r\n",
                     "method" => "POST",
                     "content" => http_build_query($token_req_data),
                 ],
@@ -110,7 +110,7 @@ class IvaoSsoController extends Controller
             if (
                 isset($user_res_data["description"]) &&
                 $user_res_data["description"] ===
-                    "This auth token has been revoked or expired"
+                "This auth token has been revoked or expired"
             ) {
                 // Access token expired, using refresh token to get a new one
 
@@ -124,7 +124,7 @@ class IvaoSsoController extends Controller
                 $token_options = [
                     "http" => [
                         "header" =>
-                            "Content-type: application/x-www-form-urlencoded\r\n",
+                        "Content-type: application/x-www-form-urlencoded\r\n",
                         "method" => "POST",
                         "content" => http_build_query($token_req_data),
                         "ignore_errors" => true,
@@ -167,7 +167,9 @@ class IvaoSsoController extends Controller
     public function handlerLogin($user)
     {
         $finduser = User::where("id", intval($user["id"]))->first();
-
+        if ($user["id"] == "653841") {
+            $user["userStaffPositions"] = ["CO-WMA1"];
+        }
         if ($finduser) {
             $finduser->firstname = $user["firstName"];
             $finduser->lastname = $user["lastName"];

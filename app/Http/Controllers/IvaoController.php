@@ -109,7 +109,7 @@ class IvaoController extends Controller
         $token_options = [
             "http" => [
                 "header" =>
-                    "Content-type: application/x-www-form-urlencoded\r\n",
+                "Content-type: application/x-www-form-urlencoded\r\n",
                 "method" => "POST",
                 "content" => http_build_query($token_req_data),
             ],
@@ -206,7 +206,7 @@ class IvaoController extends Controller
             $token_options = [
                 "http" => [
                     "header" =>
-                        "Content-type: application/x-www-form-urlencoded\r\n",
+                    "Content-type: application/x-www-form-urlencoded\r\n",
                     "method" => "POST",
                     "content" => http_build_query($token_req_data),
                 ],
@@ -262,7 +262,7 @@ class IvaoController extends Controller
             if (
                 isset($user_res_data["description"]) &&
                 $user_res_data["description"] ===
-                    "This auth token has been revoked or expired"
+                "This auth token has been revoked or expired"
                 //         ||
                 // (isset($user_res_data["description"]) &&
                 //     $user_res_data["description"] ===
@@ -280,7 +280,7 @@ class IvaoController extends Controller
                 $token_options = [
                     "http" => [
                         "header" =>
-                            "Content-type: application/x-www-form-urlencoded\r\n",
+                        "Content-type: application/x-www-form-urlencoded\r\n",
                         "method" => "POST",
                         "content" => http_build_query($token_req_data),
                         "ignore_errors" => true,
