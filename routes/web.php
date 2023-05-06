@@ -43,7 +43,7 @@ Route::get("locale/{locale}", function ($locale) {
 Route::controller(FrontController::class)->group(function () {
     Route::get("/", "index")->name("Home");
 
-    
+
     Route::get("/gca", "gca")->name("front.gca");
     Route::get("/about", "about")->name("front.about");
     Route::get("/fra", "fra")->name("front.fra");
@@ -58,7 +58,7 @@ Route::controller(FrontController::class)->group(function () {
         "front.event_detail"
     );
     Route::get("docs", "docs")->name("front.docs");
-    
+
 
     Route::get("/contact/send", "sendcontact")->name("front.sendcontact");
     Route::get("/updateuser", UpdateUser::class)
