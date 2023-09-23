@@ -80,7 +80,7 @@
                           <a href="{{ route('ivao.login') }}">{{ __('Login') }}</a>
                       </li>
                       <li class="d-xl-none d-lg-none d-md-block d-sm-block">
-                          <a href="https://ivao.aero/register" target="_blank">{{ __('Sign Up') }}</a>
+                          <a href="https://www.ivao.aero/members/person/register.htm" target="_blank">{{ __('Sign Up') }}</a>
                       </li>
                   @endif
               </ul>

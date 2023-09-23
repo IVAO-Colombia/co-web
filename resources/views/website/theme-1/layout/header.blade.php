@@ -22,11 +22,10 @@
                         </li>
 
                         <li class="d-none d-xl-block d-lg-block mx-1">
-                            <a href="https://ivao.aero/register" target="_blank"
+                            <a href="https://www.ivao.aero/members/person/register.htm" target="_blank"
                                 class="btn btn-rounded btn-outline btn-light btn-sm">{{ __('Sign Up') }}</a>
                         </li>
                     @endif
-
                     <li>
                         <div class="p-dropdown">
                             <a href="#">
@@ -37,9 +36,6 @@
                             </ul>
                         </div>
                     </li>
-
-
-
                 </ul>
             </div>
             <!--end: Header Extras-->

@@ -16,9 +16,11 @@ class Documentation extends Migration
         Schema::create("documentations", function(Blueprint $table){
 
             $table->id();
-            $table->string('name');
-            $table->string('route');
+            $table->string('name')->unique();
+            $table->string('description')->nullable(true);
             $table->string('type');
+            $table->string('file')->nullable(true);
+            $table->string("url")->nullable(true);
             $table->timestamps($precision = 0);
 
         });

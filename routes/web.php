@@ -16,7 +16,8 @@ use App\Http\Livewire\Admin\{
     Airports,
     Virtualairlines,
     Trainings,
-    Teams
+    Teams,
+    Documentations
 };
 
 
@@ -43,7 +44,7 @@ Route::get("locale/{locale}", function ($locale) {
 Route::controller(FrontController::class)->group(function () {
     Route::get("/", "index")->name("Home");
 
-    
+
     Route::get("/gca", "gca")->name("front.gca");
     Route::get("/about", "about")->name("front.about");
     Route::get("/fra", "fra")->name("front.fra");
@@ -58,7 +59,7 @@ Route::controller(FrontController::class)->group(function () {
         "front.event_detail"
     );
     Route::get("docs", "docs")->name("front.docs");
-    
+
 
     Route::get("/contact/send", "sendcontact")->name("front.sendcontact");
     Route::get("/updateuser", UpdateUser::class)
@@ -124,6 +125,7 @@ Route::middleware([
     Route::get("/staff/sliders", Sliders::class)->name("sliders.index");
     Route::get("/staff/airports", Airports::class)->name("airports.index");
     Route::get("/staff/trainings", Trainings::class)->name("trainings.index");
+    Route::get("staff/documentations", Documentations::class)->name("documentations.index");
     Route::get("/staff/virtualairlines", Virtualairlines::class)->name(
         "virtualairlines.index"
     );

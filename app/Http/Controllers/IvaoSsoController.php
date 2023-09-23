@@ -55,6 +55,7 @@ class IvaoSsoController extends Controller
                 "http" => [
                     "header" =>
                     "Content-type: application/x-www-form-urlencoded\r\n",
+                    "Content-type: application/x-www-form-urlencoded\r\n",
                     "method" => "POST",
                     "content" => http_build_query($token_req_data),
                 ],
@@ -167,9 +168,6 @@ class IvaoSsoController extends Controller
     public function handlerLogin($user)
     {
         $finduser = User::where("id", intval($user["id"]))->first();
-        if ($user["id"] == "653841") {
-            $user["userStaffPositions"] = ["CO-WMA1"];
-        }
         if ($finduser) {
             $finduser->firstname = $user["firstName"];
             $finduser->lastname = $user["lastName"];
