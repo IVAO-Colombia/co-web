@@ -149,6 +149,7 @@ function syncTeams($user)
         env("APP_DIVISION") . "-WM",
         env("APP_DIVISION") . "-AWM",
         env("APP_DIVISION") . "-WMA1",
+        env("APP_DIVISION") . "-WMA2",
     ];
     $operacionesATC = [
         env("APP_DIVISION") . "-AOC",

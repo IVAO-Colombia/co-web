@@ -18,19 +18,19 @@
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             id="title" wire:model.defer="title">
                         @error('title')
-                            <span class="text-red-600">{{ $message }}</span>
+                        <span class="text-red-600">{{ $message }}</span>
                         @enderror
                     </div>
                     @if ($editing)
-                        <div class="mb-4">
-                            <label for="title" class="block text-gray-700 text-sm font-bold mb-2">Slug:</label>
-                            <input type="text"
-                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                id="title" wire:model.defer="slug">
-                            @error('slug')
-                                <span class="text-red-600">{{ $message }}</span>
-                            @enderror
-                        </div>
+                    <div class="mb-4">
+                        <label for="title" class="block text-gray-700 text-sm font-bold mb-2">Slug:</label>
+                        <input type="text"
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            id="title" wire:model.defer="slug">
+                        @error('slug')
+                        <span class="text-red-600">{{ $message }}</span>
+                        @enderror
+                    </div>
                     @endif
 
                     <div class="mb-4">
@@ -86,7 +86,6 @@
                         <textarea
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             id="description" wire:model.lazy='description'></textarea>
-
                     </div>
 
                     <div class="mb-4">
@@ -94,28 +93,27 @@
                             for="file_input">Image:</label>
                         <input
                             class="block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                            aria-describedby="file_input_help" id="file_input" type="file"
-                            wire:model.defer='imagename'>
+                            aria-describedby="file_input_help" id="file_input" type="file" wire:model.defer='imagename'>
                         <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG, JPG or
                             GIF (Size. 1920x1080px).</p>
                         @error('imagename')
-                            <span class="text-red-600">{{ $message }}</span>
+                        <span class="text-red-600">{{ $message }}</span>
                         @enderror
                         <div wire:loading wire:target="imagename" class=""><img
                                 src="{{ asset('img/Spinner-1s-200px.svg') }}" alt=""></div>
 
                         @if ($imagename)
-                            <div class="mb-4">
-                                <label class="block text-gray-700 text-sm font-bold mb-2 dark:text-gray-300"
-                                    for="file_input">Preview:</label>
-                                <img src="{{ $imagename->temporaryUrl() }}">
-                            </div>
+                        <div class="mb-4">
+                            <label class="block text-gray-700 text-sm font-bold mb-2 dark:text-gray-300"
+                                for="file_input">Preview:</label>
+                            <img src="{{ $imagename->temporaryUrl() }}">
+                        </div>
                         @endif
                     </div>
                     @if ($image)
-                        <div class="mb-4">
-                            <img src="{{ asset('/storage/events/' . $image) }}">
-                        </div>
+                    <div class="mb-4">
+                        <img src="{{ asset('/storage/events/' . $image) }}">
+                    </div>
                     @endif
 
                     {{-- <div class="mb-4">
@@ -183,8 +181,8 @@
 </div>
 
 @once
-    <script>
-        ClassicEditor
+<script>
+    ClassicEditor
             .create(document.querySelector('#description'), {
 
                 // toolbar: ['sourceEditing']
@@ -207,5 +205,5 @@
         // const datePickerEl2 = document.getElementById('end_publish_date');
         // const date = new Datepicker(datePickerEl, options);
         // const date2 = new Datepicker(datePickerEl2, options);
-    </script>
+</script>
 @endonce

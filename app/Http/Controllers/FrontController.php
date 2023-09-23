@@ -73,9 +73,10 @@ class FrontController extends Controller
 
     public function docs()
     {
-        $documents = Documentation::all();
 
-        return view("website.theme-1.docs", compact("documents"));
+        return view("website.theme-1.docs", [
+            "documents" => Documentation::all()
+        ]);
     }
 
     public function eventscalendar()

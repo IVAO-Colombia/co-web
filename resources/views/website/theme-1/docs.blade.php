@@ -43,23 +43,25 @@
                                             </p>
                                         </td>
                                     </tr>
-                                @foreach ($documents as $document)
-                                
-
-
-                                    
-                                
-                                    @if($document->type == "controller")
+                                @foreach ($documents as $item)
+                                @if($item->type == "ATC")
                                     <tr>
                                         <td>
-                                            <p>{{ $document->name}}</p>
+                                            <p title="{{$item->description}}">{{ $item->name}}</p>
                                         </td>
+                                            @if ($item->file != NULL)
+                                            <td>
+                                                <a href="{{ asset('storage/documents/' . $item->file) }}" target="_blank" >PDF</a>
+                                            </td>
+                                        @endif
+                                        @if ($item->url != NULL)
                                         <td>
-                                            <a href="{{ asset($document->route ) }}" target="_blank">PDF</a>
+                                            <a href="{{ $item->url }}" target="_blank" >PDF</a>
                                         </td>
-                                    </tr>                  
                                     @endif
-                                @endforeach      
+                                    </tr>
+                                    @endif
+                                @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -79,24 +81,31 @@
                                             </p>
                                         </td>
                                     </tr>
-                                @foreach ($documents as $document)
-                                    @if($document->type == "pilot")
+                                @foreach ($documents as $item)
+                                    @if($item->type == "PILOT")
                                     <tr>
                                         <td>
-                                            <p>{{ $document->name}}</p>
+                                            <p title="{{$item->description}}">{{ $item->name}}</p>
                                         </td>
+                                        @if ($item->file != NULL)
+                                            <td>
+                                                <a href="{{ asset('storage/documents/' . $item->file) }}" target="_blank" >PDF</a>
+                                            </td>
+                                        @endif
+                                        @if ($item->url != NULL)
                                         <td>
-                                            <a href="{{ asset($document->route ) }}" target="_blank">PDF</a>
+                                            <a href="{{ $item->url }}" target="_blank" >PDF</a>
                                         </td>
-                                    </tr>                  
                                     @endif
-                                @endforeach           
+                                    </tr>
+                                    @endif
+                                @endforeach
                                 </tbody>
                             </table>
                             @else
                             <h3>No hay ningun documento disponible ahora mismo</h3>
                             @endif
-                        </div>              
+                        </div>
                 </div>
             </div>
         </div>

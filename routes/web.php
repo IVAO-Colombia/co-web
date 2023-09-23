@@ -16,7 +16,8 @@ use App\Http\Livewire\Admin\{
     Airports,
     Virtualairlines,
     Trainings,
-    Teams
+    Teams,
+    Documentations
 };
 
 
@@ -124,6 +125,7 @@ Route::middleware([
     Route::get("/staff/sliders", Sliders::class)->name("sliders.index");
     Route::get("/staff/airports", Airports::class)->name("airports.index");
     Route::get("/staff/trainings", Trainings::class)->name("trainings.index");
+    Route::get("staff/documentations", Documentations::class)->name("documentations.index");
     Route::get("/staff/virtualairlines", Virtualairlines::class)->name(
         "virtualairlines.index"
     );
