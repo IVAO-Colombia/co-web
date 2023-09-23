@@ -59,7 +59,7 @@
                                   target="_blank">{{ __('Tours') }}</a>
                           <li><a href="https://eaip-colombia.atnaerocivil.gov.co/eaip/AIRAC%20AMDT%2064-22_2022_12_29/index.html"
                                   target="_blank">{{ __('eAIP') }}</a>
-                          <li><a href="https://drive.google.com/drive/folders/1Imbr6nufomuQCqTRviH8jbGYb7qeUzKX" target="_blank">{{ __('Documentation') }}</a>
+                          <li><a href="{{ route('front.docs') }}">{{ __('Documentation') }}</a>
                       </ul>
                   </li>
                   @if (Auth::check())
