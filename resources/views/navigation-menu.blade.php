@@ -213,6 +213,11 @@
                     {{ __('Trainings') }}
                 </x-jet-responsive-nav-link>
             @endcan
+            @can('viewAny', App\Models\Documentation::class)
+            <x-jet-nav-link href="{{ route('documentations.index') }}" :active="request()->routeIs('documentations.index')">
+                {{ __('Documentation') }}
+            </x-jet-nav-link>
+        @endcan
         </div>
 
         <!-- Responsive Settings Options -->
