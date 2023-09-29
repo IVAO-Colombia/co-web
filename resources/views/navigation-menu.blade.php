@@ -42,7 +42,7 @@
                             {{ __('Trainings') }}
                         </x-jet-nav-link>
                     @endcan
-                    @can('viewAny', App\Models\Training::class)
+                    @can('viewAny', App\Models\Documentation::class)
                         <x-jet-nav-link href="{{ route('documentations.index') }}" :active="request()->routeIs('documentations.index')">
                             {{ __('Documentation') }}
                         </x-jet-nav-link>

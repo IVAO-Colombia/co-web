@@ -73,7 +73,6 @@ class FrontController extends Controller
 
     public function docs()
     {
-
         return view("website.theme-1.docs", [
             "documents" => Documentation::all()
         ]);
