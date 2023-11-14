@@ -23,93 +23,370 @@
 
     <section>
         <div class="container">
-
-
             <div class="row justify-center flex">
                 @if (count($documents) > 0)
-                    <h2 class="col-md-8">{{__('ATC')}}</h2>
-                        <div class="col-md-8">
-                            <table class="table table-bordered">
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <p>
-                                                <strong>{{__('Document')}}</strong>
-                                            </p>
-                                        </td>
-                                        <td>
-                                            <p>
-                                                <strong>{{__('Download')}}</strong>
-                                            </p>
-                                        </td>
-                                    </tr>
+                <div class="atc_container col-md-6">
+                    <h2>{{__('ATC')}}</h2>
+                    <div>
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <p>
+                                            <strong>{{__('Document')}}</strong>
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            <strong>{{__('Download')}}</strong>
+                                        </p>
+                                    </td>
+                                </tr>
                                 @foreach ($documents as $item)
                                 @if($item->type == "ATC")
                                     <tr>
                                         <td>
                                             <p title="{{$item->description}}">{{ $item->name}}</p>
                                         </td>
-                                            @if ($item->file != NULL)
-                                            <td>
-                                                <a href="{{ asset('storage/documents/' . $item->file) }}" target="_blank" >PDF</a>
-                                            </td>
+                                        @if ($item->file != NULL)
+                                        <td>
+                                            <a href="{{ asset('storage/documents/' . $item->file) }}" target="_blank" >PDF</a>
+                                        </td>
                                         @endif
                                         @if ($item->url != NULL)
                                         <td>
                                             <a href="{{ $item->url }}" target="_blank" >PDF</a>
                                         </td>
-                                    @endif
+                                        @endif
                                     </tr>
-                                    @endif
+                                @endif
                                 @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                        <h2 class="col-md-8">{{__('Pilot')}}</h2>
-                        <div class="col-md-8">
-                            <table class="table table-bordered">
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <p>
-                                                <strong>{{__('Document')}}</strong>
-                                            </p>
-                                        </td>
-                                        <td>
-                                            <p>
-                                                <strong>{{__('Download')}}</strong>
-                                            </p>
-                                        </td>
-                                    </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="pilot_container col-md-6">
+                    <h2>{{__('Pilot')}}</h2>
+                    <div>
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <p>
+                                            <strong>{{__('Document')}}</strong>
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            <strong>{{__('Download')}}</strong>
+                                        </p>
+                                    </td>
+                                </tr>
                                 @foreach ($documents as $item)
-                                    @if($item->type == "PILOT")
+                                @if($item->type == "PILOT")
                                     <tr>
                                         <td>
                                             <p title="{{$item->description}}">{{ $item->name}}</p>
                                         </td>
                                         @if ($item->file != NULL)
-                                            <td>
-                                                <a href="{{ asset('storage/documents/' . $item->file) }}" target="_blank" >PDF</a>
-                                            </td>
+                                        <td>
+                                            <a href="{{ asset('storage/documents/' . $item->file) }}" target="_blank" >PDF</a>
+                                        </td>
                                         @endif
                                         @if ($item->url != NULL)
                                         <td>
                                             <a href="{{ $item->url }}" target="_blank" >PDF</a>
                                         </td>
-                                    @endif
+                                        @endif
                                     </tr>
-                                    @endif
+                                @endif
                                 @endforeach
-                                </tbody>
-                            </table>
-                            @else
-                            <h3>No hay ningun documento disponible ahora mismo</h3>
-                            @endif
-                        </div>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
+                <div class="traningAtc_container col-md-6">
+                    <h2>{{__('Traning ATC')}}</h2>
+                    <div>
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <p>
+                                            <strong>{{__('Document')}}</strong>
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            <strong>{{__('Download')}}</strong>
+                                        </p>
+                                    </td>
+                                </tr>
+                                @foreach ($documents as $item)
+                                @if($item->type == "TRAINING ATC")
+                                    <tr>
+                                        <td>
+                                            <p title="{{$item->description}}">{{ $item->name}}</p>
+                                        </td>
+                                        @if ($item->file != NULL)
+                                        <td>
+                                            <a href="{{ asset('storage/documents/' . $item->file) }}" target="_blank" >PDF</a>
+                                        </td>
+                                        @endif
+                                        @if ($item->url != NULL)
+                                        <td>
+                                            <a href="{{ $item->url }}" target="_blank" >PDF</a>
+                                        </td>
+                                        @endif
+                                    </tr>
+                                @endif
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="traningPilot_container col-md-6">
+                    <h2>{{__('Traning Pilot')}}</h2>
+                    <div>
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <p>
+                                            <strong>{{__('Document')}}</strong>
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            <strong>{{__('Download')}}</strong>
+                                        </p>
+                                    </td>
+                                </tr>
+                                @foreach ($documents as $item)
+                                @if($item->type == "TRAINING PILOT")
+                                    <tr>
+                                        <td>
+                                            <p title="{{$item->description}}">{{ $item->name}}</p>
+                                        </td>
+                                        @if ($item->file != NULL)
+                                        <td>
+                                            <a href="{{ asset('storage/documents/' . $item->file) }}" target="_blank" >PDF</a>
+                                        </td>
+                                        @endif
+                                        @if ($item->url != NULL)
+                                        <td>
+                                            <a href="{{ $item->url }}" target="_blank" >PDF</a>
+                                        </td>
+                                        @endif
+                                    </tr>
+                                @endif
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="mtp_container col-md-6">
+                    <h2>{{__('Master The Topic')}}</h2>
+                    <div>
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <p>
+                                            <strong>{{__('Document')}}</strong>
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            <strong>{{__('Download')}}</strong>
+                                        </p>
+                                    </td>
+                                </tr>
+                                @foreach ($documents as $item)
+                                @if($item->type == "MASTER THE TOPIC")
+                                    <tr>
+                                        <td>
+                                            <p title="{{$item->description}}">{{ $item->name}}</p>
+                                        </td>
+                                        @if ($item->file != NULL)
+                                        <td>
+                                            <a href="{{ asset('storage/documents/' . $item->file) }}" target="_blank" >PDF</a>
+                                        </td>
+                                        @endif
+                                        @if ($item->url != NULL)
+                                        <td>
+                                            <a href="{{ $item->url }}" target="_blank" >PDF</a>
+                                        </td>
+                                        @endif
+                                    </tr>
+                                @endif
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="circular_container col-md-6">
+                    <h2>{{__('Circular')}}</h2>
+                    <div>
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <p>
+                                            <strong>{{__('Document')}}</strong>
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            <strong>{{__('Download')}}</strong>
+                                        </p>
+                                    </td>
+                                </tr>
+                                @foreach ($documents as $item)
+                                @if($item->type == "CIRCULAR")
+                                    <tr>
+                                        <td>
+                                            <p title="{{$item->description}}">{{ $item->name}}</p>
+                                        </td>
+                                        @if ($item->file != NULL)
+                                        <td>
+                                            <a href="{{ asset('storage/documents/' . $item->file) }}" target="_blank" >PDF</a>
+                                        </td>
+                                        @endif
+                                        @if ($item->url != NULL)
+                                        <td>
+                                            <a href="{{ $item->url }}" target="_blank" >PDF</a>
+                                        </td>
+                                        @endif
+                                    </tr>
+                                @endif
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="circular_container col-md-6">
+                    <h2>{{__('Local Regulations')}}</h2>
+                    <div>
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <p>
+                                            <strong>{{__('Document')}}</strong>
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            <strong>{{__('Download')}}</strong>
+                                        </p>
+                                    </td>
+                                </tr>
+                                @foreach ($documents as $item)
+                                @if($item->type == "LOCAL REGULATIONS")
+                                    <tr>
+                                        <td>
+                                            <p title="{{$item->description}}">{{ $item->name}}</p>
+                                        </td>
+                                        @if ($item->file != NULL)
+                                        <td>
+                                            <a href="{{ asset('storage/documents/' . $item->file) }}" target="_blank" >PDF</a>
+                                        </td>
+                                        @endif
+                                        @if ($item->url != NULL)
+                                        <td>
+                                            <a href="{{ $item->url }}" target="_blank" >PDF</a>
+                                        </td>
+                                        @endif
+                                    </tr>
+                                @endif
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="circular_container col-md-6">
+                    <h2>{{__('OACI')}}</h2>
+                    <div>
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <p>
+                                            <strong>{{__('Document')}}</strong>
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            <strong>{{__('Download')}}</strong>
+                                        </p>
+                                    </td>
+                                </tr>
+                                @foreach ($documents as $item)
+                                @if($item->type == "OACI")
+                                    <tr>
+                                        <td>
+                                            <p title="{{$item->description}}">{{ $item->name}}</p>
+                                        </td>
+                                        @if ($item->file != NULL)
+                                        <td>
+                                            <a href="{{ asset('storage/documents/' . $item->file) }}" target="_blank" >PDF</a>
+                                        </td>
+                                        @endif
+                                        @if ($item->url != NULL)
+                                        <td>
+                                            <a href="{{ $item->url }}" target="_blank" >PDF</a>
+                                        </td>
+                                        @endif
+                                    </tr>
+                                @endif
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="circular_container col-md-6">
+                    <h2>{{__('For all')}}</h2>
+                    <div>
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <p>
+                                            <strong>{{__('Document')}}</strong>
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            <strong>{{__('Download')}}</strong>
+                                        </p>
+                                    </td>
+                                </tr>
+                                @foreach ($documents as $item)
+                                @if($item->type == "ALL")
+                                    <tr>
+                                        <td>
+                                            <p title="{{$item->description}}">{{ $item->name}}</p>
+                                        </td>
+                                        @if ($item->file != NULL)
+                                        <td>
+                                            <a href="{{ asset('storage/documents/' . $item->file) }}" target="_blank" >PDF</a>
+                                        </td>
+                                        @endif
+                                        @if ($item->url != NULL)
+                                        <td>
+                                            <a href="{{ $item->url }}" target="_blank" >PDF</a>
+                                        </td>
+                                        @endif
+                                    </tr>
+                                @endif
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                @endif
             </div>
         </div>
     </section>
-
-
 @endsection

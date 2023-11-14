@@ -28,7 +28,7 @@ class Documentations extends Component
     protected $rules = [
         "name" => "required",
         "type" => "required",
-        "url" => "url|ends_with:pdf",
+        // "url" => "url|ends_with:pdf",
         // "file" => "required_if:url,null"
     ];
 
@@ -58,7 +58,7 @@ class Documentations extends Component
 
     public function store()
     {
-        // $this->validate();
+        $this->validate();
 
         if($this->file != null){
             $this->fileroute = Storage::disk('documents')->put(null,$this->file);

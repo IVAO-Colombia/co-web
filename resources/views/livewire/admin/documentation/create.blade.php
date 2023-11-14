@@ -38,6 +38,13 @@
                       <option selected>Choose a category</option>
                       <option value="ATC">ATC</option>
                       <option value="PILOT">Pilot</option>
+                      <option value="TRAINING ATC">Training ATC</option>
+                      <option value="TRAINING PILOT">Training Pilot</option>
+                      <option value="MASTER THE TOPIC">Master The Topic</option>
+                      <option value="CIRCULAR">Circulares</option>
+                      <option value="LOCAL REGULATIONS">Regulacion local</option>
+                      <option value="OACI">OACI</option>
+                      <option value="ALL">ALL</option>
                     </select>
                     @error('type')
                     <span class="text-red-600">{{ $message }}</span>
@@ -61,12 +68,14 @@
                     <label class="block text-gray-700 text-sm font-bold mb-2 dark:text-gray-300"
                         for="file_input">File:</label>
                     <input
-                        class="block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                        class="block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none"
                         aria-describedby="file_input_help" id="file_input" type="file" wire:model='file'>
                     <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">Only PDF.</p>
-                    @error('filename')
+                    @error('file')
                     <span class="text-red-600">{{ $message }}</span>
                     @enderror
+                    <div wire:loading wire:target="file" class=""><img
+                        src="{{ asset('img/Spinner-1s-200px.svg') }}" alt="carga"></div>
                 </div>
 
                 <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
