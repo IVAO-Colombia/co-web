@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 class FlightIvao extends Model
 {
@@ -81,14 +82,11 @@ class FlightIvao extends Model
         $arrayDeparture = [];
         if ($data) {
             foreach ($data->clients->pilots as $key => $value) {
-                if (
-                    substr(
-                        $value->flightPlan->departureId,
-                        0,
-                        strlen($countryicao)
-                    ) == $countryicao
-                ) {
-                    $arrayDeparture[] = $value;
+                if(isset($value->flightPlan->departureId) && is_string($value->flightPlan->departureId)){
+                    if (substr($value->flightPlan->departureId, 0, strlen($countryicao)) == $countryicao) {
+                        $arrayDeparture[] = $value;
+                        Log::info($value->flightPlan->departureId);
+                    }
                 }
             }
         }
@@ -101,6 +99,8 @@ class FlightIvao extends Model
         $arrayIn = [];
         if ($data) {
             foreach ($data->clients->pilots as $key => $value) {
+                if(isset($value->flightPlan->departureId) && is_string($value->flightPlan->departureId)){
+
                 if (
                     substr(
                         $value->flightPlan->arrivalId,
@@ -110,6 +110,7 @@ class FlightIvao extends Model
                 ) {
                     $arrayIn[] = $value;
                 }
+            }
             }
         }
 
