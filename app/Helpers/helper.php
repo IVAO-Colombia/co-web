@@ -179,12 +179,15 @@ function syncTeams($user)
         env("APP_DIVISION") . "-EAC",
         env("APP_DIVISION") . "-EA1",
         env("APP_DIVISION") . "-EA2",
+        env("APP_DIVISION") . "-EA3",
     ];
     $relaciones = [
         env("APP_DIVISION") . "-PRC",
         env("APP_DIVISION") . "-PRAC",
         env("APP_DIVISION") . "-PRA1",
         env("APP_DIVISION") . "-PRA2",
+        env("APP_DIVISION") . "-PRA3",
+        env("APP_DIVISION") . "-PRA4",
     ];
 
     $departamentos = [
