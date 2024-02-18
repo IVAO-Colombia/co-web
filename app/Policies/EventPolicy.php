@@ -21,13 +21,16 @@ class EventPolicy
     public function viewAny(User $user)
     {
         $teameventos = Team::find(3);
+        $teampublicrelations = Team::find(8);
         $teamewebmaster = Team::find(10);
 
         if (
             ($user->currentTeam == $teameventos &&
                 $teameventos->hasUser($user)) ||
             ($user->currentTeam == $teamewebmaster &&
-                $teamewebmaster->hasUser($user))
+                $teamewebmaster->hasUser($user)) ||
+            ($user->currentTeam() == $teampublicrelations &&
+            $teampublicrelations->hasUser($user))
         ) {
             return true;
         } else {
