@@ -29,7 +29,7 @@ class EventPolicy
                 $teameventos->hasUser($user)) ||
             ($user->currentTeam == $teamewebmaster &&
                 $teamewebmaster->hasUser($user)) ||
-            ($user->currentTeam() == $teampublicrelations &&
+            ($user->currentTeam == $teampublicrelations &&
             $teampublicrelations->hasUser($user))
         ) {
             return true;
