@@ -27,6 +27,7 @@
     <script src="{{ asset('theme-1/js/plugins.js') }}"></script>
     <!--Template functions-->
     <script src="{{ asset('theme-1/js/functions.js') }}"></script>
+
     @livewireScripts
     <script>
         window.livewire.on('toast', function(data) {
@@ -52,7 +53,9 @@
             });
         });
     </script>
+
     @stack('scripts')
+    <script src="{{ asset('vendor/livewire/livewire.js') }}"></script>
 
 </body>
 

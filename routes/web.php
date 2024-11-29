@@ -44,8 +44,16 @@ Route::get("locale/{locale}", function ($locale) {
 Route::controller(FrontController::class)->group(function () {
     Route::get("/", "index")->name("Home");
 
-
     Route::get("/gca", "gca")->name("front.gca");
+
+    Route::get('/atc', function () {
+        return view('website.theme-1.atc');
+    })->name('front.atc');
+
+    Route::get('/aurora', function () {
+        return view('website.theme-1.aurora');
+    })->name('front.aurora');
+
     Route::get("/about", "about")->name("front.about");
     Route::get("/fra", "fra")->name("front.fra");
     Route::get("/eventscalendar", "eventscalendar")->name(

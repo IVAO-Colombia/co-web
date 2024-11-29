@@ -76,7 +76,7 @@
                                     </a>
                                 </h2>
                                 <p
-                                    style=" white-space: nowrap;
+                                    style=" white-space: wrap;
                                 overflow: hidden;
                                 text-overflow: ellipsis;">
                                     {!! \Illuminate\Support\Str::limit(strip_tags($item->description), 200) !!}</p>

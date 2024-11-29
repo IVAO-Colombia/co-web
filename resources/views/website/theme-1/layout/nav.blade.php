@@ -14,7 +14,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="dropdown"><a href="#">{{ __('ATC') }}</a>
+                <li class="dropdown"><a href="{{ route('front.atc') }}">{{ __('ATC') }}</a>
 
                     <ul class="dropdown-menu">
                         <li> <a target="_blank" href="https://wiki.ivao.aero/en/home/training/main/rank_atc">{{
@@ -22,11 +22,11 @@
                         </li>
                         <li> <a href="{{ route('front.fra') }}">{{ __('Which airport can I control?') }}</a> </li>
                         <li> <a href="{{ route('front.gca') }}">{{ __('Guest Controller Approval') }}</a> </li>
-                        <li> <a href="{{ asset('theme-1/docs/public/Manual Sectorfile SKED-EC.pdf') }}">{{ __('Manual
-                                Aurora') }}</a>
-                        </li>
+                        <li> <a href="{{ route('front.aurora') }}">{{ __('Aurora Manual') }}</a></li>
                         <li> <a target="_blank" href="https://www.ivao.aero/softdev/software/aurora.asp">Aurora
                                 Software</a> </li>
+                        <li> <a target="_blank" href="https://forum.ivao.aero/threads/vuelven-los-notam-a-ivao-colombia.380715/">NOTAMs</a>
+                        </li>
                     </ul>
 
 
@@ -57,7 +57,7 @@
                     <ul class="dropdown-menu">
                         <li><a href="http://co.forum.ivao.aero/" target="_blank">{{ __('Forum') }}</a>
                         <li><a href="https://tours.th.ivao.aero/index.php?div=CO" target="_blank">{{ __('Tours') }}</a>
-                        <li><a href="https://eaip-colombia.atnaerocivil.gov.co/eaip/AIRAC%20AMDT%2064-22_2022_12_29/index.html"
+                        <li><a href="https://eaip-colombia.atnaerocivil.gov.co/eaip/"
                                 target="_blank">{{ __('eAIP') }}</a>
                         <li><a href="{{ route('front.docs') }}">{{ __('Documentation') }}</a>
                     </ul>
