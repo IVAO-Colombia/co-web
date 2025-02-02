@@ -4,8 +4,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{
     FrontController,
     IvaoController,
-    EventController,
-    SliderController
 };
 
 use App\Http\Livewire\Website\UpdateUser;
@@ -13,11 +11,8 @@ use App\Http\Livewire\Website\UpdateUser;
 use App\Http\Livewire\Admin\{
     Events,
     Sliders,
-    Airports,
     Virtualairlines,
-    Trainings,
     Teams,
-    Documentations
 };
 
 
@@ -131,9 +126,6 @@ Route::middleware([
     Route::get("/staff/teams", Teams::class)->name("teams.index");
     Route::get("/staff/events", Events::class)->name("events.index");
     Route::get("/staff/sliders", Sliders::class)->name("sliders.index");
-    Route::get("/staff/airports", Airports::class)->name("airports.index");
-    Route::get("/staff/trainings", Trainings::class)->name("trainings.index");
-    Route::get("staff/documentations", Documentations::class)->name("documentations.index");
     Route::get("/staff/virtualairlines", Virtualairlines::class)->name(
         "virtualairlines.index"
     );
