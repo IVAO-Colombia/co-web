@@ -7,10 +7,10 @@
 
 */
 
- a#scroller-icon {
+a#scroller-icon {
     padding-top: 60px;
-  }
-   a#scroller-icon span {
+}
+a#scroller-icon span {
     position: absolute;
     bottom: 50px;
     left: 50%;
@@ -25,62 +25,64 @@
     animation: sdb04 2s infinite;
     box-sizing: border-box;
     z-index: 99;
-  }
-  @-webkit-keyframes sdb04 {
+}
+@-webkit-keyframes sdb04 {
     0% {
-      -webkit-transform: rotate(-45deg) translate(0, 0);
+        -webkit-transform: rotate(-45deg) translate(0, 0);
     }
     20% {
-      -webkit-transform: rotate(-45deg) translate(-10px, 10px);
+        -webkit-transform: rotate(-45deg) translate(-10px, 10px);
     }
     40% {
-      -webkit-transform: rotate(-45deg) translate(0, 0);
+        -webkit-transform: rotate(-45deg) translate(0, 0);
     }
-  }
-  @keyframes sdb04 {
+}
+@keyframes sdb04 {
     0% {
-      transform: rotate(-45deg) translate(0, 0);
+        transform: rotate(-45deg) translate(0, 0);
     }
     20% {
-      transform: rotate(-45deg) translate(-10px, 10px);
+        transform: rotate(-45deg) translate(-10px, 10px);
     }
     40% {
-      transform: rotate(-45deg) translate(0, 0);
+        transform: rotate(-45deg) translate(0, 0);
     }
-  }
+}
 
-  .airlineslogo{
+.airlineslogo {
     max-width: 70px;
-  }
+}
 
-  .bg-primary {
-    background-color: #0D2C99 !important;
+.bg-primary {
+    background-color: #0d2c99 !important;
 }
 .badge-success {
     color: #fff;
-    background-color: #2EC662;
+    background-color: #2ec662;
 }
 
 .badge-danger {
     color: #fff;
-    background-color: #E93434;
+    background-color: #e93434;
 }
-button.btn.btn-primary, .btn:not(.close):not(.mfp-close).btn-primary, a.btn:not([href]):not([tabindex]).btn-primary {
-    background-color: #0D2C99;
-    border-color: #0D2C99;
+button.btn.btn-primary,
+.btn:not(.close):not(.mfp-close).btn-primary,
+a.btn:not([href]):not([tabindex]).btn-primary {
+    background-color: #0d2c99;
+    border-color: #0d2c99;
 }
 
-.event-text img{
+.event-text img {
     max-width: 100%;
     margin-bottom: 15px;
 }
 
-.post-item  .post-item-wrap {
+.post-item .post-item-wrap {
     position: relative;
     overflow: hidden;
 }
 
-.post-item .post-image{
+.post-item .post-image {
     overflow: hidden;
     position: relative;
     padding-bottom: 56.2%;
@@ -106,8 +108,8 @@ button.btn.btn-primary, .btn:not(.close):not(.mfp-close).btn-primary, a.btn:not(
 }
 
 .bg-overlay[data-style="2"] {
-    background: #0D2C99;
-    opacity: .9;
+    background: #0d2c99;
+    opacity: 0.9;
 }
 
 button.close {
@@ -119,4 +121,15 @@ button.close {
     appearance: none;
 }
 
-#header[data-transparent="true"] + div .inspiro-slider, #header[data-transparent="true"] + #slider, #header[data-transparent="true"] + .fullscreen, #header[data-transparent="true"] + .halfscreen, #header[data-transparent="true"] + #google-map { top: -80px; margin-bottom: -80px; }
+#header[data-transparent="true"] + div .inspiro-slider,
+#header[data-transparent="true"] + #slider,
+#header[data-transparent="true"] + .fullscreen,
+#header[data-transparent="true"] + .halfscreen,
+#header[data-transparent="true"] + #google-map {
+    top: -80px;
+    margin-bottom: -80px;
+}
+
+.material-symbols-outlined {
+    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+}

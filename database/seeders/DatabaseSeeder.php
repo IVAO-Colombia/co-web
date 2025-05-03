@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
     {
         \App\Models\User::factory(10)->create();
         $this->call(TeamSeeder::class);
+        $this->call(DepartmentsSeeder::class);
         DB::unprepared(file_get_contents(__DIR__ . "/airports.sql"));
     }
 }

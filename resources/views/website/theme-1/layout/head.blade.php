@@ -10,8 +10,18 @@
     <title>IVAO CO</title>
     <!-- Stylesheets & Fonts -->
 
+    {{-- Google Fonts --}}
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=edit" />
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <script src="{{ asset('js/app.js') }}" defer></script>
+
+    {{-- Alpine script --}}
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    {{-- WYSIWYG (TRIX-EDITOR) --}}
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.8/dist/trix.css">
+    <script type="text/javascript" src="https://unpkg.com/trix@2.0.8/dist/trix.umd.min.js"></script>
 
     <link href="{{ asset('theme-1/css/plugins.css') }}" rel="stylesheet">
     <link href="{{ asset('theme-1/css/style.css') }}" rel="stylesheet">

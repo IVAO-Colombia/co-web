@@ -25,11 +25,23 @@
                         <li> <a href="{{ route('front.aurora') }}">{{ __('Aurora Manual') }}</a></li>
                         <li> <a target="_blank" href="https://www.ivao.aero/softdev/software/aurora.asp">Aurora
                                 Software</a> </li>
-                        <li> <a target="_blank" href="https://forum.ivao.aero/threads/vuelven-los-notam-a-ivao-colombia.380715/">NOTAMs</a>
+                        <li> <a target="_blank"
+                                href="https://forum.ivao.aero/threads/vuelven-los-notam-a-ivao-colombia.380715/">NOTAMs</a>
                         </li>
                     </ul>
 
 
+                </li>
+                <li class="dropdown">
+                    <a href="#">{{ __('Departaments') }}</a>
+                    <ul class="dropdown-menu">
+                        @foreach (App\Models\Departments::all() as $item)
+                        <li><a href="{{route('front.deparments.show', $item->department_id)}}">{{ $item->title }}</a>
+                        </li>
+                        @endforeach
+
+
+                    </ul>
                 </li>
                 <li class="dropdown">
                     <a href="#">{{ __('Trainings') }}</a>
@@ -57,8 +69,8 @@
                     <ul class="dropdown-menu">
                         <li><a href="http://co.forum.ivao.aero/" target="_blank">{{ __('Forum') }}</a>
                         <li><a href="https://tours.th.ivao.aero/index.php?div=CO" target="_blank">{{ __('Tours') }}</a>
-                        <li><a href="https://eaip-colombia.atnaerocivil.gov.co/eaip/"
-                                target="_blank">{{ __('eAIP') }}</a>
+                        <li><a href="https://eaip-colombia.atnaerocivil.gov.co/eaip/" target="_blank">{{ __('eAIP')
+                                }}</a>
                         <li><a href="{{ route('front.docs') }}">{{ __('Documentation') }}</a>
                     </ul>
                 </li>
