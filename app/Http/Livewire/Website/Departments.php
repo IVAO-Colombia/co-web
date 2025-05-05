@@ -28,6 +28,7 @@ class Departments extends Component
     {
         // Ever team wm can edit
         $teamWebmaster = Team::find(10);
+        $teamHq = Team::find(9);
 
         // Search department page
         $this->department = ModelsDepartments::where(
@@ -47,7 +48,8 @@ class Departments extends Component
                 ($user->currentTeam == $this->department->team &&
                     $this->department->team->hasUser($user)) ||
                 ($user->currentTeam == $teamWebmaster &&
-                    $teamWebmaster->hasUser($user))
+                    $teamWebmaster->hasUser($user)) ||
+                ($user->currentTeam == $teamHq && $teamHq->hasUser($user))
             ) {
                 $this->canEdit = true;
             } else {
