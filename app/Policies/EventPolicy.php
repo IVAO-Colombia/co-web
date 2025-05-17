@@ -23,6 +23,7 @@ class EventPolicy
         $teameventos = Team::find(3);
         $teampublicrelations = Team::find(8);
         $teamewebmaster = Team::find(10);
+        $teamHq = Team::find(9);
 
         if (
             ($user->currentTeam == $teameventos &&
@@ -30,7 +31,8 @@ class EventPolicy
             ($user->currentTeam == $teamewebmaster &&
                 $teamewebmaster->hasUser($user)) ||
             ($user->currentTeam == $teampublicrelations &&
-            $teampublicrelations->hasUser($user))
+                $teampublicrelations->hasUser($user)) ||
+            ($user->currentTeam == $teamHq && $teamHq->hasUser($user))
         ) {
             return true;
         } else {

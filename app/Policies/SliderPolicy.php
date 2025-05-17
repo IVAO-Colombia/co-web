@@ -19,12 +19,14 @@ class SliderPolicy
     {
         $teameventos = Team::find(3);
         $teamewebmaster = Team::find(10);
+        $teamHq = Team::find(9);
 
         if (
             ($user->currentTeam == $teameventos &&
                 $teameventos->hasUser($user)) ||
             ($user->currentTeam == $teamewebmaster &&
-                $teamewebmaster->hasUser($user))
+                $teamewebmaster->hasUser($user)) ||
+            ($user->currentTeam == $teamHq && $teamHq->hasUser($user))
         ) {
             return true;
         } else {

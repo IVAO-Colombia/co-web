@@ -21,12 +21,14 @@ class SpecialOperations
     {
         $teamEpecialOps = Team::find(6);
         $teamWebmaster = Team::find(10);
+        $teamHq = Team::find(9);
 
         if (
             ($user->currentTeam == $teamEpecialOps &&
                 $teamEpecialOps->hasUser($user)) ||
             ($user->currentTeam == $teamWebmaster &&
-                $teamWebmaster->hasUser($user))
+                $teamWebmaster->hasUser($user)) ||
+            ($user->currentTeam == $teamHq && $teamHq->hasUser($user))
         ) {
             return true;
         } else {

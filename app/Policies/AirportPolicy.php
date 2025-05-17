@@ -28,10 +28,12 @@ class AirportPolicy
     public function viewAny(User $user)
     {
         $teamewebmaster = Team::find(10);
+        $teamHq = Team::find(9);
 
         if (
-            $user->currentTeam == $teamewebmaster &&
-            $teamewebmaster->hasUser($user)
+            ($user->currentTeam == $teamewebmaster &&
+                $teamewebmaster->hasUser($user)) ||
+            ($user->currentTeam == $teamHq && $teamHq->hasUser($user))
         ) {
             return true;
         } else {

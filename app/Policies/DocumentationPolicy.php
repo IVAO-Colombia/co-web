@@ -21,12 +21,15 @@ class DocumentationPolicy
     {
         $teamwebmaster = Team::find(10);
         $teamentrenamiento = Team::find(4);
+        $teamHq = Team::find(9);
 
-        if(($user->currentTeam == $teamentrenamiento &&
-        $teamentrenamiento->hasUser($user))||
+        if (
+            ($user->currentTeam == $teamentrenamiento &&
+                $teamentrenamiento->hasUser($user)) ||
             ($user->currentTeam == $teamwebmaster &&
-            $teamwebmaster->hasUser($user))
-        ){
+                $teamwebmaster->hasUser($user)) ||
+            ($user->currentTeam == $teamHq && $teamHq->hasUser($user))
+        ) {
             return true;
         } else {
             return false;

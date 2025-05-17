@@ -19,12 +19,14 @@ class VirtualairlinePolicy
     {
         $teamewebmaster = Team::find(10);
         $teamoperacionesvuelo = Team::find(7);
+        $teamHq = Team::find(9);
 
         if (
             ($user->currentTeam == $teamewebmaster &&
                 $teamewebmaster->hasUser($user)) ||
             ($user->currentTeam == $teamoperacionesvuelo &&
-                $teamoperacionesvuelo->hasUser($user))
+                $teamoperacionesvuelo->hasUser($user)) ||
+            ($user->currentTeam == $teamHq && $teamHq->hasUser($user))
         ) {
             return true;
         } else {
