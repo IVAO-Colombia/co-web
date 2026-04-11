@@ -1,13 +1,14 @@
 <script setup lang="ts">
-import { Form, Head, usePage } from '@inertiajs/vue3';
+import { Head, usePage } from '@inertiajs/vue3';
 import { computed } from 'vue';
-import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
-import DeleteUser from '@/components/DeleteUser.vue';
 import Heading from '@/components/Heading.vue';
-import InputError from '@/components/InputError.vue';
-import { Button } from '@/components/ui/button';
+import Button from '@/components/ui/button/Button.vue';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import Table from '@/components/ui/table/Table.vue';
+import TableBody from '@/components/ui/table/TableBody.vue';
+import TableCell from '@/components/ui/table/TableCell.vue';
+import TableRow from '@/components/ui/table/TableRow.vue';
 import { edit } from '@/routes/profile';
 
 type Props = {
@@ -40,51 +41,31 @@ const user = computed(() => page.props.auth.user);
     <div class="flex flex-col space-y-6">
         <Heading
             variant="small"
-            title="Profile information"
+            title="IVAO Profile information"
             description="Update your name and email address"
         />
 
-        <Form
-            v-bind="ProfileController.update.form()"
-            class="space-y-6"
-            v-slot="{ errors, processing }"
-        >
-            <div class="grid gap-2">
-                <Label for="name">Name</Label>
-                <Input
-                    id="name"
-                    class="mt-1 block w-full"
-                    name="name"
-                    :default-value="user.name"
-                    required
-                    autocomplete="name"
-                    placeholder="Full name"
-                />
-                <InputError class="mt-2" :message="errors.name" />
-            </div>
-
-            <div class="grid gap-2">
-                <Label for="email">Email address</Label>
-                <Input
-                    id="email"
-                    type="email"
-                    class="mt-1 block w-full"
-                    name="email"
-                    :default-value="user.email"
-                    required
-                    autocomplete="username"
-                    placeholder="Email address"
-                />
-                <InputError class="mt-2" :message="errors.email" />
-            </div>
-
-            <div class="flex items-center gap-4">
-                <Button :disabled="processing" data-test="update-profile-button"
-                    >Save</Button
-                >
-            </div>
-        </Form>
+        <div class="flex">
+            <Table>
+                <TableBody>
+                    <TableRow>
+                        <TableCell class="font-medium"> Name </TableCell>
+                        <TableCell>{{ user.name }}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell class="font-medium"> VID </TableCell>
+                        <TableCell>{{ user.vid }}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell class="font-medium"> Email </TableCell>
+                        <TableCell>{{ user.email }}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell class="font-medium"> Division </TableCell>
+                        <TableCell>{{ user.division }}</TableCell>
+                    </TableRow>
+                </TableBody>
+            </Table>
+        </div>
     </div>
-
-    <DeleteUser />
 </template>
