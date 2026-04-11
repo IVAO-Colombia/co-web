@@ -3,16 +3,10 @@ name: linter
 on:
   push:
     branches:
-      - develop
-      - main
-      - master
-      - workos
+      - new-web
   pull_request:
     branches:
-      - develop
-      - main
-      - master
-      - workos
+      - new-web
 
 permissions:
   contents: write
@@ -42,8 +36,8 @@ jobs:
       - name: Lint Frontend
         run: npm run lint
 
-      # - name: Commit Changes
-      #   uses: stefanzweifel/git-auto-commit-action@v7
-      #   with:
-      #     commit_message: fix code style
-      #     commit_options: '--no-verify'
+      - name: Commit Changes
+        uses: stefanzweifel/git-auto-commit-action@v7
+        with:
+          commit_message: fix code style
+          commit_options: '--no-verify'

@@ -3,23 +3,17 @@ name: tests
 on:
   push:
     branches:
-      - develop
-      - main
-      - master
-      - workos
+      - new-web
   pull_request:
     branches:
-      - develop
-      - main
-      - master
-      - workos
+      - new-web
 
 jobs:
   ci:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-version: ['8.3', '8.4', '8.5']
+        php-version: ['8.4', '8.5']
 
     steps:
       - name: Checkout code
