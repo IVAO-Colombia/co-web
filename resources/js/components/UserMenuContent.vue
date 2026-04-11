@@ -8,7 +8,7 @@ import {
     DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
 import UserInfo from '@/components/UserInfo.vue';
-import { logout } from '@/routes';
+import { logout } from '@/routes/auth';
 import { edit } from '@/routes/profile';
 import type { User } from '@/types';
 

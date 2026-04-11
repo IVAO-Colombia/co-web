@@ -1,97 +1,221 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Auth;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\RateLimiter;
-use Laravel\Fortify\Features;
+use Illuminate\Foundation\Testing\WithFaker;
+use Laravel\Socialite\Facades\Socialite;
+use Mockery\MockInterface;
+use PHPUnit\Framework\Attributes\Test;
+use SocialiteProviders\Ivao\Provider;
+use SocialiteProviders\Manager\OAuth2\User as SocialiteUser;
 use Tests\TestCase;
 
 class AuthenticationTest extends TestCase
 {
     use RefreshDatabase;
+    use WithFaker;
 
-    public function test_login_screen_can_be_rendered()
+    #[Test]
+    public function it_redirects_to_ivao_sso()
     {
-        $response = $this->get(route('login'));
-
-        $response->assertOk();
+        $this->get(route('auth.redirect'))
+            ->assertRedirectContains('ivao.aero');
     }
 
-    public function test_users_can_authenticate_using_the_login_screen()
+    #[Test]
+    public function a_user_successfully_registers_in_the_division_site_using_sso(): void
     {
-        $user = User::factory()->create();
+        $ivaoUser = $this->getIvaoUser();
+        $token = $this->faker->sha256();
+        $refreshToken = $this->faker->sha256();
 
-        $response = $this->post(route('login.store'), [
-            'email' => $user->email,
-            'password' => 'password',
+        $socialiteUser = $this->mock(SocialiteUser::class, function (MockInterface&SocialiteUser $mock) use ($ivaoUser, $token, $refreshToken) {
+            $mock->id = $ivaoUser['id'];
+            $mock->nickname = $ivaoUser['publicNickname'];
+            $mock->name = "{$ivaoUser['firstName']} {$ivaoUser['lastName']}";
+            $mock->email = $ivaoUser['email'];
+            $mock->avatar = null;
+            $mock->token = $token;
+            $mock->refreshToken = $refreshToken;
+            $mock->expiresIn = 1800;
+            $mock->approvedScopes = ['email', 'profile'];
+            $mock->user = $ivaoUser;
+            $mock->attributes = [
+                'id' => $ivaoUser['id'],
+                'name' => "{$ivaoUser['firstName']} {$ivaoUser['lastName']}",
+                'email' => $ivaoUser['email'],
+                'nickname' => $ivaoUser['publicNickname'],
+                'division' => $ivaoUser['divisionId'],
+                'atc_rating' => $ivaoUser['rating']['atcRating']['id'],
+                'pilot_rating' => $ivaoUser['rating']['pilotRating']['id'],
+            ];
+            $mock->accessTokenResponseBody = [
+                'access_token' => $token,
+                'token_type' => 'Bearer',
+                'expires_in' => 1800,
+                'refresh_token' => $refreshToken,
+                'scope' => 'email profile',
+            ];
+        });
+
+        $socialiteProvider = $this->mock(Provider::class, fn (MockInterface $mock) => $mock
+            ->shouldReceive('user')
+            ->andReturn($socialiteUser)
+        );
+
+        Socialite::shouldReceive('driver')->with('ivao')->andReturn($socialiteProvider);
+        $this->assertDatabaseCount('users', 0);
+
+        $this->get(route('auth.callback', 'ivao'))
+            ->assertRedirect(route('dashboard'))
+            ->assertSessionHasNoErrors();
+
+        $this->assertDatabaseCount('users', 1);
+        $this->assertEquals($ivaoUser['id'], auth()->user()->vid);
+        $this->assertDatabaseHas('users', [
+            'name' => "{$ivaoUser['firstName']} {$ivaoUser['lastName']}",
+            'email' => $ivaoUser['email'],
+            'division' => $ivaoUser['divisionId'],
+            'pilot_rating' => $ivaoUser['rating']['pilotRating']['id'],
+            'atc_rating' => $ivaoUser['rating']['atcRating']['id'],
         ]);
-
-        $this->assertAuthenticated();
-        $response->assertRedirect(route('dashboard', absolute: false));
     }
 
-    public function test_users_with_two_factor_enabled_are_redirected_to_two_factor_challenge()
+    #[Test]
+    public function it_doesnt_registers_a_new_user_if_already_exists(): void
     {
-        $this->skipUnlessFortifyHas(Features::twoFactorAuthentication());
+        $ivaoUser = $this->getIvaoUser();
+        $token = $this->faker->sha256();
+        $refreshToken = $this->faker->sha256();
 
-        Features::twoFactorAuthentication([
-            'confirm' => true,
-            'confirmPassword' => true,
+        $socialiteUser = $this->mock(SocialiteUser::class, function (MockInterface&SocialiteUser $mock) use ($ivaoUser, $token, $refreshToken) {
+            $mock->id = $ivaoUser['id'];
+            $mock->nickname = $ivaoUser['publicNickname'];
+            $mock->name = "{$ivaoUser['firstName']} {$ivaoUser['lastName']}";
+            $mock->email = $ivaoUser['email'];
+            $mock->avatar = null;
+            $mock->token = $token;
+            $mock->refreshToken = $refreshToken;
+            $mock->expiresIn = 1800;
+            $mock->approvedScopes = ['email', 'profile'];
+            $mock->user = $ivaoUser;
+            $mock->attributes = [
+                'id' => $ivaoUser['id'],
+                'name' => "{$ivaoUser['firstName']} {$ivaoUser['lastName']}",
+                'email' => $ivaoUser['email'],
+                'nickname' => $ivaoUser['publicNickname'],
+                'division' => $ivaoUser['divisionId'],
+                'atc_rating' => $ivaoUser['rating']['atcRating']['id'],
+                'pilot_rating' => $ivaoUser['rating']['pilotRating']['id'],
+            ];
+            $mock->accessTokenResponseBody = [
+                'access_token' => $token,
+                'token_type' => 'Bearer',
+                'expires_in' => 1800,
+                'refresh_token' => $refreshToken,
+                'scope' => 'email profile',
+            ];
+        });
+
+        $socialiteProvider = $this->mock(Provider::class, fn (MockInterface $mock) => $mock
+            ->shouldReceive('user')
+            ->andReturn($socialiteUser)
+        );
+
+        Socialite::shouldReceive('driver')->with('ivao')->andReturn($socialiteProvider);
+
+        User::factory()->create([
+            'name' => "{$ivaoUser['firstName']} {$ivaoUser['lastName']}",
+            'email' => $ivaoUser['email'],
+            'vid' => $ivaoUser['id'],
+            'division' => $ivaoUser['divisionId'],
+            'pilot_rating' => $ivaoUser['rating']['pilotRating']['id'],
+            'atc_rating' => $ivaoUser['rating']['atcRating']['id'],
         ]);
 
-        $user = User::factory()->create();
+        $this->assertDatabaseCount('users', 1);
 
-        $user->forceFill([
-            'two_factor_secret' => encrypt('test-secret'),
-            'two_factor_recovery_codes' => encrypt(json_encode(['code1', 'code2'])),
-            'two_factor_confirmed_at' => now(),
-        ])->save();
+        $this->get(route('auth.callback', 'ivao'))
+            ->assertRedirect(route('dashboard'))
+            ->assertSessionHasNoErrors();
 
-        $response = $this->post(route('login'), [
-            'email' => $user->email,
-            'password' => 'password',
+        $this->assertEquals($ivaoUser['id'], auth()->user()->vid);
+        $this->assertDatabaseCount('users', 1);
+        $this->assertDatabaseHas('users', [
+            'name' => "{$ivaoUser['firstName']} {$ivaoUser['lastName']}",
+            'email' => $ivaoUser['email'],
+            'division' => $ivaoUser['divisionId'],
+            'pilot_rating' => $ivaoUser['rating']['pilotRating']['id'],
+            'atc_rating' => $ivaoUser['rating']['atcRating']['id'],
         ]);
-
-        $response->assertRedirect(route('two-factor.login'));
-        $response->assertSessionHas('login.id', $user->id);
-        $this->assertGuest();
     }
 
-    public function test_users_can_not_authenticate_with_invalid_password()
+    private function getIvaoUser(): array
     {
-        $user = User::factory()->create();
-
-        $this->post(route('login.store'), [
-            'email' => $user->email,
-            'password' => 'wrong-password',
-        ]);
-
-        $this->assertGuest();
-    }
-
-    public function test_users_can_logout()
-    {
-        $user = User::factory()->create();
-
-        $response = $this->actingAs($user)->post(route('logout'));
-
-        $this->assertGuest();
-        $response->assertRedirect(route('home'));
-    }
-
-    public function test_users_are_rate_limited()
-    {
-        $user = User::factory()->create();
-
-        RateLimiter::increment(md5('login'.implode('|', [$user->email, '127.0.0.1'])), amount: 5);
-
-        $response = $this->post(route('login.store'), [
-            'email' => $user->email,
-            'password' => 'wrong-password',
-        ]);
-
-        $response->assertTooManyRequests();
+        return [
+            'id' => $id = $this->faker->numberBetween(100000, 999999),
+            'firstName' => $firstName = $this->faker->firstName(),
+            'lastName' => $this->faker->lastName(),
+            'centerId' => null,
+            'countryId' => $countryId = $this->faker->countryCode(),
+            'createdAt' => $this->faker->dateTime()->format('Y-m-d\TH:i:s.000\Z'),
+            'divisionId' => $countryId,
+            'isStaff' => $this->faker->boolean(),
+            'isSupervisor' => false,
+            'languageId' => $this->faker->languageCode(),
+            'email' => $this->faker->safeEmail(),
+            'rating' => [
+                'isPilot' => true,
+                'isAtc' => true,
+                'pilotRating' => [
+                    'id' => $this->faker->randomDigitNotZero(),
+                    'name' => $this->faker->words(3, true),
+                    'shortName' => $this->faker->lexify('FS?'),
+                    'description' => $this->faker->sentence(),
+                ],
+                'atcRating' => [
+                    'id' => $this->faker->randomDigitNotZero(),
+                    'name' => $this->faker->words(3, true),
+                    'shortName' => $this->faker->lexify('AS?'),
+                    'description' => $this->faker->sentence(),
+                ],
+                'networkRating' => [
+                    'id' => $this->faker->randomDigitNotZero(),
+                    'name' => $this->faker->words(2, true),
+                    'description' => $this->faker->sentence(),
+                ],
+            ],
+            'gcas' => [],
+            'hours' => [
+                ['type' => 'pilot', 'hours' => $this->faker->numberBetween(0, 9999)],
+                ['type' => 'atc', 'hours' => $this->faker->numberBetween(0, 9999)],
+                ['type' => 'staff', 'hours' => $this->faker->numberBetween(0, 9999)],
+            ],
+            'userStaffPositions' => [
+                [
+                    'id' => "{$countryId}-WMA2",
+                    'staffPositionId' => '-WMA2',
+                    'divisionId' => $countryId,
+                    'centerId' => null,
+                    'connectAs' => "{$countryId}-WMA2",
+                    'onTrial' => true,
+                    'description' => null,
+                    'staffPosition' => [],
+                ],
+            ],
+            'userStaffDetails' => [
+                'email' => $this->faker->userName(),
+                'note' => null,
+                'description' => null,
+                'remark' => null,
+            ],
+            'prCreator' => null,
+            'ownedVirtualAirlines' => [],
+            'publicNickname' => "{$firstName} ({$id})",
+        ];
     }
 }
