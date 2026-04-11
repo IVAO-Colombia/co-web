@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
 
     /*
@@ -38,7 +40,7 @@ return [
     'ivao' => [
         'client_id' => env('IVAO_CLIENT_ID'),
         'client_secret' => env('IVAO_CLIENT_SECRET'),
-        'redirect' => env('IVAO_REDIRECT_URI')
+        'redirect' => env('IVAO_REDIRECT_URI'),
     ],
 
 ];

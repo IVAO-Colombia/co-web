@@ -29,45 +29,7 @@ class AuthenticationTest extends TestCase
     #[Test]
     public function a_user_successfully_registers_in_the_division_site_using_sso(): void
     {
-        $ivaoUser = $this->getIvaoUser();
-        $token = $this->faker->sha256();
-        $refreshToken = $this->faker->sha256();
-
-        $socialiteUser = $this->mock(SocialiteUser::class, function (MockInterface&SocialiteUser $mock) use ($ivaoUser, $token, $refreshToken) {
-            $mock->id = $ivaoUser['id'];
-            $mock->nickname = $ivaoUser['publicNickname'];
-            $mock->name = "{$ivaoUser['firstName']} {$ivaoUser['lastName']}";
-            $mock->email = $ivaoUser['email'];
-            $mock->avatar = null;
-            $mock->token = $token;
-            $mock->refreshToken = $refreshToken;
-            $mock->expiresIn = 1800;
-            $mock->approvedScopes = ['email', 'profile'];
-            $mock->user = $ivaoUser;
-            $mock->attributes = [
-                'id' => $ivaoUser['id'],
-                'name' => "{$ivaoUser['firstName']} {$ivaoUser['lastName']}",
-                'email' => $ivaoUser['email'],
-                'nickname' => $ivaoUser['publicNickname'],
-                'division' => $ivaoUser['divisionId'],
-                'atc_rating' => $ivaoUser['rating']['atcRating']['id'],
-                'pilot_rating' => $ivaoUser['rating']['pilotRating']['id'],
-            ];
-            $mock->accessTokenResponseBody = [
-                'access_token' => $token,
-                'token_type' => 'Bearer',
-                'expires_in' => 1800,
-                'refresh_token' => $refreshToken,
-                'scope' => 'email profile',
-            ];
-        });
-
-        $socialiteProvider = $this->mock(Provider::class, fn (MockInterface $mock) => $mock
-            ->shouldReceive('user')
-            ->andReturn($socialiteUser)
-        );
-
-        Socialite::shouldReceive('driver')->with('ivao')->andReturn($socialiteProvider);
+        $ivaoUser = $this->mockSocialiteIvao();
         $this->assertDatabaseCount('users', 0);
 
         $this->get(route('auth.callback', 'ivao'))
@@ -87,6 +49,35 @@ class AuthenticationTest extends TestCase
 
     #[Test]
     public function it_doesnt_registers_a_new_user_if_already_exists(): void
+    {
+        $ivaoUser = $this->mockSocialiteIvao();
+        User::factory()->create([
+            'name' => "{$ivaoUser['firstName']} {$ivaoUser['lastName']}",
+            'email' => $ivaoUser['email'],
+            'vid' => $ivaoUser['id'],
+            'division' => $ivaoUser['divisionId'],
+            'pilot_rating' => $ivaoUser['rating']['pilotRating']['id'],
+            'atc_rating' => $ivaoUser['rating']['atcRating']['id'],
+        ]);
+
+        $this->assertDatabaseCount('users', 1);
+
+        $this->get(route('auth.callback', 'ivao'))
+            ->assertRedirect(route('dashboard'))
+            ->assertSessionHasNoErrors();
+
+        $this->assertEquals($ivaoUser['id'], auth()->user()->vid);
+        $this->assertDatabaseCount('users', 1);
+        $this->assertDatabaseHas('users', [
+            'name' => "{$ivaoUser['firstName']} {$ivaoUser['lastName']}",
+            'email' => $ivaoUser['email'],
+            'division' => $ivaoUser['divisionId'],
+            'pilot_rating' => $ivaoUser['rating']['pilotRating']['id'],
+            'atc_rating' => $ivaoUser['rating']['atcRating']['id'],
+        ]);
+    }
+
+    private function mockSocialiteIvao(): array
     {
         $ivaoUser = $this->getIvaoUser();
         $token = $this->faker->sha256();
@@ -128,30 +119,7 @@ class AuthenticationTest extends TestCase
 
         Socialite::shouldReceive('driver')->with('ivao')->andReturn($socialiteProvider);
 
-        User::factory()->create([
-            'name' => "{$ivaoUser['firstName']} {$ivaoUser['lastName']}",
-            'email' => $ivaoUser['email'],
-            'vid' => $ivaoUser['id'],
-            'division' => $ivaoUser['divisionId'],
-            'pilot_rating' => $ivaoUser['rating']['pilotRating']['id'],
-            'atc_rating' => $ivaoUser['rating']['atcRating']['id'],
-        ]);
-
-        $this->assertDatabaseCount('users', 1);
-
-        $this->get(route('auth.callback', 'ivao'))
-            ->assertRedirect(route('dashboard'))
-            ->assertSessionHasNoErrors();
-
-        $this->assertEquals($ivaoUser['id'], auth()->user()->vid);
-        $this->assertDatabaseCount('users', 1);
-        $this->assertDatabaseHas('users', [
-            'name' => "{$ivaoUser['firstName']} {$ivaoUser['lastName']}",
-            'email' => $ivaoUser['email'],
-            'division' => $ivaoUser['divisionId'],
-            'pilot_rating' => $ivaoUser['rating']['pilotRating']['id'],
-            'atc_rating' => $ivaoUser['rating']['atcRating']['id'],
-        ]);
+        return $ivaoUser;
     }
 
     private function getIvaoUser(): array
