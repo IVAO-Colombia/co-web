@@ -62,7 +62,31 @@ const user = computed(() => page.props.auth.user);
                     </TableRow>
                     <TableRow>
                         <TableCell class="font-medium"> Division </TableCell>
-                        <TableCell>{{ user.division }}</TableCell>
+                        <TableCell>{{ user.division_id }}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell class="font-medium"> Country </TableCell>
+                        <TableCell>{{ user.country_id }}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell class="font-medium"> Language </TableCell>
+                        <TableCell>{{ user.language_id }}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell class="font-medium">
+                            Network rating
+                        </TableCell>
+                        <TableCell>{{ user.network_rating }}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell class="font-medium"> ATC rating </TableCell>
+                        <TableCell>{{ user.atc_rating }}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell class="font-medium">
+                            Pilot rating
+                        </TableCell>
+                        <TableCell>{{ user.pilot_rating }}</TableCell>
                     </TableRow>
                 </TableBody>
             </Table>

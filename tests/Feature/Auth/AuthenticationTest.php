@@ -41,7 +41,7 @@ class AuthenticationTest extends TestCase
         $this->assertDatabaseHas('users', [
             'name' => "{$ivaoUser['firstName']} {$ivaoUser['lastName']}",
             'email' => $ivaoUser['email'],
-            'division' => $ivaoUser['divisionId'],
+            'division_id' => $ivaoUser['divisionId'],
             'pilot_rating' => $ivaoUser['rating']['pilotRating']['id'],
             'atc_rating' => $ivaoUser['rating']['atcRating']['id'],
         ]);
@@ -55,7 +55,7 @@ class AuthenticationTest extends TestCase
             'name' => "{$ivaoUser['firstName']} {$ivaoUser['lastName']}",
             'email' => $ivaoUser['email'],
             'vid' => $ivaoUser['id'],
-            'division' => $ivaoUser['divisionId'],
+            'division_id' => $ivaoUser['divisionId'],
             'pilot_rating' => $ivaoUser['rating']['pilotRating']['id'],
             'atc_rating' => $ivaoUser['rating']['atcRating']['id'],
         ]);
@@ -71,7 +71,7 @@ class AuthenticationTest extends TestCase
         $this->assertDatabaseHas('users', [
             'name' => "{$ivaoUser['firstName']} {$ivaoUser['lastName']}",
             'email' => $ivaoUser['email'],
-            'division' => $ivaoUser['divisionId'],
+            'division_id' => $ivaoUser['divisionId'],
             'pilot_rating' => $ivaoUser['rating']['pilotRating']['id'],
             'atc_rating' => $ivaoUser['rating']['atcRating']['id'],
         ]);

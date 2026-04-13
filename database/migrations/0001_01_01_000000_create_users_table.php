@@ -18,7 +18,10 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->unsignedBigInteger('vid')->unique();
-            $table->string('division')->nullable();
+            $table->string('country_id')->nullable();
+            $table->string('division_id')->nullable();
+            $table->string('language_id')->nullable();
+            $table->tinyInteger('network_rating')->nullable();
             $table->tinyInteger('atc_rating')->nullable();
             $table->tinyInteger('pilot_rating')->nullable();
             $table->rememberToken();
