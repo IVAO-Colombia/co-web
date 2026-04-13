@@ -75,7 +75,7 @@ return [
     | map to the dynamic properties used by Laravel Models.
     |
     */
-    'generate_phpdocs' => true,
+    'generate_phpdocs' => false,
 
     /*
     |--------------------------------------------------------------------------

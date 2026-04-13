@@ -29,9 +29,9 @@ class UserFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'vid' => fake()->unique()->numberBetween(100000, 999999),
             'division_id' => fake()->countryCode(),
-            'country_id'=> fake()->countryCode(),
-            'language_id'=> fake()->languageCode(),
-            'network_rating'=> fake()->numberBetween(1, 10),
+            'country_id' => fake()->countryCode(),
+            'language_id' => fake()->languageCode(),
+            'network_rating' => fake()->numberBetween(1, 10),
             'atc_rating' => fake()->numberBetween(1, 10),
             'pilot_rating' => fake()->numberBetween(1, 10),
         ];
