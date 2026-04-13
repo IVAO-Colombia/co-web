@@ -8,7 +8,6 @@
 
 @custom-variant dark (&:is(.dark *));
 
-
 @theme inline {
     --font-sans:
         Poppins, Instrument Sans, ui-sans-serif, system-ui, sans-serif,
@@ -29,10 +28,10 @@
     --color-popover: var(--popover);
     --color-popover-foreground: var(--popover-foreground);
 
-    --color-primary: #0D2C99;
+    --color-primary: #0d2c99;
     --color-primary-foreground: var(--primary-foreground);
 
-    --color-secondary: #D7D7DC;
+    --color-secondary: #d7d7dc;
     --color-secondary-foreground: var(--secondary-foreground);
 
     --color-muted: #e2e8f0;
@@ -41,7 +40,7 @@
     --color-accent: #eef2ff;
     --color-accent-foreground: #0d2c99;
 
-    --color-destructive: #E93434;
+    --color-destructive: #e93434;
     --color-destructive-foreground: var(--destructive-foreground);
 
     --color-border: var(--border);
@@ -175,12 +174,12 @@
 }
 
 @layer base {
-  h1 {
-    font-family: var(--font-heading);
-  }
-  h2 {
-    font-family: var(--font-heading);
-  }
+    h1 {
+        font-family: var(--font-heading);
+    }
+    h2 {
+        font-family: var(--font-heading);
+    }
     h3 {
         font-family: var(--font-heading);
     }
@@ -191,9 +190,6 @@
         font-family: var(--font-heading);
     }
     h6 {
-        font-family: var(--font-heading);
-    }
-    h7 {
         font-family: var(--font-heading);
     }
 }

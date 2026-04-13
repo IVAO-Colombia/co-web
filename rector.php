@@ -3,13 +3,13 @@
 declare(strict_types=1);
 
 use Rector\Config\RectorConfig;
-use Rector\TypeDeclaration\Rector\ClassMethod\AddVoidReturnTypeWhereNoReturnRector;
 use RectorLaravel\Rector\Assign\CallOnAppArrayAccessToStandaloneAssignRector;
 use RectorLaravel\Rector\Class_\AddExtendsAnnotationToModelFactoriesRector;
 use RectorLaravel\Rector\ClassMethod\AddGenericReturnTypeToRelationsRector;
 use RectorLaravel\Rector\Expr\AppEnvironmentComparisonToParameterRector;
 use RectorLaravel\Rector\FuncCall\ArgumentFuncCallToMethodCallRector;
 use RectorLaravel\Rector\If_\AbortIfRector;
+use RectorLaravel\Rector\MethodCall\AssertStatusToAssertMethodRector;
 use RectorLaravel\Rector\StaticCall\DispatchToHelperFunctionsRector;
 use RectorLaravel\Set\LaravelSetProvider;
 
@@ -33,7 +33,6 @@ return RectorConfig::configure()
     ->withSetProviders(LaravelSetProvider::class)
     ->withComposerBased(laravel: true/** other options */)
     ->withRules([
-        AddVoidReturnTypeWhereNoReturnRector::class,
         AbortIfRector::class,
         AddExtendsAnnotationToModelFactoriesRector::class,
         AddGenericReturnTypeToRelationsRector::class,
@@ -41,4 +40,5 @@ return RectorConfig::configure()
         ArgumentFuncCallToMethodCallRector::class,
         CallOnAppArrayAccessToStandaloneAssignRector::class,
         DispatchToHelperFunctionsRector::class,
+        AssertStatusToAssertMethodRector::class,
     ]);

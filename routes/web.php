@@ -10,7 +10,7 @@ use Laravel\Socialite\Facades\Socialite;
 
 Route::inertia('/', 'Welcome')->name('home');
 
-Route::get('/auth/redirect', fn() => Inertia::location(Socialite::driver('ivao')
+Route::get('/auth/redirect', fn () => Inertia::location(Socialite::driver('ivao')
     ->scopes(['profile', 'email'])
     ->redirect()))->name('auth.redirect');
 
