@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,400;1,6..12,700&family=Poppins:wght@300;400;700&display=swap');
 @import 'tailwindcss';
 
 @import 'tw-animate-css';
@@ -7,11 +8,13 @@
 
 @custom-variant dark (&:is(.dark *));
 
+
 @theme inline {
     --font-sans:
-        Instrument Sans, ui-sans-serif, system-ui, sans-serif,
+        Poppins, Instrument Sans, ui-sans-serif, system-ui, sans-serif,
         'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
         'Noto Color Emoji';
+    --font-heading: 'Nunito Sans', var(--font-sans);
 
     --radius-lg: var(--radius);
     --radius-md: calc(var(--radius) - 2px);
@@ -168,5 +171,29 @@
     }
     body {
         @apply bg-background text-foreground;
+    }
+}
+
+@layer base {
+  h1 {
+    font-family: var(--font-heading);
+  }
+  h2 {
+    font-family: var(--font-heading);
+  }
+    h3 {
+        font-family: var(--font-heading);
+    }
+    h4 {
+        font-family: var(--font-heading);
+    }
+    h5 {
+        font-family: var(--font-heading);
+    }
+    h6 {
+        font-family: var(--font-heading);
+    }
+    h7 {
+        font-family: var(--font-heading);
     }
 }
