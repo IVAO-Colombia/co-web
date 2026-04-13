@@ -2,13 +2,11 @@
 import { Head, usePage } from '@inertiajs/vue3';
 import { computed } from 'vue';
 import Heading from '@/components/Heading.vue';
-import Button from '@/components/ui/button/Button.vue';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import Table from '@/components/ui/table/Table.vue';
 import TableBody from '@/components/ui/table/TableBody.vue';
 import TableCell from '@/components/ui/table/TableCell.vue';
 import TableRow from '@/components/ui/table/TableRow.vue';
+import { useRatings } from '@/composables/useRatings';
 import { edit } from '@/routes/profile';
 
 type Props = {
@@ -31,6 +29,7 @@ defineOptions({
 
 const page = usePage();
 const user = computed(() => page.props.auth.user);
+const { pilotRating, atcRating } = useRatings(user.value);
 </script>
 
 <template>
@@ -80,13 +79,19 @@ const user = computed(() => page.props.auth.user);
                     </TableRow>
                     <TableRow>
                         <TableCell class="font-medium"> ATC rating </TableCell>
-                        <TableCell>{{ user.atc_rating }}</TableCell>
+                        <TableCell>
+                            <img :src="atcRating.imageUrl" alt="" />
+                            {{ atcRating.label }}</TableCell
+                        >
                     </TableRow>
                     <TableRow>
                         <TableCell class="font-medium">
                             Pilot rating
                         </TableCell>
-                        <TableCell>{{ user.pilot_rating }}</TableCell>
+                        <TableCell>
+                            <img :src="pilotRating.imageUrl" alt="" />
+                            {{ pilotRating.label }}
+                        </TableCell>
                     </TableRow>
                 </TableBody>
             </Table>
