@@ -20,7 +20,7 @@ class AuthenticationTest extends TestCase
     use WithFaker;
 
     #[Test]
-    public function it_redirects_to_ivao_sso()
+    public function it_redirects_to_ivao_sso(): void
     {
         $this->get(route('auth.redirect'))
             ->assertRedirectContains('ivao.aero');
@@ -83,7 +83,7 @@ class AuthenticationTest extends TestCase
         $token = $this->faker->sha256();
         $refreshToken = $this->faker->sha256();
 
-        $socialiteUser = $this->mock(SocialiteUser::class, function (MockInterface&SocialiteUser $mock) use ($ivaoUser, $token, $refreshToken) {
+        $socialiteUser = $this->mock(SocialiteUser::class, function (MockInterface&SocialiteUser $mock) use ($ivaoUser, $token, $refreshToken): void {
             $mock->id = $ivaoUser['id'];
             $mock->nickname = $ivaoUser['publicNickname'];
             $mock->name = "{$ivaoUser['firstName']} {$ivaoUser['lastName']}";

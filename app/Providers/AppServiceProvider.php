@@ -19,6 +19,7 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Register any application services.
      */
+    #[\Override]
     public function register(): void
     {
         //
@@ -61,7 +62,7 @@ class AppServiceProvider extends ServiceProvider
 
     private function registerSocialiteProviders(): void
     {
-        Event::listen(function (SocialiteWasCalled $event) {
+        Event::listen(function (SocialiteWasCalled $event): void {
             $event->extendSocialite('ivao', IvaoProvider::class);
         });
     }

@@ -10,16 +10,14 @@ use Laravel\Socialite\Facades\Socialite;
 
 Route::inertia('/', 'Welcome')->name('home');
 
-Route::get('/auth/redirect', function () {
-    return Inertia::location(Socialite::driver('ivao')
-        ->scopes(['profile', 'email'])
-        ->redirect());
-})->name('auth.redirect');
+Route::get('/auth/redirect', fn() => Inertia::location(Socialite::driver('ivao')
+    ->scopes(['profile', 'email'])
+    ->redirect()))->name('auth.redirect');
 
 Route::get('/auth/callback', AuthenticateUsersController::class)
     ->name('auth.callback');
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth'])->group(function (): void {
     Route::post('/auth/logout', LogoutUsersController::class)
         ->name('auth.logout');
     Route::inertia('dashboard', 'Dashboard')->name('dashboard');
