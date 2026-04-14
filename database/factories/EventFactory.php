@@ -25,7 +25,7 @@ class EventFactory extends Factory
             'description' => fake()->text(),
             'slug' => fake()->slug(),
             'image_url' => null,
-            'type' => EventType::ONLINE_DAY,
+            'type' => fake()->randomElement(EventType::cases()),
             'tags' => [],
             'pilot_slots_enabled' => fake()->boolean(),
             'atc_slots_enabled' => fake()->boolean(),

@@ -30,6 +30,9 @@ jobs:
       - name: Run Pint
         run: composer lint
 
+      - name: Run Rector
+        run: composer rector
+
       - name: Format Frontend
         run: npm run format
 

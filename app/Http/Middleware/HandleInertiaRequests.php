@@ -18,6 +18,16 @@ class HandleInertiaRequests extends Middleware
      */
     protected $rootView = 'app';
 
+
+    /**
+     * Defines the routes that should not use SSR.
+     *
+     * @var array<int, string>
+     */
+    protected $withoutSsr = [
+        'dashboard/*',
+    ];
+
     /**
      * Determines the current asset version.
      *
