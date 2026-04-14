@@ -106,7 +106,7 @@ const rightNavItems: NavItem[] = [
                                 <nav class="-mx-3 space-y-1">
                                     <Link
                                         v-for="item in mainNavItems"
-                                        :key="item.title"
+                                        :key="item.title.toString()"
                                         :href="item.href"
                                         class="flex items-center gap-x-3 rounded-lg px-3 py-2 text-sm font-medium hover:bg-accent"
                                         :class="
@@ -127,7 +127,7 @@ const rightNavItems: NavItem[] = [
                                 <div class="flex flex-col space-y-4">
                                     <a
                                         v-for="item in rightNavItems"
-                                        :key="item.title"
+                                        :key="item.title.toString()"
                                         :href="toUrl(item.href)"
                                         target="_blank"
                                         rel="noopener noreferrer"
@@ -203,7 +203,7 @@ const rightNavItems: NavItem[] = [
                         <div class="hidden space-x-1 lg:flex">
                             <template
                                 v-for="item in rightNavItems"
-                                :key="item.title"
+                                :key="item.title.toString()"
                             >
                                 <TooltipProvider :delay-duration="0">
                                     <Tooltip>

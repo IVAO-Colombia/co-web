@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
+import { wTrans } from 'laravel-vue-i18n';
 import { Calendar1, LayoutGrid } from 'lucide-vue-next';
 import AppLogo from '@/components/AppLogo.vue';
 import NavFooter from '@/components/NavFooter.vue';
@@ -25,7 +26,7 @@ const mainNavItems: NavItem[] = [
         icon: LayoutGrid,
     },
     {
-        title: 'Events',
+        title: wTrans('Events'),
         href: events.index(),
         icon: Calendar1,
     },

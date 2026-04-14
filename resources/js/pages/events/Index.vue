@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { router } from '@inertiajs/vue3';
 import { Head, Link } from '@inertiajs/vue3';
+import { transChoice, wTrans } from 'laravel-vue-i18n';
 import {
     CalendarDays,
     ChevronLeft,
@@ -10,6 +11,7 @@ import {
     Radio,
     X,
 } from 'lucide-vue-next';
+import type { ComputedRef } from 'vue';
 import { computed, ref, watch } from 'vue';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -35,9 +37,9 @@ import TooltipContent from '@/components/ui/tooltip/TooltipContent.vue';
 import TooltipProvider from '@/components/ui/tooltip/TooltipProvider.vue';
 import TooltipTrigger from '@/components/ui/tooltip/TooltipTrigger.vue';
 import { useDebounce } from '@/composables/useDebounce';
+import { index } from '@/routes/events';
 import type { LengthAwarePaginator, Event } from '@/types';
 import { EventStatus, EventType } from '@/types';
-import { index } from '@/routes/events';
 
 const props = defineProps<{
     events: LengthAwarePaginator<number, Event>;
@@ -50,7 +52,7 @@ const props = defineProps<{
 
 defineOptions({
     layout: {
-        breadcrumbs: [{ title: 'Events', href: index() }],
+        breadcrumbs: [{ title: wTrans('Events'), href: index() }],
     },
 });
 
@@ -99,19 +101,19 @@ const statusVariant: Record<
     [EventStatus.FINALIZED]: 'outline',
 };
 
-const statusLabel: Record<EventStatus, string> = {
-    [EventStatus.ACTIVE]: 'Active',
-    [EventStatus.DRAFT]: 'Draft',
-    [EventStatus.CANCELLED]: 'Cancelled',
-    [EventStatus.FINALIZED]: 'Finalized',
+const statusLabel: Record<EventStatus, ComputedRef<string>> = {
+    [EventStatus.DRAFT]: wTrans('Draft'),
+    [EventStatus.ACTIVE]: wTrans('Active'),
+    [EventStatus.CANCELLED]: wTrans('Cancelled'),
+    [EventStatus.FINALIZED]: wTrans('Finalized'),
 };
 
-const typeLabel: Record<EventType, string> = {
-    [EventType.ONLINE_DAY]: 'Online Day',
-    [EventType.EXAM]: 'Exam',
-    [EventType.TRAINING]: 'Training',
-    [EventType.RFO]: 'RFO',
-    [EventType.RFE]: 'RFE',
+const typeLabel: Record<EventType, ComputedRef<string>> = {
+    [EventType.ONLINE_DAY]: wTrans('Online Day'),
+    [EventType.EXAM]: wTrans('Exam'),
+    [EventType.TRAINING]: wTrans('Training'),
+    [EventType.RFO]: wTrans('RFO'),
+    [EventType.RFE]: wTrans('RFE'),
 };
 
 function formatDate(dateStr: string): string {
@@ -126,16 +128,18 @@ function formatDate(dateStr: string): string {
 </script>
 
 <template>
-    <Head title="Events" />
+    <Head :title="$t('Events')" />
 
     <div class="flex h-full flex-1 flex-col gap-4 p-4">
         <!-- Page header -->
         <div class="flex items-center justify-between">
             <div>
-                <h1 class="text-2xl font-semibold tracking-tight">Events</h1>
+                <h1 class="text-2xl font-semibold tracking-tight">
+                    {{ $t('Events') }}
+                </h1>
                 <p class="text-sm text-muted-foreground">
                     {{ events.total.toLocaleString() }}
-                    event{{ events.total !== 1 ? 's' : '' }}
+                    {{ transChoice('event|events', events.total) }}
                 </p>
             </div>
         </div>
@@ -145,7 +149,7 @@ function formatDate(dateStr: string): string {
             <div class="relative min-w-56 flex-1">
                 <Input
                     v-model="query"
-                    placeholder="Search by name or location…"
+                    :placeholder="$t('Search by name or location...')"
                     class="pr-8"
                 />
                 <button
@@ -158,27 +162,30 @@ function formatDate(dateStr: string): string {
             </div>
 
             <Select v-model="status">
-                <SelectTrigger class="w-36">
-                    <SelectValue placeholder="All statuses" />
+                <SelectTrigger>
+                    <SelectValue :placeholder="$t('All statuses')" />
                 </SelectTrigger>
                 <SelectContent>
-                    <SelectItem value="active">Active</SelectItem>
-                    <SelectItem value="draft">Draft</SelectItem>
-                    <SelectItem value="cancelled">Cancelled</SelectItem>
-                    <SelectItem value="finalized">Finalized</SelectItem>
+                    <SelectItem
+                        v-for="(value, key) in statusLabel"
+                        :key
+                        :value="key"
+                        >{{ value }}</SelectItem
+                    >
                 </SelectContent>
             </Select>
 
             <Select v-model="type">
-                <SelectTrigger class="w-36">
-                    <SelectValue placeholder="All types" />
+                <SelectTrigger>
+                    <SelectValue :placeholder="$t('All types')" />
                 </SelectTrigger>
                 <SelectContent>
-                    <SelectItem value="online_day">Online Day</SelectItem>
-                    <SelectItem value="exam">Exam</SelectItem>
-                    <SelectItem value="training">Training</SelectItem>
-                    <SelectItem value="rfo">RFO</SelectItem>
-                    <SelectItem value="rfe">RFE</SelectItem>
+                    <SelectItem
+                        v-for="(value, key) in typeLabel"
+                        :key
+                        :value="key"
+                        >{{ value }}</SelectItem
+                    >
                 </SelectContent>
             </Select>
 
@@ -189,7 +196,7 @@ function formatDate(dateStr: string): string {
                 @click="clearFilters"
             >
                 <X class="size-3.5" />
-                Clear filters
+                {{ $t('Clear filters') }}
             </Button>
         </div>
 
@@ -198,12 +205,14 @@ function formatDate(dateStr: string): string {
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead class="w-[280px]">Event</TableHead>
-                        <TableHead>Type</TableHead>
-                        <TableHead>Location</TableHead>
-                        <TableHead>Starts</TableHead>
-                        <TableHead>Slots</TableHead>
-                        <TableHead>Status</TableHead>
+                        <TableHead class="w-[280px]">{{
+                            $t('Event')
+                        }}</TableHead>
+                        <TableHead>{{ $t('Type') }}</TableHead>
+                        <TableHead>{{ $t('Location') }}</TableHead>
+                        <TableHead>{{ $t('Starts') }}</TableHead>
+                        <TableHead>{{ $t('Slots') }}</TableHead>
+                        <TableHead>{{ $t('Status') }}</TableHead>
                         <TableHead class="w-16" />
                     </TableRow>
                 </TableHeader>
@@ -214,7 +223,14 @@ function formatDate(dateStr: string): string {
                                 class="size-8 text-muted-foreground"
                             />
                             <p class="text-sm text-muted-foreground">
-                                No events match your filters.
+                                {{
+                                    $t('No :name match your filters.', {
+                                        name: transChoice(
+                                            'event|events',
+                                            events.data.length,
+                                        ),
+                                    })
+                                }}
                             </p>
                             <Button
                                 v-if="hasActiveFilters()"
@@ -222,7 +238,7 @@ function formatDate(dateStr: string): string {
                                 size="sm"
                                 @click="clearFilters"
                             >
-                                Clear filters
+                                {{ $t('Clear filters') }}
                             </Button>
                         </div>
                     </TableEmpty>
@@ -296,24 +312,27 @@ function formatDate(dateStr: string): string {
                             <div class="flex gap-1.5">
                                 <TooltipProvider>
                                     <Tooltip>
-                                        <TooltipTrigger
-                                            ><span
+                                        <TooltipTrigger>
+                                            <span
                                                 :class="
                                                     event.pilot_slots_enabled
                                                         ? 'text-sky-600 dark:text-sky-400'
                                                         : 'text-muted-foreground/30'
                                                 "
                                             >
-                                                <PlaneTakeoff
-                                                    class="size-4"
-                                                /> </span
-                                        ></TooltipTrigger>
+                                                <PlaneTakeoff class="size-4" />
+                                            </span>
+                                        </TooltipTrigger>
                                         <TooltipContent>
                                             <p>
                                                 {{
                                                     event.pilot_slots_enabled
-                                                        ? 'Pilot slots enabled'
-                                                        : 'Pilot slots disabled'
+                                                        ? $t(
+                                                              'Pilot slots enabled',
+                                                          )
+                                                        : $t(
+                                                              'Pilot slots disabled',
+                                                          )
                                                 }}
                                             </p>
                                         </TooltipContent>
@@ -337,8 +356,12 @@ function formatDate(dateStr: string): string {
                                             <p>
                                                 {{
                                                     event.atc_slots_enabled
-                                                        ? 'ATC slots enabled'
-                                                        : 'ATC slots disabled'
+                                                        ? $t(
+                                                              'ATC slots enabled',
+                                                          )
+                                                        : $t(
+                                                              'ATC slots disabled',
+                                                          )
                                                 }}
                                             </p>
                                         </TooltipContent>
@@ -358,7 +381,7 @@ function formatDate(dateStr: string): string {
                         <TableCell>
                             <Button variant="ghost" size="sm" as-child>
                                 <Link :href="`/events/${event.slug}`">
-                                    View
+                                    {{ $t('View') }}
                                 </Link>
                             </Button>
                         </TableCell>
@@ -373,8 +396,14 @@ function formatDate(dateStr: string): string {
             class="flex items-center justify-between"
         >
             <p class="text-sm text-muted-foreground">
-                Showing {{ events.from }}–{{ events.to }} of
-                {{ events.total.toLocaleString() }}
+                {{
+                    $t('Showing :from-:to of :total :name', {
+                        from: events.from?.toLocaleString()!,
+                        to: events.to?.toLocaleString()!,
+                        total: events.total.toLocaleString(),
+                        name: transChoice('event|events', 2),
+                    })
+                }}
             </p>
 
             <div class="flex items-center gap-1">

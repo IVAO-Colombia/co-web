@@ -23,7 +23,10 @@ defineProps<Props>();
     >
         <SidebarGroupContent>
             <SidebarMenu>
-                <SidebarMenuItem v-for="item in items" :key="item.title">
+                <SidebarMenuItem
+                    v-for="item in items"
+                    :key="item.title.toString()"
+                >
                     <SidebarMenuButton
                         class="text-neutral-600 hover:text-neutral-800 dark:text-neutral-300 dark:hover:text-neutral-100"
                         as-child
