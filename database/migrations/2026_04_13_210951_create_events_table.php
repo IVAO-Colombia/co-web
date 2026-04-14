@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('name_en', 200)->nullable();
             $table->text('description_en')->nullable();
             $table->string('slug', 250);
-            $table->string('image_url');
+            $table->string('image_url')->nullable();
             $table->string('type', 50);
             $table->jsonb('tags');
             $table->boolean('pilot_slots_enabled');

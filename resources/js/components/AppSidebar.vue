@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
-import { LayoutGrid } from 'lucide-vue-next';
+import { Calendar1, LayoutGrid } from 'lucide-vue-next';
 import AppLogo from '@/components/AppLogo.vue';
 import NavFooter from '@/components/NavFooter.vue';
 import NavMain from '@/components/NavMain.vue';
@@ -14,14 +14,20 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import type { NavItem } from '@/types';
 import { dashboard } from '@/routes';
+import events from '@/routes/events';
+import type { NavItem } from '@/types';
 
 const mainNavItems: NavItem[] = [
     {
         title: 'Dashboard',
         href: dashboard(),
         icon: LayoutGrid,
+    },
+    {
+        title: 'Events',
+        href: events.index(),
+        icon: Calendar1,
     },
 ];
 

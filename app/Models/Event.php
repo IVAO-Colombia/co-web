@@ -35,6 +35,7 @@ class Event extends Model
             'ends_at' => 'datetime',
             'created_by' => 'integer',
             'assigned_to' => 'integer',
+            'tags' => 'json',
             'status' => EventStatus::class,
         ];
     }

@@ -23,5 +23,7 @@ Route::middleware(['auth'])->group(function (): void {
     Route::inertia('dashboard', 'Dashboard')->name('dashboard');
 });
 
-require __DIR__.'/settings.php';
-require __DIR__.'/events.php';
+Route::prefix('dashboard')->middleware(['auth'])->group(function (): void {
+    require __DIR__.'/settings.php';
+    require __DIR__.'/events.php';
+});
