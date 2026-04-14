@@ -1,6 +1,6 @@
 import type { ComputedRef } from 'vue';
 import { computed } from 'vue';
-import { ATCRating, PilotRating } from '@/types';
+import { ATCRatings, PilotRatings } from '@/types';
 import type { ATCRatingValue, PilotRatingValue, User } from '@/types';
 
 export type UseRatingsReturn = {
@@ -10,10 +10,10 @@ export type UseRatingsReturn = {
 
 export const useRatings = (user: User): UseRatingsReturn => {
     const pilotRating = computed<PilotRatingValue>(
-        () => PilotRating[user.pilot_rating],
+        () => PilotRatings[user.pilot_rating],
     );
     const atcRating = computed<ATCRatingValue>(
-        () => ATCRating[user.atc_rating],
+        () => ATCRatings[user.atc_rating],
     );
 
     return {

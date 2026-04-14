@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use App\Enums\EventStatus;
+use App\Enums\EventType;
 use App\Models\Event;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -23,12 +24,12 @@ class EventFactory extends Factory
             'name' => fake()->name(),
             'description' => fake()->text(),
             'slug' => fake()->slug(),
-            'image_url' => fake()->word(),
-            'type' => fake()->regexify('[A-Za-z0-9]{50}'),
-            'tags' => '{}',
+            'image_url' => null,
+            'type' => EventType::ONLINE_DAY,
+            'tags' => [],
             'pilot_slots_enabled' => fake()->boolean(),
             'atc_slots_enabled' => fake()->boolean(),
-            'locations' => fake()->regexify('[A-Za-z0-9]{200}'),
+            'locations' => fake()->regexify('[A-Z]{4} - [A-Z]{4}'),
             'starts_at' => fake()->dateTime(),
             'status' => EventStatus::ACTIVE,
             'created_by' => User::factory(),

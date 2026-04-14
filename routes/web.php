@@ -24,3 +24,4 @@ Route::middleware(['auth'])->group(function (): void {
 });
 
 require __DIR__.'/settings.php';
+require __DIR__.'/events.php';
