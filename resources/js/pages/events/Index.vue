@@ -30,9 +30,9 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
+import { index } from '@/routes/events';
 import type { LengthAwarePaginator } from '@/types';
 import { EventStatus, EventType } from '@/types';
-import { index } from '@/routes/events';
 
 interface Event {
     id: number;
