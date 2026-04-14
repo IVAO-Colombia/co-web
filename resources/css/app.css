@@ -62,13 +62,12 @@
     --color-sidebar-border: var(--sidebar-border);
     --color-sidebar-ring: var(--sidebar-ring);
 
-    --color-success: #2EC662;
+    --color-success: #2ec662;
     --color-success-foreground: var(--primary-foreground);
-    --color-warning: #F9CC2C;
+    --color-warning: #f9cc2c;
     --color-warning-foreground: var(--primary-foreground);
-    --color-info: #7EA2D6;
+    --color-info: #7ea2d6;
     --color-info-foreground: var(--primary-foreground);
-
 }
 
 /*
