@@ -30,32 +30,21 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
-import type { LengthAwarePaginator } from '@/types';
-import { EventStatus, EventType } from '@/types';
+import Tooltip from '@/components/ui/tooltip/Tooltip.vue';
+import TooltipContent from '@/components/ui/tooltip/TooltipContent.vue';
+import TooltipProvider from '@/components/ui/tooltip/TooltipProvider.vue';
+import TooltipTrigger from '@/components/ui/tooltip/TooltipTrigger.vue';
+import { useDebounce } from '@/composables/useDebounce';
 import { index } from '@/routes/events';
-
-interface Event {
-    id: number;
-    name: string;
-    name_en: string | null;
-    slug: string;
-    image_url: string | null;
-    type: EventType;
-    tags: string[];
-    pilot_slots_enabled: boolean;
-    atc_slots_enabled: boolean;
-    locations: string;
-    starts_at: string;
-    ends_at: string | null;
-    status: EventStatus;
-}
+import type { LengthAwarePaginator, Event } from '@/types';
+import { EventStatus, EventType } from '@/types';
 
 const props = defineProps<{
     events: LengthAwarePaginator<number, Event>;
     filters: {
         query?: string;
-        status?: string;
-        type?: string;
+        status?: EventStatus;
+        type?: EventType;
     };
 }>();
 
@@ -65,18 +54,16 @@ defineOptions({
     },
 });
 
+const query = ref(props.filters.query ?? '');
+const status = ref<EventStatus | ''>(props.filters.status ?? '');
+const type = ref<EventType | ''>(props.filters.type ?? '');
+const debouncedApplyFilters = useDebounce(applyFilters, 350);
 const links = computed(() =>
     props.events.links.filter(
         (link) =>
             !link.label.includes('&laquo;') && !link.label.includes('&raquo;'),
     ),
 );
-
-const query = ref(props.filters.query ?? '');
-const status = ref(props.filters.status ?? '');
-const type = ref(props.filters.type ?? '');
-
-let debounceTimer: ReturnType<typeof setTimeout>;
 
 function applyFilters(): void {
     router.get(
@@ -90,11 +77,7 @@ function applyFilters(): void {
     );
 }
 
-watch(query, () => {
-    clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(applyFilters, 350);
-});
-
+watch(query, () => debouncedApplyFilters());
 watch([status, type], applyFilters);
 
 function clearFilters(): void {
@@ -311,34 +294,56 @@ function formatDate(dateStr: string): string {
                         <!-- Slot indicators -->
                         <TableCell>
                             <div class="flex gap-1.5">
-                                <span
-                                    :class="
-                                        event.pilot_slots_enabled
-                                            ? 'text-sky-600 dark:text-sky-400'
-                                            : 'text-muted-foreground/30'
-                                    "
-                                    :title="
-                                        event.pilot_slots_enabled
-                                            ? 'Pilot slots enabled'
-                                            : 'No pilot slots'
-                                    "
-                                >
-                                    <PlaneTakeoff class="size-4" />
-                                </span>
-                                <span
-                                    :class="
-                                        event.atc_slots_enabled
-                                            ? 'text-emerald-600 dark:text-emerald-400'
-                                            : 'text-muted-foreground/30'
-                                    "
-                                    :title="
-                                        event.atc_slots_enabled
-                                            ? 'ATC slots enabled'
-                                            : 'No ATC slots'
-                                    "
-                                >
-                                    <Radio class="size-4" />
-                                </span>
+                                <TooltipProvider>
+                                    <Tooltip>
+                                        <TooltipTrigger
+                                            ><span
+                                                :class="
+                                                    event.pilot_slots_enabled
+                                                        ? 'text-sky-600 dark:text-sky-400'
+                                                        : 'text-muted-foreground/30'
+                                                "
+                                            >
+                                                <PlaneTakeoff
+                                                    class="size-4"
+                                                /> </span
+                                        ></TooltipTrigger>
+                                        <TooltipContent>
+                                            <p>
+                                                {{
+                                                    event.pilot_slots_enabled
+                                                        ? 'Pilot slots enabled'
+                                                        : 'Pilot slots disabled'
+                                                }}
+                                            </p>
+                                        </TooltipContent>
+                                    </Tooltip>
+                                </TooltipProvider>
+
+                                <TooltipProvider>
+                                    <Tooltip>
+                                        <TooltipTrigger>
+                                            <span
+                                                :class="
+                                                    event.atc_slots_enabled
+                                                        ? 'text-emerald-600 dark:text-emerald-400'
+                                                        : 'text-muted-foreground/30'
+                                                "
+                                            >
+                                                <Radio class="size-4" />
+                                            </span>
+                                        </TooltipTrigger>
+                                        <TooltipContent>
+                                            <p>
+                                                {{
+                                                    event.atc_slots_enabled
+                                                        ? 'ATC slots enabled'
+                                                        : 'ATC slots disabled'
+                                                }}
+                                            </p>
+                                        </TooltipContent>
+                                    </Tooltip>
+                                </TooltipProvider>
                             </div>
                         </TableCell>
 
