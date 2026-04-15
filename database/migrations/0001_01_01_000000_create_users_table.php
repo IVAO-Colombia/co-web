@@ -24,6 +24,7 @@ return new class extends Migration
             $table->tinyInteger('network_rating')->nullable();
             $table->tinyInteger('atc_rating')->nullable();
             $table->tinyInteger('pilot_rating')->nullable();
+            $table->jsonb('raw_data')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

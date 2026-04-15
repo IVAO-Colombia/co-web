@@ -25,7 +25,7 @@ cp .env.example .env
 composer install
 npm run install
 php artisan migrate
-php artisan wayfinder:generate
+php artisan typescript:transform
 ```
 
 4. Start the Vite dev process

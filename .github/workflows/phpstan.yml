@@ -11,9 +11,6 @@ on:
 jobs:
   phpstan:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        php-version: ['8.4']
 
     steps:
       - name: Checkout code
@@ -22,7 +19,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php-version }}
+          php-version: '8.5'
           tools: composer:v2
           coverage: none
 

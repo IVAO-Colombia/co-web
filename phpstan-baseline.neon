@@ -1,0 +1,7 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Parameter \#1 \$ivaoUser of closure expects SocialiteProviders\\Manager\\OAuth2\\User, Laravel\\Socialite\\Contracts\\User given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/Auth/AuthenticateUsersController.php

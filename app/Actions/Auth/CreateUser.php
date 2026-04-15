@@ -18,6 +18,7 @@ class CreateUser
             'network_rating' => $ivaoUser->user['rating']['networkRating']['id'] ?? null,
             'atc_rating' => $ivaoUser->user['rating']['atcRating']['id'] ?? null,
             'pilot_rating' => $ivaoUser->user['rating']['pilotRating']['id'] ?? null,
+            'raw_data' => $ivaoUser->user,
         ];
 
         if ($user = User::where('vid', $ivaoUser->id)->first()) {

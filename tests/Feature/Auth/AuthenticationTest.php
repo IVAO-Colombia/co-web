@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Auth;
 
+use App\Enums\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -36,7 +37,7 @@ class AuthenticationTest extends TestCase
             ->assertRedirect(route('dashboard'))
             ->assertSessionHasNoErrors();
 
-        $this->assertDatabaseCount('users', 1);
+        $this->assertDatabaseCount(User::class, 1);
         $this->assertEquals($ivaoUser['id'], auth()->user()->vid);
         $this->assertDatabaseHas('users', [
             'name' => "{$ivaoUser['firstName']} {$ivaoUser['lastName']}",
@@ -44,7 +45,32 @@ class AuthenticationTest extends TestCase
             'division_id' => $ivaoUser['divisionId'],
             'pilot_rating' => $ivaoUser['rating']['pilotRating']['id'],
             'atc_rating' => $ivaoUser['rating']['atcRating']['id'],
+            'raw_data' => json_encode($ivaoUser),
         ]);
+    }
+
+    #[Test]
+    public function it_assigns_roles_from_ivao_staff_positions_on_registration(): void
+    {
+        $this->mockSocialiteIvao();
+
+        $this->get(route('auth.callback', 'ivao'));
+
+        $this->assertTrue(auth()->user()->hasRole(Role::WMA->value));
+    }
+
+    #[Test]
+    public function it_syncs_roles_from_ivao_staff_positions_on_login(): void
+    {
+        $ivaoUser = $this->mockSocialiteIvao();
+        User::factory()->create([
+            'vid' => $ivaoUser['id'],
+            'email' => $ivaoUser['email'],
+        ]);
+
+        $this->get(route('auth.callback', 'ivao'));
+
+        $this->assertTrue(auth()->user()->hasRole(Role::WMA->value));
     }
 
     #[Test]
