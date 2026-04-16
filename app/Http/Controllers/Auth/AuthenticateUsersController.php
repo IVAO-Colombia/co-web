@@ -17,8 +17,8 @@ class AuthenticateUsersController extends Controller
     public function __invoke(): RedirectResponse
     {
         Socialite::driver('ivao')->user()
-            |> (fn (SocialiteUser $ivaoUser) => new CreateUser()->handle($ivaoUser))
-            |> (fn (User $user) => new SyncUserRoles()->handle($user))
+            |> (fn (SocialiteUser $ivaoUser): \App\Models\User => new CreateUser()->handle($ivaoUser))
+            |> (fn (User $user): \App\Models\User => new SyncUserRoles()->handle($user))
             |> (fn (User $user) => auth()->guard()->login($user));
 
         return redirect()->intended(route('dashboard'));

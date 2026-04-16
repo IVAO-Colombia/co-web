@@ -16,7 +16,7 @@ class SyncUserRoles
         $staffPositions = $user->raw_data['userStaffPositions'] ?? [];
 
         $roles = collect($staffPositions)
-            ->map(fn (array $position) => Role::fromStaffPositionId($position['staffPositionId']))
+            ->map(fn (array $position): ?\App\Enums\Role => Role::fromStaffPositionId($position['staffPositionId']))
             ->filter()
             ->unique(fn (Role $role) => $role->value)
             ->map(fn (Role $role) => SpatieRole::firstOrCreate(['name' => $role->value]))
