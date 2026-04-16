@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Link, usePage } from '@inertiajs/vue3';
+import { Link } from '@inertiajs/vue3';
 import { wTrans } from 'laravel-vue-i18n';
 import { Calendar1, LayoutGrid } from 'lucide-vue-next';
 import type { ComputedRef } from 'vue';
