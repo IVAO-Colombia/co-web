@@ -9,6 +9,7 @@
 /resources/js/actions
 /resources/js/routes
 /resources/js/wayfinder
+/lang/php_*.json
 /vendor
 .DS_Store
 .env

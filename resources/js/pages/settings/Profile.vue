@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Head, usePage } from '@inertiajs/vue3';
+import { wTrans } from 'laravel-vue-i18n';
 import { computed } from 'vue';
 import Heading from '@/components/Heading.vue';
 import Table from '@/components/ui/table/Table.vue';
@@ -20,7 +21,7 @@ defineOptions({
     layout: {
         breadcrumbs: [
             {
-                title: 'Profile settings',
+                title: wTrans('Profile settings'),
                 href: edit(),
             },
         ],
@@ -33,52 +34,62 @@ const { pilotRating, atcRating } = useRatings(user.value);
 </script>
 
 <template>
-    <Head title="Profile settings" />
+    <Head :title="$t('Profile settings')" />
 
-    <h1 class="sr-only">Profile settings</h1>
+    <h1 class="sr-only">{{ $t('Profile settings') }}</h1>
 
     <div class="flex flex-col space-y-6">
-        <Heading
-            variant="small"
-            title="IVAO Profile information"
-            description="Update your name and email address"
-        />
+        <Heading variant="small" :title="$t('IVAO Profile information')" />
 
         <div class="flex">
             <Table>
                 <TableBody>
                     <TableRow>
-                        <TableCell class="font-medium"> Name </TableCell>
+                        <TableCell class="font-medium">
+                            {{ $t('Name') }}
+                        </TableCell>
                         <TableCell>{{ user.name }}</TableCell>
                     </TableRow>
                     <TableRow>
-                        <TableCell class="font-medium"> VID </TableCell>
+                        <TableCell class="font-medium">
+                            {{ $t('VID') }}
+                        </TableCell>
                         <TableCell>{{ user.vid }}</TableCell>
                     </TableRow>
                     <TableRow>
-                        <TableCell class="font-medium"> Email </TableCell>
+                        <TableCell class="font-medium">
+                            {{ $t('Email') }}
+                        </TableCell>
                         <TableCell>{{ user.email }}</TableCell>
                     </TableRow>
                     <TableRow>
-                        <TableCell class="font-medium"> Division </TableCell>
+                        <TableCell class="font-medium">
+                            {{ $t('Division') }}
+                        </TableCell>
                         <TableCell>{{ user.division_id }}</TableCell>
                     </TableRow>
                     <TableRow>
-                        <TableCell class="font-medium"> Country </TableCell>
+                        <TableCell class="font-medium">
+                            {{ $t('Country') }}
+                        </TableCell>
                         <TableCell>{{ user.country_id }}</TableCell>
                     </TableRow>
                     <TableRow>
-                        <TableCell class="font-medium"> Language </TableCell>
+                        <TableCell class="font-medium">
+                            {{ $t('Language') }}
+                        </TableCell>
                         <TableCell>{{ user.language_id }}</TableCell>
                     </TableRow>
                     <TableRow>
                         <TableCell class="font-medium">
-                            Network rating
+                            {{ $t('Network rating') }}
                         </TableCell>
                         <TableCell>{{ user.network_rating }}</TableCell>
                     </TableRow>
                     <TableRow>
-                        <TableCell class="font-medium"> ATC rating </TableCell>
+                        <TableCell class="font-medium">
+                            {{ $t('ATC rating') }}
+                        </TableCell>
                         <TableCell>
                             <img :src="atcRating.imageUrl" alt="" />
                             {{ atcRating.label }}</TableCell
@@ -86,7 +97,7 @@ const { pilotRating, atcRating } = useRatings(user.value);
                     </TableRow>
                     <TableRow>
                         <TableCell class="font-medium">
-                            Pilot rating
+                            {{ $t('Pilot rating') }}
                         </TableCell>
                         <TableCell>
                             <img :src="pilotRating.imageUrl" alt="" />
