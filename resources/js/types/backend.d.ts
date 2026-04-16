@@ -22,6 +22,12 @@ export enum EventType {
     RFO = 'rfo',
     RFE = 'rfe',
 }
+export enum Permission {
+    VIEW_EVENTS = 'view_events',
+    CREATE_EVENTS = 'create_events',
+    UPDATE_EVENTS = 'update_events',
+    DELETE_EVENTS = 'delete_events',
+}
 export enum PilotRating {
     FS1 = 2,
     FS2 = 3,
@@ -32,6 +38,28 @@ export enum PilotRating {
     ATP = 8,
     SFI = 9,
     CFI = 10,
+}
+export enum Role {
+    DIR = 'director',
+    ADIR = 'assistant_director',
+    FOC = 'flight_operations_coordinator',
+    FOAC = 'flight_operations_assistant_coordinator',
+    AOC = 'atc_operations_coordinator',
+    AOAC = 'atc_operations_assistant_coordinator',
+    TC = 'training_coordinator',
+    TAC = 'training_assistant_coordinator',
+    TA = 'division_training_advisor',
+    T0 = 'division_trainer',
+    MC = 'membership_coordinator',
+    EC = 'event_coordinator',
+    EAC = 'event_assistant_coordinator',
+    EA = 'division_event_advisor',
+    PRC = 'public_relations_coordinator',
+    PRAC = 'public_relations_assistant_coordinator',
+    PRA = 'public_relations_advisor',
+    WM = 'webmaster',
+    AWM = 'assistant_webmaster',
+    WMA = 'webmaster_advisor',
 }
 export enum SlotStatus {
     AVAILABLE = 'available',

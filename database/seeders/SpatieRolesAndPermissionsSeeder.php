@@ -98,42 +98,26 @@ class SpatieRolesAndPermissionsSeeder extends Seeder
     public function rolesPermissionsAssignmentMap(): array
     {
         return [
-            EnumsRole::DIR => [
-                EnumsPermission::eventsPermissions(),
-            ],
-            EnumsRole::ADIR => [
-                EnumsPermission::eventsPermissions(),
-            ],
-            EnumsRole::FOC => [],
-            EnumsRole::FOAC => [],
-            EnumsRole::AOC => [],
-            EnumsRole::AOAC => [],
-            EnumsRole::TC => [],
-            EnumsRole::TAC => [],
-            EnumsRole::TA => [],
-            EnumsRole::T0 => [],
-            EnumsRole::MC => [],
-            EnumsRole::EC => [
-                EnumsPermission::eventsPermissions(),
-            ],
-            EnumsRole::EAC => [
-                EnumsPermission::eventsPermissions(),
-            ],
-            EnumsRole::EA => [
-                EnumsPermission::eventsPermissions(),
-            ],
-            EnumsRole::PRC => [],
-            EnumsRole::PRAC => [],
-            EnumsRole::PRA => [],
-            EnumsRole::WM => [
-                EnumsPermission::eventsPermissions(),
-            ],
-            EnumsRole::AWM => [
-                EnumsPermission::eventsPermissions(),
-            ],
-            EnumsRole::WMA => [
-                EnumsPermission::eventsPermissions(),
-            ],
+            EnumsRole::DIR->value => [EnumsPermission::STAFF_ACCESS]+EnumsPermission::eventsPermissions(),
+            EnumsRole::ADIR->value => [EnumsPermission::STAFF_ACCESS]+EnumsPermission::eventsPermissions(),
+            EnumsRole::FOC->value => [EnumsPermission::STAFF_ACCESS],
+            EnumsRole::FOAC->value => [EnumsPermission::STAFF_ACCESS],
+            EnumsRole::AOC->value => [EnumsPermission::STAFF_ACCESS],
+            EnumsRole::AOAC->value => [EnumsPermission::STAFF_ACCESS],
+            EnumsRole::TC->value => [EnumsPermission::STAFF_ACCESS],
+            EnumsRole::TAC->value => [EnumsPermission::STAFF_ACCESS],
+            EnumsRole::TA->value => [EnumsPermission::STAFF_ACCESS],
+            EnumsRole::T0->value => [EnumsPermission::STAFF_ACCESS],
+            EnumsRole::MC->value => [EnumsPermission::STAFF_ACCESS],
+            EnumsRole::EC->value => [EnumsPermission::STAFF_ACCESS]+EnumsPermission::eventsPermissions(),
+            EnumsRole::EAC->value => [EnumsPermission::STAFF_ACCESS]+EnumsPermission::eventsPermissions(),
+            EnumsRole::EA->value => [EnumsPermission::STAFF_ACCESS]+EnumsPermission::eventsPermissions(),
+            EnumsRole::PRC->value => [EnumsPermission::STAFF_ACCESS],
+            EnumsRole::PRAC->value => [EnumsPermission::STAFF_ACCESS],
+            EnumsRole::PRA->value => [EnumsPermission::STAFF_ACCESS],
+            EnumsRole::WM->value => [EnumsPermission::STAFF_ACCESS]+EnumsPermission::eventsPermissions(),
+            EnumsRole::AWM->value => [EnumsPermission::STAFF_ACCESS]+EnumsPermission::eventsPermissions(),
+            EnumsRole::WMA->value => [EnumsPermission::STAFF_ACCESS]+EnumsPermission::eventsPermissions(),
         ];
     }
 }

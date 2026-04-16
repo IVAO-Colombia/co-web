@@ -6,14 +6,18 @@ namespace App\Http\Controllers;
 
 use App\Enums\EventStatus;
 use App\Enums\EventType;
+use App\Enums\Permission;
 use App\Models\Event;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Response;
 
 class EventsController extends Controller
 {
     public function index(Request $request): Response
     {
+        Gate::authorize(Permission::VIEW_EVENTS);
+
         $events = Event::query()
             ->when($request->string('query')->isNotEmpty(), function ($q) use ($request): void {
                 $search = $request->string('query')->toString();

@@ -9,6 +9,7 @@ namespace App\Enums;
  */
 enum Permission: string
 {
+    case STAFF_ACCESS = 'staff_access';
     case VIEW_EVENTS = 'view_events';
     case CREATE_EVENTS = 'create_events';
     case UPDATE_EVENTS = 'update_events';
