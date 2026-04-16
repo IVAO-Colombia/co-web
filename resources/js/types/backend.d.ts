@@ -23,6 +23,7 @@ export enum EventType {
     RFE = 'rfe',
 }
 export enum Permission {
+    STAFF_ACCESS = 'staff_access',
     VIEW_EVENTS = 'view_events',
     CREATE_EVENTS = 'create_events',
     UPDATE_EVENTS = 'update_events',

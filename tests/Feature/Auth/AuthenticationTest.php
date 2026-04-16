@@ -6,7 +6,6 @@ namespace Tests\Feature\Auth;
 
 use App\Enums\Role;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Laravel\Socialite\Facades\Socialite;
 use Mockery\MockInterface;
@@ -17,7 +16,6 @@ use Tests\TestCase;
 
 class AuthenticationTest extends TestCase
 {
-    use RefreshDatabase;
     use WithFaker;
 
     #[Test]

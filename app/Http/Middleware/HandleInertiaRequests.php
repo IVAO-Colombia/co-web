@@ -53,7 +53,7 @@ class HandleInertiaRequests extends Middleware
             'name' => config('app.name'),
             'auth' => [
                 'user' => $request->user(),
-                'permissions' => $request->user()?->getAllPermissions()->pluck('name'),
+                'permissions' => $request->user()?->getAllPermissions()->pluck('name')->unique()->values(),
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
             'locale' => app()->getLocale(),

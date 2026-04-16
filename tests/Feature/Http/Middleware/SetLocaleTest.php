@@ -5,14 +5,11 @@ declare(strict_types=1);
 namespace Tests\Feature\Http\Middleware;
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class SetLocaleTest extends TestCase
 {
-    use RefreshDatabase;
-
     #[Test]
     public function locale_defaults_to_es_without_cookie(): void
     {

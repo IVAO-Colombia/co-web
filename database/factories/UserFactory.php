@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
+use App\Enums\Role;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -35,5 +36,12 @@ class UserFactory extends Factory
             'atc_rating' => fake()->numberBetween(1, 10),
             'pilot_rating' => fake()->numberBetween(1, 10),
         ];
+    }
+
+    public function director(): self
+    {
+        return $this->afterCreating(function (User $user) {
+            $user->assignRole(Role::DIR);
+        });
     }
 }

@@ -97,27 +97,28 @@ class SpatieRolesAndPermissionsSeeder extends Seeder
      */
     public function rolesPermissionsAssignmentMap(): array
     {
+        $basePermissions = collect()->push(EnumsPermission::STAFF_ACCESS);
         return [
-            EnumsRole::DIR->value => [EnumsPermission::STAFF_ACCESS]+EnumsPermission::eventsPermissions(),
-            EnumsRole::ADIR->value => [EnumsPermission::STAFF_ACCESS]+EnumsPermission::eventsPermissions(),
-            EnumsRole::FOC->value => [EnumsPermission::STAFF_ACCESS],
-            EnumsRole::FOAC->value => [EnumsPermission::STAFF_ACCESS],
-            EnumsRole::AOC->value => [EnumsPermission::STAFF_ACCESS],
-            EnumsRole::AOAC->value => [EnumsPermission::STAFF_ACCESS],
-            EnumsRole::TC->value => [EnumsPermission::STAFF_ACCESS],
-            EnumsRole::TAC->value => [EnumsPermission::STAFF_ACCESS],
-            EnumsRole::TA->value => [EnumsPermission::STAFF_ACCESS],
-            EnumsRole::T0->value => [EnumsPermission::STAFF_ACCESS],
-            EnumsRole::MC->value => [EnumsPermission::STAFF_ACCESS],
-            EnumsRole::EC->value => [EnumsPermission::STAFF_ACCESS]+EnumsPermission::eventsPermissions(),
-            EnumsRole::EAC->value => [EnumsPermission::STAFF_ACCESS]+EnumsPermission::eventsPermissions(),
-            EnumsRole::EA->value => [EnumsPermission::STAFF_ACCESS]+EnumsPermission::eventsPermissions(),
-            EnumsRole::PRC->value => [EnumsPermission::STAFF_ACCESS],
-            EnumsRole::PRAC->value => [EnumsPermission::STAFF_ACCESS],
-            EnumsRole::PRA->value => [EnumsPermission::STAFF_ACCESS],
-            EnumsRole::WM->value => [EnumsPermission::STAFF_ACCESS]+EnumsPermission::eventsPermissions(),
-            EnumsRole::AWM->value => [EnumsPermission::STAFF_ACCESS]+EnumsPermission::eventsPermissions(),
-            EnumsRole::WMA->value => [EnumsPermission::STAFF_ACCESS]+EnumsPermission::eventsPermissions(),
+            EnumsRole::DIR->value => $basePermissions->merge(EnumsPermission::eventsPermissions()),
+            EnumsRole::ADIR->value => $basePermissions->merge(EnumsPermission::eventsPermissions()),
+            EnumsRole::FOC->value => $basePermissions,
+            EnumsRole::FOAC->value => $basePermissions,
+            EnumsRole::AOC->value => $basePermissions,
+            EnumsRole::AOAC->value => $basePermissions,
+            EnumsRole::TC->value => $basePermissions,
+            EnumsRole::TAC->value => $basePermissions,
+            EnumsRole::TA->value => $basePermissions,
+            EnumsRole::T0->value => $basePermissions,
+            EnumsRole::MC->value => $basePermissions,
+            EnumsRole::EC->value => $basePermissions->merge(EnumsPermission::eventsPermissions()),
+            EnumsRole::EAC->value => $basePermissions->merge(EnumsPermission::eventsPermissions()),
+            EnumsRole::EA->value => $basePermissions->merge(EnumsPermission::eventsPermissions()),
+            EnumsRole::PRC->value => $basePermissions,
+            EnumsRole::PRAC->value => $basePermissions,
+            EnumsRole::PRA->value => $basePermissions,
+            EnumsRole::WM->value => $basePermissions->merge(EnumsPermission::eventsPermissions()),
+            EnumsRole::AWM->value => $basePermissions->merge(EnumsPermission::eventsPermissions()),
+            EnumsRole::WMA->value => $basePermissions->merge(EnumsPermission::eventsPermissions()),
         ];
     }
 }

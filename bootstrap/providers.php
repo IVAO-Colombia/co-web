@@ -1,13 +1,8 @@
 <?php
 
-declare(strict_types=1);
-
-use App\Providers\AppServiceProvider;
-use App\Providers\TypeScriptTransformerServiceProvider;
-use SocialiteProviders\Manager\ServiceProvider;
-
 return [
-    AppServiceProvider::class,
-    ServiceProvider::class,
-    TypeScriptTransformerServiceProvider::class,
+    App\Providers\AppServiceProvider::class,
+    App\Providers\TestServiceProvider::class,
+    App\Providers\TypeScriptTransformerServiceProvider::class,
+    SocialiteProviders\Manager\ServiceProvider::class,
 ];

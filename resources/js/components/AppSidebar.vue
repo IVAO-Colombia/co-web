@@ -66,8 +66,11 @@ const footerNavItems: ComputedRef<NavItem[]> = computed(() =>
             <NavMain :items="mainNavItems" />
         </SidebarContent>
 
-        <SidebarFooter v-if="hasPermission">
-            <NavFooter :items="footerNavItems" />
+        <SidebarFooter>
+            <NavFooter
+                v-if="hasPermission(Permission.STAFF_ACCESS)"
+                :items="footerNavItems"
+            />
             <NavUser />
         </SidebarFooter>
     </Sidebar>
