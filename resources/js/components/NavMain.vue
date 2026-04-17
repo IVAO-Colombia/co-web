@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
+import { isRef } from 'vue';
 import {
     SidebarGroup,
     SidebarGroupLabel,
@@ -25,7 +26,7 @@ const { isCurrentUrl } = useCurrentUrl();
                 <SidebarMenuButton
                     as-child
                     :is-active="isCurrentUrl(item.href)"
-                    :tooltip="item.title"
+                    :tooltip="isRef(item.title) ? item.title.value : item.title"
                 >
                     <Link :href="item.href">
                         <component :is="item.icon" />

@@ -8,10 +8,10 @@ import {
     ChevronRight,
     MapPin,
     PlaneTakeoff,
+    Plus,
     Radio,
     X,
 } from 'lucide-vue-next';
-import type { ComputedRef } from 'vue';
 import { computed, ref, watch } from 'vue';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -37,9 +37,16 @@ import TooltipContent from '@/components/ui/tooltip/TooltipContent.vue';
 import TooltipProvider from '@/components/ui/tooltip/TooltipProvider.vue';
 import TooltipTrigger from '@/components/ui/tooltip/TooltipTrigger.vue';
 import { useDebounce } from '@/composables/useDebounce';
-import type { LengthAwarePaginator, Event } from '@/types';
-import { EventStatus, EventType } from '@/types';
-import { index } from '@/routes/events';
+import { usePermissions } from '@/composables/usePermissions';
+import { index, create } from '@/routes/events';
+import type {
+    LengthAwarePaginator,
+    Event,
+    EventStatus,
+    EventType,
+} from '@/types';
+import { Permission } from '@/types';
+import { EventConstants } from '@/types';
 
 const props = defineProps<{
     events: LengthAwarePaginator<number, Event>;
@@ -66,6 +73,7 @@ const links = computed(() =>
             !link.label.includes('&laquo;') && !link.label.includes('&raquo;'),
     ),
 );
+const { hasPermission } = usePermissions();
 
 function applyFilters(): void {
     router.get(
@@ -90,31 +98,6 @@ function clearFilters(): void {
 
 const hasActiveFilters = () =>
     query.value !== '' || status.value !== '' || type.value !== '';
-
-const statusVariant: Record<
-    EventStatus,
-    'default' | 'secondary' | 'destructive' | 'outline'
-> = {
-    [EventStatus.ACTIVE]: 'default',
-    [EventStatus.DRAFT]: 'secondary',
-    [EventStatus.CANCELLED]: 'destructive',
-    [EventStatus.FINALIZED]: 'outline',
-};
-
-const statusLabel: Record<EventStatus, ComputedRef<string>> = {
-    [EventStatus.DRAFT]: wTrans('Draft'),
-    [EventStatus.ACTIVE]: wTrans('Active'),
-    [EventStatus.CANCELLED]: wTrans('Cancelled'),
-    [EventStatus.FINALIZED]: wTrans('Finalized'),
-};
-
-const typeLabel: Record<EventType, ComputedRef<string>> = {
-    [EventType.ONLINE_DAY]: wTrans('Online Day'),
-    [EventType.EXAM]: wTrans('Exam'),
-    [EventType.TRAINING]: wTrans('Training'),
-    [EventType.RFO]: wTrans('RFO'),
-    [EventType.RFE]: wTrans('RFE'),
-};
 
 function formatDate(dateStr: string): string {
     return new Intl.DateTimeFormat('en-GB', {
@@ -167,7 +150,7 @@ function formatDate(dateStr: string): string {
                 </SelectTrigger>
                 <SelectContent>
                     <SelectItem
-                        v-for="(value, key) in statusLabel"
+                        v-for="(value, key) in EventConstants.statusLabels"
                         :key
                         :value="key"
                         >{{ value }}</SelectItem
@@ -181,7 +164,7 @@ function formatDate(dateStr: string): string {
                 </SelectTrigger>
                 <SelectContent>
                     <SelectItem
-                        v-for="(value, key) in typeLabel"
+                        v-for="(value, key) in EventConstants.typeLabels"
                         :key
                         :value="key"
                         >{{ value }}</SelectItem
@@ -286,7 +269,7 @@ function formatDate(dateStr: string): string {
                         <!-- Type -->
                         <TableCell>
                             <Badge variant="outline">
-                                {{ typeLabel[event.type] }}
+                                {{ EventConstants.typeLabels[event.type] }}
                             </Badge>
                         </TableCell>
 
@@ -372,8 +355,12 @@ function formatDate(dateStr: string): string {
 
                         <!-- Status -->
                         <TableCell>
-                            <Badge :variant="statusVariant[event.status]">
-                                {{ statusLabel[event.status] }}
+                            <Badge
+                                :variant="
+                                    EventConstants.statusVariants[event.status]
+                                "
+                            >
+                                {{ EventConstants.statusLabels[event.status] }}
                             </Badge>
                         </TableCell>
 
