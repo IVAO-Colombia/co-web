@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\EventStatus;
 use App\Enums\EventType;
+use App\Enums\PagesComponents;
 use App\Enums\Permission;
 use App\Models\Event;
 use Illuminate\Http\Request;
@@ -33,13 +34,11 @@ class EventsController extends Controller
             ->paginate(15)
             ->withQueryString();
 
-        return inertia('events/Index', [
+        return inertia(PagesComponents::EVENTS_INDEX, [
             'events' => $events,
             'filters' => $request->only(['query', 'status', 'type']),
         ]);
     }
-
-    // public function create() {}
 
     // public function store(Request $request) {}
 
