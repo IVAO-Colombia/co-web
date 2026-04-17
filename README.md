@@ -6,8 +6,19 @@ This project uses:
 
 - Laravel 13.X
 - Inertia 3
-- Tailwind
+- Vue 3
+- Tailwind 4
 - PHPStan
+- RectorPHP
+
+For internationalization (i18n) please refer to [laravel-vue-i18n](github.com/xico2k/laravel-vue-i18n)
+For permissions please refer to [larave-permission](https://spatie.be/docs/laravel-permission/v7/basic-usage/basic-usage)
+
+## Requirements
+
+- PHP 8.4
+- Node v24.12.0
+- Mysql 8.x
 
 ## Setup
 
