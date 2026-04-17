@@ -11,6 +11,46 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * @property int $id
+ * @property int $event_id
+ * @property int|null $pilot_id
+ * @property string|null $flight_number
+ * @property string $callsign
+ * @property string $aircraft
+ * @property string $origin
+ * @property string $destination
+ * @property \Carbon\CarbonImmutable $departs_at
+ * @property string|null $gate
+ * @property SlotStatus $status
+ * @property \Carbon\CarbonImmutable|null $created_at
+ * @property \Carbon\CarbonImmutable|null $updated_at
+ * @property \Carbon\CarbonImmutable|null $deleted_at
+ * @property-read \App\Models\Event|null $event
+ * @property-read \App\Models\User|null $pilot
+ * @method static \Database\Factories\PilotSlotFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PilotSlot newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PilotSlot newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PilotSlot onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PilotSlot query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PilotSlot whereAircraft($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PilotSlot whereCallsign($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PilotSlot whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PilotSlot whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PilotSlot whereDepartsAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PilotSlot whereDestination($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PilotSlot whereEventId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PilotSlot whereFlightNumber($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PilotSlot whereGate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PilotSlot whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PilotSlot whereOrigin($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PilotSlot wherePilotId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PilotSlot whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PilotSlot whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PilotSlot withTrashed(bool $withTrashed = true)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PilotSlot withoutTrashed()
+ * @mixin \Eloquent
+ */
 class PilotSlot extends Model
 {
     /**
