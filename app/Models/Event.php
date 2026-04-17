@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\EventStatus;
+use Carbon\CarbonImmutable;
 use Database\Factories\EventFactory;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -25,22 +27,23 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property bool $pilot_slots_enabled
  * @property bool $atc_slots_enabled
  * @property string $locations
- * @property \Carbon\CarbonImmutable $starts_at
- * @property \Carbon\CarbonImmutable|null $ends_at
+ * @property CarbonImmutable $starts_at
+ * @property CarbonImmutable|null $ends_at
  * @property EventStatus $status
  * @property int $created_by
  * @property int|null $assigned_to
- * @property \Carbon\CarbonImmutable|null $created_at
- * @property \Carbon\CarbonImmutable|null $updated_at
- * @property \Carbon\CarbonImmutable|null $deleted_at
- * @property-read \App\Models\User|null $assignedTo
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AtcSlot> $atcSlots
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $updated_at
+ * @property CarbonImmutable|null $deleted_at
+ * @property-read User|null $assignedTo
+ * @property-read Collection<int, AtcSlot> $atcSlots
  * @property-read int|null $atc_slots_count
- * @property-read \App\Models\User|null $createdBy
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PilotSlot> $pilotSlots
+ * @property-read User|null $createdBy
+ * @property-read Collection<int, PilotSlot> $pilotSlots
  * @property-read int|null $pilot_slots_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\UserAwardReport> $userAwardReports
+ * @property-read Collection<int, UserAwardReport> $userAwardReports
  * @property-read int|null $user_award_reports_count
+ *
  * @method static \Database\Factories\EventFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Event newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Event newQuery()
@@ -68,6 +71,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Event whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Event withTrashed(bool $withTrashed = true)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Event withoutTrashed()
+ *
  * @mixin \Eloquent
  */
 class Event extends Model

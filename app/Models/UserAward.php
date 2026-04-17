@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Carbon\CarbonImmutable;
 use Database\Factories\UserAwardFactory;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -21,11 +23,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int $gold
  * @property int $platinum
  * @property int $diamond
- * @property \Carbon\CarbonImmutable|null $created_at
- * @property \Carbon\CarbonImmutable|null $updated_at
- * @property \Carbon\CarbonImmutable|null $deleted_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\UserAwardReport> $userAwardReports
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $updated_at
+ * @property CarbonImmutable|null $deleted_at
+ * @property-read Collection<int, UserAwardReport> $userAwardReports
  * @property-read int|null $user_award_reports_count
+ *
  * @method static \Database\Factories\UserAwardFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserAward newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserAward newQuery()
@@ -46,6 +49,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserAward whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserAward withTrashed(bool $withTrashed = true)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserAward withoutTrashed()
+ *
  * @mixin \Eloquent
  */
 class UserAward extends Model

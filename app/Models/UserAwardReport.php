@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\UserAwardReportStatus;
+use Carbon\CarbonImmutable;
 use Database\Factories\UserAwardReportFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -20,12 +21,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property UserAwardReportStatus $status
  * @property int $points
  * @property string $observations
- * @property \Carbon\CarbonImmutable|null $created_at
- * @property \Carbon\CarbonImmutable|null $updated_at
- * @property \Carbon\CarbonImmutable|null $deleted_at
- * @property-read \App\Models\UserAward|null $award
- * @property-read \App\Models\Event|null $event
- * @property-read \App\Models\User $user
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $updated_at
+ * @property CarbonImmutable|null $deleted_at
+ * @property-read UserAward|null $award
+ * @property-read Event|null $event
+ * @property-read User $user
+ *
  * @method static \Database\Factories\UserAwardReportFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserAwardReport newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserAwardReport newQuery()
@@ -44,6 +46,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserAwardReport whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserAwardReport withTrashed(bool $withTrashed = true)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserAwardReport withoutTrashed()
+ *
  * @mixin \Eloquent
  */
 class UserAwardReport extends Model

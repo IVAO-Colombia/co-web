@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\SlotStatus;
+use Carbon\CarbonImmutable;
 use Database\Factories\PilotSlotFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -20,14 +21,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $aircraft
  * @property string $origin
  * @property string $destination
- * @property \Carbon\CarbonImmutable $departs_at
+ * @property CarbonImmutable $departs_at
  * @property string|null $gate
  * @property SlotStatus $status
- * @property \Carbon\CarbonImmutable|null $created_at
- * @property \Carbon\CarbonImmutable|null $updated_at
- * @property \Carbon\CarbonImmutable|null $deleted_at
- * @property-read \App\Models\Event|null $event
- * @property-read \App\Models\User|null $pilot
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $updated_at
+ * @property CarbonImmutable|null $deleted_at
+ * @property-read Event|null $event
+ * @property-read User|null $pilot
+ *
  * @method static \Database\Factories\PilotSlotFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PilotSlot newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PilotSlot newQuery()
@@ -49,6 +51,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PilotSlot whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PilotSlot withTrashed(bool $withTrashed = true)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PilotSlot withoutTrashed()
+ *
  * @mixin \Eloquent
  */
 class PilotSlot extends Model
