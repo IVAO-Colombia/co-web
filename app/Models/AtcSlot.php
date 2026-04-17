@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\SlotStatus;
+use Carbon\CarbonImmutable;
 use Database\Factories\AtcSlotFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -19,11 +20,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $starts_at
  * @property string $ends_at
  * @property SlotStatus $status
- * @property \Carbon\CarbonImmutable|null $created_at
- * @property \Carbon\CarbonImmutable|null $updated_at
- * @property \Carbon\CarbonImmutable|null $deleted_at
- * @property-read \App\Models\User|null $atc
- * @property-read \App\Models\Event|null $event
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $updated_at
+ * @property CarbonImmutable|null $deleted_at
+ * @property-read User|null $atc
+ * @property-read Event|null $event
+ *
  * @method static \Database\Factories\AtcSlotFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AtcSlot newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AtcSlot newQuery()
@@ -41,6 +43,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AtcSlot whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AtcSlot withTrashed(bool $withTrashed = true)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AtcSlot withoutTrashed()
+ *
  * @mixin \Eloquent
  */
 class AtcSlot extends Model
