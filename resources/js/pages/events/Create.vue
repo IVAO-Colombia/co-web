@@ -12,6 +12,7 @@ import {
     X,
 } from 'lucide-vue-next';
 import { computed, onUnmounted, ref } from 'vue';
+import { store } from '@/actions/App/Http/Controllers/EventsController';
 import InputError from '@/components/InputError.vue';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -48,11 +49,10 @@ import {
     normalizeTime,
     parseCsv,
 } from '@/lib/utils';
+import { index, create } from '@/routes/events';
 import type { EventType } from '@/types';
 import { EventConstants } from '@/types';
 import { EventTag } from '@/types';
-import { store } from '@/actions/App/Http/Controllers/EventsController';
-import { index, create } from '@/routes/events';
 
 type PilotSlotCSV = {
     callsign: string;

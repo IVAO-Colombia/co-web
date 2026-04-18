@@ -519,7 +519,11 @@ function handleDelete(): void {
             :title="$t('Delete Event')"
             :description="deleteDescription"
             :processing="deleting"
-            @update:open="(v) => { if (!v) pendingDelete = null; }"
+            @update:open="
+                (v) => {
+                    if (!v) pendingDelete = null;
+                }
+            "
             @confirm="handleDelete"
         />
     </div>
