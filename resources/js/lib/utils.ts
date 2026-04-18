@@ -1,7 +1,7 @@
 import type { InertiaLinkProps } from '@inertiajs/vue3';
 import { clsx } from 'clsx';
 import type { ClassValue } from 'clsx';
-import { format, isValid, parse } from 'date-fns';
+import { format, isValid, parse, parseISO } from 'date-fns';
 import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
@@ -93,6 +93,20 @@ export function normalizeTime(value: string): string {
  * Tries DD/MM/YYYY before MM/DD/YYYY to match Latin American locale.
  * Returns the original string if no known format matches.
  */
+/**
+ * Formats a datetime string for display in UTC.
+ * Output example: "1 Jun 2026, 18:00 UTC"
+ */
+export function formatDateTime(dateStr: string): string {
+    const date = parseISO(dateStr);
+    // Shift the timestamp so that format() (which uses local time) outputs UTC values
+    const utcDate = new Date(
+        date.getTime() + date.getTimezoneOffset() * 60 * 1000,
+    );
+
+    return format(utcDate, 'd MMM yyyy, HH:mm') + ' ZULU';
+}
+
 export function normalizeDatetime(value: string): string {
     const trimmed = value.trim();
 

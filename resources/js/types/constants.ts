@@ -1,7 +1,7 @@
 import { wTrans } from 'laravel-vue-i18n';
 import type { ComputedRef } from 'vue';
 import type { BadgeVariants } from '@/components/ui/badge';
-import { EventStatus, EventTag, EventType } from './backend.d';
+import { EventStatus, EventTag, EventType, SlotStatus } from './backend.d';
 
 export type EventConstantsType = {
     statusVariants: Record<EventStatus, BadgeVariants['variant']>;
@@ -36,5 +36,23 @@ export const EventConstants: EventConstantsType = {
         [EventTag.CrossCountry]: wTrans('Cross Country'),
         [EventTag.Division]: wTrans('Division'),
         [EventTag.Hq]: wTrans('HQ'),
+    },
+};
+
+export type SlotsConstantsType = {
+    statusLabels: Record<SlotStatus, string | ComputedRef<string>>;
+    statusVariants: Record<SlotStatus, BadgeVariants['variant']>;
+};
+
+export const SlotsConstants: SlotsConstantsType = {
+    statusLabels: {
+        [SlotStatus.AVAILABLE]: wTrans('Available'),
+        [SlotStatus.UNAVAILABLE]: wTrans('Unavailable'),
+        [SlotStatus.CANCELLED]: wTrans('Cancelled'),
+    },
+    statusVariants: {
+        [SlotStatus.AVAILABLE]: 'secondary',
+        [SlotStatus.UNAVAILABLE]: 'default',
+        [SlotStatus.CANCELLED]: 'destructive',
     },
 };

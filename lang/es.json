@@ -98,5 +98,15 @@
     "Please fix the errors above before submitting.": "Por favor corrige los errores antes de enviar.",
     "Back to Events": "Volver a Eventos",
     "Saving...": "Guardando...",
+    "Edit": "Editar",
+    "Pilot slot assignments for this event.": "Asignaciones de cupos de piloto para este evento.",
+    "Reserved By": "Reservado por",
+    "No pilot slots added yet.": "Aún no hay cupos de piloto.",
+    "ATC slot assignments for this event.": "Asignaciones de cupos de ATC para este evento.",
+    "No ATC slots added yet.": "Aún no hay cupos de ATC.",
+    "Cancel": "Cancelar",
+    "Coming soon": "Próximamente",
+    "Available": "Disponible",
+    "Unavailable": "No disponible",
     "Save as Draft": "Guardar como borrador"
 }

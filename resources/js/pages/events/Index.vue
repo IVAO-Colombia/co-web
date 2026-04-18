@@ -38,7 +38,8 @@ import TooltipProvider from '@/components/ui/tooltip/TooltipProvider.vue';
 import TooltipTrigger from '@/components/ui/tooltip/TooltipTrigger.vue';
 import { useDebounce } from '@/composables/useDebounce';
 import { usePermissions } from '@/composables/usePermissions';
-import { index, create } from '@/routes/events';
+import { formatDateTime } from '@/lib/utils';
+import { index, create, show } from '@/routes/events';
 import type {
     LengthAwarePaginator,
     Event,
@@ -98,16 +99,6 @@ function clearFilters(): void {
 
 const hasActiveFilters = () =>
     query.value !== '' || status.value !== '' || type.value !== '';
-
-function formatDate(dateStr: string): string {
-    return new Intl.DateTimeFormat('en-GB', {
-        day: 'numeric',
-        month: 'short',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-    }).format(new Date(dateStr));
-}
 </script>
 
 <template>
@@ -126,15 +117,15 @@ function formatDate(dateStr: string): string {
                 </p>
             </div>
             <div>
-                <Link
-                    v-if="hasPermission(Permission.CREATE_EVENTS)"
-                    :href="create()"
-                >
-                    <Button>
+                <Button as-child>
+                    <Link
+                        v-if="hasPermission(Permission.CREATE_EVENTS)"
+                        :href="create()"
+                    >
                         <Plus class="size-4" />
                         {{ $t('Create Event') }}
-                    </Button>
-                </Link>
+                    </Link>
+                </Button>
             </div>
         </div>
 
@@ -298,7 +289,7 @@ function formatDate(dateStr: string): string {
 
                         <!-- Starts at -->
                         <TableCell class="text-sm whitespace-nowrap">
-                            {{ formatDate(event.starts_at) }}
+                            {{ formatDateTime(event.starts_at) }}
                         </TableCell>
 
                         <!-- Slot indicators -->
@@ -377,11 +368,27 @@ function formatDate(dateStr: string): string {
 
                         <!-- Actions -->
                         <TableCell>
-                            <Button variant="ghost" size="sm" as-child>
-                                <Link :href="`/events/${event.slug}`">
-                                    {{ $t('View') }}
-                                </Link>
-                            </Button>
+                            <div class="flex items-center gap-1">
+                                <Button variant="ghost" size="sm" as-child>
+                                    <Link :href="show.url(event.slug)">
+                                        {{ $t('View') }}
+                                    </Link>
+                                </Button>
+                                <Button
+                                    v-if="
+                                        hasPermission(Permission.UPDATE_EVENTS)
+                                    "
+                                    variant="ghost"
+                                    size="sm"
+                                    as-child
+                                >
+                                    <Link
+                                        :href="`/dashboard/events/${event.slug}/edit`"
+                                    >
+                                        {{ $t('Edit') }}
+                                    </Link>
+                                </Button>
+                            </div>
                         </TableCell>
                     </TableRow>
                 </TableBody>

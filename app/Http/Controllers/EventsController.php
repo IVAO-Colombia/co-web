@@ -50,6 +50,17 @@ class EventsController extends Controller
         return to_route('events.index');
     }
 
+    public function show(Event $event): Response
+    {
+        Gate::authorize(Permission::VIEW_EVENTS);
+
+        $event->load(['pilotSlots.pilot', 'atcSlots.atc']);
+
+        return inertia(PagesComponents::EVENTS_SHOW->value, [
+            'event' => $event,
+        ]);
+    }
+
     // public function edit(string $id) {}
 
     // public function update(Request $request, string $id) {}
