@@ -1,6 +1,7 @@
 import type { InertiaLinkProps } from '@inertiajs/vue3';
 import { clsx } from 'clsx';
 import type { ClassValue } from 'clsx';
+import { format, isValid, parse } from 'date-fns';
 import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
@@ -10,7 +11,6 @@ export function cn(...inputs: ClassValue[]) {
 export function toUrl(href: NonNullable<InertiaLinkProps['href']>) {
     return typeof href === 'string' ? href : href?.url;
 }
-
 
 export function parseCsv(text: string): Record<string, string>[] {
     const lines = text.trim().split(/\r?\n/);
@@ -39,4 +39,70 @@ export function parseCsv(text: string): Record<string, string>[] {
 
 export function csvDataUri(headers: string): string {
     return `data:text/csv;charset=utf-8,${encodeURIComponent(headers + '\n')}`;
+}
+
+const TIME_FORMATS = [
+    'HH:mm:ss',
+    'H:mm:ss',
+    'HH:mm',
+    'H:mm',
+    'hh:mm:ss a',
+    'h:mm:ss a',
+    'hh:mm a',
+    'h:mm a',
+    'hh a',
+    'h a',
+];
+
+const DATETIME_FORMATS = [
+    "yyyy-MM-dd'T'HH:mm:ss",
+    "yyyy-MM-dd'T'HH:mm",
+    'yyyy-MM-dd HH:mm:ss',
+    'yyyy-MM-dd HH:mm',
+    'dd/MM/yyyy HH:mm:ss',
+    'dd/MM/yyyy HH:mm',
+    'dd/MM/yyyy',
+    'd/M/yyyy HH:mm',
+    'd/M/yyyy',
+    'yyyy/MM/dd HH:mm',
+    'yyyy/MM/dd',
+];
+
+const REFERENCE_DATE = new Date(2000, 0, 1);
+
+/**
+ * Normalizes a time string of unknown locale format to HH:mm (24-hour).
+ * Returns the original string if no known format matches.
+ */
+export function normalizeTime(value: string): string {
+    const trimmed = value.trim();
+
+    for (const fmt of TIME_FORMATS) {
+        const parsed = parse(trimmed, fmt, REFERENCE_DATE);
+
+        if (isValid(parsed)) {
+            return format(parsed, 'HH:mm');
+        }
+    }
+
+    return trimmed;
+}
+
+/**
+ * Normalizes a datetime string of unknown locale format to yyyy-MM-dd HH:mm.
+ * Tries DD/MM/YYYY before MM/DD/YYYY to match Latin American locale.
+ * Returns the original string if no known format matches.
+ */
+export function normalizeDatetime(value: string): string {
+    const trimmed = value.trim();
+
+    for (const fmt of DATETIME_FORMATS) {
+        const parsed = parse(trimmed, fmt, REFERENCE_DATE);
+
+        if (isValid(parsed)) {
+            return format(parsed, 'yyyy-MM-dd HH:mm');
+        }
+    }
+
+    return trimmed;
 }

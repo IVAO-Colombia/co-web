@@ -45,10 +45,10 @@ class EventsController extends Controller
 
     public function store(StoreEventRequest $request): RedirectResponse
     {
-        return app(CreateEvent::class)->handle($request);
-    }
+        app(CreateEvent::class)->handle($request);
 
-    // public function show(string $id) {}
+        return to_route('events.index');
+    }
 
     // public function edit(string $id) {}
 

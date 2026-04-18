@@ -27,7 +27,7 @@ class EventsStoreTest extends TestCase
             'description_en' => 'Event description',
             'type' => EventType::ONLINE_DAY->value,
             'locations' => 'SEQM',
-            'starts_at' => '2026-06-01 18:00:00',
+            'starts_at' => '2026-06-01 18:00',
         ];
     }
 
@@ -124,7 +124,7 @@ class EventsStoreTest extends TestCase
                     'aircraft' => 'A320',
                     'origin' => 'SEQM',
                     'destination' => 'SEGU',
-                    'departs_at' => '2026-06-01 18:00:00',
+                    'departs_at' => '2026-06-01 18:00',
                     'gate' => 'B12',
                 ],
                 [
@@ -133,7 +133,7 @@ class EventsStoreTest extends TestCase
                     'aircraft' => 'B738',
                     'origin' => 'SEGU',
                     'destination' => 'SEQM',
-                    'departs_at' => '2026-06-01 20:00:00',
+                    'departs_at' => '2026-06-01 20:00',
                     'gate' => null,
                 ],
             ],

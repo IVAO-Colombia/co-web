@@ -43,11 +43,26 @@ import {
     TableRow,
 } from '@/components/ui/table';
 import { Textarea } from '@/components/ui/textarea';
-import { csvDataUri, parseCsv } from '@/lib/utils';
+import {
+    csvDataUri,
+    normalizeDatetime,
+    normalizeTime,
+    parseCsv,
+} from '@/lib/utils';
 import { index, create } from '@/routes/events';
 import type { EventType } from '@/types';
 import { EventConstants } from '@/types';
 import { EventTag } from '@/types';
+
+type PilotSlotCSV = {
+    callsign: string;
+    flight_number: string;
+    aircraft: string;
+    origin: string;
+    destination: string;
+    departure_date_time: string;
+    gate: string;
+};
 
 type PilotSlotRow = {
     callsign: string;
@@ -59,6 +74,11 @@ type PilotSlotRow = {
     gate: string;
 };
 
+type AtcSlotCSV = {
+    callsign: string;
+    start_time: string;
+    end_time: string;
+};
 type AtcSlotRow = {
     callsign: string;
     starts_at: string;
@@ -168,9 +188,15 @@ function onPilotCsvChange(event: Event): void {
 
     const reader = new FileReader();
     reader.onload = (e) => {
-        form.pilot_slots = parseCsv(
-            e.target?.result as string,
-        ) as PilotSlotRow[];
+        const rows = parseCsv(e.target?.result as string) as PilotSlotCSV[];
+        form.pilot_slots = rows.map(
+            (row): PilotSlotRow => ({
+                ...row,
+                departs_at: row.departure_date_time
+                    ? normalizeDatetime(row.departure_date_time)
+                    : row.departure_date_time,
+            }),
+        );
     };
     reader.readAsText(file);
 }
@@ -187,7 +213,7 @@ function clearPilotSlots(): void {
 const atcSlotFileinput = ref<HTMLInputElement | null>(null);
 
 const atcTemplateCsvUrl = computed(() =>
-    csvDataUri('callsign,starts_at,ends_at'),
+    csvDataUri('callsign,start_time,end_time'),
 );
 
 function onAtcCsvChange(event: Event): void {
@@ -199,7 +225,18 @@ function onAtcCsvChange(event: Event): void {
 
     const reader = new FileReader();
     reader.onload = (e) => {
-        form.atc_slots = parseCsv(e.target?.result as string) as AtcSlotRow[];
+        const rows = parseCsv(e.target?.result as string) as AtcSlotCSV[];
+        form.atc_slots = rows.map(
+            (row): AtcSlotRow => ({
+                callsign: row.callsign,
+                starts_at: row.start_time
+                    ? normalizeTime(row.start_time)
+                    : row.start_time,
+                ends_at: row.end_time
+                    ? normalizeTime(row.end_time)
+                    : row.end_time,
+            }),
+        );
     };
     reader.readAsText(file);
 }

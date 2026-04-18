@@ -8,7 +8,6 @@ use App\Enums\EventStatus;
 use App\Enums\SlotStatus;
 use App\Http\Requests\StoreEventRequest;
 use App\Models\Event;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -16,11 +15,12 @@ use Illuminate\Validation\ValidationException;
 
 class CreateEvent
 {
-    public function handle(StoreEventRequest $request): RedirectResponse
+    public function handle(StoreEventRequest $request): Event
     {
         $imageUrl = $this->storeFile($request);
+        $event = new Event;
 
-        DB::transaction(function () use ($request, $imageUrl): void {
+        DB::transaction(function () use ($request, $imageUrl, &$event): void {
             $validated = $request->validated();
 
             $event = Event::create([
@@ -73,7 +73,7 @@ class CreateEvent
             }
         });
 
-        return to_route('events.index');
+        return $event;
     }
 
     private function storeFile(StoreEventRequest $request): ?string
