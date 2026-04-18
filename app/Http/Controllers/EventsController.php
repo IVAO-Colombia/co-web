@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Actions\Events\CreateEvent;
 use App\Enums\EventStatus;
 use App\Enums\EventType;
 use App\Enums\PagesComponents;
 use App\Enums\Permission;
+use App\Http\Requests\StoreEventRequest;
 use App\Models\Event;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Response;
@@ -34,13 +37,16 @@ class EventsController extends Controller
             ->paginate(15)
             ->withQueryString();
 
-        return inertia(PagesComponents::EVENTS_INDEX, [
+        return inertia(PagesComponents::EVENTS_INDEX->value, [
             'events' => $events,
             'filters' => $request->only(['query', 'status', 'type']),
         ]);
     }
 
-    // public function store(Request $request) {}
+    public function store(StoreEventRequest $request): RedirectResponse
+    {
+        return app(CreateEvent::class)->handle($request);
+    }
 
     // public function show(string $id) {}
 

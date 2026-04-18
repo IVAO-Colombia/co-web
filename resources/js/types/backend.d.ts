@@ -15,12 +15,23 @@ export enum EventStatus {
     CANCELLED = 'cancelled',
     FINALIZED = 'finalized',
 }
+export enum EventTag {
+    VFR = 'vfr',
+    IFR = 'ifr',
+    CrossCountry = 'cross-country',
+    Division = 'division',
+    Hq = 'hq',
+}
 export enum EventType {
     ONLINE_DAY = 'online_day',
     EXAM = 'exam',
     TRAINING = 'training',
     RFO = 'rfo',
     RFE = 'rfe',
+}
+export enum PagesComponents {
+    EVENTS_INDEX = 'events/Index',
+    EVENTS_CREATE = 'events/Create',
 }
 export enum Permission {
     STAFF_ACCESS = 'staff_access',

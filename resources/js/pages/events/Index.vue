@@ -125,6 +125,17 @@ function formatDate(dateStr: string): string {
                     {{ transChoice('event|events', events.total) }}
                 </p>
             </div>
+            <div>
+                <Link
+                    v-if="hasPermission(Permission.CREATE_EVENTS)"
+                    :href="create()"
+                >
+                    <Button>
+                        <Plus class="size-4" />
+                        {{ $t('Create Event') }}
+                    </Button>
+                </Link>
+            </div>
         </div>
 
         <!-- Filters -->

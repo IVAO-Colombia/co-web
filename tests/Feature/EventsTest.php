@@ -8,23 +8,27 @@ use App\Enums\EventStatus;
 use App\Enums\EventType;
 use App\Models\Event;
 use App\Models\User;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class EventsTest extends TestCase
 {
-    public function test_guests_are_redirected_from_events_index(): void
+    #[Test]
+    public function guests_are_redirected_from_events_index(): void
     {
         $this->get(route('events.index'))->assertRedirect(route('home'));
     }
 
-    public function test_authenticated_users_can_visit_events_index(): void
+    #[Test]
+    public function authenticated_users_can_visit_events_index(): void
     {
         $this->actingAs(User::factory()->director()->create());
 
         $this->get(route('events.index'))->assertOk();
     }
 
-    public function test_events_index_returns_paginated_events(): void
+    #[Test]
+    public function events_index_returns_paginated_events(): void
     {
         $this->actingAs(User::factory()->director()->create());
 
@@ -38,7 +42,8 @@ class EventsTest extends TestCase
             );
     }
 
-    public function test_events_index_filters_by_query(): void
+    #[Test]
+    public function events_index_filters_by_query(): void
     {
         $this->actingAs(User::factory()->director()->create());
 
@@ -53,7 +58,8 @@ class EventsTest extends TestCase
             );
     }
 
-    public function test_events_index_filters_by_status(): void
+    #[Test]
+    public function events_index_filters_by_status(): void
     {
         $this->actingAs(User::factory()->director()->create());
 
@@ -66,7 +72,8 @@ class EventsTest extends TestCase
             ->assertInertia(fn ($page) => $page->has('events.data', 1));
     }
 
-    public function test_events_index_filters_by_type(): void
+    #[Test]
+    public function events_index_filters_by_type(): void
     {
         $this->actingAs(User::factory()->director()->create());
 
@@ -78,7 +85,8 @@ class EventsTest extends TestCase
             ->assertInertia(fn ($page) => $page->has('events.data', 1));
     }
 
-    public function test_events_index_passes_active_filters_as_prop(): void
+    #[Test]
+    public function events_index_passes_active_filters_as_prop(): void
     {
         $this->actingAs(User::factory()->director()->create());
 
