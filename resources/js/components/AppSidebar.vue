@@ -18,10 +18,10 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { usePermissions } from '@/composables/usePermissions';
-import { dashboard } from '@/routes';
-import events from '@/routes/events';
 import { Permission } from '@/types';
 import type { NavItem } from '@/types';
+import { dashboard } from '@/routes';
+import events from '@/routes/events';
 
 const { hasPermission } = usePermissions();
 
