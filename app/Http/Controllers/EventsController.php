@@ -9,11 +9,13 @@ use App\Enums\EventStatus;
 use App\Enums\EventType;
 use App\Enums\PagesComponents;
 use App\Enums\Permission;
+use App\Enums\SlotStatus;
 use App\Http\Requests\StoreEventRequest;
 use App\Models\Event;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Validation\ValidationException;
 use Inertia\Response;
 
 class EventsController extends Controller
@@ -65,5 +67,23 @@ class EventsController extends Controller
 
     // public function update(Request $request, string $id) {}
 
-    // public function destroy(string $id) {}
+    public function destroy(Event $event): RedirectResponse
+    {
+        Gate::authorize(Permission::DELETE_EVENTS);
+
+        $hasReservedPilotSlot = $event->pilotSlots()->where('status', SlotStatus::UNAVAILABLE)->exists();
+        $hasReservedAtcSlot = $event->atcSlots()->where('status', SlotStatus::UNAVAILABLE)->exists();
+
+        if ($hasReservedPilotSlot || $hasReservedAtcSlot) {
+            throw ValidationException::withMessages([
+                'event' => __('This event cannot be deleted because it has reserved slots.'),
+            ]);
+        }
+
+        $event->pilotSlots()->update(['deleted_at' => now()]);
+        $event->atcSlots()->update(['deleted_at' => now()]);
+        $event->delete();
+
+        return to_route('events.index');
+    }
 }

@@ -1,13 +1,17 @@
 <script setup lang="ts">
-import { Head, Link, setLayoutProps } from '@inertiajs/vue3';
-import { wTrans } from 'laravel-vue-i18n';
+import { Head, Link, router, setLayoutProps } from '@inertiajs/vue3';
+import { trans, wTrans } from 'laravel-vue-i18n';
 import {
     CalendarDays,
     ChevronLeft,
     MapPin,
     PlaneTakeoff,
     Radio,
+    Trash2,
 } from 'lucide-vue-next';
+import { computed, ref } from 'vue';
+import { toast } from 'vue-sonner';
+import DeleteDialog from '@/components/DeleteDialog.vue';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -33,6 +37,7 @@ import TooltipProvider from '@/components/ui/tooltip/TooltipProvider.vue';
 import TooltipTrigger from '@/components/ui/tooltip/TooltipTrigger.vue';
 import { usePermissions } from '@/composables/usePermissions';
 import { formatDateTime } from '@/lib/utils';
+import { destroy, index, show as showRoute } from '@/routes/events';
 import type { EventDetail } from '@/types';
 import {
     EventConstants,
@@ -40,7 +45,6 @@ import {
     SlotsConstants,
     SlotStatus,
 } from '@/types';
-import { show as showRoute, index } from '@/routes/events';
 
 const props = defineProps<{
     event: EventDetail;
@@ -57,6 +61,43 @@ setLayoutProps({
 });
 
 const { hasPermission } = usePermissions();
+
+const deleteDescription = computed(() =>
+    trans(
+        'Are you sure you want to delete ":name"? This will also delete all unreserved slots and cannot be undone.',
+        { name: props.event.name },
+    ),
+);
+
+const showDeleteDialog = ref(false);
+const deleting = ref(false);
+
+const canDelete = computed(() => {
+    const hasReservedPilot = props.event.pilot_slots.some(
+        (s) => s.status === SlotStatus.UNAVAILABLE,
+    );
+    const hasReservedAtc = props.event.atc_slots.some(
+        (s) => s.status === SlotStatus.UNAVAILABLE,
+    );
+
+    return !hasReservedPilot && !hasReservedAtc;
+});
+
+function confirmDelete(): void {
+    deleting.value = true;
+    router.delete(destroy.url({ event: props.event.slug }), {
+        onSuccess: () => {
+            showDeleteDialog.value = false;
+        },
+        onError: (errors) => {
+            showDeleteDialog.value = false;
+            toast.error(errors.event ?? wTrans('Something went wrong.'));
+        },
+        onFinish: () => {
+            deleting.value = false;
+        },
+    });
+}
 </script>
 
 <template>
@@ -128,6 +169,26 @@ const { hasPermission } = usePermissions();
                         {{ $t('Edit') }}
                     </Link>
                 </Button>
+                <TooltipProvider v-if="hasPermission(Permission.DELETE_EVENTS)">
+                    <Tooltip>
+                        <TooltipTrigger as-child>
+                            <span>
+                                <Button
+                                    variant="destructive"
+                                    size="sm"
+                                    :disabled="!canDelete"
+                                    @click="showDeleteDialog = true"
+                                >
+                                    <Trash2 class="size-4" />
+                                    {{ $t('Delete') }}
+                                </Button>
+                            </span>
+                        </TooltipTrigger>
+                        <TooltipContent v-if="!canDelete">
+                            {{ $t('Cannot delete: event has reserved slots.') }}
+                        </TooltipContent>
+                    </Tooltip>
+                </TooltipProvider>
             </div>
         </div>
 
@@ -434,5 +495,15 @@ const { hasPermission } = usePermissions();
                 </div>
             </CardContent>
         </Card>
+
+        <!-- Delete confirmation dialog -->
+        <DeleteDialog
+            :open="showDeleteDialog"
+            :title="$t('Delete Event')"
+            :description="deleteDescription"
+            :processing="deleting"
+            @update:open="showDeleteDialog = $event"
+            @confirm="confirmDelete"
+        />
     </div>
 </template>

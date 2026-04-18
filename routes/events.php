@@ -11,3 +11,4 @@ Route::inertia('events/create', PagesComponents::EVENTS_CREATE)->name('events.cr
 // Route::get('events/create', [EventsController::class, 'create'])->name('events.create');
 Route::post('events', [EventsController::class, 'store'])->name('events.store');
 Route::get('events/{event:slug}', [EventsController::class, 'show'])->name('events.show');
+Route::delete('events/{event:slug}', [EventsController::class, 'destroy'])->name('events.destroy');

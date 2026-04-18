@@ -108,5 +108,12 @@
     "Coming soon": "Próximamente",
     "Available": "Disponible",
     "Unavailable": "No disponible",
-    "Save as Draft": "Guardar como borrador"
+    "Save as Draft": "Guardar como borrador",
+    "Delete": "Eliminar",
+    "Delete Event": "Eliminar Evento",
+    "Deleting...": "Eliminando...",
+    "Are you sure you want to delete \":name\"? This will also delete all unreserved slots and cannot be undone.": "¿Estás seguro de que quieres eliminar \":name\"? Esto también eliminará todos los cupos no reservados y no se puede deshacer.",
+    "Cannot delete: event has reserved slots.": "No se puede eliminar: el evento tiene cupos reservados.",
+    "This event cannot be deleted because it has reserved slots.": "Este evento no puede eliminarse porque tiene cupos reservados.",
+    "Something went wrong.": "Algo salió mal."
 }

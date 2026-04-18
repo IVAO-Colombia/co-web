@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { router } from '@inertiajs/vue3';
 import { Head, Link } from '@inertiajs/vue3';
-import { transChoice, wTrans } from 'laravel-vue-i18n';
+import { trans, transChoice, wTrans } from 'laravel-vue-i18n';
 import {
     CalendarDays,
     ChevronLeft,
@@ -10,9 +10,12 @@ import {
     PlaneTakeoff,
     Plus,
     Radio,
+    Trash2,
     X,
 } from 'lucide-vue-next';
 import { computed, ref, watch } from 'vue';
+import { toast } from 'vue-sonner';
+import DeleteDialog from '@/components/DeleteDialog.vue';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -39,6 +42,7 @@ import TooltipTrigger from '@/components/ui/tooltip/TooltipTrigger.vue';
 import { useDebounce } from '@/composables/useDebounce';
 import { usePermissions } from '@/composables/usePermissions';
 import { formatDateTime } from '@/lib/utils';
+import { index, create, destroy, show } from '@/routes/events';
 import type {
     LengthAwarePaginator,
     Event,
@@ -47,7 +51,6 @@ import type {
 } from '@/types';
 import { Permission } from '@/types';
 import { EventConstants } from '@/types';
-import { index, create, show } from '@/routes/events';
 
 const props = defineProps<{
     events: LengthAwarePaginator<number, Event>;
@@ -99,6 +102,36 @@ function clearFilters(): void {
 
 const hasActiveFilters = () =>
     query.value !== '' || status.value !== '' || type.value !== '';
+
+const pendingDelete = ref<Event | null>(null);
+const deleting = ref(false);
+
+const deleteDescription = computed(() =>
+    trans(
+        'Are you sure you want to delete ":name"? This will also delete all unreserved slots and cannot be undone.',
+        { name: pendingDelete.value?.name ?? '' },
+    ),
+);
+
+function handleDelete(): void {
+    if (!pendingDelete.value) {
+        return;
+    }
+
+    deleting.value = true;
+    router.delete(destroy.url({ event: pendingDelete.value.slug }), {
+        onSuccess: () => {
+            pendingDelete.value = null;
+        },
+        onError: (errors) => {
+            pendingDelete.value = null;
+            toast.error(errors.event ?? wTrans('Something went wrong.'));
+        },
+        onFinish: () => {
+            deleting.value = false;
+        },
+    });
+}
 </script>
 
 <template>
@@ -388,6 +421,17 @@ const hasActiveFilters = () =>
                                         {{ $t('Edit') }}
                                     </Link>
                                 </Button>
+                                <Button
+                                    v-if="
+                                        hasPermission(Permission.DELETE_EVENTS)
+                                    "
+                                    variant="ghost"
+                                    size="sm"
+                                    class="text-destructive hover:text-destructive"
+                                    @click="pendingDelete = event"
+                                >
+                                    <Trash2 class="size-4" />
+                                </Button>
                             </div>
                         </TableCell>
                     </TableRow>
@@ -468,5 +512,15 @@ const hasActiveFilters = () =>
                 </Button>
             </div>
         </div>
+
+        <!-- Delete confirmation dialog -->
+        <DeleteDialog
+            :open="pendingDelete !== null"
+            :title="$t('Delete Event')"
+            :description="deleteDescription"
+            :processing="deleting"
+            @update:open="(v) => { if (!v) pendingDelete = null; }"
+            @confirm="handleDelete"
+        />
     </div>
 </template>
