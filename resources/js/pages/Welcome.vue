@@ -1,7 +1,11 @@
 <script setup lang="ts">
-import { Head, Link } from '@inertiajs/vue3';
-import { dashboard } from '@/routes';
-import auth from '@/routes/auth';
+import { Head } from '@inertiajs/vue3';
+import { gsap } from 'gsap';
+import { ChevronLeft, ChevronRight } from 'lucide-vue-next';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import AppHeader from '@/components/header.vue';
+import { useAppearance } from '@/composables/useAppearance';
+
 
 withDefaults(
     defineProps<{
@@ -11,6 +15,138 @@ withDefaults(
         canRegister: true,
     },
 );
+
+type HeroSlide = {
+    eyebrow: string;
+    title: string;
+    description: string;
+    tagline: string;
+    lightImage: string;
+    darkImage: string;
+};
+
+const slides: HeroSlide[] = [
+    {
+        eyebrow: 'PILOTS NETWORK',
+        title: 'The world\'s largest<br>aeronautical simulation<br>network',
+        description:
+            'We connect pilots, controllers, and aviation enthusiasts through virtual simulation. We are more than 240,000 members worldwide, with over 60 million hours flown!',
+        tagline: 'Start your journey',
+        lightImage: '/day_1.png',
+        darkImage: '/nigth_1.png',
+    },
+    {
+        eyebrow: 'ATC TRAINING',
+        title: 'Command the skies with<br><span class="text-[#a8b8ff]">precision and<br>professionalism</span>',
+        description:
+            'Manage traffic at airports and control centers. Complete training from<br>Ground to ACC, with real-life based procedures.',
+        tagline: 'ATCO career',
+        lightImage: '/day_2.png',
+        darkImage: '/nigth_2.png',
+    },
+    {
+        eyebrow: 'LONG HAUL OPERATIONS',
+        title: 'From runway<br>to moonlit<br>approach,<br>stay connected',
+        description:
+            'Operate realistic schedules day and night with shared procedures, active<br>community support, and continuous events.',
+        tagline: 'Start your journey',
+        lightImage: '/day_3.png',
+        darkImage: '/nigth_3.png',
+    },
+];
+
+const { resolvedAppearance } = useAppearance();
+
+const currentSlideIndex = ref(0);
+const heroImageRef = ref<HTMLElement | null>(null);
+const heroContentRef = ref<HTMLElement | null>(null);
+
+let autoPlayTimer: ReturnType<typeof setInterval> | null = null;
+let animationContext: gsap.Context | null = null;
+
+const currentSlide = computed(() => slides[currentSlideIndex.value]);
+const currentImage = computed(() =>
+    resolvedAppearance.value === 'dark'
+        ? currentSlide.value.darkImage
+        : currentSlide.value.lightImage,
+);
+
+function nextSlide(): void {
+    currentSlideIndex.value = (currentSlideIndex.value + 1) % slides.length;
+}
+
+function previousSlide(): void {
+    currentSlideIndex.value =
+        (currentSlideIndex.value - 1 + slides.length) % slides.length;
+}
+
+function goToSlide(index: number): void {
+    currentSlideIndex.value = index;
+}
+
+function restartAutoPlay(): void {
+    if (autoPlayTimer) {
+        clearInterval(autoPlayTimer);
+    }
+
+    autoPlayTimer = setInterval(() => {
+        nextSlide();
+    }, 7000);
+}
+
+watch(currentSlideIndex, () => {
+    if (!heroImageRef.value || !heroContentRef.value) {
+        return;
+    }
+
+    gsap.fromTo(
+        heroImageRef.value,
+        { opacity: 0.65, scale: 1.03 },
+        { opacity: 1, scale: 1, duration: 0.7, ease: 'power2.out' },
+    );
+
+    gsap.fromTo(
+        heroContentRef.value.children,
+        { y: 24, opacity: 0 },
+        {
+            y: 0,
+            opacity: 1,
+            duration: 0.55,
+            stagger: 0.08,
+            ease: 'power3.out',
+        },
+    );
+});
+
+onMounted(() => {
+    animationContext = gsap.context(() => {
+        if (!heroContentRef.value) {
+            return;
+        }
+
+        gsap.fromTo(
+            heroContentRef.value.children,
+            { y: 26, opacity: 0 },
+            {
+                y: 0,
+                opacity: 1,
+                duration: 0.65,
+                stagger: 0.1,
+                ease: 'power3.out',
+            },
+        );
+    });
+
+    restartAutoPlay();
+});
+
+onBeforeUnmount(() => {
+    if (autoPlayTimer) {
+        clearInterval(autoPlayTimer);
+    }
+
+    animationContext?.revert();
+});
 </script>
 
 <template>
@@ -18,37 +154,88 @@ withDefaults(
         <link rel="preconnect" href="https://rsms.me/" />
         <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
     </Head>
-    <div
-        class="flex min-h-screen flex-col items-center bg-[#FDFDFC] p-6 text-[#1b1b18] lg:justify-center lg:p-8 dark:bg-[#0a0a0a]"
-    >
-        <header
-            class="mb-6 w-full max-w-[335px] text-sm not-has-[nav]:hidden lg:max-w-4xl"
-        >
-            <nav class="flex items-center justify-end gap-4">
-                <Link
-                    v-if="$page.props.auth.user"
-                    :href="dashboard()"
-                    class="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
+
+    <section class="h-screen bg-slate-950 text-white">
+        <div class="relative h-full w-full overflow-hidden">
+            <div class="absolute inset-0">
+                <img
+                    ref="heroImageRef"
+                    :src="currentImage"
+                    :alt="currentSlide.title"
+                    class="h-full w-full object-cover"
                 >
-                    Dashboard
-                </Link>
-                <template v-else>
-                    <Link
-                        :href="auth.redirect()"
-                        class="inline-block rounded-sm border border-transparent px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#19140035] dark:text-[#EDEDEC] dark:hover:border-[#3E3E3A]"
-                    >
-                        Log in
-                    </Link>
-                </template>
-            </nav>
-        </header>
-        <div
-            class="flex w-full items-center justify-center opacity-100 transition-opacity duration-750 lg:grow starting:opacity-0"
-        >
-            <main
-                class="flex w-full max-w-[335px] flex-col-reverse overflow-hidden rounded-lg lg:max-w-4xl lg:flex-row"
-            ></main>
+                <div class="absolute inset-0 bg-linear-to-b from-black/35 via-black/20 to-black/55"></div>
+            </div>
+
+            <AppHeader />
+
+            <main class="absolute inset-0 z-10 flex flex-col items-center justify-center px-6">
+                <section ref="heroContentRef" class="mx-auto flex w-full max-w-4xl flex-col items-center text-center">
+                    <p v-if="currentSlide.eyebrow" class="inline-flex items-center gap-2 rounded-full border border-white/20 bg-[#161a29]/80 px-4 py-1.5 text-xs font-medium tracking-wide text-white/95 backdrop-blur-md">
+                        <span class="inline-block h-2 w-2 rounded-full bg-blue-500"></span>
+                        {{ currentSlide.eyebrow }}
+                    </p>
+
+                    <h1 class="mt-6 text-balance text-[40px] font-bold tracking-tight leading-[1.1] text-white sm:text-[50px] md:text-[60px] lg:text-[72px]" v-html="currentSlide.title">
+                    </h1>
+
+                    <p class="mt-6 text-base leading-relaxed text-white/80 sm:text-lg md:text-[20px]" v-html="currentSlide.description">
+                    </p>
+
+                    <div class="mt-12 flex items-center justify-center gap-4">
+                        <a
+                            href="#"
+                            class="inline-flex items-center rounded-xl border border-white/20 bg-[#161a29]/60 px-8 py-3.5 text-sm font-semibold text-white backdrop-blur-md transition-colors hover:bg-white/10"
+                        >
+                            Request training
+                        </a>
+                        <a
+                            href="#"
+                            class="inline-flex items-center gap-2 rounded-xl bg-[#2f45ff] px-8 py-3.5 text-sm font-semibold text-white shadow-lg shadow-[#2f45ff]/40 transition-colors hover:bg-[#2438e6]"
+                        >
+                            First steps
+                            <span>→</span>
+                        </a>
+                    </div>
+
+                    <div class="mt-10 flex items-center gap-2">
+                        <p class="text-lg italic text-[#9ca3af]" style="font-family: 'Homemade Apple', cursive, sans-serif;">
+                            {{ currentSlide.tagline }}
+                        </p>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-[#9ca3af] opacity-70"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+                    </div>
+                </section>
+
+                <button
+                    type="button"
+                    class="absolute left-6 md:left-12 top-1/2 inline-flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-[#161a29]/60 text-white/90 backdrop-blur-md transition-colors hover:bg-white/15"
+                    @click="previousSlide(); restartAutoPlay()"
+                    aria-label="Previous slide"
+                >
+                    <ChevronLeft class="h-5 w-5" />
+                </button>
+
+                <button
+                    type="button"
+                    class="absolute right-6 md:right-12 top-1/2 inline-flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-[#161a29]/60 text-white/90 backdrop-blur-md transition-colors hover:bg-white/15"
+                    @click="nextSlide(); restartAutoPlay()"
+                    aria-label="Next slide"
+                >
+                    <ChevronRight class="h-5 w-5" />
+                </button>
+
+                <div class="absolute bottom-10 left-1/2 flex -translate-x-1/2 items-center gap-2">
+                    <button
+                        v-for="(slide, index) in slides"
+                        :key="slide.title"
+                        type="button"
+                        class="h-0.5 rounded-full transition-all duration-300"
+                        :class="index === currentSlideIndex ? 'w-8 bg-white' : 'w-3 bg-white/40 hover:bg-white/60'"
+                        @click="goToSlide(index); restartAutoPlay()"
+                        :aria-label="`Go to slide ${index + 1}`"
+                    ></button>
+                </div>
+            </main>
         </div>
-        <div class="hidden h-14.5 lg:block"></div>
-    </div>
+    </section>
 </template>
