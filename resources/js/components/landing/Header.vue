@@ -20,7 +20,6 @@ import {
 } from 'lucide-vue-next';
 import { computed } from 'vue';
 import type { Component } from 'vue';
-import LogoIvaoCo from '@/components/LogoIvaoCo.vue';
 import {
     NavigationMenu,
     NavigationMenuItem,
@@ -31,9 +30,10 @@ import {
 } from '@/components/ui/navigation-menu';
 import { useAppearance } from '@/composables/useAppearance';
 import { useLocale } from '@/composables/useLocale';
+import type { Locale } from '@/types';
+import LogoIvaoCo from '@/components/LogoIvaoCo.vue';
 import { dashboard } from '@/routes';
 import auth from '@/routes/auth';
-import type { Locale } from '@/types';
 
 type SectionLink = {
     title: string;
