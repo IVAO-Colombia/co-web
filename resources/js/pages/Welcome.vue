@@ -3,8 +3,8 @@ import { Head } from '@inertiajs/vue3';
 import { gsap } from 'gsap';
 import { ChevronLeft, ChevronRight } from 'lucide-vue-next';
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
-import { useAppearance } from '@/composables/useAppearance';
 import Header from '@/components/landing/Header.vue';
+import { useAppearance } from '@/composables/useAppearance';
 
 type HeroSlide = {
     eyebrow: string;
@@ -18,7 +18,7 @@ type HeroSlide = {
 const slides: HeroSlide[] = [
     {
         eyebrow: 'PILOTS NETWORK',
-        title: 'The world\'s largest<br>aeronautical simulation<br>network',
+        title: "The world's largest<br>aeronautical simulation<br>network",
         description:
             'We connect pilots, controllers, and aviation enthusiasts through virtual simulation. We are more than 240,000 members worldwide, with over 60 million hours flown!',
         tagline: 'Start your journey',
@@ -153,24 +153,40 @@ onBeforeUnmount(() => {
                     :src="currentImage"
                     :alt="currentSlide.title"
                     class="h-full w-full object-cover"
-                >
-                <div class="absolute inset-0 bg-linear-to-b from-black/35 via-black/20 to-black/55"></div>
+                />
+                <div
+                    class="absolute inset-0 bg-linear-to-b from-black/35 via-black/20 to-black/55"
+                ></div>
             </div>
 
             <Header />
 
-            <main class="absolute inset-0 z-10 flex flex-col items-center justify-center px-6">
-                <section ref="heroContentRef" class="mx-auto flex w-full max-w-4xl flex-col items-center text-center">
-                    <p v-if="currentSlide.eyebrow" class="inline-flex items-center gap-2 rounded-full border border-white/20 bg-[#161a29]/80 px-4 py-1.5 text-xs font-medium tracking-wide text-white/95 backdrop-blur-md">
-                        <span class="inline-block h-2 w-2 rounded-full bg-blue-500"></span>
+            <main
+                class="absolute inset-0 z-10 flex flex-col items-center justify-center px-6"
+            >
+                <section
+                    ref="heroContentRef"
+                    class="mx-auto flex w-full max-w-4xl flex-col items-center text-center"
+                >
+                    <p
+                        v-if="currentSlide.eyebrow"
+                        class="inline-flex items-center gap-2 rounded-full border border-white/20 bg-[#161a29]/80 px-4 py-1.5 text-xs font-medium tracking-wide text-white/95 backdrop-blur-md"
+                    >
+                        <span
+                            class="inline-block h-2 w-2 rounded-full bg-blue-500"
+                        ></span>
                         {{ currentSlide.eyebrow }}
                     </p>
 
-                    <h1 class="mt-6 text-balance text-[40px] font-bold tracking-tight leading-[1.1] text-white sm:text-[50px] md:text-[60px] lg:text-[72px]" v-html="currentSlide.title">
-                    </h1>
+                    <h1
+                        class="mt-6 text-[40px] leading-[1.1] font-bold tracking-tight text-balance text-white sm:text-[50px] md:text-[60px] lg:text-[72px]"
+                        v-html="currentSlide.title"
+                    ></h1>
 
-                    <p class="mt-6 text-base leading-relaxed text-white/80 sm:text-lg md:text-[20px]" v-html="currentSlide.description">
-                    </p>
+                    <p
+                        class="mt-6 text-base leading-relaxed text-white/80 sm:text-lg md:text-[20px]"
+                        v-html="currentSlide.description"
+                    ></p>
 
                     <div class="mt-12 flex items-center justify-center gap-4">
                         <a
@@ -189,17 +205,38 @@ onBeforeUnmount(() => {
                     </div>
 
                     <div class="mt-10 flex items-center gap-2">
-                        <p class="text-lg italic text-[#9ca3af]" style="font-family: 'Homemade Apple', cursive, sans-serif;">
+                        <p
+                            class="text-lg text-[#9ca3af] italic"
+                            style="
+                                font-family:
+                                    'Homemade Apple', cursive, sans-serif;
+                            "
+                        >
                             {{ currentSlide.tagline }}
                         </p>
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-[#9ca3af] opacity-70"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+                        <svg
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            class="text-[#9ca3af] opacity-70"
+                        >
+                            <path d="M7 17L17 7M17 7H7M17 7V17" />
+                        </svg>
                     </div>
                 </section>
 
                 <button
                     type="button"
-                    class="absolute left-6 md:left-12 top-1/2 inline-flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-[#161a29]/60 text-white/90 backdrop-blur-md transition-colors hover:bg-white/15"
-                    @click="previousSlide(); restartAutoPlay()"
+                    class="absolute top-1/2 left-6 inline-flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-[#161a29]/60 text-white/90 backdrop-blur-md transition-colors hover:bg-white/15 md:left-12"
+                    @click="
+                        previousSlide();
+                        restartAutoPlay();
+                    "
                     aria-label="Previous slide"
                 >
                     <ChevronLeft class="h-5 w-5" />
@@ -207,21 +244,33 @@ onBeforeUnmount(() => {
 
                 <button
                     type="button"
-                    class="absolute right-6 md:right-12 top-1/2 inline-flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-[#161a29]/60 text-white/90 backdrop-blur-md transition-colors hover:bg-white/15"
-                    @click="nextSlide(); restartAutoPlay()"
+                    class="absolute top-1/2 right-6 inline-flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-[#161a29]/60 text-white/90 backdrop-blur-md transition-colors hover:bg-white/15 md:right-12"
+                    @click="
+                        nextSlide();
+                        restartAutoPlay();
+                    "
                     aria-label="Next slide"
                 >
                     <ChevronRight class="h-5 w-5" />
                 </button>
 
-                <div class="absolute bottom-10 left-1/2 flex -translate-x-1/2 items-center gap-2">
+                <div
+                    class="absolute bottom-10 left-1/2 flex -translate-x-1/2 items-center gap-2"
+                >
                     <button
                         v-for="(slide, index) in slides"
                         :key="slide.title"
                         type="button"
                         class="h-0.5 rounded-full transition-all duration-300"
-                        :class="index === currentSlideIndex ? 'w-8 bg-white' : 'w-3 bg-white/40 hover:bg-white/60'"
-                        @click="goToSlide(index); restartAutoPlay()"
+                        :class="
+                            index === currentSlideIndex
+                                ? 'w-8 bg-white'
+                                : 'w-3 bg-white/40 hover:bg-white/60'
+                        "
+                        @click="
+                            goToSlide(index);
+                            restartAutoPlay();
+                        "
                         :aria-label="`Go to slide ${index + 1}`"
                     ></button>
                 </div>
