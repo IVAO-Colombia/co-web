@@ -1,5 +1,5 @@
-import type { ComputedRef, Ref } from 'vue';
 import { usePage } from '@inertiajs/vue3';
+import type { ComputedRef, Ref } from 'vue';
 import { computed, onMounted, ref } from 'vue';
 import type { Appearance, ResolvedAppearance } from '@/types';
 

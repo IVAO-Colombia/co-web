@@ -32,20 +32,19 @@ createInertiaApp({
             ? createSSRApp({ render: () => h(App, props) })
             : createApp({ render: () => h(App, props) });
 
-        app.use(plugin)
-            .use(i18nVue, {
-                lang: props.initialPage.props.locale,
-                resolve: async (lang: string) => {
-                    const langs = import.meta.glob('../../lang/*.json');
-                    const loader = langs[`../../lang/${lang}.json`];
+        app.use(plugin).use(i18nVue, {
+            lang: props.initialPage.props.locale,
+            resolve: async (lang: string) => {
+                const langs = import.meta.glob('../../lang/*.json');
+                const loader = langs[`../../lang/${lang}.json`];
 
-                    if (!loader) {
-                        return {};
-                    }
+                if (!loader) {
+                    return {};
+                }
 
-                    return await loader();
-                },
-            });
+                return await loader();
+            },
+        });
 
         void loadLanguageAsync(props.initialPage.props.locale)
             .catch(() => undefined)
