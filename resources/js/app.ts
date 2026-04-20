@@ -1,6 +1,6 @@
 import { createInertiaApp } from '@inertiajs/vue3';
 import { i18nVue, loadLanguageAsync } from 'laravel-vue-i18n';
-import { createApp, createSSRApp, h } from 'vue';
+import { createSSRApp, h } from 'vue';
 import { initializeTheme } from '@/composables/useAppearance';
 import AppLayout from '@/layouts/AppLayout.vue';
 import AuthLayout from '@/layouts/AuthLayout.vue';
@@ -27,30 +27,20 @@ createInertiaApp({
         color: '#4B5563',
     },
     setup({ el, App, props, plugin }) {
-        const hasServerMarkup = !!el?.firstElementChild;
-        const app = hasServerMarkup
-            ? createSSRApp({ render: () => h(App, props) })
-            : createApp({ render: () => h(App, props) });
+        const app = createSSRApp({ render: () => h(App, props) })
+            .use(plugin)
+            .use(i18nVue, {
+                lang: props.initialPage.props.locale,
+                resolve: async (lang: string) => {
+                    const langs = import.meta.glob('../../lang/*.json');
 
-        app.use(plugin).use(i18nVue, {
-            lang: props.initialPage.props.locale,
-            resolve: async (lang: string) => {
-                const langs = import.meta.glob('../../lang/*.json');
-                const loader = langs[`../../lang/${lang}.json`];
-
-                if (!loader) {
-                    return {};
-                }
-
-                return await loader();
-            },
-        });
-
-        void loadLanguageAsync(props.initialPage.props.locale)
-            .catch(() => undefined)
-            .finally(() => {
-                app.mount(el!);
+                    return await langs[`../../lang/${lang}.json`]();
+                },
             });
+
+        loadLanguageAsync(props.initialPage.props.locale).then(() => {
+            app.mount(el);
+        });
     },
 });
 
