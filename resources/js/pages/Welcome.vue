@@ -3,18 +3,8 @@ import { Head } from '@inertiajs/vue3';
 import { gsap } from 'gsap';
 import { ChevronLeft, ChevronRight } from 'lucide-vue-next';
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
-import AppHeader from '@/components/header.vue';
+import AppHeader from '@/components/Header.vue';
 import { useAppearance } from '@/composables/useAppearance';
-
-
-withDefaults(
-    defineProps<{
-        canRegister: boolean;
-    }>(),
-    {
-        canRegister: true,
-    },
-);
 
 type HeroSlide = {
     eyebrow: string;

@@ -1,6 +1,6 @@
 import { createInertiaApp } from '@inertiajs/vue3';
-import { i18nVue } from 'laravel-vue-i18n';
-import { createSSRApp, h } from 'vue';
+import { i18nVue, loadLanguageAsync } from 'laravel-vue-i18n';
+import { createApp, createSSRApp, h } from 'vue';
 import { initializeTheme } from '@/composables/useAppearance';
 import AppLayout from '@/layouts/AppLayout.vue';
 import AuthLayout from '@/layouts/AuthLayout.vue';
@@ -27,17 +27,31 @@ createInertiaApp({
         color: '#4B5563',
     },
     setup({ el, App, props, plugin }) {
-        const app = createSSRApp({ render: () => h(App, props) });
+        const hasServerMarkup = !!el?.firstElementChild;
+        const app = hasServerMarkup
+            ? createSSRApp({ render: () => h(App, props) })
+            : createApp({ render: () => h(App, props) });
+
         app.use(plugin)
             .use(i18nVue, {
                 lang: props.initialPage.props.locale,
                 resolve: async (lang: string) => {
                     const langs = import.meta.glob('../../lang/*.json');
+                    const loader = langs[`../../lang/${lang}.json`];
 
-                    return await langs[`../../lang/${lang}.json`]();
+                    if (!loader) {
+                        return {};
+                    }
+
+                    return await loader();
                 },
-            })
-            .mount(el!);
+            });
+
+        void loadLanguageAsync(props.initialPage.props.locale)
+            .catch(() => undefined)
+            .finally(() => {
+                app.mount(el!);
+            });
     },
 });
 

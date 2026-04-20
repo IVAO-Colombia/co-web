@@ -19,9 +19,8 @@ import {
     Radar,
     Users,
 } from 'lucide-vue-next';
-import LogoIvaoCo from '@/components/logoIvaoCo.vue';
+import LogoIvaoCo from '@/components/LogoIvaoCo.vue';
 import { useAppearance } from '@/composables/useAppearance';
-import { useTheme } from '@/composables/useTheme';
 import { useLocale } from '@/composables/useLocale';
 import { dashboard } from '@/routes';
 import auth from '@/routes/auth';

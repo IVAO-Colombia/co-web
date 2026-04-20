@@ -17,6 +17,7 @@ declare module '@inertiajs/core' {
     export interface InertiaConfig {
         sharedPageProps: {
             name: string;
+            appearance: 'light' | 'dark' | 'system';
             auth: Auth;
             sidebarOpen: boolean;
             locale: string;
