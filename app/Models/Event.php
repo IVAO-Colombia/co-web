@@ -7,6 +7,8 @@ namespace App\Models;
 use App\Enums\EventStatus;
 use Carbon\CarbonImmutable;
 use Database\Factories\EventFactory;
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -140,5 +142,14 @@ class Event extends Model
     public function assignedTo(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    
+    #[Scope]
+    public function active(Builder $query): void 
+    {
+       
+        $query->where('status', EventStatus::ACTIVE)->where('starts_at', '>=', now());
+
     }
 }

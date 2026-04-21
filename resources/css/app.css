@@ -68,6 +68,12 @@
     --color-warning-foreground: var(--primary-foreground);
     --color-info: #7ea2d6;
     --color-info-foreground: var(--primary-foreground);
+
+    --color-calendar-surface: #161a29;
+    --color-calendar-surface-hover: #242c45;
+    --color-calendar-primary: #2f45ff;
+    --color-calendar-primary-hover: #2438e6;
+    --color-calendar-outline: #ffffff33;
 }
 
 /*

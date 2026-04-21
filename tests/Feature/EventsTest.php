@@ -14,6 +14,19 @@ use Tests\TestCase;
 class EventsTest extends TestCase
 {
     #[Test]
+    public function guests_can_visit_public_events_landing_page(): void
+    {
+        Event::factory()->count(2)->create();
+
+        $this->get(route('events.landing'))
+            ->assertOk()
+            ->assertInertia(fn ($page) => $page
+                ->component('events/landing/Events')
+                ->has('events', 2)
+            );
+    }
+
+    #[Test]
     public function guests_are_redirected_from_events_index(): void
     {
         $this->get(route('events.index'))->assertRedirect(route('home'));

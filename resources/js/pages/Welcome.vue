@@ -5,6 +5,8 @@ import { ArrowUpRight, ChevronLeft, ChevronRight } from 'lucide-vue-next';
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import Header from '@/components/landing/Header.vue';
 import { useAppearance } from '@/composables/useAppearance';
+import Events from '@/components/landing/Events.vue';
+import type { Event } from '@/types';
 
 type HeroSlide = {
     eyebrow: string;
@@ -14,6 +16,10 @@ type HeroSlide = {
     lightImage: string;
     darkImage: string;
 };
+
+defineProps<{
+    events: Event[];
+}>();
 
 const slides: HeroSlide[] = [
     {
@@ -293,4 +299,5 @@ onBeforeUnmount(() => {
             </main>
         </div>
     </section>
+    <Events :events="events" />
 </template>

@@ -202,16 +202,33 @@ const menuSections: MenuSection[] = [
 const { locale, updateLocale } = useLocale();
 const { resolvedAppearance, updateAppearance } = useAppearance();
 
+const props = withDefaults(
+    defineProps<{
+        brandText?: string;
+        brandTone?: 'auto' | 'dark';
+    }>(),
+    {
+        brandText: '',
+        brandTone: 'auto',
+    },
+);
+
 const languageOptions: Array<{ value: Locale; label: string }> = [
     { value: 'es', label: 'ES' },
     { value: 'en', label: 'EN' },
 ];
 
 const isDarkMode = computed(() => resolvedAppearance.value === 'dark');
+const isHeaderDark = computed(
+    () => props.brandTone === 'dark' || isDarkMode.value,
+);
 const logoSrc = computed(() =>
-    isDarkMode.value ? '/logo-small-white.png' : '/logo-small-blue.svg',
+    isHeaderDark.value ? '/logo-small-white.png' : '/logo-small-blue.svg',
 );
 const loginLogoSrc = computed(() => '/logo-small-white.png');
+const textDarkClass = computed(() =>
+    isDarkMode.value ? 'text-white' : 'text-white',
+);
 const isMobileMenuOpen = ref(false);
 const expandedMobileSection = ref<string | null>(
     menuSections[0]?.title ?? null,
@@ -260,27 +277,27 @@ function toggleMobileSection(sectionTitle: string): void {
 </script>
 
 <template>
-    <header class="relative z-50 px-3 pt-3 sm:px-4 sm:pt-4 lg:px-6">
+    <header :class="{ dark: isHeaderDark }" class="relative z-50 px-3 pt-3 sm:px-4 sm:pt-4 lg:px-6">
         <nav
             class="relative mx-auto max-w-7xl rounded-3xl border border-slate-200/70 bg-white/80 px-3 py-2.5 shadow-[0_18px_50px_rgba(15,23,42,0.16)] backdrop-blur-xl sm:rounded-[28px] sm:px-4 sm:py-3 dark:border-slate-700/60 dark:bg-slate-900/75"
         >
             <div class="flex items-center justify-between gap-2 sm:gap-4">
-                <a href="/" class="flex min-w-0 items-center">
+                <a href="/" class="flex min-w-0 shrink-0 items-center gap-2 sm:gap-3">
                     <LogoIvaoCo
+                        :isDark="isHeaderDark"
                         :height="38"
-                        :show-text="false"
-                        class="sm:hidden"
+                        :show-text="true"
                         :src="logoSrc"
                         title-text="IVAO"
                         country-text="COLOMBIA"
+                        class="shrink-0"
                     />
-                    <LogoIvaoCo
-                        :height="56"
-                        class="hidden sm:inline-flex"
-                        :src="logoSrc"
-                        title-text="IVAO"
-                        country-text="COLOMBIA"
-                    />
+                    <template v-if="props.brandText">
+                        <span class="hidden h-8 w-px bg-white/25 xl:block"></span>
+                        <h1 class="hidden max-w-40 truncate whitespace-nowrap text-[0.95rem] font-bold tracking-[0.08em] font-heading text-white xl:block 2xl:max-w-56">
+                            {{ props.brandText }}
+                        </h1>
+                    </template>
                 </a>
                 <div
                     class="flex shrink-0 items-center gap-2 sm:gap-3 lg:order-2"

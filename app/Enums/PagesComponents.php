@@ -9,4 +9,7 @@ enum PagesComponents: string
     case EVENTS_INDEX = 'events/Index';
     case EVENTS_CREATE = 'events/Create';
     case EVENTS_SHOW = 'events/Show';
+
+    /** Frontend components for different event-related pages */
+    case EVENTS_LANDING = 'events/landing/Events';
 }
