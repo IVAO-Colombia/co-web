@@ -44,7 +44,7 @@ class EventsEditTest extends TestCase
             ->get(route('events.edit', $event))
             ->assertOk()
             ->assertInertia(
-                fn (AssertableInertia $page) => $page
+                fn (AssertableInertia $page): AssertableInertia => $page
                     ->has('event')
                     ->where('event.slug', $event->slug)
                     ->has('hasReservedPilotSlots')
@@ -58,13 +58,13 @@ class EventsEditTest extends TestCase
     public function has_reserved_pilot_slots_is_true_when_slot_is_reserved(): void
     {
         $event = Event::factory()->create();
-        PilotSlot::factory()->unavailable()->create(['event_id' => $event->id]);
+        PilotSlot::factory()->reserved()->create(['event_id' => $event->id]);
         $user = User::factory()->director()->create();
 
         $this->actingAs($user)
             ->get(route('events.edit', $event))
             ->assertInertia(
-                fn (AssertableInertia $page) => $page
+                fn (AssertableInertia $page): AssertableInertia => $page
                     ->where('hasReservedPilotSlots', true)
                     ->where('hasReservedAtcSlots', false),
             );
@@ -74,13 +74,13 @@ class EventsEditTest extends TestCase
     public function has_reserved_atc_slots_is_true_when_slot_is_reserved(): void
     {
         $event = Event::factory()->create();
-        AtcSlot::factory()->unavailable()->create(['event_id' => $event->id]);
+        AtcSlot::factory()->reserved()->create(['event_id' => $event->id]);
         $user = User::factory()->director()->create();
 
         $this->actingAs($user)
             ->get(route('events.edit', $event))
             ->assertInertia(
-                fn (AssertableInertia $page) => $page
+                fn (AssertableInertia $page): AssertableInertia => $page
                     ->where('hasReservedPilotSlots', false)
                     ->where('hasReservedAtcSlots', true),
             );
@@ -97,7 +97,7 @@ class EventsEditTest extends TestCase
         $this->actingAs($user)
             ->get(route('events.edit', $event))
             ->assertInertia(
-                fn (AssertableInertia $page) => $page
+                fn (AssertableInertia $page): AssertableInertia => $page
                     ->has('event.atc_slots', 1)
                     ->has('event.pilot_slots', 1)
                     ->where('event.atc_slots.0.callsign', 'SEQM_APP')

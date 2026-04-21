@@ -88,7 +88,8 @@ export enum Role {
 }
 export enum SlotStatus {
     AVAILABLE = 'available',
-    UNAVAILABLE = 'unavailable',
+    RESERVED = 'reserved',
+    CONFIRMED = 'confirmed',
     CANCELLED = 'cancelled',
 }
 export enum UserAwardReportStatus {

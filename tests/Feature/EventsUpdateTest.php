@@ -134,7 +134,7 @@ class EventsUpdateTest extends TestCase
     public function atc_slots_are_not_replaced_when_reservations_exist(): void
     {
         $event = Event::factory()->create();
-        $reserved = AtcSlot::factory()->unavailable()->create([
+        $reserved = AtcSlot::factory()->reserved()->create([
             'event_id' => $event->id,
             'callsign' => 'SEQM_CTR',
         ]);
@@ -183,7 +183,7 @@ class EventsUpdateTest extends TestCase
     public function pilot_slots_are_not_replaced_when_reservations_exist(): void
     {
         $event = Event::factory()->create();
-        $reserved = PilotSlot::factory()->unavailable()->create([
+        $reserved = PilotSlot::factory()->reserved()->create([
             'event_id' => $event->id,
             'callsign' => 'ECA999',
         ]);

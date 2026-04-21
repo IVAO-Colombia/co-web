@@ -1,25 +1,11 @@
 <script setup lang="ts">
-import { Head, Link, setLayoutProps, useForm, useHttp } from '@inertiajs/vue3';
+import { Head, Link, setLayoutProps, useForm } from '@inertiajs/vue3';
 import { wTrans } from 'laravel-vue-i18n';
-import {
-    AlertCircle,
-    ChevronLeft,
-    FileText,
-    ImagePlus,
-    Loader2,
-    Lock,
-    PlaneTakeoff,
-    Plus,
-    Radio,
-    Search,
-    Upload,
-    X,
-} from 'lucide-vue-next';
+import { AlertCircle, ChevronLeft, ImagePlus, X } from 'lucide-vue-next';
 import { computed, onUnmounted, ref } from 'vue';
-import {
-    edit,
-    update,
-} from '@/actions/App/Http/Controllers/EventsController';
+import { edit, update } from '@/actions/App/Http/Controllers/EventsController';
+import AtcSlotsCard from '@/components/events/AtcSlotsCard.vue';
+import PilotSlotsCard from '@/components/events/PilotSlotsCard.vue';
 import InputError from '@/components/InputError.vue';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -30,7 +16,6 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
-import { Checkbox } from '@/components/ui/checkbox';
 import { DateTimePicker } from '@/components/ui/date-time-picker';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -42,57 +27,21 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
-import { Switch } from '@/components/ui/switch';
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from '@/components/ui/table';
 import { Textarea } from '@/components/ui/textarea';
-import { csvDataUri, normalizeDatetime, parseCsv } from '@/lib/utils';
 import { index } from '@/routes/events';
 import { show as showRoute } from '@/routes/events';
-import { atcPositions as atcPositionsRoute } from '@/routes/ivao/airports';
 import {
     EventConstants,
     EventTag,
     EventStatus as EventStatusEnum,
 } from '@/types';
 import type {
-    AtcPosition,
+    AtcSlotRow,
     EventDetail,
     EventStatus,
     EventType,
+    PilotSlotRow,
 } from '@/types';
-
-type PilotSlotCSV = {
-    callsign: string;
-    flight_number: string;
-    aircraft: string;
-    origin: string;
-    destination: string;
-    departure_date_time: string;
-    gate: string;
-};
-
-type PilotSlotRow = {
-    callsign: string;
-    flight_number: string;
-    aircraft: string;
-    origin: string;
-    destination: string;
-    departs_at: string;
-    gate: string;
-};
-
-type AtcSlotRow = {
-    callsign: string;
-    starts_at: string;
-    ends_at: string;
-};
 
 type EventForm = {
     name: string;
@@ -252,150 +201,6 @@ onUnmounted(() => {
         URL.revokeObjectURL(imagePreview.value);
     }
 });
-
-// --- Pilot slots ---
-const pilotSlotFileinput = ref<HTMLInputElement | null>(null);
-
-const pilotTemplateCsvUrl = computed(() =>
-    csvDataUri(
-        'callsign,flight_number,aircraft,origin,destination,departs_at,gate',
-    ),
-);
-
-function onPilotCsvChange(event: Event): void {
-    const file = (event.target as HTMLInputElement).files?.[0];
-
-    if (!file) {
-        return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = (e) => {
-        const rows = parseCsv(e.target?.result as string) as PilotSlotCSV[];
-        form.pilot_slots = rows.map(
-            (row): PilotSlotRow => ({
-                ...row,
-                departs_at: row.departure_date_time
-                    ? normalizeDatetime(row.departure_date_time)
-                    : row.departure_date_time,
-            }),
-        );
-    };
-    reader.readAsText(file);
-}
-
-function clearPilotSlots(): void {
-    form.pilot_slots = [];
-
-    if (pilotSlotFileinput.value) {
-        pilotSlotFileinput.value.value = '';
-    }
-}
-
-// --- ATC slots ---
-const atcPositionsHttp = useHttp({
-    icao: '',
-});
-const atcPositionsList = ref<AtcPosition[]>([]);
-const atcPositionsFetchError = ref<string>('');
-const selectedCallsigns = ref<Set<string>>(new Set());
-const atcGenerationError = ref<string>('');
-
-async function fetchAtcPositions(): Promise<void> {
-    const icao = atcPositionsHttp.icao.trim().toUpperCase();
-
-    if (!icao) {
-        return;
-    }
-
-    atcPositionsFetchError.value = '';
-    atcPositionsList.value = [];
-    selectedCallsigns.value.clear();
-
-    try {
-        const response = (await atcPositionsHttp.get(
-            atcPositionsRoute.url(icao),
-        )) as AtcPosition[];
-
-        if (!atcPositionsHttp.wasSuccessful) {
-            atcPositionsFetchError.value = `Failed to fetch positions for ${icao}.`;
-
-            return;
-        }
-
-        atcPositionsList.value = response;
-
-        if (atcPositionsList.value.length === 0) {
-            atcPositionsFetchError.value = `No ATC positions found for ${icao}.`;
-        }
-    } catch {
-        atcPositionsFetchError.value = `An error occurred while fetching positions for ${icao}.`;
-    }
-}
-
-function toggleCallsign(callsign: string): void {
-    if (selectedCallsigns.value.has(callsign)) {
-        selectedCallsigns.value.delete(callsign);
-    } else {
-        selectedCallsigns.value.add(callsign);
-    }
-}
-
-function generateAtcSlots(): void {
-    atcGenerationError.value = '';
-
-    if (!form.starts_at || !form.ends_at) {
-        atcGenerationError.value = wTrans(
-            'Please set the event start and end date/time before generating slots.',
-        ).value;
-
-        return;
-    }
-
-    if (selectedCallsigns.value.size === 0) {
-        atcGenerationError.value = wTrans(
-            'Please select at least one ATC position.',
-        ).value;
-
-        return;
-    }
-
-    const [startHour, startMin] = form.starts_at
-        .split('T')[1]
-        .split(':')
-        .map(Number);
-    const [endHour, endMin] = form.ends_at.split('T')[1].split(':').map(Number);
-
-    const startMinutes = startHour * 60 + startMin;
-    const endMinutes = endHour * 60 + endMin;
-
-    const newSlots: AtcSlotRow[] = [];
-
-    for (
-        let slotStart = startMinutes;
-        slotStart < endMinutes;
-        slotStart += 60
-    ) {
-        const slotEnd = Math.min(slotStart + 60, endMinutes);
-        const startsAt = `${String(Math.floor(slotStart / 60)).padStart(2, '0')}:${String(slotStart % 60).padStart(2, '0')}`;
-        const endsAt = `${String(Math.floor(slotEnd / 60)).padStart(2, '0')}:${String(slotEnd % 60).padStart(2, '0')}`;
-
-        for (const callsign of selectedCallsigns.value) {
-            newSlots.push({ callsign, starts_at: startsAt, ends_at: endsAt });
-        }
-    }
-
-    form.atc_slots = [...form.atc_slots, ...newSlots];
-    selectedCallsigns.value.clear();
-}
-
-function removeAtcSlot(index: number): void {
-    form.atc_slots = form.atc_slots.filter((_, i) => i !== index);
-}
-
-function clearAtcSlots(): void {
-    form.atc_slots = [];
-}
 
 // --- Submit ---
 const pilotSlotErrors = computed(() => {
@@ -577,7 +382,9 @@ function submit(): void {
                                         :key="status"
                                         :value="status"
                                     >
-                                        {{ EventConstants.statusLabels[status] }}
+                                        {{
+                                            EventConstants.statusLabels[status]
+                                        }}
                                     </SelectItem>
                                 </SelectContent>
                             </Select>
@@ -681,407 +488,23 @@ function submit(): void {
                 </CardContent>
             </Card>
 
-            <!-- Card: ATC Slots -->
-            <Card>
-                <CardHeader>
-                    <div class="flex items-start justify-between gap-4">
-                        <div class="flex flex-col gap-1">
-                            <CardTitle class="flex items-center gap-2">
-                                <Radio
-                                    class="size-4 text-emerald-600 dark:text-emerald-400"
-                                />
-                                {{ $t('ATC Slots') }}
-                            </CardTitle>
-                            <CardDescription>
-                                <template v-if="hasReservedAtcSlots">
-                                    {{
-                                        $t(
-                                            'Slots cannot be edited because there are active reservations.',
-                                        )
-                                    }}
-                                </template>
-                                <template v-else>
-                                    {{
-                                        $t(
-                                            "Search for an airport's ATC positions and generate slots automatically.",
-                                        )
-                                    }}
-                                </template>
-                            </CardDescription>
-                        </div>
-                        <Switch
-                            v-model="form.atc_slots_enabled"
-                            :disabled="hasReservedAtcSlots"
-                        />
-                    </div>
-                </CardHeader>
-                <template v-if="form.atc_slots_enabled">
-                    <CardContent class="flex flex-col gap-4">
-                        <!-- Locked banner -->
-                        <div
-                            v-if="hasReservedAtcSlots"
-                            class="flex items-center gap-2 rounded-md border border-amber-200 bg-amber-50 px-3 py-2.5 text-sm text-amber-800 dark:border-amber-800 dark:bg-amber-950/30 dark:text-amber-400"
-                        >
-                            <Lock class="size-4 shrink-0" />
-                            {{
-                                $t(
-                                    'ATC slots are locked because one or more slots have been reserved.',
-                                )
-                            }}
-                        </div>
+            <!-- ATC Slots -->
+            <AtcSlotsCard
+                v-model:slots="form.atc_slots"
+                v-model:enabled="form.atc_slots_enabled"
+                :event-starts-at="form.starts_at"
+                :event-ends-at="form.ends_at"
+                :error="form.errors.atc_slots ?? atcSlotErrors"
+                :locked="hasReservedAtcSlots"
+            />
 
-                        <template v-else>
-                            <!-- ICAO search -->
-                            <div class="flex gap-2">
-                                <Input
-                                    v-model="atcPositionsHttp.icao"
-                                    class="w-40 font-mono uppercase"
-                                    maxlength="4"
-                                    :placeholder="$t('ICAO')"
-                                    @keydown.enter.prevent="fetchAtcPositions"
-                                />
-                                <Button
-                                    type="button"
-                                    variant="secondary"
-                                    :disabled="
-                                        atcPositionsHttp.processing ||
-                                        !atcPositionsHttp.icao.trim()
-                                    "
-                                    @click="fetchAtcPositions"
-                                >
-                                    <Loader2
-                                        v-if="atcPositionsHttp.processing"
-                                        class="size-4 animate-spin"
-                                    />
-                                    <Search v-else class="size-4" />
-                                    {{ $t('Search') }}
-                                </Button>
-                            </div>
-
-                            <!-- Fetch error -->
-                            <p
-                                v-if="atcPositionsFetchError"
-                                class="text-sm text-destructive"
-                            >
-                                {{ atcPositionsFetchError }}
-                            </p>
-
-                            <!-- Position list -->
-                            <div
-                                v-if="atcPositionsList.length > 0"
-                                class="flex flex-col gap-3 rounded-md border p-3"
-                            >
-                                <p class="text-sm font-medium">
-                                    {{
-                                        $t(
-                                            'Select positions to generate slots for:',
-                                        )
-                                    }}
-                                </p>
-                                <div
-                                    class="grid grid-cols-1 gap-2 sm:grid-cols-2"
-                                >
-                                    <label
-                                        v-for="position in atcPositionsList"
-                                        :key="position.composePosition"
-                                        class="flex cursor-pointer items-center gap-2 rounded-md px-2 py-1.5 hover:bg-muted"
-                                    >
-                                        <Checkbox
-                                            :modelValue="
-                                                selectedCallsigns.has(
-                                                    position.composePosition,
-                                                )
-                                            "
-                                            @update:modelValue="
-                                                toggleCallsign(
-                                                    position.composePosition,
-                                                )
-                                            "
-                                        />
-                                        <span class="flex flex-col">
-                                            <span
-                                                class="font-mono text-sm font-medium"
-                                            >
-                                                {{ position.composePosition }}
-                                            </span>
-                                            <span
-                                                class="text-xs text-muted-foreground"
-                                            >
-                                                {{ position.atcCallsign }} ·
-                                                {{ position.frequency }} MHz
-                                            </span>
-                                        </span>
-                                    </label>
-                                </div>
-
-                                <div class="flex items-center gap-3 pt-1">
-                                    <Button
-                                        type="button"
-                                        size="sm"
-                                        :disabled="
-                                            selectedCallsigns.size === 0
-                                        "
-                                        @click="generateAtcSlots"
-                                    >
-                                        <Plus class="size-4" />
-                                        {{ $t('Generate Slots') }}
-                                    </Button>
-                                    <InputError
-                                        :message="atcGenerationError"
-                                    />
-                                </div>
-                            </div>
-                        </template>
-
-                        <!-- Slots table (always visible when slots exist) -->
-                        <div
-                            v-if="form.atc_slots.length > 0"
-                            class="overflow-auto rounded-md border"
-                        >
-                            <Table>
-                                <TableHeader>
-                                    <TableRow>
-                                        <TableHead>{{
-                                            $t('Callsign')
-                                        }}</TableHead>
-                                        <TableHead>{{
-                                            $t('Starts At')
-                                        }}</TableHead>
-                                        <TableHead>{{
-                                            $t('Ends At')
-                                        }}</TableHead>
-                                        <TableHead
-                                            v-if="!hasReservedAtcSlots"
-                                            class="w-10"
-                                        />
-                                    </TableRow>
-                                </TableHeader>
-                                <TableBody>
-                                    <TableRow
-                                        v-for="(slot, i) in form.atc_slots"
-                                        :key="i"
-                                    >
-                                        <TableCell class="font-mono">{{
-                                            slot.callsign
-                                        }}</TableCell>
-                                        <TableCell>{{
-                                            slot.starts_at
-                                        }}</TableCell>
-                                        <TableCell>{{
-                                            slot.ends_at
-                                        }}</TableCell>
-                                        <TableCell v-if="!hasReservedAtcSlots">
-                                            <button
-                                                type="button"
-                                                class="text-muted-foreground hover:text-destructive"
-                                                @click="removeAtcSlot(i)"
-                                            >
-                                                <X class="size-4" />
-                                            </button>
-                                        </TableCell>
-                                    </TableRow>
-                                </TableBody>
-                            </Table>
-                        </div>
-
-                        <!-- Clear all -->
-                        <div
-                            v-if="
-                                form.atc_slots.length > 0 && !hasReservedAtcSlots
-                            "
-                            class="flex items-center gap-3"
-                        >
-                            <Button
-                                type="button"
-                                variant="ghost"
-                                size="sm"
-                                class="text-muted-foreground"
-                                @click="clearAtcSlots"
-                            >
-                                <X class="size-4" />
-                                {{ $t('Clear all') }}
-                            </Button>
-                        </div>
-
-                        <InputError
-                            :message="form.errors.atc_slots ?? atcSlotErrors"
-                        />
-                    </CardContent>
-                </template>
-            </Card>
-
-            <!-- Card: Pilot Slots -->
-            <Card>
-                <CardHeader>
-                    <div class="flex items-start justify-between gap-4">
-                        <div class="flex flex-col gap-1">
-                            <CardTitle class="flex items-center gap-2">
-                                <PlaneTakeoff
-                                    class="size-4 text-sky-600 dark:text-sky-400"
-                                />
-                                {{ $t('Pilot Slots') }}
-                            </CardTitle>
-                            <CardDescription>
-                                <template v-if="hasReservedPilotSlots">
-                                    {{
-                                        $t(
-                                            'Slots cannot be edited because there are active reservations.',
-                                        )
-                                    }}
-                                </template>
-                                <template v-else>
-                                    {{
-                                        $t(
-                                            'Upload a CSV file with pilot slot assignments.',
-                                        )
-                                    }}
-                                </template>
-                            </CardDescription>
-                        </div>
-                        <Switch
-                            v-model="form.pilot_slots_enabled"
-                            :disabled="hasReservedPilotSlots"
-                        />
-                    </div>
-                </CardHeader>
-                <template v-if="form.pilot_slots_enabled">
-                    <CardContent class="flex flex-col gap-4">
-                        <!-- Locked banner -->
-                        <div
-                            v-if="hasReservedPilotSlots"
-                            class="flex items-center gap-2 rounded-md border border-amber-200 bg-amber-50 px-3 py-2.5 text-sm text-amber-800 dark:border-amber-800 dark:bg-amber-950/30 dark:text-amber-400"
-                        >
-                            <Lock class="size-4 shrink-0" />
-                            {{
-                                $t(
-                                    'Pilot slots are locked because one or more slots have been reserved.',
-                                )
-                            }}
-                        </div>
-
-                        <template v-else>
-                            <!-- Template download -->
-                            <div
-                                class="flex items-center gap-2 rounded-md bg-muted/50 px-3 py-2"
-                            >
-                                <FileText
-                                    class="size-4 shrink-0 text-muted-foreground"
-                                />
-                                <span
-                                    class="flex-1 text-sm text-muted-foreground"
-                                >
-                                    {{
-                                        $t(
-                                            'Download the template and fill it with your slots.',
-                                        )
-                                    }}
-                                </span>
-                                <a
-                                    :href="pilotTemplateCsvUrl"
-                                    download="pilot-slots-template.csv"
-                                    class="text-sm font-medium text-primary underline-offset-4 hover:underline"
-                                >
-                                    {{ $t('Download template') }}
-                                </a>
-                            </div>
-
-                            <!-- Upload -->
-                            <div class="flex flex-wrap items-center gap-3">
-                                <label
-                                    class="flex cursor-pointer items-center gap-2 rounded-md border px-3 py-2 text-sm transition-colors hover:bg-muted"
-                                >
-                                    <Upload class="size-4" />
-                                    {{ $t('Upload CSV') }}
-                                    <input
-                                        ref="pilotSlotFileinput"
-                                        type="file"
-                                        accept=".csv"
-                                        class="sr-only"
-                                        @change="onPilotCsvChange"
-                                    />
-                                </label>
-                                <Button
-                                    v-if="form.pilot_slots.length > 0"
-                                    type="button"
-                                    variant="ghost"
-                                    size="sm"
-                                    class="text-muted-foreground"
-                                    @click="clearPilotSlots"
-                                >
-                                    <X class="size-4" />
-                                    {{ $t('Clear') }}
-                                </Button>
-                            </div>
-                        </template>
-
-                        <!-- Inline preview (always visible) -->
-                        <div
-                            v-if="form.pilot_slots.length > 0"
-                            class="overflow-auto rounded-md border"
-                        >
-                            <Table>
-                                <TableHeader>
-                                    <TableRow>
-                                        <TableHead>{{
-                                            $t('Callsign')
-                                        }}</TableHead>
-                                        <TableHead>{{
-                                            $t('Flight #')
-                                        }}</TableHead>
-                                        <TableHead>{{
-                                            $t('Aircraft')
-                                        }}</TableHead>
-                                        <TableHead>{{
-                                            $t('Origin')
-                                        }}</TableHead>
-                                        <TableHead>{{
-                                            $t('Destination')
-                                        }}</TableHead>
-                                        <TableHead>{{
-                                            $t('Departs At')
-                                        }}</TableHead>
-                                        <TableHead>{{ $t('Gate') }}</TableHead>
-                                    </TableRow>
-                                </TableHeader>
-                                <TableBody>
-                                    <TableRow
-                                        v-for="(slot, i) in form.pilot_slots"
-                                        :key="i"
-                                    >
-                                        <TableCell class="font-mono">{{
-                                            slot.callsign
-                                        }}</TableCell>
-                                        <TableCell>{{
-                                            slot.flight_number || '—'
-                                        }}</TableCell>
-                                        <TableCell>{{
-                                            slot.aircraft
-                                        }}</TableCell>
-                                        <TableCell class="font-mono">{{
-                                            slot.origin
-                                        }}</TableCell>
-                                        <TableCell class="font-mono">{{
-                                            slot.destination
-                                        }}</TableCell>
-                                        <TableCell>{{
-                                            slot.departs_at
-                                        }}</TableCell>
-                                        <TableCell>{{
-                                            slot.gate || '—'
-                                        }}</TableCell>
-                                    </TableRow>
-                                </TableBody>
-                            </Table>
-                        </div>
-
-                        <InputError
-                            :message="
-                                form.errors.pilot_slots ?? pilotSlotErrors
-                            "
-                        />
-                    </CardContent>
-                </template>
-            </Card>
+            <!-- Pilot Slots -->
+            <PilotSlotsCard
+                v-model:slots="form.pilot_slots"
+                v-model:enabled="form.pilot_slots_enabled"
+                :error="form.errors.pilot_slots ?? pilotSlotErrors"
+                :locked="hasReservedPilotSlots"
+            />
 
             <!-- Global error -->
             <div
@@ -1101,11 +524,7 @@ function submit(): void {
                     </Link>
                 </Button>
                 <Button type="submit" :disabled="form.processing">
-                    {{
-                        form.processing
-                            ? $t('Saving...')
-                            : $t('Save Changes')
-                    }}
+                    {{ form.processing ? $t('Saving...') : $t('Save Changes') }}
                 </Button>
             </div>
         </form>

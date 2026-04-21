@@ -43,7 +43,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read int|null $pilot_slots_count
  * @property-read Collection<int, UserAwardReport> $userAwardReports
  * @property-read int|null $user_award_reports_count
- *
  * @method static \Database\Factories\EventFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Event newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Event newQuery()
@@ -71,7 +70,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Event whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Event withTrashed(bool $withTrashed = true)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Event withoutTrashed()
- *
  * @mixin \Eloquent
  */
 class Event extends Model

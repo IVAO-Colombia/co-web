@@ -55,3 +55,19 @@ export type EventDetail = Event & {
     pilot_slots: PilotSlot[];
     atc_slots: AtcSlot[];
 };
+
+export type AtcSlotRow = {
+    callsign: string;
+    starts_at: string;
+    ends_at: string;
+};
+
+export type PilotSlotRow = {
+    callsign: string;
+    flight_number: string;
+    aircraft: string;
+    origin: string;
+    destination: string;
+    departs_at: string;
+    gate: string;
+};

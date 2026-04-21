@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\SlotStatus;
+use App\Models\Concerns\IsReservableSlot;
 use Carbon\CarbonImmutable;
 use Database\Factories\AtcSlotFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -25,7 +26,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property CarbonImmutable|null $deleted_at
  * @property-read User|null $atc
  * @property-read Event|null $event
- *
  * @method static \Database\Factories\AtcSlotFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AtcSlot newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AtcSlot newQuery()
@@ -43,7 +43,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AtcSlot whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AtcSlot withTrashed(bool $withTrashed = true)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AtcSlot withoutTrashed()
- *
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AtcSlot available()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AtcSlot reserved()
  * @mixin \Eloquent
  */
 class AtcSlot extends Model
@@ -51,7 +52,7 @@ class AtcSlot extends Model
     /**
      * @use HasFactory<AtcSlotFactory>
      */
-    use HasFactory, SoftDeletes;
+    use HasFactory, IsReservableSlot, SoftDeletes;
 
     /**
      * Get the attributes that should be cast.

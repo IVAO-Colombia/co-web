@@ -34,7 +34,7 @@ class Ivao
         }
 
         return collect($response)
-            ->map(fn (array $position) => new AtcPosition(
+            ->map(fn (array $position): AtcPosition => new AtcPosition(
                 id: $position['id'],
                 airportId: $position['airportId'],
                 atcCallsign: $position['atcCallsign'],

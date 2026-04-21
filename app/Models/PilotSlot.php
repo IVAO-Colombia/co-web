@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\SlotStatus;
+use App\Models\Concerns\IsReservableSlot;
 use Carbon\CarbonImmutable;
 use Database\Factories\PilotSlotFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -29,7 +30,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property CarbonImmutable|null $deleted_at
  * @property-read Event|null $event
  * @property-read User|null $pilot
- *
  * @method static \Database\Factories\PilotSlotFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PilotSlot newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PilotSlot newQuery()
@@ -51,7 +51,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PilotSlot whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PilotSlot withTrashed(bool $withTrashed = true)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PilotSlot withoutTrashed()
- *
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PilotSlot available()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PilotSlot reserved()
  * @mixin \Eloquent
  */
 class PilotSlot extends Model
@@ -59,7 +60,7 @@ class PilotSlot extends Model
     /**
      * @use HasFactory<PilotSlotFactory>
      */
-    use HasFactory, SoftDeletes;
+    use HasFactory, IsReservableSlot, SoftDeletes;
 
     /**
      * Get the attributes that should be cast.

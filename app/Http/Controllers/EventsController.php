@@ -73,8 +73,8 @@ class EventsController extends Controller
 
         return inertia(PagesComponents::EVENTS_EDIT->value, [
             'event' => $event,
-            'hasReservedPilotSlots' => $event->pilotSlots->where('status', SlotStatus::UNAVAILABLE)->isNotEmpty(),
-            'hasReservedAtcSlots' => $event->atcSlots->where('status', SlotStatus::UNAVAILABLE)->isNotEmpty(),
+            'hasReservedPilotSlots' => $event->pilotSlots->reject(fn ($slot) => $slot->isReserved())->isNotEmpty(),
+            'hasReservedAtcSlots' => $event->atcSlots->reject(fn ($slot) => $slot->isReserved())->isNotEmpty(),
         ]);
     }
 
@@ -89,8 +89,8 @@ class EventsController extends Controller
     {
         Gate::authorize(Permission::DELETE_EVENTS);
 
-        $hasReservedPilotSlot = $event->pilotSlots()->where('status', SlotStatus::UNAVAILABLE)->exists();
-        $hasReservedAtcSlot = $event->atcSlots()->where('status', SlotStatus::UNAVAILABLE)->exists();
+        $hasReservedPilotSlot = $event->pilotSlots()->reserved()->exists();
+        $hasReservedAtcSlot = $event->atcSlots()->reserved()->exists();
 
         if ($hasReservedPilotSlot || $hasReservedAtcSlot) {
             throw ValidationException::withMessages([

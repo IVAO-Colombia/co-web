@@ -38,7 +38,7 @@ class EventsDestroyTest extends TestCase
     public function cannot_delete_event_with_reserved_pilot_slot(): void
     {
         $event = Event::factory()->create();
-        PilotSlot::factory()->unavailable()->create(['event_id' => $event->id]);
+        PilotSlot::factory()->reserved()->create(['event_id' => $event->id]);
         $user = User::factory()->director()->create();
 
         $this->actingAs($user)
@@ -52,7 +52,7 @@ class EventsDestroyTest extends TestCase
     public function cannot_delete_event_with_reserved_atc_slot(): void
     {
         $event = Event::factory()->create();
-        AtcSlot::factory()->unavailable()->create(['event_id' => $event->id]);
+        AtcSlot::factory()->reserved()->create(['event_id' => $event->id]);
         $user = User::factory()->director()->create();
 
         $this->actingAs($user)
@@ -99,7 +99,7 @@ class EventsDestroyTest extends TestCase
     {
         $event = Event::factory()->create();
         $availableSlot = PilotSlot::factory()->create(['event_id' => $event->id]);
-        PilotSlot::factory()->unavailable()->create(['event_id' => $event->id]);
+        PilotSlot::factory()->reserved()->create(['event_id' => $event->id]);
         $user = User::factory()->director()->create();
 
         $this->actingAs($user)
