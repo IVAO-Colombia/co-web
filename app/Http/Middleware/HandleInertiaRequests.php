@@ -51,6 +51,7 @@ class HandleInertiaRequests extends Middleware
         return [
             ...parent::share($request),
             'name' => config('app.name'),
+            'appearance' => $request->cookie('appearance') ?? 'system',
             'auth' => [
                 'user' => $request->user(),
                 'permissions' => $request->user()?->getAllPermissions()->pluck('name')->unique()->values(),

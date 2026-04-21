@@ -3,8 +3,9 @@ import createServer from '@inertiajs/vue3/server';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { i18nVue } from 'laravel-vue-i18n';
 import type { DefineComponent } from 'vue';
-import { createSSRApp, h } from 'vue';
+import { createSSRApp, Fragment, h } from 'vue';
 import { renderToString } from 'vue/server-renderer';
+import CookieConsentBanner from '@/components/CookieConsentBanner.vue';
 import { initializeTheme } from '@/composables/useAppearance';
 import AppLayout from '@/layouts/AppLayout.vue';
 import AuthLayout from '@/layouts/AuthLayout.vue';
@@ -36,7 +37,10 @@ createServer((page) =>
             }
         },
         setup({ App, props, plugin }) {
-            return createSSRApp({ render: () => h(App, props) })
+            return createSSRApp({
+                render: () =>
+                    h(Fragment, [h(App, props), h(CookieConsentBanner)]),
+            })
                 .use(plugin)
                 .use(i18nVue, {
                     /* use correct language server-side */

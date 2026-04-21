@@ -1,3 +1,4 @@
+import { usePage } from '@inertiajs/vue3';
 import type { ComputedRef, Ref } from 'vue';
 import { computed, onMounted, ref } from 'vue';
 import type { Appearance, ResolvedAppearance } from '@/types';
@@ -56,6 +57,22 @@ const getStoredAppearance = () => {
     return localStorage.getItem('appearance') as Appearance | null;
 };
 
+const getCookieAppearance = (): Appearance | null => {
+    if (typeof document === 'undefined') {
+        return null;
+    }
+
+    const cookieValue = document.cookie
+        .split('; ')
+        .find((entry) => entry.startsWith('appearance='))
+        ?.split('=')[1];
+
+    return isAppearance(cookieValue) ? cookieValue : null;
+};
+
+const isAppearance = (value: unknown): value is Appearance =>
+    value === 'light' || value === 'dark' || value === 'system';
+
 const prefersDark = (): boolean => {
     if (typeof window === 'undefined') {
         return false;
@@ -77,7 +94,9 @@ export function initializeTheme(): void {
 
     // Initialize theme from saved preference or default to system...
     const savedAppearance = getStoredAppearance();
-    updateTheme(savedAppearance || 'system');
+    const cookieAppearance = getCookieAppearance();
+
+    updateTheme(savedAppearance || cookieAppearance || 'system');
 
     // Set up system theme change listener...
     mediaQuery()?.addEventListener('change', handleSystemThemeChange);
@@ -86,12 +105,19 @@ export function initializeTheme(): void {
 const appearance = ref<Appearance>('system');
 
 export function useAppearance(): UseAppearanceReturn {
+    const page = usePage();
+    const pageAppearance = page.props.appearance;
+
+    if (isAppearance(pageAppearance) && appearance.value !== pageAppearance) {
+        appearance.value = pageAppearance;
+    }
+
     onMounted(() => {
         const savedAppearance = localStorage.getItem(
             'appearance',
         ) as Appearance | null;
 
-        if (savedAppearance) {
+        if (savedAppearance && appearance.value !== savedAppearance) {
             appearance.value = savedAppearance;
         }
     });

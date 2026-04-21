@@ -1,6 +1,7 @@
 import { createInertiaApp } from '@inertiajs/vue3';
-import { i18nVue } from 'laravel-vue-i18n';
-import { createSSRApp, h } from 'vue';
+import { i18nVue, loadLanguageAsync } from 'laravel-vue-i18n';
+import { createSSRApp, Fragment, h } from 'vue';
+import CookieConsentBanner from '@/components/CookieConsentBanner.vue';
 import { initializeTheme } from '@/composables/useAppearance';
 import AppLayout from '@/layouts/AppLayout.vue';
 import AuthLayout from '@/layouts/AuthLayout.vue';
@@ -27,8 +28,14 @@ createInertiaApp({
         color: '#4B5563',
     },
     setup({ el, App, props, plugin }) {
-        const app = createSSRApp({ render: () => h(App, props) });
-        app.use(plugin)
+        if (!el) {
+            return;
+        }
+
+        const app = createSSRApp({
+            render: () => h(Fragment, [h(App, props), h(CookieConsentBanner)]),
+        })
+            .use(plugin)
             .use(i18nVue, {
                 lang: props.initialPage.props.locale,
                 resolve: async (lang: string) => {
@@ -36,8 +43,11 @@ createInertiaApp({
 
                     return await langs[`../../lang/${lang}.json`]();
                 },
-            })
-            .mount(el!);
+            });
+
+        loadLanguageAsync(props.initialPage.props.locale).then(() => {
+            app.mount(el);
+        });
     },
 });
 
