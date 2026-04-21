@@ -32,7 +32,7 @@ type PilotSlotCSV = {
     gate: string;
 };
 
-const props = defineProps<{
+defineProps<{
     slots: PilotSlotRow[];
     enabled: boolean;
     error?: string;

@@ -10,7 +10,6 @@ use App\Enums\EventStatus;
 use App\Enums\EventType;
 use App\Enums\PagesComponents;
 use App\Enums\Permission;
-use App\Enums\SlotStatus;
 use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\UpdateEventRequest;
 use App\Models\Event;

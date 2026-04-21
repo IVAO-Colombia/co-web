@@ -36,9 +36,9 @@ import {
 } from '@/components/ui/navigation-menu';
 import { useAppearance } from '@/composables/useAppearance';
 import { useLocale } from '@/composables/useLocale';
-import type { Locale } from '@/types';
 import { dashboard } from '@/routes';
 import auth from '@/routes/auth';
+import type { Locale } from '@/types';
 
 type SectionLink = {
     title: string;
@@ -226,9 +226,6 @@ const logoSrc = computed(() =>
     isHeaderDark.value ? '/logo-small-white.png' : '/logo-small-blue.svg',
 );
 const loginLogoSrc = computed(() => '/logo-small-white.png');
-const textDarkClass = computed(() =>
-    isDarkMode.value ? 'text-white' : 'text-white',
-);
 const isMobileMenuOpen = ref(false);
 const expandedMobileSection = ref<string | null>(
     menuSections[0]?.title ?? null,
@@ -277,12 +274,18 @@ function toggleMobileSection(sectionTitle: string): void {
 </script>
 
 <template>
-    <header :class="{ dark: isHeaderDark }" class="relative z-50 px-3 pt-3 sm:px-4 sm:pt-4 lg:px-6">
+    <header
+        :class="{ dark: isHeaderDark }"
+        class="relative z-50 px-3 pt-3 sm:px-4 sm:pt-4 lg:px-6"
+    >
         <nav
             class="relative mx-auto max-w-7xl rounded-3xl border border-slate-200/70 bg-white/80 px-3 py-2.5 shadow-[0_18px_50px_rgba(15,23,42,0.16)] backdrop-blur-xl sm:rounded-[28px] sm:px-4 sm:py-3 dark:border-slate-700/60 dark:bg-slate-900/75"
         >
             <div class="flex items-center justify-between gap-2 sm:gap-4">
-                <a href="/" class="flex min-w-0 shrink-0 items-center gap-2 sm:gap-3">
+                <a
+                    href="/"
+                    class="flex min-w-0 shrink-0 items-center gap-2 sm:gap-3"
+                >
                     <LogoIvaoCo
                         :isDark="isHeaderDark"
                         :height="38"
@@ -293,8 +296,12 @@ function toggleMobileSection(sectionTitle: string): void {
                         class="shrink-0"
                     />
                     <template v-if="props.brandText">
-                        <span class="hidden h-8 w-px bg-white/25 xl:block"></span>
-                        <h1 class="hidden max-w-40 truncate whitespace-nowrap text-[0.95rem] font-bold tracking-[0.08em] font-heading text-white xl:block 2xl:max-w-56">
+                        <span
+                            class="hidden h-8 w-px bg-white/25 xl:block"
+                        ></span>
+                        <h1
+                            class="hidden max-w-40 truncate font-heading text-[0.95rem] font-bold tracking-[0.08em] whitespace-nowrap text-white xl:block 2xl:max-w-56"
+                        >
                             {{ props.brandText }}
                         </h1>
                     </template>

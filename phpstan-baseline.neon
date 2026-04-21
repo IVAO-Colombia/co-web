@@ -1,1 +1,31 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\HasMany\<App\\Models\\AtcSlot, App\\Models\\Event\>\:\:reserved\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Actions/Events/UpdateEvent.php
 
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\HasMany\<App\\Models\\PilotSlot, App\\Models\\Event\>\:\:reserved\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Actions/Events/UpdateEvent.php
+
+		-
+			message: '#^Method App\\Actions\\Events\\UpdateEvent\:\:handle\(\) should return App\\Models\\Event but returns App\\Models\\Event\|null\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Actions/Events/UpdateEvent.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\HasMany\<App\\Models\\AtcSlot, App\\Models\\Event\>\:\:reserved\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Controllers/EventsController.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\HasMany\<App\\Models\\PilotSlot, App\\Models\\Event\>\:\:reserved\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Controllers/EventsController.php
