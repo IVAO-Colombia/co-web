@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import { Head } from '@inertiajs/vue3';
-import { CalendarClock, Clock3, MapPin, Tag } from 'lucide-vue-next';
 import { computed } from 'vue';
+import EventCard from '@/components/landing/EventCard.vue';
 import Header from '@/components/landing/Header.vue';
 import { useLocale } from '@/composables/useLocale';
-import { getDateParts } from '@/lib/utils';
 import type { Event } from '@/types';
-import { EventStatus, EventTag, EventType } from '@/types/backend.d';
 
 type LandingCopy = {
     badge: string;
@@ -76,29 +74,6 @@ const copy = computed<Record<'es' | 'en', LandingCopy>>(() => ({
 
 const currentCopy = computed(() => copy.value[locale.value]);
 
-const statusLabels: Record<EventStatus, string> = {
-    [EventStatus.ACTIVE]: currentCopy.value.active,
-    [EventStatus.DRAFT]: currentCopy.value.draft,
-    [EventStatus.CANCELLED]: currentCopy.value.cancelled,
-    [EventStatus.FINALIZED]: currentCopy.value.finalized,
-};
-
-const typeLabels: Record<EventType, string> = {
-    [EventType.ONLINE_DAY]: 'Online Day',
-    [EventType.EXAM]: 'Exam',
-    [EventType.TRAINING]: 'Training',
-    [EventType.RFO]: 'RFO',
-    [EventType.RFE]: 'RFE',
-};
-
-const tagLabels: Record<EventTag, string> = {
-    [EventTag.VFR]: 'VFR',
-    [EventTag.IFR]: 'IFR',
-    [EventTag.CrossCountry]: 'Cross Country',
-    [EventTag.Division]: 'Division',
-    [EventTag.Hq]: 'HQ',
-};
-
 const orderedEvents = computed(() =>
     [...props.events].sort(
         (left, right) =>
@@ -106,19 +81,6 @@ const orderedEvents = computed(() =>
             new Date(right.starts_at).getTime(),
     ),
 );
-
-function getLocalizedName(event: Event): string {
-    return locale.value === 'en' && event.name_en ? event.name_en : event.name;
-}
-
-function getLocalizedDescription(event: Event): string {
-    return locale.value === 'en' && event.description_en
-        ? event.description_en
-        : event.description;
-}
-function hasReservation(event: Event): boolean {
-    return event.pilot_slots_enabled || event.atc_slots_enabled;
-}
 </script>
 
 <template>
@@ -195,130 +157,16 @@ function hasReservation(event: Event): boolean {
                 </div>
 
                 <div
-                    class="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3"
+                    class="dark grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3"
                 >
-                    <article
+                    <EventCard
                         v-for="event in orderedEvents"
                         :key="event.id"
-                        class="group overflow-hidden rounded-3xl border border-white/10 bg-slate-900/80 shadow-[0_20px_60px_rgba(0,0,0,0.35)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-white/20 hover:shadow-[0_24px_80px_rgba(0,0,0,0.45)]"
-                    >
-                        <div class="relative h-56 overflow-hidden">
-                            <img
-                                :src="event.image_url ?? '/fondo.jpg'"
-                                :alt="getLocalizedName(event)"
-                                class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                            />
-                            <div
-                                class="absolute inset-0 bg-linear-to-t from-black via-black/25 to-transparent"
-                            ></div>
-
-                            <div
-                                class="absolute top-4 left-4 flex flex-wrap gap-2"
-                            >
-                                <span
-                                    v-if="hasReservation(event)"
-                                    class="rounded-full border border-emerald-300/30 bg-emerald-400/15 px-3 py-1 text-[11px] font-semibold tracking-[0.2em] text-emerald-200 uppercase backdrop-blur-md"
-                                >
-                                    {{ currentCopy.bookingAvailable }}
-                                </span>
-                                <span
-                                    class="rounded-full border border-white/10 bg-white/10 px-3 py-1 text-[11px] font-semibold tracking-[0.2em] text-white/85 uppercase backdrop-blur-md"
-                                >
-                                    {{ statusLabels[event.status] }}
-                                </span>
-                            </div>
-
-                            <div
-                                class="absolute right-4 bottom-4 rounded-2xl border border-white/10 bg-slate-950/80 px-3 py-2 backdrop-blur-xl"
-                            >
-                                <p
-                                    class="text-2xl leading-none font-black text-white"
-                                >
-                                    {{
-                                        getDateParts(event.starts_at, locale)
-                                            .day
-                                    }}
-                                </p>
-                                <p
-                                    class="mt-1 text-xs font-semibold tracking-[0.22em] text-white/70"
-                                >
-                                    {{
-                                        getDateParts(event.starts_at, locale)
-                                            .month
-                                    }}
-                                </p>
-                            </div>
-                        </div>
-
-                        <div class="space-y-4 p-5">
-                            <div class="flex items-start justify-between gap-3">
-                                <h3
-                                    class="line-clamp-2 text-xl leading-tight font-black tracking-tight text-white"
-                                >
-                                    {{ getLocalizedName(event) }}
-                                </h3>
-                                <span
-                                    class="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[11px] font-semibold tracking-[0.2em] text-white/70 uppercase"
-                                >
-                                    {{ typeLabels[event.type] }}
-                                </span>
-                            </div>
-
-                            <p
-                                class="line-clamp-3 text-sm leading-relaxed text-white/68"
-                            >
-                                {{ getLocalizedDescription(event) }}
-                            </p>
-
-                            <div
-                                class="flex flex-wrap items-center gap-3 text-xs font-medium text-white/65"
-                            >
-                                <span
-                                    class="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1.5"
-                                >
-                                    <Clock3 class="h-4 w-4" />
-                                    {{
-                                        getDateParts(event.starts_at, locale)
-                                            .time
-                                    }}
-                                </span>
-                                <span
-                                    class="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1.5"
-                                >
-                                    <MapPin class="h-4 w-4" />
-                                    <span class="max-w-56 truncate">{{
-                                        event.locations
-                                    }}</span>
-                                </span>
-                            </div>
-
-                            <div class="flex flex-wrap gap-2">
-                                <span
-                                    v-for="tag in event.tags"
-                                    :key="tag"
-                                    class="inline-flex items-center gap-1 rounded-full border border-white/10 bg-slate-800/85 px-3 py-1 text-[11px] font-semibold tracking-[0.18em] text-white/75 uppercase"
-                                >
-                                    <Tag class="h-3.5 w-3.5" />
-                                    {{ tagLabels[tag] }}
-                                </span>
-                            </div>
-
-                            <div
-                                class="flex items-center justify-between border-t border-white/10 pt-4 text-sm text-white/72"
-                            >
-                                <span>{{
-                                    getDateParts(event.starts_at, locale).time
-                                }}</span>
-                                <button
-                                    type="button"
-                                    class="inline-flex items-center gap-2 font-semibold text-white transition-colors hover:text-[#9bb0ff]"
-                                >
-                                    <CalendarClock class="h-4 w-4" />
-                                    {{ currentCopy.primaryCta }}
-                                </button>
-                            </div>
-                        </div>
-                    </article>
+                        :event="event"
+                        :show-status="true"
+                        :show-type="true"
+                        :show-tags="true"
+                    />
                 </div>
             </div>
         </div>
