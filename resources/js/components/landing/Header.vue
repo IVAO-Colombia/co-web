@@ -33,9 +33,9 @@ import {
 } from '@/components/ui/navigation-menu';
 import { useAppearance } from '@/composables/useAppearance';
 import { useLocale } from '@/composables/useLocale';
+import type { Locale } from '@/types';
 import { dashboard } from '@/routes';
 import auth from '@/routes/auth';
-import type { Locale } from '@/types';
 
 type SectionLink = {
     title: string;
@@ -210,7 +210,9 @@ const logoSrc = computed(() =>
 );
 const loginLogoSrc = computed(() => '/logo-small-white.png');
 const isMobileMenuOpen = ref(false);
-const expandedMobileSection = ref<string | null>(menuSections[0]?.title ?? null);
+const expandedMobileSection = ref<string | null>(
+    menuSections[0]?.title ?? null,
+);
 
 const itemIcons: Record<string, Component> = {
     'About Us': Compass,
@@ -277,7 +279,9 @@ function toggleMobileSection(sectionTitle: string): void {
                         country-text="COLOMBIA"
                     />
                 </a>
-                <div class="flex shrink-0 items-center gap-2 sm:gap-3 lg:order-2">
+                <div
+                    class="flex shrink-0 items-center gap-2 sm:gap-3 lg:order-2"
+                >
                     <div class="hidden items-center gap-2 sm:flex">
                         <div
                             class="inline-flex rounded-full border border-slate-300/90 bg-white/80 p-1 shadow-sm dark:border-slate-600 dark:bg-slate-800/80"
@@ -420,10 +424,7 @@ function toggleMobileSection(sectionTitle: string): void {
                         :aria-expanded="isMobileMenuOpen"
                     >
                         <span class="sr-only">{{ $t('Open main menu') }}</span>
-                        <Menu
-                            v-if="!isMobileMenuOpen"
-                            class="h-6 w-6"
-                        />
+                        <Menu v-if="!isMobileMenuOpen" class="h-6 w-6" />
                         <svg
                             v-else
                             class="h-6 w-6"
@@ -449,7 +450,9 @@ function toggleMobileSection(sectionTitle: string): void {
                         <div
                             class="flex items-center justify-between rounded-xl border border-slate-200/90 bg-white/80 p-2 dark:border-slate-700 dark:bg-slate-800/80"
                         >
-                            <div class="inline-flex rounded-full border border-slate-300/90 bg-white/80 p-1 shadow-sm dark:border-slate-600 dark:bg-slate-800/80">
+                            <div
+                                class="inline-flex rounded-full border border-slate-300/90 bg-white/80 p-1 shadow-sm dark:border-slate-600 dark:bg-slate-800/80"
+                            >
                                 <button
                                     v-for="option in languageOptions"
                                     :key="`mobile-${option.value}`"
@@ -564,7 +567,9 @@ function toggleMobileSection(sectionTitle: string): void {
                             <button
                                 type="button"
                                 class="flex w-full items-center justify-between px-3 py-2.5 text-left"
-                                :aria-expanded="expandedMobileSection === section.title"
+                                :aria-expanded="
+                                    expandedMobileSection === section.title
+                                "
                                 @click="toggleMobileSection(section.title)"
                             >
                                 <span

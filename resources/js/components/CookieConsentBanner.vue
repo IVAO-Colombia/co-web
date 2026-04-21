@@ -85,7 +85,9 @@ onMounted(() => {
             <p class="text-sm font-semibold text-slate-900 dark:text-slate-100">
                 {{ text.title }}
             </p>
-            <p class="mt-1.5 text-sm leading-5 text-slate-600 dark:text-slate-300">
+            <p
+                class="mt-1.5 text-sm leading-5 text-slate-600 dark:text-slate-300"
+            >
                 {{ text.description }}
             </p>
 

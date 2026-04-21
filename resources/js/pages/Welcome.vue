@@ -188,7 +188,9 @@ onBeforeUnmount(() => {
                         v-html="currentSlide.description"
                     ></p>
 
-                    <div class="mt-8 flex w-full flex-col items-center justify-center gap-3 sm:mt-12 sm:w-auto sm:flex-row sm:gap-4">
+                    <div
+                        class="mt-8 flex w-full flex-col items-center justify-center gap-3 sm:mt-12 sm:w-auto sm:flex-row sm:gap-4"
+                    >
                         <a
                             href="#"
                             class="inline-flex w-full max-w-xs items-center justify-center rounded-xl border border-white/20 bg-[#161a29]/60 px-6 py-3 text-sm font-semibold text-white backdrop-blur-md transition-colors hover:bg-white/10 sm:w-auto sm:px-8 sm:py-3.5"
@@ -232,7 +234,7 @@ onBeforeUnmount(() => {
 
                 <button
                     type="button"
-                    class="absolute top-1/2 left-6 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-[#161a29]/60 text-white/90 backdrop-blur-md transition-colors hover:bg-white/15 md:inline-flex md:left-12"
+                    class="absolute top-1/2 left-6 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-[#161a29]/60 text-white/90 backdrop-blur-md transition-colors hover:bg-white/15 md:left-12 md:inline-flex"
                     @click="
                         previousSlide();
                         restartAutoPlay();
@@ -244,7 +246,7 @@ onBeforeUnmount(() => {
 
                 <button
                     type="button"
-                    class="absolute top-1/2 right-6 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-[#161a29]/60 text-white/90 backdrop-blur-md transition-colors hover:bg-white/15 md:inline-flex md:right-12"
+                    class="absolute top-1/2 right-6 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-[#161a29]/60 text-white/90 backdrop-blur-md transition-colors hover:bg-white/15 md:right-12 md:inline-flex"
                     @click="
                         nextSlide();
                         restartAutoPlay();
@@ -254,7 +256,9 @@ onBeforeUnmount(() => {
                     <ChevronRight class="h-5 w-5" />
                 </button>
 
-                <div class="absolute bottom-10 left-1/2 flex -translate-x-1/2 items-center gap-1.5 sm:gap-2">
+                <div
+                    class="absolute bottom-10 left-1/2 flex -translate-x-1/2 items-center gap-1.5 sm:gap-2"
+                >
                     <button
                         type="button"
                         class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/15 bg-[#161a29]/55 text-white/90 backdrop-blur-md md:hidden"
