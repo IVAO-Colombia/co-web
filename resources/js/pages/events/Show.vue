@@ -37,7 +37,6 @@ import TooltipProvider from '@/components/ui/tooltip/TooltipProvider.vue';
 import TooltipTrigger from '@/components/ui/tooltip/TooltipTrigger.vue';
 import { usePermissions } from '@/composables/usePermissions';
 import { formatDateTime } from '@/lib/utils';
-import { destroy, index, show as showRoute } from '@/routes/events';
 import type { EventDetail } from '@/types';
 import {
     EventConstants,
@@ -45,6 +44,7 @@ import {
     SlotsConstants,
     SlotStatus,
 } from '@/types';
+import { destroy, index, show as showRoute } from '@/routes/events';
 
 const props = defineProps<{
     event: EventDetail;
