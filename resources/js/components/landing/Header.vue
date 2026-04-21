@@ -16,9 +16,12 @@ import {
     Link2,
     Menu,
     MessageCircle,
+    Moon,
     Plane,
     Radar,
+    Sun,
     Users,
+    X,
 } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
 import type { Component } from 'vue';
@@ -56,7 +59,7 @@ const menuSections: MenuSection[] = [
         title: 'ABOUT US',
         href: '#about-us',
         description: '',
-        imageSrc: '/about_img.jpg',
+        imageSrc: '/img/about_img.jpg',
         items: [
             {
                 title: 'About Us',
@@ -86,7 +89,7 @@ const menuSections: MenuSection[] = [
         href: '#controllers',
         description:
             'Information and resources for controllers of the division.',
-        imageSrc: '/bog_torre.jpg',
+        imageSrc: '/img/bog_torre.jpg',
         items: [
             {
                 title: 'First Steps',
@@ -123,7 +126,7 @@ const menuSections: MenuSection[] = [
         title: 'PILOTS',
         href: '#pilots',
         description: 'Sections for pilots and flight operations.',
-        imageSrc: '/pilots_img.jpg',
+        imageSrc: '/img/pilots_img.jpg',
         items: [
             {
                 title: 'First Steps',
@@ -160,7 +163,7 @@ const menuSections: MenuSection[] = [
         title: 'COMMUNITY',
         href: '#community',
         description: 'Activities, integration, and community participation.',
-        imageSrc: '/community_img.jpg',
+        imageSrc: '/img/community_img.jpg',
         items: [
             {
                 title: 'Discord',
@@ -312,83 +315,14 @@ function toggleMobileSection(sectionTitle: string): void {
                                     : $t('Switch to dark mode')
                             "
                         >
-                            <svg
+                            <Sun
+                                class="size-4 text-amber-400"
                                 v-if="isDarkMode"
-                                class="h-4 w-4 text-amber-400"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                                aria-hidden="true"
-                            >
-                                <path
-                                    d="M12 3V5"
-                                    stroke="currentColor"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                />
-                                <path
-                                    d="M12 19V21"
-                                    stroke="currentColor"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                />
-                                <path
-                                    d="M5.64 5.64L7.05 7.05"
-                                    stroke="currentColor"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                />
-                                <path
-                                    d="M16.95 16.95L18.36 18.36"
-                                    stroke="currentColor"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                />
-                                <path
-                                    d="M3 12H5"
-                                    stroke="currentColor"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                />
-                                <path
-                                    d="M19 12H21"
-                                    stroke="currentColor"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                />
-                                <path
-                                    d="M5.64 18.36L7.05 16.95"
-                                    stroke="currentColor"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                />
-                                <path
-                                    d="M16.95 7.05L18.36 5.64"
-                                    stroke="currentColor"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                />
-                                <circle
-                                    cx="12"
-                                    cy="12"
-                                    r="4"
-                                    stroke="currentColor"
-                                    stroke-width="2"
-                                />
-                            </svg>
-                            <svg
+                            />
+                            <Moon
                                 v-else
-                                class="h-4 w-4 text-slate-700 dark:text-slate-100"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                                aria-hidden="true"
-                            >
-                                <path
-                                    d="M21 12.79A9 9 0 1 1 11.21 3C11.61 3 11.81 3 12 3.04C9.91 4.07 8.5 6.27 8.5 8.8C8.5 12.34 11.36 15.2 14.9 15.2C17.43 15.2 19.63 13.79 20.66 11.7C20.7 11.89 20.7 12.09 20.7 12.49L21 12.79Z"
-                                    fill="currentColor"
-                                />
-                            </svg>
+                                class="size-4 text-slate-700 dark:text-slate-100"
+                            />
                         </button>
                     </div>
 
@@ -425,19 +359,7 @@ function toggleMobileSection(sectionTitle: string): void {
                     >
                         <span class="sr-only">{{ $t('Open main menu') }}</span>
                         <Menu v-if="!isMobileMenuOpen" class="h-6 w-6" />
-                        <svg
-                            v-else
-                            class="h-6 w-6"
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <path
-                                fill-rule="evenodd"
-                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                clip-rule="evenodd"
-                            ></path>
-                        </svg>
+                        <X v-else class="h-6 w-6" />
                     </button>
                 </div>
 
@@ -479,83 +401,14 @@ function toggleMobileSection(sectionTitle: string): void {
                                         : $t('Switch to dark mode')
                                 "
                             >
-                                <svg
+                                <Sun
                                     v-if="isDarkMode"
-                                    class="h-4 w-4 text-amber-400"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    aria-hidden="true"
-                                >
-                                    <path
-                                        d="M12 3V5"
-                                        stroke="currentColor"
-                                        stroke-width="2"
-                                        stroke-linecap="round"
-                                    />
-                                    <path
-                                        d="M12 19V21"
-                                        stroke="currentColor"
-                                        stroke-width="2"
-                                        stroke-linecap="round"
-                                    />
-                                    <path
-                                        d="M5.64 5.64L7.05 7.05"
-                                        stroke="currentColor"
-                                        stroke-width="2"
-                                        stroke-linecap="round"
-                                    />
-                                    <path
-                                        d="M16.95 16.95L18.36 18.36"
-                                        stroke="currentColor"
-                                        stroke-width="2"
-                                        stroke-linecap="round"
-                                    />
-                                    <path
-                                        d="M3 12H5"
-                                        stroke="currentColor"
-                                        stroke-width="2"
-                                        stroke-linecap="round"
-                                    />
-                                    <path
-                                        d="M19 12H21"
-                                        stroke="currentColor"
-                                        stroke-width="2"
-                                        stroke-linecap="round"
-                                    />
-                                    <path
-                                        d="M5.64 18.36L7.05 16.95"
-                                        stroke="currentColor"
-                                        stroke-width="2"
-                                        stroke-linecap="round"
-                                    />
-                                    <path
-                                        d="M16.95 7.05L18.36 5.64"
-                                        stroke="currentColor"
-                                        stroke-width="2"
-                                        stroke-linecap="round"
-                                    />
-                                    <circle
-                                        cx="12"
-                                        cy="12"
-                                        r="4"
-                                        stroke="currentColor"
-                                        stroke-width="2"
-                                    />
-                                </svg>
-                                <svg
+                                    class="size-4 text-amber-400"
+                                />
+                                <Moon
                                     v-else
-                                    class="h-4 w-4 text-slate-700 dark:text-slate-100"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    aria-hidden="true"
-                                >
-                                    <path
-                                        d="M21 12.79A9 9 0 1 1 11.21 3C11.61 3 11.81 3 12 3.04C9.91 4.07 8.5 6.27 8.5 8.8C8.5 12.34 11.36 15.2 14.9 15.2C17.43 15.2 19.63 13.79 20.66 11.7C20.7 11.89 20.7 12.09 20.7 12.49L21 12.79Z"
-                                        fill="currentColor"
-                                    />
-                                </svg>
+                                    class="size-4 text-slate-700 dark:text-slate-100"
+                                />
                             </button>
                         </div>
 

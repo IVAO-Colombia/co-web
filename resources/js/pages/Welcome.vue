@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Head } from '@inertiajs/vue3';
 import { gsap } from 'gsap';
-import { ChevronLeft, ChevronRight } from 'lucide-vue-next';
+import { ArrowUpRight, ChevronLeft, ChevronRight } from 'lucide-vue-next';
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import Header from '@/components/landing/Header.vue';
 import { useAppearance } from '@/composables/useAppearance';
@@ -22,8 +22,8 @@ const slides: HeroSlide[] = [
         description:
             'We connect pilots, controllers, and aviation enthusiasts through virtual simulation. We are more than 240,000 members worldwide, with over 60 million hours flown!',
         tagline: 'Start your journey',
-        lightImage: '/day_1.png',
-        darkImage: '/nigth_1.png',
+        lightImage: '/img/day_1.png',
+        darkImage: '/img/nigth_1.png',
     },
     {
         eyebrow: 'ATC TRAINING',
@@ -31,8 +31,8 @@ const slides: HeroSlide[] = [
         description:
             'Manage traffic at airports and control centers. Complete training from<br>Ground to ACC, with real-life based procedures.',
         tagline: 'ATCO career',
-        lightImage: '/day_2.png',
-        darkImage: '/nigth_2.png',
+        lightImage: '/img/day_2.png',
+        darkImage: '/img/nigth_2.png',
     },
     {
         eyebrow: 'LONG HAUL OPERATIONS',
@@ -40,8 +40,8 @@ const slides: HeroSlide[] = [
         description:
             'Operate realistic schedules day and night with shared procedures, active<br>community support, and continuous events.',
         tagline: 'Start your journey',
-        lightImage: '/day_3.png',
-        darkImage: '/nigth_3.png',
+        lightImage: '/img/day_3.png',
+        darkImage: '/img/nigth_3.png',
     },
 ];
 
@@ -216,19 +216,9 @@ onBeforeUnmount(() => {
                         >
                             {{ currentSlide.tagline }}
                         </p>
-                        <svg
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.5"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            class="text-[#9ca3af] opacity-70"
-                        >
-                            <path d="M7 17L17 7M17 7H7M17 7V17" />
-                        </svg>
+                        <ArrowUpRight
+                            class="size-6 text-[#9ca3af] opacity-70"
+                        />
                     </div>
                 </section>
 
