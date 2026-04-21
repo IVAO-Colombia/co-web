@@ -162,7 +162,7 @@ onBeforeUnmount(() => {
             <Header />
 
             <main
-                class="absolute inset-0 z-10 flex flex-col items-center justify-center px-6"
+                class="absolute inset-0 z-10 flex flex-col items-center justify-center px-4 sm:px-6"
             >
                 <section
                     ref="heroContentRef"
@@ -170,7 +170,7 @@ onBeforeUnmount(() => {
                 >
                     <p
                         v-if="currentSlide.eyebrow"
-                        class="inline-flex items-center gap-2 rounded-full border border-white/20 bg-[#161a29]/80 px-4 py-1.5 text-xs font-medium tracking-wide text-white/95 backdrop-blur-md"
+                        class="inline-flex items-center gap-2 rounded-full border border-white/20 bg-[#161a29]/80 px-3 py-1 text-xs font-medium tracking-wide text-white/95 backdrop-blur-md sm:px-4 sm:py-1.5"
                     >
                         <span
                             class="inline-block h-2 w-2 rounded-full bg-blue-500"
@@ -179,34 +179,34 @@ onBeforeUnmount(() => {
                     </p>
 
                     <h1
-                        class="mt-6 text-[40px] leading-[1.1] font-bold tracking-tight text-balance text-white sm:text-[50px] md:text-[60px] lg:text-[72px]"
+                        class="mt-4 text-[32px] leading-[1.1] font-bold tracking-tight text-balance text-white sm:mt-6 sm:text-[50px] md:text-[60px] lg:text-[72px]"
                         v-html="currentSlide.title"
                     ></h1>
 
                     <p
-                        class="mt-6 text-base leading-relaxed text-white/80 sm:text-lg md:text-[20px]"
+                        class="mt-4 text-sm leading-relaxed text-white/80 sm:mt-6 sm:text-lg md:text-[20px]"
                         v-html="currentSlide.description"
                     ></p>
 
-                    <div class="mt-12 flex items-center justify-center gap-4">
+                    <div class="mt-8 flex w-full flex-col items-center justify-center gap-3 sm:mt-12 sm:w-auto sm:flex-row sm:gap-4">
                         <a
                             href="#"
-                            class="inline-flex items-center rounded-xl border border-white/20 bg-[#161a29]/60 px-8 py-3.5 text-sm font-semibold text-white backdrop-blur-md transition-colors hover:bg-white/10"
+                            class="inline-flex w-full max-w-xs items-center justify-center rounded-xl border border-white/20 bg-[#161a29]/60 px-6 py-3 text-sm font-semibold text-white backdrop-blur-md transition-colors hover:bg-white/10 sm:w-auto sm:px-8 sm:py-3.5"
                         >
                             Request training
                         </a>
                         <a
                             href="#"
-                            class="inline-flex items-center gap-2 rounded-xl bg-[#2f45ff] px-8 py-3.5 text-sm font-semibold text-white shadow-lg shadow-[#2f45ff]/40 transition-colors hover:bg-[#2438e6]"
+                            class="inline-flex w-full max-w-xs items-center justify-center gap-2 rounded-xl bg-[#2f45ff] px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-[#2f45ff]/40 transition-colors hover:bg-[#2438e6] sm:w-auto sm:px-8 sm:py-3.5"
                         >
                             First steps
                             <span>→</span>
                         </a>
                     </div>
 
-                    <div class="mt-10 flex items-center gap-2">
+                    <div class="mt-8 flex items-center gap-2 sm:mt-10">
                         <p
-                            class="text-lg text-[#9ca3af] italic"
+                            class="text-sm text-[#9ca3af] italic sm:text-lg"
                             style="
                                 font-family:
                                     'Homemade Apple', cursive, sans-serif;
@@ -232,7 +232,7 @@ onBeforeUnmount(() => {
 
                 <button
                     type="button"
-                    class="absolute top-1/2 left-6 inline-flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-[#161a29]/60 text-white/90 backdrop-blur-md transition-colors hover:bg-white/15 md:left-12"
+                    class="absolute top-1/2 left-6 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-[#161a29]/60 text-white/90 backdrop-blur-md transition-colors hover:bg-white/15 md:inline-flex md:left-12"
                     @click="
                         previousSlide();
                         restartAutoPlay();
@@ -244,7 +244,7 @@ onBeforeUnmount(() => {
 
                 <button
                     type="button"
-                    class="absolute top-1/2 right-6 inline-flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-[#161a29]/60 text-white/90 backdrop-blur-md transition-colors hover:bg-white/15 md:right-12"
+                    class="absolute top-1/2 right-6 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-[#161a29]/60 text-white/90 backdrop-blur-md transition-colors hover:bg-white/15 md:inline-flex md:right-12"
                     @click="
                         nextSlide();
                         restartAutoPlay();
@@ -254,9 +254,19 @@ onBeforeUnmount(() => {
                     <ChevronRight class="h-5 w-5" />
                 </button>
 
-                <div
-                    class="absolute bottom-10 left-1/2 flex -translate-x-1/2 items-center gap-2"
-                >
+                <div class="absolute bottom-10 left-1/2 flex -translate-x-1/2 items-center gap-1.5 sm:gap-2">
+                    <button
+                        type="button"
+                        class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/15 bg-[#161a29]/55 text-white/90 backdrop-blur-md md:hidden"
+                        @click="
+                            previousSlide();
+                            restartAutoPlay();
+                        "
+                        aria-label="Previous slide"
+                    >
+                        <ChevronLeft class="h-4 w-4" />
+                    </button>
+
                     <button
                         v-for="(slide, index) in slides"
                         :key="slide.title"
@@ -273,6 +283,18 @@ onBeforeUnmount(() => {
                         "
                         :aria-label="`Go to slide ${index + 1}`"
                     ></button>
+
+                    <button
+                        type="button"
+                        class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/15 bg-[#161a29]/55 text-white/90 backdrop-blur-md md:hidden"
+                        @click="
+                            nextSlide();
+                            restartAutoPlay();
+                        "
+                        aria-label="Next slide"
+                    >
+                        <ChevronRight class="h-4 w-4" />
+                    </button>
                 </div>
             </main>
         </div>

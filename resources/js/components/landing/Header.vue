@@ -7,33 +7,35 @@ import {
     BookOpen,
     Briefcase,
     CalendarClock,
+    ChevronDown,
     Compass,
     Crown,
     Globe,
     GraduationCap,
     Landmark,
     Link2,
+    Menu,
     MessageCircle,
     Plane,
     Radar,
     Users,
 } from 'lucide-vue-next';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import type { Component } from 'vue';
+import LogoIvaoCo from '@/components/logoIvaoCo.vue';
 import {
     NavigationMenu,
-    NavigationMenuItem,
     NavigationMenuContent,
+    NavigationMenuItem,
     NavigationMenuLink,
-    NavigationMenuTrigger,
     NavigationMenuList,
+    NavigationMenuTrigger,
 } from '@/components/ui/navigation-menu';
 import { useAppearance } from '@/composables/useAppearance';
 import { useLocale } from '@/composables/useLocale';
-import type { Locale } from '@/types';
-import LogoIvaoCo from '@/components/LogoIvaoCo.vue';
 import { dashboard } from '@/routes';
 import auth from '@/routes/auth';
+import type { Locale } from '@/types';
 
 type SectionLink = {
     title: string;
@@ -207,6 +209,8 @@ const logoSrc = computed(() =>
     isDarkMode.value ? '/logo-small-white.png' : '/logo-small-blue.svg',
 );
 const loginLogoSrc = computed(() => '/logo-small-white.png');
+const isMobileMenuOpen = ref(false);
+const expandedMobileSection = ref<string | null>(menuSections[0]?.title ?? null);
 
 const itemIcons: Record<string, Component> = {
     'About Us': Compass,
@@ -235,23 +239,45 @@ function resolveItemIcon(title: string): Component {
 function toggleAppearance(): void {
     updateAppearance(isDarkMode.value ? 'light' : 'dark');
 }
+
+function toggleMobileMenu(): void {
+    isMobileMenuOpen.value = !isMobileMenuOpen.value;
+}
+
+function closeMobileMenu(): void {
+    isMobileMenuOpen.value = false;
+}
+
+function toggleMobileSection(sectionTitle: string): void {
+    expandedMobileSection.value =
+        expandedMobileSection.value === sectionTitle ? null : sectionTitle;
+}
 </script>
 
 <template>
-    <header class="relative z-50 px-4 pt-4 lg:px-6">
+    <header class="relative z-50 px-3 pt-3 sm:px-4 sm:pt-4 lg:px-6">
         <nav
-            class="mx-auto max-w-7xl rounded-[28px] border border-slate-200/70 bg-white/80 px-4 py-3 shadow-[0_18px_50px_rgba(15,23,42,0.16)] backdrop-blur-xl dark:border-slate-700/60 dark:bg-slate-900/75"
+            class="relative mx-auto max-w-7xl rounded-3xl border border-slate-200/70 bg-white/80 px-3 py-2.5 shadow-[0_18px_50px_rgba(15,23,42,0.16)] backdrop-blur-xl sm:rounded-[28px] sm:px-4 sm:py-3 dark:border-slate-700/60 dark:bg-slate-900/75"
         >
-            <div class="flex flex-wrap items-center justify-between gap-4">
-                <a href="/" class="flex items-center">
+            <div class="flex items-center justify-between gap-2 sm:gap-4">
+                <a href="/" class="flex min-w-0 items-center">
                     <LogoIvaoCo
-                        :height="60"
+                        :height="38"
+                        :show-text="false"
+                        class="sm:hidden"
+                        :src="logoSrc"
+                        title-text="IVAO"
+                        country-text="COLOMBIA"
+                    />
+                    <LogoIvaoCo
+                        :height="56"
+                        class="hidden sm:inline-flex"
                         :src="logoSrc"
                         title-text="IVAO"
                         country-text="COLOMBIA"
                     />
                 </a>
-                <div class="flex items-center gap-3 lg:order-2">
+                <div class="flex shrink-0 items-center gap-2 sm:gap-3 lg:order-2">
                     <div class="hidden items-center gap-2 sm:flex">
                         <div
                             class="inline-flex rounded-full border border-slate-300/90 bg-white/80 p-1 shadow-sm dark:border-slate-600 dark:bg-slate-800/80"
@@ -376,38 +402,31 @@ function toggleAppearance(): void {
                     <template v-else>
                         <Link
                             :href="auth.redirect()"
-                            class="inline-flex items-center gap-1.5 rounded-full border border-transparent bg-[#1d4ed8] px-4 py-2.5 text-center text-sm leading-5 font-semibold text-white transition-colors hover:bg-[#1e40af] focus:ring-4 focus:ring-[#1d4ed8]/40 focus:outline-none dark:bg-[#2563eb] dark:hover:bg-[#1d4ed8] dark:focus:ring-[#2563eb]/45"
+                            class="inline-flex max-w-38 items-center gap-1 rounded-full border border-transparent bg-[#1d4ed8] px-3 py-2 text-center text-xs leading-5 font-semibold whitespace-nowrap text-white transition-colors hover:bg-[#1e40af] focus:ring-4 focus:ring-[#1d4ed8]/40 focus:outline-none sm:max-w-none sm:gap-1.5 sm:px-4 sm:py-2.5 sm:text-sm dark:bg-[#2563eb] dark:hover:bg-[#1d4ed8] dark:focus:ring-[#2563eb]/45"
                         >
                             <img
                                 :src="loginLogoSrc"
                                 :alt="$t('IVAO logo')"
-                                class="me-1.5 h-4 w-4 shrink-0 object-contain"
+                                class="h-3.5 w-3.5 shrink-0 object-contain sm:me-1.5 sm:h-4 sm:w-4"
                             />
-                            {{ $t('Log in') }}
+                            <span class="truncate">{{ $t('Log in') }}</span>
                         </Link>
                     </template>
                     <button
-                        data-collapse-toggle="mobile-menu-2"
                         type="button"
-                        class="inline-flex items-center rounded-lg p-2 text-sm text-slate-600 transition-colors hover:bg-slate-100 focus:ring-2 focus:ring-slate-300 focus:outline-none lg:hidden dark:text-slate-300 dark:hover:bg-slate-800 dark:focus:ring-slate-600"
+                        @click="toggleMobileMenu"
+                        class="inline-flex h-10 w-10 items-center justify-center rounded-xl p-2 text-sm text-slate-600 transition-colors hover:bg-slate-100 focus:ring-2 focus:ring-slate-300 focus:outline-none lg:hidden dark:text-slate-300 dark:hover:bg-slate-800 dark:focus:ring-slate-600"
                         aria-controls="mobile-menu-2"
-                        aria-expanded="false"
+                        :aria-expanded="isMobileMenuOpen"
                     >
                         <span class="sr-only">{{ $t('Open main menu') }}</span>
-                        <svg
+                        <Menu
+                            v-if="!isMobileMenuOpen"
                             class="h-6 w-6"
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <path
-                                fill-rule="evenodd"
-                                d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-                                clip-rule="evenodd"
-                            ></path>
-                        </svg>
+                        />
                         <svg
-                            class="hidden h-6 w-6"
+                            v-else
+                            class="h-6 w-6"
                             fill="currentColor"
                             viewBox="0 0 20 20"
                             xmlns="http://www.w3.org/2000/svg"
@@ -420,6 +439,187 @@ function toggleAppearance(): void {
                         </svg>
                     </button>
                 </div>
+
+                <div
+                    id="mobile-menu-2"
+                    v-if="isMobileMenuOpen"
+                    class="absolute top-[calc(100%+0.5rem)] right-0 z-50 w-[min(92vw,22rem)] rounded-2xl border border-slate-200/80 bg-white/95 p-3 shadow-[0_16px_40px_rgba(15,23,42,0.22)] lg:hidden dark:border-slate-700/60 dark:bg-slate-900/95"
+                >
+                    <div class="grid gap-2">
+                        <div
+                            class="flex items-center justify-between rounded-xl border border-slate-200/90 bg-white/80 p-2 dark:border-slate-700 dark:bg-slate-800/80"
+                        >
+                            <div class="inline-flex rounded-full border border-slate-300/90 bg-white/80 p-1 shadow-sm dark:border-slate-600 dark:bg-slate-800/80">
+                                <button
+                                    v-for="option in languageOptions"
+                                    :key="`mobile-${option.value}`"
+                                    type="button"
+                                    @click="updateLocale(option.value)"
+                                    :class="[
+                                        'rounded-full px-2.5 py-1 text-xs font-semibold tracking-wide transition-colors',
+                                        locale === option.value
+                                            ? 'bg-[#1d4ed8] text-white'
+                                            : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-700 dark:hover:text-white',
+                                    ]"
+                                >
+                                    {{ option.label }}
+                                </button>
+                            </div>
+
+                            <button
+                                type="button"
+                                @click="toggleAppearance"
+                                class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-300/90 bg-white text-slate-700 shadow-sm transition-colors hover:bg-slate-100 focus:ring-2 focus:ring-[#1d4ed8]/40 focus:outline-none dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-700"
+                                :aria-label="
+                                    isDarkMode
+                                        ? $t('Switch to light mode')
+                                        : $t('Switch to dark mode')
+                                "
+                            >
+                                <svg
+                                    v-if="isDarkMode"
+                                    class="h-4 w-4 text-amber-400"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    aria-hidden="true"
+                                >
+                                    <path
+                                        d="M12 3V5"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                    />
+                                    <path
+                                        d="M12 19V21"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                    />
+                                    <path
+                                        d="M5.64 5.64L7.05 7.05"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                    />
+                                    <path
+                                        d="M16.95 16.95L18.36 18.36"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                    />
+                                    <path
+                                        d="M3 12H5"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                    />
+                                    <path
+                                        d="M19 12H21"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                    />
+                                    <path
+                                        d="M5.64 18.36L7.05 16.95"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                    />
+                                    <path
+                                        d="M16.95 7.05L18.36 5.64"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                    />
+                                    <circle
+                                        cx="12"
+                                        cy="12"
+                                        r="4"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                    />
+                                </svg>
+                                <svg
+                                    v-else
+                                    class="h-4 w-4 text-slate-700 dark:text-slate-100"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    aria-hidden="true"
+                                >
+                                    <path
+                                        d="M21 12.79A9 9 0 1 1 11.21 3C11.61 3 11.81 3 12 3.04C9.91 4.07 8.5 6.27 8.5 8.8C8.5 12.34 11.36 15.2 14.9 15.2C17.43 15.2 19.63 13.79 20.66 11.7C20.7 11.89 20.7 12.09 20.7 12.49L21 12.79Z"
+                                        fill="currentColor"
+                                    />
+                                </svg>
+                            </button>
+                        </div>
+
+                        <div
+                            v-for="section in menuSections"
+                            :key="`mobile-section-${section.title}`"
+                            class="overflow-hidden rounded-xl border border-slate-200/90 bg-white/80 dark:border-slate-700 dark:bg-slate-800/70"
+                        >
+                            <button
+                                type="button"
+                                class="flex w-full items-center justify-between px-3 py-2.5 text-left"
+                                :aria-expanded="expandedMobileSection === section.title"
+                                @click="toggleMobileSection(section.title)"
+                            >
+                                <span
+                                    class="text-xs font-semibold tracking-[0.14em] text-slate-700 dark:text-slate-200"
+                                >
+                                    {{ $t(section.title) }}
+                                </span>
+                                <ChevronDown
+                                    class="h-4 w-4 text-slate-500 transition-transform dark:text-slate-300"
+                                    :class="{
+                                        'rotate-180':
+                                            expandedMobileSection ===
+                                            section.title,
+                                    }"
+                                />
+                            </button>
+
+                            <div
+                                v-if="expandedMobileSection === section.title"
+                                class="space-y-1 border-t border-slate-200/80 px-2 py-2 dark:border-slate-700"
+                            >
+                                <a
+                                    v-for="item in section.items"
+                                    :key="`mobile-item-${section.title}-${item.title}`"
+                                    :href="item.href"
+                                    @click="closeMobileMenu"
+                                    class="flex items-start gap-2 rounded-lg px-2 py-2 transition-colors hover:bg-slate-100 dark:hover:bg-slate-700/70"
+                                >
+                                    <span
+                                        class="mt-0.5 rounded-md bg-slate-100 p-1.5 text-slate-600 dark:bg-slate-700 dark:text-slate-200"
+                                    >
+                                        <component
+                                            :is="resolveItemIcon(item.title)"
+                                            class="h-3.5 w-3.5"
+                                        />
+                                    </span>
+                                    <span
+                                        class="text-sm text-slate-700 dark:text-slate-200"
+                                    >
+                                        {{ $t(item.title) }}
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <a
+                            href="/"
+                            @click="closeMobileMenu"
+                            class="inline-flex items-center justify-center rounded-xl border border-slate-200/90 bg-white/80 px-3 py-2 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-800/70 dark:text-slate-200 dark:hover:bg-slate-700"
+                        >
+                            {{ $t('SOCO') }}
+                        </a>
+                    </div>
+                </div>
+
                 <NavigationMenu class="hidden lg:order-1 lg:flex">
                     <NavigationMenuList class="gap-2">
                         <NavigationMenuItem
