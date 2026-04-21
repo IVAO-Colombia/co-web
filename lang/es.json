@@ -68,6 +68,8 @@
     "Select event type": "Selecciona el tipo de evento",
     "e.g. SEQM, SEGU": "ej. SEQM, SEGU",
     "Starts At": "Comienza a las",
+    "Pick start date & time": "Selecciona la fecha y hora de inicio",
+    "Pick end date & time": "Selecciona la fecha y hora de finalización",
     "Ends At": "Termina a las",
     "Tags": "Etiquetas",
     "Type a tag and press Enter...": "Escribe una etiqueta y presiona Enter...",

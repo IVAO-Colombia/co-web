@@ -12,6 +12,7 @@ import {
     X,
 } from 'lucide-vue-next';
 import { computed, onUnmounted, ref } from 'vue';
+import { store } from '@/actions/App/Http/Controllers/EventsController';
 import InputError from '@/components/InputError.vue';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -22,6 +23,7 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
+import { DateTimePicker } from '@/components/ui/date-time-picker';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
@@ -48,11 +50,10 @@ import {
     normalizeTime,
     parseCsv,
 } from '@/lib/utils';
+import { index, create } from '@/routes/events';
 import type { EventType } from '@/types';
 import { EventConstants } from '@/types';
 import { EventTag } from '@/types';
-import { store } from '@/actions/App/Http/Controllers/EventsController';
-import { index, create } from '@/routes/events';
 
 type PilotSlotCSV = {
     callsign: string;
@@ -425,21 +426,18 @@ function submit(): void {
                                 {{ $t('Starts At') }}
                                 <span class="ml-0.5 text-destructive">*</span>
                             </Label>
-                            <Input
-                                id="starts_at"
+                            <DateTimePicker
                                 v-model="form.starts_at"
-                                type="datetime-local"
-                                step="1800"
+                                :placeholder="$t('Pick start date & time')"
                             />
                             <InputError :message="form.errors.starts_at" />
                         </div>
                         <div class="flex flex-col gap-1.5">
                             <Label for="ends_at">{{ $t('Ends At') }}</Label>
-                            <Input
-                                id="ends_at"
+                            <DateTimePicker
                                 v-model="form.ends_at"
-                                type="datetime-local"
-                                step="1800"
+                                :min-value="form.starts_at || undefined"
+                                :placeholder="$t('Pick end date & time')"
                             />
                             <InputError :message="form.errors.ends_at" />
                         </div>
