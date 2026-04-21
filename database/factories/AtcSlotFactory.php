@@ -28,10 +28,17 @@ class AtcSlotFactory extends Factory
         ];
     }
 
-    public function unavailable(): self
+    public function reserved(): self
     {
         return $this->state(fn (array $attributes) => [
-            'status' => SlotStatus::UNAVAILABLE,
+            'status' => SlotStatus::RESERVED,
+        ]);
+    }
+
+    public function confirmed(): self
+    {
+        return $this->state(fn (array $attributes) => [
+            'status' => SlotStatus::CONFIRMED,
         ]);
     }
 

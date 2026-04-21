@@ -28,7 +28,7 @@ class CreateEvent
                 'name_en' => $validated['name_en'] ?? null,
                 'description' => $validated['description'],
                 'description_en' => $validated['description_en'] ?? null,
-                'slug' => Str::slug($validated['name']).'-'.Str::random(6),
+                'slug' => Str::slug($validated['name']),
                 'image_url' => $imageUrl,
                 'type' => $validated['type'],
                 'tags' => $validated['tags'] ?? [],

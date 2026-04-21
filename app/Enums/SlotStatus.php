@@ -7,6 +7,7 @@ namespace App\Enums;
 enum SlotStatus: string
 {
     case AVAILABLE = 'available';
-    case UNAVAILABLE = 'unavailable';
+    case RESERVED = 'reserved';
+    case CONFIRMED = 'confirmed';
     case CANCELLED = 'cancelled';
 }

@@ -37,6 +37,7 @@ Route::middleware(['auth'])->group(function (): void {
     Route::post('/auth/logout', LogoutUsersController::class)
         ->name('auth.logout');
     Route::inertia('dashboard', 'Dashboard')->name('dashboard');
+    require __DIR__.'/ivao.php';
 });
 
 Route::prefix('dashboard')->middleware(['auth'])->group(function (): void {

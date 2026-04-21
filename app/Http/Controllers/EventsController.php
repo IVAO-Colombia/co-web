@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Actions\Events\CreateEvent;
+use App\Actions\Events\UpdateEvent;
 use App\Enums\EventStatus;
 use App\Enums\EventType;
 use App\Enums\PagesComponents;
 use App\Enums\Permission;
 use App\Enums\SlotStatus;
 use App\Http\Requests\StoreEventRequest;
+use App\Http\Requests\UpdateEventRequest;
 use App\Models\Event;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -63,16 +65,32 @@ class EventsController extends Controller
         ]);
     }
 
-    // public function edit(string $id) {}
+    public function edit(Event $event): Response
+    {
+        Gate::authorize(Permission::UPDATE_EVENTS);
 
-    // public function update(Request $request, string $id) {}
+        $event->load(['pilotSlots', 'atcSlots']);
+
+        return inertia(PagesComponents::EVENTS_EDIT->value, [
+            'event' => $event,
+            'hasReservedPilotSlots' => $event->pilotSlots->reject(fn ($slot) => $slot->isReserved())->isNotEmpty(),
+            'hasReservedAtcSlots' => $event->atcSlots->reject(fn ($slot) => $slot->isReserved())->isNotEmpty(),
+        ]);
+    }
+
+    public function update(UpdateEventRequest $request, Event $event): RedirectResponse
+    {
+        app(UpdateEvent::class)->handle($request, $event);
+
+        return to_route('events.show', $event);
+    }
 
     public function destroy(Event $event): RedirectResponse
     {
         Gate::authorize(Permission::DELETE_EVENTS);
 
-        $hasReservedPilotSlot = $event->pilotSlots()->where('status', SlotStatus::UNAVAILABLE)->exists();
-        $hasReservedAtcSlot = $event->atcSlots()->where('status', SlotStatus::UNAVAILABLE)->exists();
+        $hasReservedPilotSlot = $event->pilotSlots()->reserved()->exists();
+        $hasReservedAtcSlot = $event->atcSlots()->reserved()->exists();
 
         if ($hasReservedPilotSlot || $hasReservedAtcSlot) {
             throw ValidationException::withMessages([
