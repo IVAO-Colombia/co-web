@@ -43,6 +43,7 @@ export enum EventType {
 export enum PagesComponents {
     EVENTS_INDEX = 'events/Index',
     EVENTS_CREATE = 'events/Create',
+    EVENTS_EDIT = 'events/Edit',
     EVENTS_SHOW = 'events/Show',
 }
 export enum Permission {

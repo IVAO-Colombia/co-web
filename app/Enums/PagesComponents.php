@@ -8,5 +8,6 @@ enum PagesComponents: string
 {
     case EVENTS_INDEX = 'events/Index';
     case EVENTS_CREATE = 'events/Create';
+    case EVENTS_EDIT = 'events/Edit';
     case EVENTS_SHOW = 'events/Show';
 }
