@@ -18,7 +18,7 @@ class EventsTest extends TestCase
     {
         Event::factory()->count(2)->create();
 
-        $this->get(route('events.landing'))
+        $this->get(route('home.events'))
             ->assertOk()
             ->assertInertia(fn ($page) => $page
                 ->component('events/landing/Events')

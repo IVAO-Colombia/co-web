@@ -45,6 +45,7 @@ export enum PagesComponents {
     EVENTS_CREATE = 'events/Create',
     EVENTS_EDIT = 'events/Edit',
     EVENTS_SHOW = 'events/Show',
+    EVENTS_LANDING = 'events/landing/Events',
 }
 export enum Permission {
     STAFF_ACCESS = 'staff_access',

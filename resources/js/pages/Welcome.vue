@@ -3,9 +3,9 @@ import { Head } from '@inertiajs/vue3';
 import { gsap } from 'gsap';
 import { ArrowUpRight, ChevronLeft, ChevronRight } from 'lucide-vue-next';
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import EventsList from '@/components/landing/EventsList.vue';
 import Header from '@/components/landing/Header.vue';
 import { useAppearance } from '@/composables/useAppearance';
-import Events from '@/components/landing/Events.vue';
 import type { Event } from '@/types';
 
 type HeroSlide = {
@@ -299,5 +299,5 @@ onBeforeUnmount(() => {
             </main>
         </div>
     </section>
-    <Events :events="events" />
+    <EventsList :events="events" />
 </template>

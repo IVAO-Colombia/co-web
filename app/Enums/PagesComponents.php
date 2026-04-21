@@ -12,5 +12,6 @@ enum PagesComponents: string
     case EVENTS_SHOW = 'events/Show';
 
     /** Frontend components for different event-related pages */
-    case EVENTS_LANDING = 'events/landing/Events';
+    case LANDING_HOME = 'Welcome';
+    case LANGING_EVENTS = 'landing/Events';
 }

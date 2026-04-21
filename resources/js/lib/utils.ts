@@ -1,8 +1,11 @@
+import { utc } from '@date-fns/utc';
 import type { InertiaLinkProps } from '@inertiajs/vue3';
 import { clsx } from 'clsx';
 import type { ClassValue } from 'clsx';
 import { format, isValid, parse, parseISO } from 'date-fns';
+import { enUS, es } from 'date-fns/locale';
 import { twMerge } from 'tailwind-merge';
+import type { Locale } from '@/types';
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
@@ -119,4 +122,26 @@ export function normalizeDatetime(value: string): string {
     }
 
     return trimmed;
+}
+
+export function getDateParts(
+    startsAt: string,
+    locale: Locale,
+): {
+    day: string;
+    month: string;
+    year: string;
+    time: string;
+} {
+    const utcDate = parseISO(startsAt, { in: utc });
+    const dfLocale = locale === 'en' ? enUS : es;
+
+    const day = format(utcDate, 'dd');
+    const month = format(utcDate, 'MMM', { locale: dfLocale })
+        .replace('.', '')
+        .toUpperCase();
+    const year = format(utcDate, 'yyyy');
+    const time = `${format(utcDate, 'HH:mm')} UTC`;
+
+    return { day, month, year, time };
 }

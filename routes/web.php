@@ -4,27 +4,14 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Auth\AuthenticateUsersController;
 use App\Http\Controllers\Auth\LogoutUsersController;
-use App\Models\Event;
+use App\Http\Controllers\EventsListController;
+use App\Http\Controllers\HomePageController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Laravel\Socialite\Facades\Socialite;
-use App\Enums\PagesComponents;
-use App\Enums\EventStatus;
 
-Route::get('/', fn () => Inertia::render('Welcome', [
-    'events' => Event::query()
-        ->orderBy('starts_at')
-        ->active()
-        ->limit(6)
-        ->get(),
-]))->name('home');
-
-Route::get('/events', fn () => Inertia::render(PagesComponents::EVENTS_LANDING->value, [
-    'events' => Event::query()
-        ->orderBy('starts_at')
-        ->active()
-        ->get(),
-]))->name('events.landing');
+Route::get('/', HomePageController::class)->name('home');
+Route::get('/events', EventsListController::class)->name('home.events');
 
 Route::get('/auth/redirect', fn () => Inertia::location(Socialite::driver('ivao')
     ->scopes(['profile', 'email'])
