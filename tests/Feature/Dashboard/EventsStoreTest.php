@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Feature;
+namespace Tests\Feature\Dashboard;
 
 use App\Enums\EventStatus;
 use App\Enums\EventType;
@@ -34,7 +34,7 @@ class EventsStoreTest extends TestCase
     #[Test]
     public function guests_are_redirected_from_store(): void
     {
-        $this->post(route('events.store'), $this->validPayload())
+        $this->post(route('dashboard.events.store'), $this->validPayload())
             ->assertRedirect(route('home'));
     }
 
@@ -44,7 +44,7 @@ class EventsStoreTest extends TestCase
         $user = User::factory()->create();
 
         $this->actingAs($user)
-            ->post(route('events.store'), $this->validPayload())
+            ->post(route('dashboard.events.store'), $this->validPayload())
             ->assertForbidden();
     }
 
@@ -54,8 +54,8 @@ class EventsStoreTest extends TestCase
         $user = User::factory()->director()->create();
 
         $this->actingAs($user)
-            ->post(route('events.store'), $this->validPayload())
-            ->assertRedirect(route('events.index'));
+            ->post(route('dashboard.events.store'), $this->validPayload())
+            ->assertRedirect(route('dashboard.events.index'));
 
         $this->assertDatabaseHas('events', [
             'name' => 'Evento de Prueba',
@@ -73,7 +73,7 @@ class EventsStoreTest extends TestCase
         $user = User::factory()->director()->create();
 
         $this->actingAs($user)
-            ->post(route('events.store'), $this->validPayload());
+            ->post(route('dashboard.events.store'), $this->validPayload());
 
         $this->assertDatabaseHas('events', ['status' => EventStatus::DRAFT->value]);
     }
@@ -85,7 +85,7 @@ class EventsStoreTest extends TestCase
 
         $user = User::factory()->director()->create();
 
-        $this->actingAs($user)->post(route('events.store'), array_merge(
+        $this->actingAs($user)->post(route('dashboard.events.store'), array_merge(
             $this->validPayload(),
             ['image' => UploadedFile::fake()->image('banner.jpg', 800, 400)],
         ));
@@ -100,7 +100,7 @@ class EventsStoreTest extends TestCase
     {
         $user = User::factory()->director()->create();
 
-        $this->actingAs($user)->post(route('events.store'), array_merge(
+        $this->actingAs($user)->post(route('dashboard.events.store'), array_merge(
             $this->validPayload(),
             ['tags' => ['vfr', 'cross-country']],
         ));
@@ -139,8 +139,8 @@ class EventsStoreTest extends TestCase
             ],
         ]);
 
-        $this->actingAs($user)->post(route('events.store'), $payload)
-            ->assertRedirect(route('events.index'));
+        $this->actingAs($user)->post(route('dashboard.events.store'), $payload)
+            ->assertRedirect(route('dashboard.events.index'));
 
         $event = Event::first();
         $this->assertCount(2, $event->pilotSlots);
@@ -176,8 +176,8 @@ class EventsStoreTest extends TestCase
             ],
         ]);
 
-        $this->actingAs($user)->post(route('events.store'), $payload)
-            ->assertRedirect(route('events.index'));
+        $this->actingAs($user)->post(route('dashboard.events.store'), $payload)
+            ->assertRedirect(route('dashboard.events.index'));
 
         $event = Event::first();
         $this->assertCount(2, $event->atcSlots);
@@ -198,7 +198,7 @@ class EventsStoreTest extends TestCase
         $payload = array_merge($this->validPayload(), ['name' => '']);
 
         $this->actingAs($user)
-            ->post(route('events.store'), $payload)
+            ->post(route('dashboard.events.store'), $payload)
             ->assertSessionHasErrors('name');
     }
 
@@ -209,7 +209,7 @@ class EventsStoreTest extends TestCase
         $payload = array_merge($this->validPayload(), ['description' => '']);
 
         $this->actingAs($user)
-            ->post(route('events.store'), $payload)
+            ->post(route('dashboard.events.store'), $payload)
             ->assertSessionHasErrors('description');
     }
 
@@ -220,7 +220,7 @@ class EventsStoreTest extends TestCase
         $payload = array_merge($this->validPayload(), ['type' => 'invalid_type']);
 
         $this->actingAs($user)
-            ->post(route('events.store'), $payload)
+            ->post(route('dashboard.events.store'), $payload)
             ->assertSessionHasErrors('type');
     }
 
@@ -231,7 +231,7 @@ class EventsStoreTest extends TestCase
         $payload = array_merge($this->validPayload(), ['tags' => ['not-a-valid-tag']]);
 
         $this->actingAs($user)
-            ->post(route('events.store'), $payload)
+            ->post(route('dashboard.events.store'), $payload)
             ->assertSessionHasErrors('tags.0');
     }
 
@@ -242,7 +242,7 @@ class EventsStoreTest extends TestCase
         $payload = array_merge($this->validPayload(), ['starts_at' => '']);
 
         $this->actingAs($user)
-            ->post(route('events.store'), $payload)
+            ->post(route('dashboard.events.store'), $payload)
             ->assertSessionHasErrors('starts_at');
     }
 
@@ -256,7 +256,7 @@ class EventsStoreTest extends TestCase
         ]);
 
         $this->actingAs($user)
-            ->post(route('events.store'), $payload)
+            ->post(route('dashboard.events.store'), $payload)
             ->assertSessionHasErrors('ends_at');
     }
 
@@ -266,7 +266,7 @@ class EventsStoreTest extends TestCase
         Storage::fake('public');
         $user = User::factory()->director()->create();
 
-        $this->actingAs($user)->post(route('events.store'), array_merge(
+        $this->actingAs($user)->post(route('dashboard.events.store'), array_merge(
             $this->validPayload(),
             ['image' => UploadedFile::fake()->create('document.pdf', 100)],
         ))->assertSessionHasErrors('image');

@@ -44,7 +44,7 @@ import {
     SlotsConstants,
     SlotStatus,
 } from '@/types';
-import { destroy, index, show as showRoute } from '@/routes/events';
+import { destroy, index, show as showRoute } from '@/routes/dashboard/events';
 
 const props = defineProps<{
     event: EventDetail;

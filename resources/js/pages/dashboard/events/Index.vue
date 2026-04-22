@@ -50,7 +50,7 @@ import type {
 } from '@/types';
 import { Permission } from '@/types';
 import { EventConstants } from '@/types';
-import { index, create, destroy, show } from '@/routes/events';
+import { index, create, destroy, show } from '@/routes/dashboard/events';
 
 const props = defineProps<{
     events: LengthAwarePaginator<number, Event>;

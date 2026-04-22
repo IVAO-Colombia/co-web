@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Feature;
+namespace Tests\Feature\Dashboard;
 
 use App\Models\AtcSlot;
 use App\Models\Event;
@@ -19,7 +19,7 @@ class EventsEditTest extends TestCase
     {
         $event = Event::factory()->create();
 
-        $this->get(route('events.edit', $event))
+        $this->get(route('dashboard.events.edit', $event))
             ->assertRedirect(route('home'));
     }
 
@@ -30,7 +30,7 @@ class EventsEditTest extends TestCase
         $user = User::factory()->create();
 
         $this->actingAs($user)
-            ->get(route('events.edit', $event))
+            ->get(route('dashboard.events.edit', $event))
             ->assertForbidden();
     }
 
@@ -41,7 +41,7 @@ class EventsEditTest extends TestCase
         $user = User::factory()->director()->create();
 
         $this->actingAs($user)
-            ->get(route('events.edit', $event))
+            ->get(route('dashboard.events.edit', $event))
             ->assertOk()
             ->assertInertia(
                 fn (AssertableInertia $page): AssertableInertia => $page
@@ -62,7 +62,7 @@ class EventsEditTest extends TestCase
         $user = User::factory()->director()->create();
 
         $this->actingAs($user)
-            ->get(route('events.edit', $event))
+            ->get(route('dashboard.events.edit', $event))
             ->assertInertia(
                 fn (AssertableInertia $page): AssertableInertia => $page
                     ->where('hasReservedPilotSlots', true)
@@ -78,7 +78,7 @@ class EventsEditTest extends TestCase
         $user = User::factory()->director()->create();
 
         $this->actingAs($user)
-            ->get(route('events.edit', $event))
+            ->get(route('dashboard.events.edit', $event))
             ->assertInertia(
                 fn (AssertableInertia $page): AssertableInertia => $page
                     ->where('hasReservedPilotSlots', false)
@@ -95,7 +95,7 @@ class EventsEditTest extends TestCase
         $user = User::factory()->director()->create();
 
         $this->actingAs($user)
-            ->get(route('events.edit', $event))
+            ->get(route('dashboard.events.edit', $event))
             ->assertInertia(
                 fn (AssertableInertia $page): AssertableInertia => $page
                     ->has('event.atc_slots', 1)

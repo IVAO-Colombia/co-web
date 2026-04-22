@@ -29,7 +29,7 @@ class EventsTest extends TestCase
     #[Test]
     public function guests_are_redirected_from_events_index(): void
     {
-        $this->get(route('events.index'))->assertRedirect(route('home'));
+        $this->get(route('dashboard.events.index'))->assertRedirect(route('home'));
     }
 
     #[Test]
@@ -37,7 +37,7 @@ class EventsTest extends TestCase
     {
         $this->actingAs(User::factory()->director()->create());
 
-        $this->get(route('events.index'))->assertOk();
+        $this->get(route('dashboard.events.index'))->assertOk();
     }
 
     #[Test]
@@ -47,7 +47,7 @@ class EventsTest extends TestCase
 
         Event::factory()->count(3)->create();
 
-        $this->get(route('events.index'))
+        $this->get(route('dashboard.events.index'))
             ->assertOk()
             ->assertInertia(fn ($page) => $page
                 ->component('events/Index')
@@ -63,7 +63,7 @@ class EventsTest extends TestCase
         Event::factory()->create(['name' => 'Aurora Cross Country']);
         Event::factory()->create(['name' => 'Something Else']);
 
-        $this->get(route('events.index', ['query' => 'Aurora']))
+        $this->get(route('dashboard.events.index', ['query' => 'Aurora']))
             ->assertOk()
             ->assertInertia(fn ($page) => $page
                 ->has('events.data', 1)
@@ -80,7 +80,7 @@ class EventsTest extends TestCase
         Event::factory()->draft()->create();
         Event::factory()->cancelled()->create();
 
-        $this->get(route('events.index', ['status' => 'draft']))
+        $this->get(route('dashboard.events.index', ['status' => 'draft']))
             ->assertOk()
             ->assertInertia(fn ($page) => $page->has('events.data', 1));
     }
@@ -93,7 +93,7 @@ class EventsTest extends TestCase
         Event::factory()->create(['type' => EventType::EXAM]);
         Event::factory()->create(['type' => EventType::TRAINING]);
 
-        $this->get(route('events.index', ['type' => 'exam']))
+        $this->get(route('dashboard.events.index', ['type' => 'exam']))
             ->assertOk()
             ->assertInertia(fn ($page) => $page->has('events.data', 1));
     }
@@ -103,7 +103,7 @@ class EventsTest extends TestCase
     {
         $this->actingAs(User::factory()->director()->create());
 
-        $this->get(route('events.index', ['query' => 'test', 'status' => 'active']))
+        $this->get(route('dashboard.events.index', ['query' => 'test', 'status' => 'active']))
             ->assertOk()
             ->assertInertia(fn ($page) => $page
                 ->where('filters.query', 'test')

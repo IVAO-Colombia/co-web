@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Dashboard;
 
 use App\Actions\Events\CreateEvent;
 use App\Actions\Events\UpdateEvent;
@@ -10,6 +10,7 @@ use App\Enums\EventStatus;
 use App\Enums\EventType;
 use App\Enums\PagesComponents;
 use App\Enums\Permission;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\UpdateEventRequest;
 use App\Models\Event;
@@ -50,7 +51,7 @@ class EventsController extends Controller
     {
         app(CreateEvent::class)->handle($request);
 
-        return to_route('events.index');
+        return to_route('dashboard.events.index');
     }
 
     public function show(Event $event): Response
@@ -81,7 +82,7 @@ class EventsController extends Controller
     {
         app(UpdateEvent::class)->handle($request, $event);
 
-        return to_route('events.show', $event);
+        return to_route('dashboard.events.show', $event);
     }
 
     public function destroy(Event $event): RedirectResponse
@@ -101,6 +102,6 @@ class EventsController extends Controller
         $event->atcSlots()->update(['deleted_at' => now()]);
         $event->delete();
 
-        return to_route('events.index');
+        return to_route('dashboard.events.index');
     }
 }

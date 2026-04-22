@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Feature;
+namespace Tests\Feature\Dashboard;
 
 use App\Models\AtcSlot;
 use App\Models\Event;
@@ -18,7 +18,7 @@ class EventsShowTest extends TestCase
     {
         $event = Event::factory()->create();
 
-        $this->get(route('events.show', $event))
+        $this->get(route('dashboard.events.show', $event))
             ->assertRedirect(route('home'));
     }
 
@@ -29,7 +29,7 @@ class EventsShowTest extends TestCase
         $user = User::factory()->create();
 
         $this->actingAs($user)
-            ->get(route('events.show', $event))
+            ->get(route('dashboard.events.show', $event))
             ->assertForbidden();
     }
 
@@ -40,7 +40,7 @@ class EventsShowTest extends TestCase
         $user = User::factory()->director()->create();
 
         $this->actingAs($user)
-            ->get(route('events.show', $event))
+            ->get(route('dashboard.events.show', $event))
             ->assertOk()
             ->assertInertia(fn ($page) => $page
                 ->component('events/Show')
@@ -55,7 +55,7 @@ class EventsShowTest extends TestCase
         $user = User::factory()->director()->create();
 
         $this->actingAs($user)
-            ->get(route('events.show', 'non-existent-slug'))
+            ->get(route('dashboard.events.show', 'non-existent-slug'))
             ->assertNotFound();
     }
 
@@ -67,7 +67,7 @@ class EventsShowTest extends TestCase
         $user = User::factory()->director()->create();
 
         $this->actingAs($user)
-            ->get(route('events.show', $event))
+            ->get(route('dashboard.events.show', $event))
             ->assertOk()
             ->assertInertia(fn ($page) => $page
                 ->component('events/Show')
@@ -83,7 +83,7 @@ class EventsShowTest extends TestCase
         $user = User::factory()->director()->create();
 
         $this->actingAs($user)
-            ->get(route('events.show', $event))
+            ->get(route('dashboard.events.show', $event))
             ->assertOk()
             ->assertInertia(fn ($page) => $page
                 ->component('events/Show')

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Feature;
+namespace Tests\Feature\Dashboard;
 
 use App\Enums\EventStatus;
 use App\Models\AtcSlot;
@@ -44,7 +44,7 @@ class EventsUpdateTest extends TestCase
     {
         $event = Event::factory()->create();
 
-        $this->put(route('events.update', $event), $this->validPayload($event))
+        $this->put(route('dashboard.events.update', $event), $this->validPayload($event))
             ->assertRedirect(route('home'));
     }
 
@@ -55,7 +55,7 @@ class EventsUpdateTest extends TestCase
         $user = User::factory()->create();
 
         $this->actingAs($user)
-            ->put(route('events.update', $event), $this->validPayload($event))
+            ->put(route('dashboard.events.update', $event), $this->validPayload($event))
             ->assertForbidden();
     }
 
@@ -66,11 +66,11 @@ class EventsUpdateTest extends TestCase
         $user = User::factory()->director()->create();
 
         $this->actingAs($user)
-            ->put(route('events.update', $event), array_merge($this->validPayload($event), [
+            ->put(route('dashboard.events.update', $event), array_merge($this->validPayload($event), [
                 'name' => 'Evento Actualizado',
                 'locations' => 'SEGU',
             ]))
-            ->assertRedirect(route('events.show', $event));
+            ->assertRedirect(route('dashboard.events.show', $event));
 
         $this->assertDatabaseHas('events', [
             'id' => $event->id,
@@ -86,7 +86,7 @@ class EventsUpdateTest extends TestCase
         $user = User::factory()->director()->create();
 
         $this->actingAs($user)
-            ->put(route('events.update', $event), array_merge($this->validPayload($event), [
+            ->put(route('dashboard.events.update', $event), array_merge($this->validPayload($event), [
                 'status' => EventStatus::CANCELLED->value,
             ]));
 
@@ -104,7 +104,7 @@ class EventsUpdateTest extends TestCase
 
         foreach ([EventStatus::DRAFT->value, EventStatus::FINALIZED->value] as $status) {
             $this->actingAs($user)
-                ->put(route('events.update', $event), array_merge($this->validPayload($event), [
+                ->put(route('dashboard.events.update', $event), array_merge($this->validPayload($event), [
                     'status' => $status,
                 ]))
                 ->assertSessionHasErrors('status');
@@ -119,7 +119,7 @@ class EventsUpdateTest extends TestCase
         $user = User::factory()->director()->create();
 
         $this->actingAs($user)
-            ->put(route('events.update', $event), array_merge($this->validPayload($event), [
+            ->put(route('dashboard.events.update', $event), array_merge($this->validPayload($event), [
                 'atc_slots_enabled' => true,
                 'atc_slots' => [
                     ['callsign' => 'SEQM_APP', 'starts_at' => '18:00', 'ends_at' => '19:00'],
@@ -141,7 +141,7 @@ class EventsUpdateTest extends TestCase
         $user = User::factory()->director()->create();
 
         $this->actingAs($user)
-            ->put(route('events.update', $event), array_merge($this->validPayload($event), [
+            ->put(route('dashboard.events.update', $event), array_merge($this->validPayload($event), [
                 'atc_slots_enabled' => true,
                 'atc_slots' => [
                     ['callsign' => 'NEW_APP', 'starts_at' => '20:00', 'ends_at' => '21:00'],
@@ -160,7 +160,7 @@ class EventsUpdateTest extends TestCase
         $user = User::factory()->director()->create();
 
         $this->actingAs($user)
-            ->put(route('events.update', $event), array_merge($this->validPayload($event), [
+            ->put(route('dashboard.events.update', $event), array_merge($this->validPayload($event), [
                 'pilot_slots_enabled' => true,
                 'pilot_slots' => [
                     [
@@ -190,7 +190,7 @@ class EventsUpdateTest extends TestCase
         $user = User::factory()->director()->create();
 
         $this->actingAs($user)
-            ->put(route('events.update', $event), array_merge($this->validPayload($event), [
+            ->put(route('dashboard.events.update', $event), array_merge($this->validPayload($event), [
                 'pilot_slots_enabled' => true,
                 'pilot_slots' => [
                     [
@@ -218,7 +218,7 @@ class EventsUpdateTest extends TestCase
         $user = User::factory()->director()->create();
 
         $this->actingAs($user)
-            ->put(route('events.update', $event), array_merge($this->validPayload($event), [
+            ->put(route('dashboard.events.update', $event), array_merge($this->validPayload($event), [
                 'image' => UploadedFile::fake()->image('new.jpg'),
             ]));
 
@@ -234,7 +234,7 @@ class EventsUpdateTest extends TestCase
         $user = User::factory()->director()->create();
 
         $this->actingAs($user)
-            ->put(route('events.update', $event), $this->validPayload($event));
+            ->put(route('dashboard.events.update', $event), $this->validPayload($event));
 
         $this->assertDatabaseHas('events', [
             'id' => $event->id,

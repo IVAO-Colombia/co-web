@@ -21,7 +21,7 @@ import { usePermissions } from '@/composables/usePermissions';
 import { Permission } from '@/types';
 import type { NavItem } from '@/types';
 import { dashboard } from '@/routes';
-import events from '@/routes/events';
+import events from '@/routes/dashboard/events';
 
 const { hasPermission } = usePermissions();
 

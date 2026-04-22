@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Feature;
+namespace Tests\Feature\Dashboard;
 
 use App\Enums\SlotStatus;
 use App\Models\AtcSlot;
@@ -19,7 +19,7 @@ class EventsDestroyTest extends TestCase
     {
         $event = Event::factory()->create();
 
-        $this->delete(route('events.destroy', $event))
+        $this->delete(route('dashboard.events.destroy', $event))
             ->assertRedirect(route('home'));
     }
 
@@ -30,7 +30,7 @@ class EventsDestroyTest extends TestCase
         $user = User::factory()->create();
 
         $this->actingAs($user)
-            ->delete(route('events.destroy', $event))
+            ->delete(route('dashboard.events.destroy', $event))
             ->assertForbidden();
     }
 
@@ -42,7 +42,7 @@ class EventsDestroyTest extends TestCase
         $user = User::factory()->director()->create();
 
         $this->actingAs($user)
-            ->delete(route('events.destroy', $event))
+            ->delete(route('dashboard.events.destroy', $event))
             ->assertSessionHasErrors('event');
 
         $this->assertNotSoftDeleted($event);
@@ -56,7 +56,7 @@ class EventsDestroyTest extends TestCase
         $user = User::factory()->director()->create();
 
         $this->actingAs($user)
-            ->delete(route('events.destroy', $event))
+            ->delete(route('dashboard.events.destroy', $event))
             ->assertSessionHasErrors('event');
 
         $this->assertNotSoftDeleted($event);
@@ -69,8 +69,8 @@ class EventsDestroyTest extends TestCase
         $user = User::factory()->director()->create();
 
         $this->actingAs($user)
-            ->delete(route('events.destroy', $event))
-            ->assertRedirect(route('events.index'));
+            ->delete(route('dashboard.events.destroy', $event))
+            ->assertRedirect(route('dashboard.events.index'));
 
         $this->assertSoftDeleted($event);
     }
@@ -85,8 +85,8 @@ class EventsDestroyTest extends TestCase
         $user = User::factory()->director()->create();
 
         $this->actingAs($user)
-            ->delete(route('events.destroy', $event))
-            ->assertRedirect(route('events.index'));
+            ->delete(route('dashboard.events.destroy', $event))
+            ->assertRedirect(route('dashboard.events.index'));
 
         $this->assertSoftDeleted($event);
         $this->assertSoftDeleted($pilotSlot);
@@ -103,7 +103,7 @@ class EventsDestroyTest extends TestCase
         $user = User::factory()->director()->create();
 
         $this->actingAs($user)
-            ->delete(route('events.destroy', $event))
+            ->delete(route('dashboard.events.destroy', $event))
             ->assertSessionHasErrors('event');
 
         $this->assertNotSoftDeleted($availableSlot);

@@ -6,12 +6,12 @@ namespace App\Enums;
 
 enum PagesComponents: string
 {
-    case EVENTS_INDEX = 'events/Index';
-    case EVENTS_CREATE = 'events/Create';
-    case EVENTS_EDIT = 'events/Edit';
-    case EVENTS_SHOW = 'events/Show';
+    case EVENTS_INDEX = 'dashboard/events/Index';
+    case EVENTS_CREATE = 'dashboard/events/Create';
+    case EVENTS_EDIT = 'dashboard/events/Edit';
+    case EVENTS_SHOW = 'dashboard/events/Show';
 
     /** Frontend components for different event-related pages */
     case LANDING_HOME = 'Welcome';
-    case LANGING_EVENTS = 'landing/Events';
+    case LANDING_EVENTS = 'landing/Events';
 }

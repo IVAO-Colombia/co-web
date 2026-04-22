@@ -12,7 +12,7 @@ class EventsListController extends Controller
 {
     public function __invoke(): Response
     {
-        return inertia(PagesComponents::LANGING_EVENTS->value, [
+        return inertia(PagesComponents::LANDING_EVENTS->value, [
             'events' => Event::query()
                 ->orderBy('starts_at')
                 ->active()
