@@ -1,29 +1,9 @@
 <script setup lang="ts">
 import { Head } from '@inertiajs/vue3';
 import { transChoice } from 'laravel-vue-i18n';
-import { computed } from 'vue';
 import EventCard from '@/components/landing/EventCard.vue';
 import Header from '@/components/landing/Header.vue';
-import { useLocale } from '@/composables/useLocale';
 import type { Event } from '@/types';
-
-type LandingCopy = {
-    badge: string;
-    title: string;
-    description: string;
-    primaryCta: string;
-    secondaryCta: string;
-    localeLabel: string;
-    allEvents: string;
-    schedule: string;
-    location: string;
-    noImage: string;
-    bookingAvailable: string;
-    active: string;
-    draft: string;
-    cancelled: string;
-    finalized: string;
-};
 
 defineProps<{
     events: Event[];

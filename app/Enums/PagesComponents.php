@@ -13,6 +13,6 @@ enum PagesComponents: string
 
     /** Frontend components for different event-related pages */
     case LANDING_HOME = 'Welcome';
-    case LANDING_EVENTS = 'landing/Events';
-    case LANDING_EVENTS_SHOW = 'landing/EventShow';
+    case LANDING_EVENTS = 'landing/events/Index';
+    case LANDING_EVENTS_SHOW = 'landing/events/Show';
 }

@@ -6,8 +6,8 @@ import { wTrans } from 'laravel-vue-i18n';
 import { CalendarClock, Eye } from 'lucide-vue-next';
 import { onBeforeUnmount, onMounted, ref } from 'vue';
 import EventCard from '@/components/landing/EventCard.vue';
-import type { Event } from '@/types';
 import home from '@/routes/home';
+import type { Event } from '@/types';
 
 const props = defineProps<{
     events: Event[];
@@ -142,13 +142,13 @@ onBeforeUnmount(() => {
                 <div
                     class="col-span-full flex flex-col items-center justify-center gap-4 sm:flex-row"
                 >
-                    <a
+                    <!-- <a
                         href="#"
                         class="inline-flex w-full max-w-xs items-center justify-center rounded-xl border border-calendar-outline bg-calendar-surface px-6 py-3 text-sm font-semibold text-white backdrop-blur-md transition-all duration-300 hover:scale-105 hover:bg-calendar-surface-hover sm:w-auto sm:px-8 sm:py-3.5"
                     >
                         <CalendarClock class="mr-2 h-5 w-5" />
                         Calendario
-                    </a>
+                    </a> -->
                     <Link
                         :href="home.events()"
                         class="inline-flex w-full max-w-xs items-center justify-center gap-2 rounded-xl bg-calendar-primary px-6 py-3 text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:bg-calendar-primary-hover sm:w-auto sm:px-8 sm:py-3.5"

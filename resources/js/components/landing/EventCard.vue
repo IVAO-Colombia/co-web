@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import { Link } from '@inertiajs/vue3';
 import { wTrans } from 'laravel-vue-i18n';
 import { CalendarClock, Clock3, MapPin, MoveRight, Tag } from 'lucide-vue-next';
 import { computed } from 'vue';
 import { useLocale } from '@/composables/useLocale';
 import { getDateParts } from '@/lib/utils';
+import { show } from '@/routes/home/events';
 import { EventConstants } from '@/types';
 import type { Event } from '@/types';
 
@@ -18,8 +20,13 @@ const { locale } = useLocale();
 
 const fallbackImage = '/img/day_2.png';
 
-const dateParts = computed(() =>
+const startsAtParts = computed(() =>
     getDateParts(props.event.starts_at, locale.value),
+);
+const endsAtParts = computed(() =>
+    props.event.ends_at
+        ? getDateParts(props.event.ends_at, locale.value)
+        : null,
 );
 
 function hasReservation(): boolean {
@@ -73,18 +80,18 @@ function localizedDescription(): string {
                 <p
                     class="font-heading text-2xl leading-none font-black text-slate-900 sm:text-3xl dark:text-white"
                 >
-                    {{ dateParts.day }}
+                    {{ startsAtParts.day }}
                 </p>
                 <div class="mt-1 flex items-end gap-1">
                     <span
                         class="font-sans text-xs font-bold text-slate-600 dark:text-slate-300"
                     >
-                        {{ dateParts.month }}
+                        {{ startsAtParts.month }}
                     </span>
                     <span
                         class="font-sans text-xs text-slate-500 dark:text-slate-400"
                     >
-                        {{ dateParts.year }}
+                        {{ startsAtParts.year }}
                     </span>
                 </div>
             </div>
@@ -106,11 +113,12 @@ function localizedDescription(): string {
             </div>
 
             <div
-                class="flex flex-wrap items-center gap-x-4 gap-y-2 font-sans text-sm text-slate-600 dark:text-slate-300"
+                class="flex w-full flex-wrap items-center justify-between gap-x-4 gap-y-2 font-sans text-sm text-slate-600 dark:text-slate-300"
             >
                 <span class="inline-flex items-center gap-1.5">
                     <Clock3 class="h-4 w-4" />
-                    {{ dateParts.time }}
+                    {{ startsAtParts.time }}
+                    {{ endsAtParts ? `- ${endsAtParts.time}` : '' }}
                 </span>
                 <span
                     class="inline-flex max-w-full min-w-0 items-center gap-1.5"
@@ -142,14 +150,14 @@ function localizedDescription(): string {
                 </span>
             </div>
 
-            <button
-                type="button"
+            <Link
+                :href="show(event.slug)"
                 class="mt-auto inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl border border-slate-300 px-4 py-2 font-sans text-sm font-semibold text-slate-800 transition-colors hover:bg-slate-100 sm:w-auto dark:border-slate-600 dark:text-slate-100 dark:hover:bg-slate-700"
             >
                 <CalendarClock class="h-4 w-4" />
                 {{ wTrans('Details') }}
                 <MoveRight class="h-4 w-4" />
-            </button>
+            </Link>
         </div>
     </article>
 </template>

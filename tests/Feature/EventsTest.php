@@ -23,7 +23,7 @@ class LandingEventsTest extends TestCase
         $this->get(route('home.events'))
             ->assertOk()
             ->assertInertia(fn ($page) => $page
-                ->component('landing/Events')
+                ->component('landing/events/Index')
                 ->has('events', 2)
             );
     }
@@ -123,7 +123,7 @@ class LandingEventsTest extends TestCase
         $this->get(route('home.events.show', $event))
             ->assertOk()
             ->assertInertia(fn ($page) => $page
-                ->component('landing/EventShow', false)
+                ->component('landing/events/Show', false)
                 ->has('event')
                 ->where('event.slug', $event->slug)
             );
