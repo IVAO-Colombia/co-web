@@ -6,22 +6,24 @@ namespace Tests\Feature;
 
 use App\Enums\EventStatus;
 use App\Enums\EventType;
+use App\Models\AtcSlot;
 use App\Models\Event;
+use App\Models\PilotSlot;
 use App\Models\User;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
-class EventsTest extends TestCase
+class LandingEventsTest extends TestCase
 {
     #[Test]
     public function guests_can_visit_public_events_landing_page(): void
     {
-        Event::factory()->count(2)->create();
+        Event::factory()->count(2)->create(['starts_at' => now()->addDays(1)]);
 
         $this->get(route('home.events'))
             ->assertOk()
             ->assertInertia(fn ($page) => $page
-                ->component('events/landing/Events')
+                ->component('landing/Events')
                 ->has('events', 2)
             );
     }
@@ -50,7 +52,7 @@ class EventsTest extends TestCase
         $this->get(route('dashboard.events.index'))
             ->assertOk()
             ->assertInertia(fn ($page) => $page
-                ->component('events/Index')
+                ->component('dashboard/events/Index')
                 ->has('events.data', 3)
             );
     }
@@ -108,6 +110,75 @@ class EventsTest extends TestCase
             ->assertInertia(fn ($page) => $page
                 ->where('filters.query', 'test')
                 ->where('filters.status', 'active')
+            );
+    }
+
+    #[Test]
+    public function guests_can_view_public_event_show(): void
+    {
+        $this->withoutVite();
+
+        $event = Event::factory()->create();
+
+        $this->get(route('home.events.show', $event))
+            ->assertOk()
+            ->assertInertia(fn ($page) => $page
+                ->component('landing/EventShow', false)
+                ->has('event')
+                ->where('event.slug', $event->slug)
+            );
+    }
+
+    #[Test]
+    public function event_show_returns_404_for_unknown_slug(): void
+    {
+        $this->get(route('home.events.show', 'non-existent-slug'))
+            ->assertNotFound();
+    }
+
+    #[Test]
+    public function guests_cannot_see_slot_status_or_reservation(): void
+    {
+        $this->withoutVite();
+
+        $event = Event::factory()->create();
+        PilotSlot::factory()->reserved()->create(['event_id' => $event->id]);
+        AtcSlot::factory()->reserved()->create(['event_id' => $event->id]);
+
+        $this->get(route('home.events.show', $event))
+            ->assertOk()
+            ->assertInertia(fn ($page) => $page
+                ->has('event.pilot_slots', 1)
+                ->missing('event.pilot_slots.0.status')
+                ->missing('event.pilot_slots.0.pilot_id')
+                ->has('event.atc_slots', 1)
+                ->missing('event.atc_slots.0.status')
+                ->missing('event.atc_slots.0.atc_id')
+            );
+    }
+
+    #[Test]
+    public function authenticated_users_can_see_slot_status_and_reservation(): void
+    {
+        $this->withoutVite();
+
+        $pilot = User::factory()->create();
+        $event = Event::factory()->create();
+        PilotSlot::factory()->reserved()->create(['event_id' => $event->id, 'pilot_id' => $pilot->id]);
+
+        $atc = User::factory()->create();
+        AtcSlot::factory()->reserved()->create(['event_id' => $event->id, 'atc_id' => $atc->id]);
+
+        $this->actingAs(User::factory()->create())
+            ->get(route('home.events.show', $event))
+            ->assertOk()
+            ->assertInertia(fn ($page) => $page
+                ->has('event.pilot_slots', 1)
+                ->where('event.pilot_slots.0.status', 'reserved')
+                ->has('event.pilot_slots.0.pilot')
+                ->has('event.atc_slots', 1)
+                ->where('event.atc_slots.0.status', 'reserved')
+                ->has('event.atc_slots.0.atc')
             );
     }
 }

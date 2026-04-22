@@ -43,7 +43,7 @@ class EventsShowTest extends TestCase
             ->get(route('dashboard.events.show', $event))
             ->assertOk()
             ->assertInertia(fn ($page) => $page
-                ->component('events/Show')
+                ->component('dashboard/events/Show')
                 ->has('event')
                 ->where('event.slug', $event->slug)
             );
@@ -70,7 +70,7 @@ class EventsShowTest extends TestCase
             ->get(route('dashboard.events.show', $event))
             ->assertOk()
             ->assertInertia(fn ($page) => $page
-                ->component('events/Show')
+                ->component('dashboard/events/Show')
                 ->has('event.pilot_slots', 3)
             );
     }
@@ -86,7 +86,7 @@ class EventsShowTest extends TestCase
             ->get(route('dashboard.events.show', $event))
             ->assertOk()
             ->assertInertia(fn ($page) => $page
-                ->component('events/Show')
+                ->component('dashboard/events/Show')
                 ->has('event.atc_slots', 2)
             );
     }
