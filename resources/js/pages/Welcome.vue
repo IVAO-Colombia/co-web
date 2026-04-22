@@ -7,6 +7,7 @@ import EventsList from '@/components/landing/EventsList.vue';
 import Header from '@/components/landing/Header.vue';
 import { useAppearance } from '@/composables/useAppearance';
 import type { Event } from '@/types';
+import { UrlParams } from '@vueuse/core';
 
 type HeroSlide = {
     eyebrow: string;
@@ -15,6 +16,10 @@ type HeroSlide = {
     tagline: string;
     lightImage: string;
     darkImage: string;
+    buttontextone?: string;
+    urlone?: string;
+    buttontexttwo?: string;
+    urltwo?: string;
 };
 
 defineProps<{
@@ -23,31 +28,42 @@ defineProps<{
 
 const slides: HeroSlide[] = [
     {
-        eyebrow: 'PILOTS NETWORK',
-        title: "The world's largest<br>aeronautical simulation<br>network",
-        description:
-            'We connect pilots, controllers, and aviation enthusiasts through virtual simulation. We are more than 240,000 members worldwide, with over 60 million hours flown!',
-        tagline: 'Start your journey',
+        eyebrow: "WELCOME TO DIVISION'S IVAO COLOMBIA",
+        title: "The skies of Colombia, now in your hands",
+        description: "Join the world's largest flight simulation community from Colombia. More than 1,180 local members are connecting airports, routes, and virtual skies every day.",
+        tagline: 'Start your flight',
         lightImage: '/img/day_1.png',
         darkImage: '/img/nigth_1.png',
+        buttontextone: 'Getting Started',
+        urlone: 'https://ivao.aero/members/person/register.htm',
+        buttontexttwo: 'Get Started Now',
+        urltwo: '#'
     },
     {
         eyebrow: 'ATC TRAINING',
-        title: 'Command the skies with<br><span class="text-[#a8b8ff]">precision and<br>professionalism</span>',
+        title: 'You are the voice that directs traffic<br>in the skies of Colombia',
         description:
-            'Manage traffic at airports and control centers. Complete training from<br>Ground to ACC, with real-life based procedures.',
+            "From flight clearance to air traffic control, train using real-world procedures and become part of the team that keeps Colombia’s airspace organized and safe.",
         tagline: 'ATCO career',
         lightImage: '/img/day_2.png',
         darkImage: '/img/nigth_2.png',
+        buttontextone: 'Request Training',
+        urlone: '#',
+        buttontexttwo: 'Join ATC Now',
+        urltwo: 'https://ivao.aero/members/person/register.htm'
     },
     {
-        eyebrow: 'LONG HAUL OPERATIONS',
-        title: 'From runway<br>to moonlit<br>approach,<br>stay connected',
+        eyebrow: 'PILOTS',
+        title: 'Colombian virtual aviation has a new home<br>for pilots of all levels',
         description:
-            'Operate realistic schedules day and night with shared procedures, active<br>community support, and continuous events.',
+            ' Fly real-world routes over Colombia and around the globe, communicate with air traffic controllers over the radio, and experience every takeoff as if it were your first. The runway awaits you.',
         tagline: 'Start your journey',
         lightImage: '/img/day_3.png',
         darkImage: '/img/nigth_3.png',
+        buttontextone: 'Request Training',
+        urlone: '#',
+        buttontexttwo: 'Join IVAO Now',
+        urltwo: 'https://ivao.aero/members/person/register.htm'
     },
 ];
 
@@ -181,33 +197,34 @@ onBeforeUnmount(() => {
                         <span
                             class="inline-block h-2 w-2 rounded-full bg-blue-500"
                         ></span>
-                        {{ currentSlide.eyebrow }}
+                        {{$t( currentSlide.eyebrow )}}
                     </p>
 
                     <h1
                         class="mt-4 text-[32px] leading-[1.1] font-bold tracking-tight text-balance text-white sm:mt-6 sm:text-[50px] md:text-[60px] lg:text-[72px]"
-                        v-html="currentSlide.title"
+                        v-html="$t(currentSlide.title)"
                     ></h1>
 
                     <p
                         class="mt-4 text-sm leading-relaxed text-white/80 sm:mt-6 sm:text-lg md:text-[20px]"
-                        v-html="currentSlide.description"
+                        v-html="$t(currentSlide.description)"
                     ></p>
 
                     <div
                         class="mt-8 flex w-full flex-col items-center justify-center gap-3 sm:mt-12 sm:w-auto sm:flex-row sm:gap-4"
+                        v-if="currentSlide.buttontextone && currentSlide.urlone && currentSlide.buttontexttwo && currentSlide.urltwo"
                     >
                         <a
-                            href="#"
+                            :href="currentSlide.urlone"
                             class="inline-flex w-full max-w-xs items-center justify-center rounded-xl border border-white/20 bg-[#161a29]/60 px-6 py-3 text-sm font-semibold text-white backdrop-blur-md transition-colors hover:bg-white/10 sm:w-auto sm:px-8 sm:py-3.5"
                         >
-                            Request training
+                           {{ $t(currentSlide.buttontextone)}}
                         </a>
                         <a
-                            href="#"
+                            :href="currentSlide.urltwo"
                             class="inline-flex w-full max-w-xs items-center justify-center gap-2 rounded-xl bg-[#2f45ff] px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-[#2f45ff]/40 transition-colors hover:bg-[#2438e6] sm:w-auto sm:px-8 sm:py-3.5"
                         >
-                            First steps
+                            {{ $t(currentSlide.buttontexttwo) }}
                             <span>→</span>
                         </a>
                     </div>
@@ -220,7 +237,7 @@ onBeforeUnmount(() => {
                                     'Homemade Apple', cursive, sans-serif;
                             "
                         >
-                            {{ currentSlide.tagline }}
+                            {{ $t(currentSlide.tagline) }}
                         </p>
                         <ArrowUpRight
                             class="size-6 text-[#9ca3af] opacity-70"
