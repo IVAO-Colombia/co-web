@@ -80,8 +80,8 @@ class EventsController extends Controller
 
         return inertia(PagesComponents::EVENTS_EDIT->value, [
             'event' => $event,
-            'hasReservedPilotSlots' => $event->pilotSlots->filter(fn ($slot) => $slot->isReserved())->isNotEmpty(),
-            'hasReservedAtcSlots' => $event->atcSlots->filter(fn ($slot) => $slot->isReserved())->isNotEmpty(),
+            'hasReservedPilotSlots' => $event->pilotSlots->filter(fn ($slot): bool => $slot->isReserved())->isNotEmpty(),
+            'hasReservedAtcSlots' => $event->atcSlots->filter(fn ($slot): bool => $slot->isReserved())->isNotEmpty(),
         ]);
     }
 
