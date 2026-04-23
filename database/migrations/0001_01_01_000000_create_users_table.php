@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->unsignedBigInteger('vid')->unique();
+            $table->unsignedBigInteger('vid')->unique()->index();
             $table->string('country_id')->nullable();
             $table->string('division_id')->nullable();
             $table->string('language_id')->nullable();

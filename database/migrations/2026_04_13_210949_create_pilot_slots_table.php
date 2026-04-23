@@ -17,10 +17,10 @@ return new class extends Migration
 
         Schema::create('pilot_slots', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('event_id')->constrained();
-            $table->foreignId('pilot_id')->nullable()->constrained('users');
-            $table->string('airline_icao', 10);
-            $table->string('flight_number', 20);
+            $table->foreignId('event_id')->constrained()->index();
+            $table->foreignId('pilot_id')->nullable()->constrained('users')->index();
+            $table->string('airline_icao', 10)->index();
+            $table->string('flight_number', 20)->index();
             $table->string('aircraft', 25);
             $table->string('origin', 10);
             $table->string('destination', 10);
