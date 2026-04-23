@@ -21,7 +21,8 @@ class PilotSlotFactory extends Factory
     {
         return [
             'event_id' => Event::factory(),
-            'callsign' => fake()->regexify('[A-Za-z0-9]{7}'),
+            'airline_icao' => fake()->regexify('[A-Z]{3}'),
+            'flight_number' => fake()->regexify('[0-9]{2,4}'),
             'aircraft' => fake()->regexify('[A-Za-z0-9]{4}'),
             'origin' => fake()->regexify('[A-Za-z0-9]{10}'),
             'destination' => fake()->regexify('[A-Za-z0-9]{10}'),

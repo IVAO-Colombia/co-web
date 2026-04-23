@@ -119,8 +119,8 @@ class EventsStoreTest extends TestCase
             'pilot_slots_enabled' => true,
             'pilot_slots' => [
                 [
-                    'callsign' => 'AVA001',
-                    'flight_number' => 'AV001',
+                    'airline_icao' => 'AVA',
+                    'flight_number' => '001',
                     'aircraft' => 'A320',
                     'origin' => 'SEQM',
                     'destination' => 'SEGU',
@@ -128,8 +128,8 @@ class EventsStoreTest extends TestCase
                     'gate' => 'B12',
                 ],
                 [
-                    'callsign' => 'AVA002',
-                    'flight_number' => null,
+                    'airline_icao' => 'AVA',
+                    'flight_number' => '002',
                     'aircraft' => 'B738',
                     'origin' => 'SEGU',
                     'destination' => 'SEQM',
@@ -148,7 +148,7 @@ class EventsStoreTest extends TestCase
 
         $this->assertDatabaseHas('pilot_slots', [
             'event_id' => $event->id,
-            'callsign' => 'AVA001',
+            'airline_icao' => 'AVA',
             'aircraft' => 'A320',
             'origin' => 'SEQM',
             'destination' => 'SEGU',

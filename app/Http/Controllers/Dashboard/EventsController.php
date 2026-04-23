@@ -47,6 +47,13 @@ class EventsController extends Controller
         ]);
     }
 
+    public function create(): Response
+    {
+        Gate::authorize(Permission::CREATE_EVENTS);
+
+        return inertia(PagesComponents::EVENTS_CREATE->value);
+    }
+
     public function store(StoreEventRequest $request): RedirectResponse
     {
         app(CreateEvent::class)->handle($request);

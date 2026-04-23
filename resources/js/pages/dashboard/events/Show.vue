@@ -295,7 +295,7 @@ function confirmDelete(): void {
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead>{{ $t('Callsign') }}</TableHead>
+                                <TableHead>{{ $t('Airline ICAO') }}</TableHead>
                                 <TableHead>{{ $t('Flight #') }}</TableHead>
                                 <TableHead>{{ $t('Aircraft') }}</TableHead>
                                 <TableHead>{{ $t('Origin') }}</TableHead>
@@ -321,10 +321,10 @@ function confirmDelete(): void {
                                 :key="slot.id"
                             >
                                 <TableCell class="font-mono">
-                                    {{ slot.callsign }}
+                                    {{ slot.airline_icao }}
                                 </TableCell>
                                 <TableCell>
-                                    {{ slot.flight_number ?? '—' }}
+                                    {{ slot.flight_number }}
                                 </TableCell>
                                 <TableCell>{{ slot.aircraft }}</TableCell>
                                 <TableCell class="font-mono">

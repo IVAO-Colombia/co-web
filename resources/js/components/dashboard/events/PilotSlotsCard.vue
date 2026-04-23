@@ -23,7 +23,7 @@ import { csvDataUri, normalizeDatetime, parseCsv } from '@/lib/utils';
 import type { PilotSlotRow } from '@/types';
 
 type PilotSlotCSV = {
-    callsign: string;
+    airline_icao: string;
     flight_number: string;
     aircraft: string;
     origin: string;
@@ -48,7 +48,7 @@ const fileInput = ref<HTMLInputElement | null>(null);
 
 const templateCsvUrl = computed(() =>
     csvDataUri(
-        'callsign,flight_number,aircraft,origin,destination,departs_at,gate',
+        'airline_icao,flight_number,aircraft,origin,destination,departure_date_time,gate',
     ),
 );
 
@@ -197,7 +197,7 @@ function clearSlots(): void {
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead>{{ $t('Callsign') }}</TableHead>
+                                <TableHead>{{ $t('Airline ICAO') }}</TableHead>
                                 <TableHead>{{ $t('Flight #') }}</TableHead>
                                 <TableHead>{{ $t('Aircraft') }}</TableHead>
                                 <TableHead>{{ $t('Origin') }}</TableHead>
@@ -209,7 +209,7 @@ function clearSlots(): void {
                         <TableBody>
                             <TableRow v-for="(slot, i) in slots" :key="i">
                                 <TableCell class="font-mono">{{
-                                    slot.callsign
+                                    slot.airline_icao
                                 }}</TableCell>
                                 <TableCell>{{
                                     slot.flight_number || '—'

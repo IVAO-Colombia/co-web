@@ -156,7 +156,7 @@ class EventsUpdateTest extends TestCase
     public function pilot_slots_are_replaced_when_no_reservations_exist(): void
     {
         $event = Event::factory()->create();
-        PilotSlot::factory()->count(2)->create(['event_id' => $event->id, 'callsign' => 'OLD001']);
+        PilotSlot::factory()->count(2)->create(['event_id' => $event->id, 'airline_icao' => 'OLD', 'flight_number' => 'OLD001']);
         $user = User::factory()->director()->create();
 
         $this->actingAs($user)
@@ -164,7 +164,7 @@ class EventsUpdateTest extends TestCase
                 'pilot_slots_enabled' => true,
                 'pilot_slots' => [
                     [
-                        'callsign' => 'ECA001',
+                        'airline_icao' => 'ECA',
                         'flight_number' => 'ECA001',
                         'aircraft' => 'B738',
                         'origin' => 'SEQM',
@@ -175,8 +175,8 @@ class EventsUpdateTest extends TestCase
                 ],
             ]));
 
-        $this->assertSoftDeleted('pilot_slots', ['event_id' => $event->id, 'callsign' => 'OLD001']);
-        $this->assertDatabaseHas('pilot_slots', ['event_id' => $event->id, 'callsign' => 'ECA001']);
+        $this->assertSoftDeleted('pilot_slots', ['event_id' => $event->id, 'airline_icao' => 'OLD']);
+        $this->assertDatabaseHas('pilot_slots', ['event_id' => $event->id, 'airline_icao' => 'ECA']);
     }
 
     #[Test]
@@ -185,7 +185,8 @@ class EventsUpdateTest extends TestCase
         $event = Event::factory()->create();
         $reserved = PilotSlot::factory()->reserved()->create([
             'event_id' => $event->id,
-            'callsign' => 'ECA999',
+            'airline_icao' => 'ECA',
+            'flight_number' => 'ECA999',
         ]);
         $user = User::factory()->director()->create();
 
@@ -194,8 +195,8 @@ class EventsUpdateTest extends TestCase
                 'pilot_slots_enabled' => true,
                 'pilot_slots' => [
                     [
-                        'callsign' => 'NEW001',
-                        'flight_number' => '',
+                        'airline_icao' => 'NEW',
+                        'flight_number' => 'NEW001',
                         'aircraft' => 'A320',
                         'origin' => 'SEQM',
                         'destination' => 'SEGU',
@@ -205,8 +206,8 @@ class EventsUpdateTest extends TestCase
                 ],
             ]));
 
-        $this->assertDatabaseHas('pilot_slots', ['id' => $reserved->id, 'callsign' => 'ECA999']);
-        $this->assertDatabaseMissing('pilot_slots', ['event_id' => $event->id, 'callsign' => 'NEW001']);
+        $this->assertDatabaseHas('pilot_slots', ['id' => $reserved->id, 'airline_icao' => 'ECA']);
+        $this->assertDatabaseMissing('pilot_slots', ['event_id' => $event->id, 'airline_icao' => 'NEW']);
     }
 
     #[Test]

@@ -21,7 +21,7 @@ class AtcPosition
         public string $position,
         public int $order,
         public float $frequency,
-        public ?float $radarRange
+        public ?string $radarRange
     ) {
         //
     }

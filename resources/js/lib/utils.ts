@@ -107,7 +107,7 @@ export function formatDateTime(dateStr: string): string {
         date.getTime() + date.getTimezoneOffset() * 60 * 1000,
     );
 
-    return format(utcDate, 'd MMM yyyy, HH:mm') + ' ZULU';
+    return format(utcDate, 'd MMM yyyy, HH:mm') + ' UTC';
 }
 
 export function normalizeDatetime(value: string): string {

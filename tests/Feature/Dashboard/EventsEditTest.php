@@ -91,7 +91,7 @@ class EventsEditTest extends TestCase
     {
         $event = Event::factory()->create();
         AtcSlot::factory()->create(['event_id' => $event->id, 'callsign' => 'SEQM_APP']);
-        PilotSlot::factory()->create(['event_id' => $event->id, 'callsign' => 'ECA001']);
+        PilotSlot::factory()->create(['event_id' => $event->id, 'airline_icao' => 'ECA', 'flight_number' => '001']);
         $user = User::factory()->director()->create();
 
         $this->actingAs($user)
@@ -101,7 +101,7 @@ class EventsEditTest extends TestCase
                     ->has('event.atc_slots', 1)
                     ->has('event.pilot_slots', 1)
                     ->where('event.atc_slots.0.callsign', 'SEQM_APP')
-                    ->where('event.pilot_slots.0.callsign', 'ECA001'),
+                    ->where('event.pilot_slots.0.airline_icao', 'ECA'),
             );
     }
 }

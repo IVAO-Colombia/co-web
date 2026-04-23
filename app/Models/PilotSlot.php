@@ -17,8 +17,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int $id
  * @property int $event_id
  * @property int|null $pilot_id
- * @property string|null $flight_number
- * @property string $callsign
+ * @property string $airline_icao
+ * @property string $flight_number
  * @property string $aircraft
  * @property string $origin
  * @property string $destination

@@ -123,7 +123,7 @@ const displayValue = computed<string>(() => {
     const d = selectedDate.value;
     const dateStr = `${d.year}-${String(d.month).padStart(2, '0')}-${String(d.day).padStart(2, '0')}`;
     const parsed = parse(`${dateStr} ${selectedTime.value}`, 'yyyy-MM-dd HH:mm', new Date());
-    return format(parsed, 'd MMM yyyy, HH:mm') + ' ZULU';
+    return format(parsed, 'd MMM yyyy, HH:mm') + ' UTC';
 });
 
 const timeListRef = ref<HTMLElement | null>(null);
@@ -183,7 +183,7 @@ watch(open, (isOpen) => {
             <div class="flex flex-col border-l">
                 <div class="flex items-center gap-1.5 border-b px-3 py-2">
                     <Clock class="text-muted-foreground size-3.5" />
-                    <span class="text-xs font-semibold tracking-wide uppercase">ZULU</span>
+                    <span class="text-xs font-semibold tracking-wide uppercase">UTC</span>
                 </div>
                 <div
                     ref="timeListRef"

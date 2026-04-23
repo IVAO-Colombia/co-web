@@ -43,8 +43,8 @@ class UpdateEvent
                 if (! empty($validated['pilot_slots'])) {
                     $pilotSlots = array_map(fn (array $slot): array => [
                         'event_id' => $event->id,
-                        'callsign' => $slot['callsign'],
-                        'flight_number' => $slot['flight_number'] ?? null,
+                        'airline_icao' => $slot['airline_icao'],
+                        'flight_number' => $slot['flight_number'],
                         'aircraft' => $slot['aircraft'],
                         'origin' => $slot['origin'],
                         'destination' => $slot['destination'],

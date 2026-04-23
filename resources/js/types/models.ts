@@ -29,8 +29,8 @@ export type PilotSlot = {
     id: number;
     event_id: number;
     pilot_id: number | null;
-    callsign: string;
-    flight_number: string | null;
+    airline_icao: string;
+    flight_number: string;
     aircraft: string;
     origin: string;
     destination: string;
@@ -63,7 +63,7 @@ export type AtcSlotRow = {
 };
 
 export type PilotSlotRow = {
-    callsign: string;
+    airline_icao: string;
     flight_number: string;
     aircraft: string;
     origin: string;

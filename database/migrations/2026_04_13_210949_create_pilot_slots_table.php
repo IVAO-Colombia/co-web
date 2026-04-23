@@ -19,8 +19,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('event_id')->constrained();
             $table->foreignId('pilot_id')->nullable()->constrained('users');
-            $table->string('flight_number', 20)->nullable();
-            $table->string('callsign', 25);
+            $table->string('airline_icao', 10);
+            $table->string('flight_number', 20);
             $table->string('aircraft', 25);
             $table->string('origin', 10);
             $table->string('destination', 10);

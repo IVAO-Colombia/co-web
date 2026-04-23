@@ -138,8 +138,8 @@ const form = useForm<EventForm>({
     pilot_slots_enabled: props.event.pilot_slots_enabled,
     pilot_slots: props.event.pilot_slots.map(
         (slot): PilotSlotRow => ({
-            callsign: slot.callsign,
-            flight_number: slot.flight_number ?? '',
+            airline_icao: slot.airline_icao,
+            flight_number: slot.flight_number,
             aircraft: slot.aircraft,
             origin: slot.origin,
             destination: slot.destination,
