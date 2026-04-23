@@ -19,8 +19,6 @@ import { Button } from '@/components/ui/button';
 import { useLocale } from '@/composables/useLocale';
 import { Ivao } from '@/lib/ivao';
 import { formatDateTime, getDateParts } from '@/lib/utils';
-import auth from '@/routes/auth';
-import { events } from '@/routes/home';
 import {
     ATCRatings,
     EventConstants,
@@ -34,6 +32,8 @@ import type {
     AtcSlot,
     EventDetail,
 } from '@/types';
+import auth from '@/routes/auth';
+import { events } from '@/routes/home';
 
 function formatAtcTime(time: string): string {
     // ATC slot times come as plain 'HH:mm:ss' strings, not ISO datetimes
