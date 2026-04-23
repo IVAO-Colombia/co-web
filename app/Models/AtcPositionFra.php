@@ -33,11 +33,13 @@ use Illuminate\Database\Query\Builder;
  * @property int $is_blacklist
  * @property CarbonImmutable|null $created_at
  * @property CarbonImmutable|null $updated_at
- * @property-read \App\Models\AtcPosition $atcPosition
+ * @property-read AtcPosition $atcPosition
+ *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AtcPositionFra forIcao(array|string $icao)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AtcPositionFra newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AtcPositionFra newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AtcPositionFra query()
+ *
  * @mixin \Eloquent
  */
 class AtcPositionFra extends Model
@@ -56,9 +58,9 @@ class AtcPositionFra extends Model
     #[Scope]
     protected function forIcao(Builder $query, string|array $icao): void
     {
-        $query->when(is_array($icao), function ($query) use ($icao) {
+        $query->when(is_array($icao), function ($query) use ($icao): void {
             $query->whereIn('atc_compose_position', $icao);
-        }, function ($query) use ($icao) {
+        }, function ($query) use ($icao): void {
             $query->where('atc_compose_position', $icao);
         });
     }

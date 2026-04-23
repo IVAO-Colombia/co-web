@@ -24,9 +24,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property CarbonImmutable|null $created_at
  * @property CarbonImmutable|null $updated_at
  * @property CarbonImmutable|null $deleted_at
- * @property-read \App\Models\UserAward|null $award
- * @property-read \App\Models\Event|null $event
- * @property-read \App\Models\User $user
+ * @property-read UserAward|null $award
+ * @property-read Event|null $event
+ * @property-read User $user
+ *
  * @method static \Database\Factories\UserAwardReportFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserAwardReport newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserAwardReport newQuery()
@@ -34,6 +35,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserAwardReport query()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserAwardReport withTrashed(bool $withTrashed = true)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserAwardReport withoutTrashed()
+ *
  * @mixin \Eloquent
  */
 class UserAwardReport extends Model

@@ -18,7 +18,7 @@ class AtcPositionsController extends Controller
     {
         return app(Ivao::class)
             ->atcPositions($icao)
-            ->map(fn($position) => AtcPosition::updateOrCreate(
+            ->map(fn ($position) => AtcPosition::updateOrCreate(
                 ['ivao_id' => $position->id],
                 [
                     'airport_id' => $position->airportId,

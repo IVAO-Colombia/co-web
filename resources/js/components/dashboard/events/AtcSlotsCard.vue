@@ -23,8 +23,8 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
-import ivao from '@/routes/ivao';
 import type { AtcPosition, AtcSlotRow } from '@/types';
+import ivao from '@/routes/ivao';
 
 const props = defineProps<{
     slots: AtcSlotRow[];

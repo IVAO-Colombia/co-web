@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use Carbon\CarbonImmutable;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -19,17 +20,19 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string|null $frequency
  * @property CarbonImmutable|null $created_at
  * @property CarbonImmutable|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AtcPositionFra> $fras
+ * @property-read Collection<int, AtcPositionFra> $fras
  * @property-read int|null $fras_count
+ *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AtcPosition newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AtcPosition newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AtcPosition query()
+ *
  * @mixin \Eloquent
  */
 class AtcPosition extends Model
 {
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\AtcPositionFra, $this>
+     * @return HasMany<AtcPositionFra, $this>
      */
     public function fras(): HasMany
     {
