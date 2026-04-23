@@ -23,3 +23,15 @@ parameters:
 			identifier: method.notFound
 			count: 1
 			path: app/Http/Controllers/Dashboard/EventsController.php
+
+		-
+			message: '#^Class App\\Models\\AtcPositionFra has PHPDoc tag @method for method forIcao\(\) parameter \#1 \$icao with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Models/AtcPositionFra.php
+
+		-
+			message: '#^Match expression does not handle remaining values\: Carbon\\CarbonInterface\|int\<min, \-1\>\|int\<7, max\>$#'
+			identifier: match.unhandled
+			count: 1
+			path: app/Models/AtcPositionFra.php

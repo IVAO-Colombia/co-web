@@ -103,6 +103,7 @@ class IvaoFetchAtcPositionFrasTest extends TestCase
         AtcPositionFra::create([
             'ivao_id' => 1,
             'atc_position_id' => $atcPosition->id,
+            'atc_compose_position' => $atcPosition->compose_position,
             'ivao_user_id' => 999,
             'ivao_atc_position_id' => 100,
             'ivao_subcenter_id' => null,
@@ -218,6 +219,7 @@ class IvaoFetchAtcPositionFrasTest extends TestCase
         AtcPositionFra::create([
             'ivao_id' => 99,
             'atc_position_id' => $atcPosition->id,
+            'atc_compose_position' => $atcPosition->compose_position,
             'ivao_user_id' => 999,
             'ivao_atc_position_id' => 100,
             'ivao_subcenter_id' => null,

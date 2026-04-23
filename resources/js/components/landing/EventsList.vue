@@ -6,8 +6,8 @@ import { wTrans } from 'laravel-vue-i18n';
 import { Eye } from 'lucide-vue-next';
 import { onBeforeUnmount, onMounted, ref } from 'vue';
 import EventCard from '@/components/landing/EventCard.vue';
-import type { Event } from '@/types';
 import home from '@/routes/home';
+import type { Event } from '@/types';
 
 const props = defineProps<{
     events: Event[];

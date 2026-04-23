@@ -5,9 +5,9 @@ import { CalendarClock, Clock3, MapPin, MoveRight, Tag } from 'lucide-vue-next';
 import { computed } from 'vue';
 import { useLocale } from '@/composables/useLocale';
 import { getDateParts } from '@/lib/utils';
+import { show } from '@/routes/home/events';
 import { EventConstants } from '@/types';
 import type { Event } from '@/types';
-import { show } from '@/routes/home/events';
 
 const props = defineProps<{
     event: Event;

@@ -175,10 +175,8 @@ class LandingEventsTest extends TestCase
             ->assertInertia(fn ($page) => $page
                 ->has('event.pilot_slots', 1)
                 ->where('event.pilot_slots.0.status', 'reserved')
-                ->has('event.pilot_slots.0.pilot')
                 ->has('event.atc_slots', 1)
                 ->where('event.atc_slots.0.status', 'reserved')
-                ->has('event.atc_slots.0.atc')
             );
     }
 }

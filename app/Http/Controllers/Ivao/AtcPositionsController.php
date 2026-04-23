@@ -16,8 +16,7 @@ class AtcPositionsController extends Controller
      */
     public function __invoke(string $icao): Collection
     {
-        return app(Ivao::class)
-            ->atcPositions($icao)
+        return collect(app(Ivao::class)->atcPositions($icao))
             ->map(fn ($position) => AtcPosition::updateOrCreate(
                 ['ivao_id' => $position->id],
                 [
