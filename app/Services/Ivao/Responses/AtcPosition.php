@@ -4,14 +4,8 @@ declare(strict_types=1);
 
 namespace App\Services\Ivao\Responses;
 
-use Spatie\TypeScriptTransformer\Attributes\TypeScript;
-
-#[TypeScript]
 class AtcPosition
 {
-    /**
-     * Create a new class instance.
-     */
     public function __construct(
         public int $id,
         public string $airportId,
@@ -21,7 +15,7 @@ class AtcPosition
         public string $position,
         public int $order,
         public float $frequency,
-        public ?string $radarRange
+        public ?int $radarRange
     ) {
         //
     }

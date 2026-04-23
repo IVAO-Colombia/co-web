@@ -71,3 +71,41 @@ export type PilotSlotRow = {
     departs_at: string;
     gate: string;
 };
+
+export type AtcPosition = {
+    id: number;
+    ivao_id: number | null;
+    airport_id: string;
+    atc_callsign: string;
+    compose_position: string;
+    middle_identifier: string | null;
+    position: string;
+    frequency: string | null;
+    created_at: string | null;
+    updated_at: string | null;
+};
+
+export type AtcPositionFra = {
+    id: number;
+    atc_position_id: number;
+    atc_compose_position: string;
+    ivao_id: number;
+    ivao_user_id: number | null;
+    ivao_atc_position_id: number | null;
+    ivao_subcenter_id: number | null;
+    start_time: string;
+    end_time: string;
+    monday: boolean;
+    tuesday: boolean;
+    wednesday: boolean;
+    thursday: boolean;
+    friday: boolean;
+    saturday: boolean;
+    sunday: boolean;
+    date: string | null;
+    min_atc: number | null;
+    active: boolean;
+    is_blacklist: boolean;
+    created_at: string | null;
+    updated_at: string | null;
+};

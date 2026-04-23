@@ -35,7 +35,9 @@ cp .env.example .env
 ```bash
 composer install
 npm run install
-php artisan migrate
+php artisan migrate --seed
+php artisan ivao:fetch-atc-positions
+php artisan ivao:fetch-atc-position-fras
 php artisan typescript:transform
 ```
 

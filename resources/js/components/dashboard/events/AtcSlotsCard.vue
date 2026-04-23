@@ -23,8 +23,8 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
+import ivao from '@/routes/ivao';
 import type { AtcPosition, AtcSlotRow } from '@/types';
-import { atcPositions as atcPositionsRoute } from '@/routes/ivao/airports';
 
 const props = defineProps<{
     slots: AtcSlotRow[];
@@ -59,7 +59,7 @@ async function fetchAtcPositions(): Promise<void> {
 
     try {
         const response = (await atcPositionsHttp.get(
-            atcPositionsRoute.url(icao),
+            ivao.airports.atcPositions.url(icao),
         )) as AtcPosition[];
 
         if (!atcPositionsHttp.wasSuccessful) {
@@ -249,25 +249,27 @@ function clearSlots(): void {
                         <div class="grid grid-cols-1 gap-2 sm:grid-cols-2">
                             <label
                                 v-for="position in atcPositionsList"
-                                :key="position.composePosition"
+                                :key="position.compose_position"
                                 class="flex cursor-pointer items-center gap-2 rounded-md px-2 py-1.5 hover:bg-muted"
                             >
                                 <Checkbox
                                     :model-value="
                                         selectedCallsigns.has(
-                                            position.composePosition,
+                                            position.compose_position,
                                         )
                                     "
                                     @update:model-value="
-                                        toggleCallsign(position.composePosition)
+                                        toggleCallsign(
+                                            position.compose_position,
+                                        )
                                     "
                                 />
                                 <span class="flex flex-col">
                                     <span class="font-mono text-sm font-medium">
-                                        {{ position.composePosition }}
+                                        {{ position.compose_position }}
                                     </span>
                                     <span class="text-xs text-muted-foreground">
-                                        {{ position.atcCallsign }} ·
+                                        {{ position.atc_callsign }} ·
                                         {{ position.frequency }} MHz
                                     </span>
                                 </span>

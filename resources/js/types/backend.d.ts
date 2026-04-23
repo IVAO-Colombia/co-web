@@ -9,17 +9,6 @@ export enum ATCRating {
     SAI = 9,
     CAI = 10,
 }
-export type AtcPosition = {
-    id: number;
-    airportId: string;
-    atcCallsign: string;
-    composePosition: string;
-    middleIdentifier: string | null;
-    position: string;
-    order: number;
-    frequency: number;
-    radarRange: string | null;
-};
 export enum EventStatus {
     DRAFT = 'draft',
     ACTIVE = 'active',

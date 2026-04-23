@@ -17,7 +17,7 @@ return new class extends Migration
 
         Schema::create('atc_slots', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('event_id')->constrained()->index();
+            $table->foreignId('event_id')->constrained();
             $table->foreignId('atc_id')->nullable()->constrained('users');
             $table->string('callsign', 25)->index();
             $table->time('starts_at');

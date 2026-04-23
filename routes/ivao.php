@@ -2,6 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Services\Ivao\Ivao;
+use App\Http\Controllers\Ivao\AtcPositionsController;
 
-Route::get('ivao/airports/{icao}/atc-positions', fn (string $icao) => app(Ivao::class)->atcPositions($icao))->name('ivao.airports.atc-positions');
+Route::get('ivao/airports/{icao}/atc-positions', AtcPositionsController::class)->name('ivao.airports.atc-positions');

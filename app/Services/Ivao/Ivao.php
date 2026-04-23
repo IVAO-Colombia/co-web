@@ -36,7 +36,7 @@ class Ivao
         return collect($response)
             ->map(fn (array $position): AtcPosition => new AtcPosition(
                 id: $position['id'],
-                airportId: $position['airportId'],
+                airportId: $position['airportId'] ?? $position['centerId'],
                 atcCallsign: $position['atcCallsign'],
                 composePosition: $position['composePosition'],
                 middleIdentifier: $position['middleIdentifier'],
@@ -45,5 +45,54 @@ class Ivao
                 frequency: $position['frequency'],
                 radarRange: $position['radarRange'] ?? null,
             ));
+    }
+
+    /**
+     * @return array<int, mixed>
+     */
+    public function allAtcPositionFras(): array
+    {
+        $items = [];
+        $page = 1;
+
+        do {
+            /** @var array{totalItems: int, perPage: int, page: int, pages: int, items: array<int, mixed>}|null $response */
+            $response = $this->baseClient()
+                ->get('/fras', [
+                    'page' => $page,
+                    'countryId' => 'CO',
+                    'isActive' => 'true',
+                    'members' => 'true',
+                    'positions' => 'true',
+                    'expand' => 'true',
+                ])
+                ->json();
+
+            if (! isset($response['items'])) {
+                break;
+            }
+
+            $items = array_merge($items, $response['items']);
+            $totalPages = $response['pages'];
+            $page++;
+        } while ($page <= $totalPages);
+
+        return $items;
+    }
+
+    /**
+     * @return array<int, mixed>
+     */
+    public function allAtcPositions(): array
+    {
+        /** @var array<int, mixed>|null $result */
+        $result = $this->baseClient()
+            ->get('/positions/search', [
+                'countryId' => 'CO',
+                'limit' => '100',
+            ])
+            ->json();
+
+        return $result ?? [];
     }
 }
