@@ -40,8 +40,10 @@ import TooltipContent from '@/components/ui/tooltip/TooltipContent.vue';
 import TooltipProvider from '@/components/ui/tooltip/TooltipProvider.vue';
 import TooltipTrigger from '@/components/ui/tooltip/TooltipTrigger.vue';
 import { useDebounce } from '@/composables/useDebounce';
+import { useLocale } from '@/composables/useLocale';
 import { usePermissions } from '@/composables/usePermissions';
 import { formatDateTime } from '@/lib/utils';
+import { index, create, destroy, show } from '@/routes/dashboard/events';
 import type {
     LengthAwarePaginator,
     Event,
@@ -50,7 +52,6 @@ import type {
 } from '@/types';
 import { Permission } from '@/types';
 import { EventConstants } from '@/types';
-import { index, create, destroy, show } from '@/routes/dashboard/events';
 
 const props = defineProps<{
     events: LengthAwarePaginator<number, Event>;
@@ -78,6 +79,7 @@ const links = computed(() =>
     ),
 );
 const { hasPermission } = usePermissions();
+const { locale } = useLocale();
 
 function applyFilters(): void {
     router.get(
@@ -322,7 +324,7 @@ function handleDelete(): void {
 
                         <!-- Starts at -->
                         <TableCell class="text-sm whitespace-nowrap">
-                            {{ formatDateTime(event.starts_at) }}
+                            {{ formatDateTime(event.starts_at, locale) }}
                         </TableCell>
 
                         <!-- Slot indicators -->

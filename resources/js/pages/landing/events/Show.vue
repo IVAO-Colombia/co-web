@@ -17,10 +17,10 @@ import { Button } from '@/components/ui/button';
 import { useLocale } from '@/composables/useLocale';
 import { Ivao } from '@/lib/ivao';
 import { formatDateTime, getDateParts } from '@/lib/utils';
-import { EventConstants, SlotStatus, SlotsConstants } from '@/types';
-import type { AtcSlot, EventDetail } from '@/types';
 import auth from '@/routes/auth';
 import { events } from '@/routes/home';
+import { EventConstants, SlotStatus, SlotsConstants } from '@/types';
+import type { AtcSlot, EventDetail } from '@/types';
 
 function formatAtcTime(time: string): string {
     // ATC slot times come as plain 'HH:mm:ss' strings, not ISO datetimes
@@ -295,7 +295,7 @@ const atcSlotsByCallsign = computed(() => {
                         <p class="text-sm text-sky-700 dark:text-sky-200/75">
                             {{
                                 $t(
-                                    'Log in to see slot availability and reserve your spot.',
+                                    'Log in to see slot availability and reserve your flight.',
                                 )
                             }}
                         </p>
@@ -412,7 +412,12 @@ const atcSlotsByCallsign = computed(() => {
                                     <td
                                         class="px-4 py-3.5 text-slate-600 dark:text-white/65"
                                     >
-                                        {{ formatDateTime(slot.departs_at) }}
+                                        {{
+                                            formatDateTime(
+                                                slot.departs_at,
+                                                locale,
+                                            )
+                                        }}
                                     </td>
                                     <td
                                         class="px-4 py-3.5 text-slate-500 dark:text-white/45"

@@ -100,14 +100,15 @@ export function normalizeTime(value: string): string {
  * Formats a datetime string for display in UTC.
  * Output example: "1 Jun 2026, 18:00 UTC"
  */
-export function formatDateTime(dateStr: string): string {
+export function formatDateTime(dateStr: string, locale: Locale): string {
     const date = parseISO(dateStr);
     // Shift the timestamp so that format() (which uses local time) outputs UTC values
     const utcDate = new Date(
         date.getTime() + date.getTimezoneOffset() * 60 * 1000,
     );
+    const dfLocale = locale === 'en' ? enUS : es;
 
-    return format(utcDate, 'd MMM yyyy, HH:mm') + ' UTC';
+    return format(utcDate, 'd MMM yyyy, HH:mm', { locale: dfLocale }) + ' UTC';
 }
 
 export function normalizeDatetime(value: string): string {

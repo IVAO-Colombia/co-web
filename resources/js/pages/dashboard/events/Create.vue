@@ -3,6 +3,7 @@ import { Head, Link, useForm } from '@inertiajs/vue3';
 import { wTrans } from 'laravel-vue-i18n';
 import { AlertCircle, ChevronLeft, ImagePlus, X } from 'lucide-vue-next';
 import { computed, onUnmounted, ref } from 'vue';
+import { store } from '@/actions/App/Http/Controllers/Dashboard/EventsController';
 import AtcSlotsCard from '@/components/dashboard/events/AtcSlotsCard.vue';
 import PilotSlotsCard from '@/components/dashboard/events/PilotSlotsCard.vue';
 import InputError from '@/components/InputError.vue';
@@ -27,10 +28,9 @@ import {
 } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
+import { index, create } from '@/routes/dashboard/events';
 import type { AtcSlotRow, EventType, PilotSlotRow } from '@/types';
 import { EventConstants, EventTag } from '@/types';
-import { store } from '@/actions/App/Http/Controllers/Dashboard/EventsController';
-import { index, create } from '@/routes/dashboard/events';
 
 type EventForm = {
     name: string;
@@ -290,7 +290,7 @@ function submit(): void {
                     <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                         <div class="flex flex-col gap-1.5">
                             <Label for="starts_at">
-                                {{ $t('Starts At') }}
+                                {{ $t('Start Date and Time') }}
                                 <span class="ml-0.5 text-destructive">*</span>
                             </Label>
                             <DateTimePicker
@@ -300,7 +300,9 @@ function submit(): void {
                             <InputError :message="form.errors.starts_at" />
                         </div>
                         <div class="flex flex-col gap-1.5">
-                            <Label for="ends_at">{{ $t('Ends At') }}</Label>
+                            <Label for="ends_at">{{
+                                $t('End Date and Time')
+                            }}</Label>
                             <DateTimePicker
                                 v-model="form.ends_at"
                                 :min-value="form.starts_at || undefined"

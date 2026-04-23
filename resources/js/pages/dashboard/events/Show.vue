@@ -35,8 +35,10 @@ import Tooltip from '@/components/ui/tooltip/Tooltip.vue';
 import TooltipContent from '@/components/ui/tooltip/TooltipContent.vue';
 import TooltipProvider from '@/components/ui/tooltip/TooltipProvider.vue';
 import TooltipTrigger from '@/components/ui/tooltip/TooltipTrigger.vue';
+import { useLocale } from '@/composables/useLocale';
 import { usePermissions } from '@/composables/usePermissions';
 import { formatDateTime } from '@/lib/utils';
+import { destroy, index, show as showRoute } from '@/routes/dashboard/events';
 import type { EventDetail } from '@/types';
 import {
     EventConstants,
@@ -44,7 +46,6 @@ import {
     SlotsConstants,
     SlotStatus,
 } from '@/types';
-import { destroy, index, show as showRoute } from '@/routes/dashboard/events';
 
 const props = defineProps<{
     event: EventDetail;
@@ -61,6 +62,7 @@ setLayoutProps({
 });
 
 const { hasPermission } = usePermissions();
+const { locale } = useLocale();
 
 const deleteDescription = computed(() =>
     trans(
@@ -256,7 +258,7 @@ function confirmDelete(): void {
                             class="flex items-center gap-1.5 text-sm text-muted-foreground"
                         >
                             <CalendarDays class="size-3.5 shrink-0" />
-                            {{ formatDateTime(event.starts_at) }}
+                            {{ formatDateTime(event.starts_at, locale) }}
                         </div>
                     </div>
                     <div v-if="event.ends_at" class="flex flex-col gap-1">
@@ -265,7 +267,7 @@ function confirmDelete(): void {
                             class="flex items-center gap-1.5 text-sm text-muted-foreground"
                         >
                             <CalendarDays class="size-3.5 shrink-0" />
-                            {{ formatDateTime(event.ends_at) }}
+                            {{ formatDateTime(event.ends_at, locale) }}
                         </div>
                     </div>
                 </div>

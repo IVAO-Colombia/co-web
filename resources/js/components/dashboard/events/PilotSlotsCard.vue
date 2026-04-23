@@ -1,5 +1,12 @@
 <script setup lang="ts">
-import { FileText, Lock, PlaneTakeoff, Upload, X } from 'lucide-vue-next';
+import {
+    FileText,
+    Lock,
+    PlaneTakeoff,
+    TriangleAlert,
+    Upload,
+    X,
+} from 'lucide-vue-next';
 import { computed, ref } from 'vue';
 import InputError from '@/components/InputError.vue';
 import { Button } from '@/components/ui/button';
@@ -28,7 +35,8 @@ type PilotSlotCSV = {
     aircraft: string;
     origin: string;
     destination: string;
-    departure_date_time: string;
+    departure_date: string;
+    departure_time: string;
     gate: string;
 };
 
@@ -48,7 +56,7 @@ const fileInput = ref<HTMLInputElement | null>(null);
 
 const templateCsvUrl = computed(() =>
     csvDataUri(
-        'airline_icao,flight_number,aircraft,origin,destination,departure_date_time,gate',
+        'airline_icao,flight_number,aircraft,origin,destination,departure_date,departure_time,gate',
     ),
 );
 
@@ -67,9 +75,12 @@ function onCsvChange(event: Event): void {
             rows.map(
                 (row): PilotSlotRow => ({
                     ...row,
-                    departs_at: row.departure_date_time
-                        ? normalizeDatetime(row.departure_date_time)
-                        : row.departure_date_time,
+                    departs_at:
+                        row.departure_date && row.departure_time
+                            ? normalizeDatetime(
+                                  `${row.departure_date} ${row.departure_time}`,
+                              )
+                            : `${row.departure_date} ${row.departure_time}`,
                 }),
             ),
         );
@@ -158,6 +169,23 @@ function clearSlots(): void {
                         >
                             {{ $t('Download template') }}
                         </a>
+                    </div>
+
+                    <div
+                        class="mb-4 flex items-center gap-4 rounded-xl border border-yellow-500/20 bg-yellow-500/10 px-4 py-3"
+                    >
+                        <TriangleAlert
+                            class="size-4 text-yellow-700 dark:text-yellow-200/75"
+                        />
+                        <p
+                            class="text-sm text-yellow-700 dark:text-yellow-200/75"
+                        >
+                            {{
+                                $t(
+                                    'The departure_date must be in YYYY-MM-DD format, and departure_time in HH:MM (24h) format.',
+                                )
+                            }}
+                        </p>
                     </div>
 
                     <!-- Upload -->
