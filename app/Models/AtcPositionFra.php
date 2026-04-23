@@ -36,10 +36,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property CarbonImmutable|null $updated_at
  * @property-read AtcPosition $atcPosition
  *
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AtcPositionFra forIcao(array|string $icao)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AtcPositionFra newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AtcPositionFra newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AtcPositionFra query()
+ * @method static Builder<static>|AtcPositionFra forDate(\Carbon\CarbonInterface $date)
+ * @method static Builder<static>|AtcPositionFra forIcao(array|string $icao)
+ * @method static Builder<static>|AtcPositionFra newModelQuery()
+ * @method static Builder<static>|AtcPositionFra newQuery()
+ * @method static Builder<static>|AtcPositionFra query()
  *
  * @mixin \Eloquent
  */
@@ -85,7 +86,7 @@ class AtcPositionFra extends Model
 
         $query
             ->where($column, true)
-            ->orWhere(function ($query) use ($date) {
+            ->orWhere(function ($query) use ($date): void {
                 $query->whereNotNull('date')
                     ->whereDate('date', $date->toDateString());
             });

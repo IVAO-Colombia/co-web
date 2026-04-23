@@ -650,8 +650,31 @@ function getMinAtcRating(callsign: string): ATCRatingValue {
                                 callsignContent, callsign
                             ) in atcSlotsByCallsign"
                             :key="callsign"
-                            class="flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-white/10 dark:bg-white/3 dark:shadow-none"
+                            class="relative flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-white/10 dark:bg-white/3 dark:shadow-none"
                         >
+                            <!-- Insufficient rating overlay -->
+                            <div
+                                v-if="
+                                    isLoggedIn && !callsignContent.can_reserve
+                                "
+                                class="absolute inset-0 z-10 flex flex-col items-center justify-center gap-2 rounded-xl bg-slate-950/80 backdrop-blur-none"
+                            >
+                                <Radio class="h-5 w-5 text-white/40" />
+                                <p
+                                    class="text-center text-sm font-semibold text-white/80"
+                                >
+                                    {{
+                                        $t("You don't have the required rating")
+                                    }}
+                                </p>
+                                <img
+                                    :src="
+                                        callsignContent.min_atc_rating.imageUrl
+                                    "
+                                    class="mt-1 w-20 opacity-70"
+                                    :alt="callsignContent.min_atc_rating.label"
+                                />
+                            </div>
                             <!-- Card header: callsign -->
                             <div
                                 class="flex items-center gap-3 border-b border-slate-200 bg-slate-50 px-4 py-3 dark:border-white/10 dark:bg-white/5"
@@ -735,26 +758,14 @@ function getMinAtcRating(callsign: string): ATCRatingValue {
                                             "
                                             size="sm"
                                             variant="outline"
-                                            :class="{
-                                                'border-emerald-500/40 text-emerald-300 hover:bg-emerald-500/15 hover:text-emerald-200':
-                                                    callsignContent.can_reserve,
-                                                'border-black-500/40 text-black-300 hover:bg-black-500/15 hover:text-black-200':
-                                                    !callsignContent.can_reserve,
-                                            }"
-                                            class="h-7 px-2.5 text-xs"
+                                            class="h-7 border-emerald-500/40 px-2.5 text-xs text-emerald-300 hover:bg-emerald-500/15 hover:text-emerald-200"
+                                            method="post"
+                                            :as="Button"
                                             :disabled="
                                                 !callsignContent.can_reserve
                                             "
-                                            method="post"
-                                            :as="Button"
                                         >
-                                            {{
-                                                callsignContent.can_reserve
-                                                    ? $t('Reserve')
-                                                    : $t(
-                                                          "You don't have the required rating",
-                                                      )
-                                            }}
+                                            {{ $t('Reserve') }}
                                         </Link>
                                     </div>
                                 </div>
