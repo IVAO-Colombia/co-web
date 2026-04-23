@@ -37,6 +37,7 @@ import TooltipProvider from '@/components/ui/tooltip/TooltipProvider.vue';
 import TooltipTrigger from '@/components/ui/tooltip/TooltipTrigger.vue';
 import { usePermissions } from '@/composables/usePermissions';
 import { formatDateTime } from '@/lib/utils';
+import { destroy, index, show as showRoute } from '@/routes/dashboard/events';
 import type { EventDetail } from '@/types';
 import {
     EventConstants,
@@ -44,7 +45,6 @@ import {
     SlotsConstants,
     SlotStatus,
 } from '@/types';
-import { destroy, index, show as showRoute } from '@/routes/dashboard/events';
 
 const props = defineProps<{
     event: EventDetail;
@@ -73,11 +73,11 @@ const showDeleteDialog = ref(false);
 const deleting = ref(false);
 
 const canDelete = computed(() => {
-    const hasReservedPilot = props.event.pilot_slots.some(
-        (s) => s.status === SlotStatus.UNAVAILABLE,
+    const hasReservedPilot = props.event.pilot_slots.some((s) =>
+        [SlotStatus.RESERVED, SlotStatus.CONFIRMED].includes(s.status),
     );
-    const hasReservedAtc = props.event.atc_slots.some(
-        (s) => s.status === SlotStatus.UNAVAILABLE,
+    const hasReservedAtc = props.event.atc_slots.some((s) =>
+        [SlotStatus.RESERVED, SlotStatus.CONFIRMED].includes(s.status),
     );
 
     return !hasReservedPilot && !hasReservedAtc;
@@ -362,8 +362,10 @@ function confirmDelete(): void {
                                 <TableCell>
                                     <TooltipProvider
                                         v-if="
-                                            slot.status ===
-                                            SlotStatus.UNAVAILABLE
+                                            [
+                                                SlotStatus.RESERVED,
+                                                SlotStatus.CONFIRMED,
+                                            ].includes(slot.status)
                                         "
                                     >
                                         <Tooltip>
@@ -467,8 +469,10 @@ function confirmDelete(): void {
                                 <TableCell>
                                     <TooltipProvider
                                         v-if="
-                                            slot.status ===
-                                            SlotStatus.UNAVAILABLE
+                                            [
+                                                SlotStatus.RESERVED,
+                                                SlotStatus.CONFIRMED,
+                                            ].includes(slot.status)
                                         "
                                     >
                                         <Tooltip>

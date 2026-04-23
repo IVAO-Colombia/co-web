@@ -7,7 +7,6 @@ import EventsList from '@/components/landing/EventsList.vue';
 import Header from '@/components/landing/Header.vue';
 import { useAppearance } from '@/composables/useAppearance';
 import type { Event } from '@/types';
-import { UrlParams } from '@vueuse/core';
 
 type HeroSlide = {
     eyebrow: string;
@@ -29,28 +28,29 @@ defineProps<{
 const slides: HeroSlide[] = [
     {
         eyebrow: "WELCOME TO DIVISION'S IVAO COLOMBIA",
-        title: "The skies of Colombia, now in your hands",
-        description: "Join the world's largest flight simulation community from Colombia. More than 1,180 local members are connecting airports, routes, and virtual skies every day.",
+        title: 'The skies of Colombia, now in your hands',
+        description:
+            "Join the world's largest flight simulation community from Colombia. More than 1,180 local members are connecting airports, routes, and virtual skies every day.",
         tagline: 'Start your flight',
         lightImage: '/img/day_1.png',
         darkImage: '/img/nigth_1.png',
         buttontextone: 'Getting Started',
         urlone: 'https://ivao.aero/members/person/register.htm',
         buttontexttwo: 'Get Started Now',
-        urltwo: '#'
+        urltwo: '#',
     },
     {
         eyebrow: 'ATC TRAINING',
         title: 'You are the voice that directs traffic<br>in the skies of Colombia',
         description:
-            "From flight clearance to air traffic control, train using real-world procedures and become part of the team that keeps Colombia’s airspace organized and safe.",
+            'From flight clearance to air traffic control, train using real-world procedures and become part of the team that keeps Colombia’s airspace organized and safe.',
         tagline: 'ATCO career',
         lightImage: '/img/day_2.png',
         darkImage: '/img/nigth_2.png',
         buttontextone: 'Request Training',
         urlone: '#',
         buttontexttwo: 'Join ATC Now',
-        urltwo: 'https://ivao.aero/members/person/register.htm'
+        urltwo: 'https://ivao.aero/members/person/register.htm',
     },
     {
         eyebrow: 'PILOTS',
@@ -63,7 +63,7 @@ const slides: HeroSlide[] = [
         buttontextone: 'Request Training',
         urlone: '#',
         buttontexttwo: 'Join IVAO Now',
-        urltwo: 'https://ivao.aero/members/person/register.htm'
+        urltwo: 'https://ivao.aero/members/person/register.htm',
     },
 ];
 
@@ -197,7 +197,7 @@ onBeforeUnmount(() => {
                         <span
                             class="inline-block h-2 w-2 rounded-full bg-blue-500"
                         ></span>
-                        {{$t( currentSlide.eyebrow )}}
+                        {{ $t(currentSlide.eyebrow) }}
                     </p>
 
                     <h1
@@ -212,13 +212,18 @@ onBeforeUnmount(() => {
 
                     <div
                         class="mt-8 flex w-full flex-col items-center justify-center gap-3 sm:mt-12 sm:w-auto sm:flex-row sm:gap-4"
-                        v-if="currentSlide.buttontextone && currentSlide.urlone && currentSlide.buttontexttwo && currentSlide.urltwo"
+                        v-if="
+                            currentSlide.buttontextone &&
+                            currentSlide.urlone &&
+                            currentSlide.buttontexttwo &&
+                            currentSlide.urltwo
+                        "
                     >
                         <a
                             :href="currentSlide.urlone"
                             class="inline-flex w-full max-w-xs items-center justify-center rounded-xl border border-white/20 bg-[#161a29]/60 px-6 py-3 text-sm font-semibold text-white backdrop-blur-md transition-colors hover:bg-white/10 sm:w-auto sm:px-8 sm:py-3.5"
                         >
-                           {{ $t(currentSlide.buttontextone)}}
+                            {{ $t(currentSlide.buttontextone) }}
                         </a>
                         <a
                             :href="currentSlide.urltwo"

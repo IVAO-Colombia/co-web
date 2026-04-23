@@ -42,6 +42,7 @@ import TooltipTrigger from '@/components/ui/tooltip/TooltipTrigger.vue';
 import { useDebounce } from '@/composables/useDebounce';
 import { usePermissions } from '@/composables/usePermissions';
 import { formatDateTime } from '@/lib/utils';
+import { index, create, destroy, show } from '@/routes/dashboard/events';
 import type {
     LengthAwarePaginator,
     Event,
@@ -50,7 +51,6 @@ import type {
 } from '@/types';
 import { Permission } from '@/types';
 import { EventConstants } from '@/types';
-import { index, create, destroy, show } from '@/routes/dashboard/events';
 
 const props = defineProps<{
     events: LengthAwarePaginator<number, Event>;

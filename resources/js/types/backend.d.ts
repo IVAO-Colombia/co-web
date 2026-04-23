@@ -18,7 +18,7 @@ export type AtcPosition = {
     position: string;
     order: number;
     frequency: number;
-    radarRange: number | null;
+    radarRange: string | null;
 };
 export enum EventStatus {
     DRAFT = 'draft',
@@ -41,11 +41,13 @@ export enum EventType {
     RFE = 'rfe',
 }
 export enum PagesComponents {
-    EVENTS_INDEX = 'events/Index',
-    EVENTS_CREATE = 'events/Create',
-    EVENTS_EDIT = 'events/Edit',
-    EVENTS_SHOW = 'events/Show',
-    EVENTS_LANDING = 'events/landing/Events',
+    EVENTS_INDEX = 'dashboard/events/Index',
+    EVENTS_CREATE = 'dashboard/events/Create',
+    EVENTS_EDIT = 'dashboard/events/Edit',
+    EVENTS_SHOW = 'dashboard/events/Show',
+    LANDING_HOME = 'Welcome',
+    LANDING_EVENTS = 'landing/events/Index',
+    LANDING_EVENTS_SHOW = 'landing/events/Show',
 }
 export enum Permission {
     STAFF_ACCESS = 'staff_access',

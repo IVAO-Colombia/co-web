@@ -3,7 +3,7 @@ import { Link } from '@inertiajs/vue3';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { wTrans } from 'laravel-vue-i18n';
-import { CalendarClock, Eye } from 'lucide-vue-next';
+import { Eye } from 'lucide-vue-next';
 import { onBeforeUnmount, onMounted, ref } from 'vue';
 import EventCard from '@/components/landing/EventCard.vue';
 import home from '@/routes/home';

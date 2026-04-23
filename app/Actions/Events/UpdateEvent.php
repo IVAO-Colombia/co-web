@@ -78,7 +78,7 @@ class UpdateEvent
             }
         });
 
-        return $event->fresh();
+        return $event->refresh();
     }
 
     private function handleImage(UpdateEventRequest $request, Event $event): ?string
