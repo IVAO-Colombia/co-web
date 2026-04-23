@@ -126,7 +126,7 @@ class EventsUpdateTest extends TestCase
                 ],
             ]));
 
-        $this->assertSoftDeleted('atc_slots', ['event_id' => $event->id, 'callsign' => 'OLD_APP']);
+        $this->assertDatabaseMissing('atc_slots', ['event_id' => $event->id, 'callsign' => 'OLD_APP']);
         $this->assertDatabaseHas('atc_slots', ['event_id' => $event->id, 'callsign' => 'SEQM_APP']);
     }
 
@@ -175,7 +175,7 @@ class EventsUpdateTest extends TestCase
                 ],
             ]));
 
-        $this->assertSoftDeleted('pilot_slots', ['event_id' => $event->id, 'airline_icao' => 'OLD']);
+        $this->assertDatabaseMissing('pilot_slots', ['event_id' => $event->id, 'airline_icao' => 'OLD']);
         $this->assertDatabaseHas('pilot_slots', ['event_id' => $event->id, 'airline_icao' => 'ECA']);
     }
 

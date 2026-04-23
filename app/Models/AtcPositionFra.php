@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace App\Models;
 
 use Carbon\CarbonImmutable;
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Query\Builder;
 
 /**
  * @property int $id
@@ -53,6 +54,7 @@ class AtcPositionFra extends Model
     }
 
     /**
+     * @param  Builder<self>  $query
      * @param  string|array<int, string>  $icao
      */
     #[Scope]
@@ -63,5 +65,29 @@ class AtcPositionFra extends Model
         }, function ($query) use ($icao): void {
             $query->where('atc_compose_position', $icao);
         });
+    }
+
+    /**
+     * @param  Builder<self>  $query
+     */
+    #[Scope]
+    protected function forDate(Builder $query, CarbonInterface $date): void
+    {
+        $column = match ($date->dayOfWeek()) {
+            CarbonInterface::MONDAY => 'monday',
+            CarbonInterface::TUESDAY => 'tuesday',
+            CarbonInterface::WEDNESDAY => 'wednesday',
+            CarbonInterface::THURSDAY => 'thursday',
+            CarbonInterface::FRIDAY => 'friday',
+            CarbonInterface::SATURDAY => 'saturday',
+            CarbonInterface::SUNDAY => 'sunday',
+        };
+
+        $query
+            ->where($column, true)
+            ->orWhere(function ($query) use ($date) {
+                $query->whereNotNull('date')
+                    ->whereDate('date', $date->toDateString());
+            });
     }
 }

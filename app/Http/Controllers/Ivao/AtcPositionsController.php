@@ -21,12 +21,12 @@ class AtcPositionsController extends Controller
             ->map(fn ($position) => AtcPosition::updateOrCreate(
                 ['ivao_id' => $position->id],
                 [
-                    'airport_id' => $position->airportId,
-                    'atc_callsign' => $position->atcCallsign,
-                    'compose_position' => $position->composePosition,
-                    'middle_identifier' => $position->middleIdentifier,
-                    'position' => $position->position,
-                    'frequency' => $position->frequency,
+                    'airport_id' => $position['airportId'],
+                    'atc_callsign' => $position['atcCallsign'],
+                    'compose_position' => $position['composePosition'],
+                    'middle_identifier' => $position['middleIdentifier'],
+                    'position' => $position['position'],
+                    'frequency' => $position['frequency'],
                 ]
             ));
     }

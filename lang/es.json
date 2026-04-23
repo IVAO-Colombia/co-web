@@ -217,5 +217,6 @@
     "Log in to see slot availability and reserve your flight.": "Inicia sesión para ver la disponibilidad de cupos y reservar tu vuelo.",
     "Log in to reserve": "Inicia sesión para reservar",
     "No pilot slots available for this event.": "No hay cupos de piloto disponibles para este evento.",
-    "Log in to see slot availability and reserve your ATC position.": "Inicia sesión para ver la disponibilidad de cupos y reservar tu posición de ATC."
+    "Log in to see slot availability and reserve your ATC position.": "Inicia sesión para ver la disponibilidad de cupos y reservar tu posición de ATC.",
+    "You don't have the required rating": "No tienes la calificación requerida"
 }

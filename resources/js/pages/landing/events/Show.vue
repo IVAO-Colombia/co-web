@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { utc } from '@date-fns/utc';
 import { Head, Link, usePage } from '@inertiajs/vue3';
+import { format, parseISO } from 'date-fns';
+import { enUS } from 'date-fns/locale';
 import {
     ArrowLeft,
     CalendarDays,
@@ -8,7 +11,6 @@ import {
     MoveRight,
     PlaneTakeoff,
     Radio,
-    User,
 } from 'lucide-vue-next';
 import { computed, onBeforeMount, ref } from 'vue';
 import Header from '@/components/landing/Header.vue';
@@ -17,10 +19,21 @@ import { Button } from '@/components/ui/button';
 import { useLocale } from '@/composables/useLocale';
 import { Ivao } from '@/lib/ivao';
 import { formatDateTime, getDateParts } from '@/lib/utils';
-import { EventConstants, SlotStatus, SlotsConstants } from '@/types';
-import type { AtcSlot, EventDetail } from '@/types';
 import auth from '@/routes/auth';
 import { events } from '@/routes/home';
+import {
+    ATCRatings,
+    EventConstants,
+    SlotStatus,
+    SlotsConstants,
+    ATCRating,
+} from '@/types';
+import type {
+    AtcPositionFra,
+    ATCRatingValue,
+    AtcSlot,
+    EventDetail,
+} from '@/types';
 
 function formatAtcTime(time: string): string {
     // ATC slot times come as plain 'HH:mm:ss' strings, not ISO datetimes
@@ -29,10 +42,12 @@ function formatAtcTime(time: string): string {
 
 const props = defineProps<{
     event: EventDetail;
+    frasByCallsign: Record<string, AtcPositionFra[]>;
 }>();
 
 const page = usePage();
-const isLoggedIn = computed(() => !!page.props.auth?.user);
+const user = computed(() => page.props.auth?.user);
+const isLoggedIn = computed(() => !!user.value);
 const { locale } = useLocale();
 const airlineLogos = ref<Record<string, string>>({});
 
@@ -49,21 +64,17 @@ onBeforeMount(async () => {
     }
 });
 
-const localizedName = computed(() => {
-    if (locale.value === 'en') {
-        return props.event.name_en ?? props.event.name;
-    }
+const localizedName = computed(() =>
+    locale.value === 'en'
+        ? (props.event.name_en ?? props.event.name)
+        : props.event.name,
+);
 
-    return props.event.name;
-});
-
-const localizedDescription = computed(() => {
-    if (locale.value === 'en') {
-        return props.event.description_en ?? props.event.description;
-    }
-
-    return props.event.description;
-});
+const localizedDescription = computed(() =>
+    locale.value === 'en'
+        ? (props.event.description_en ?? props.event.description)
+        : props.event.description,
+);
 
 const startsAtParts = computed(() =>
     getDateParts(props.event.starts_at, locale.value),
@@ -83,18 +94,82 @@ type SlotTab = 'pilot' | 'atc';
 const activeTab = ref<SlotTab>(props.event.atc_slots_enabled ? 'atc' : 'pilot');
 
 const atcSlotsByCallsign = computed(() => {
-    const groups: Record<string, AtcSlot[]> = {};
+    const groups: Record<
+        string,
+        {
+            min_atc_rating: ATCRatingValue;
+            slots: AtcSlot[];
+            can_reserve: boolean;
+        }
+    > = {};
 
     for (const slot of props.event.atc_slots) {
         if (!groups[slot.callsign]) {
-            groups[slot.callsign] = [];
+            const minAtcRating = getMinAtcRating(slot.callsign);
+            groups[slot.callsign] = {
+                min_atc_rating: minAtcRating,
+                slots: [],
+                can_reserve: user.value
+                    ? ATCRating[minAtcRating.key] <= user.value?.atc_rating
+                    : false,
+            };
         }
 
-        groups[slot.callsign].push(slot);
+        groups[slot.callsign].slots.push(slot);
     }
 
     return groups;
 });
+
+const pilotSlotsByAirline = computed(() => {
+    const groups: Record<string, typeof props.event.pilot_slots> = {};
+
+    for (const slot of props.event.pilot_slots) {
+        if (!groups[slot.airline_icao]) {
+            groups[slot.airline_icao] = [];
+        }
+
+        groups[slot.airline_icao].push(slot);
+    }
+
+    return groups;
+});
+
+function getMinAtcRating(callsign: string): ATCRatingValue {
+    const fras = props.frasByCallsign[callsign] ?? [];
+
+    if (fras.length === 0) {
+        return ATCRatings[ATCRating.AS1];
+    }
+
+    const utcDate = parseISO(props.event.starts_at, { in: utc });
+    const eventDateStr = format(utcDate, 'yyyy-MM-dd');
+    // const eventTimeStr = format(utcDate, 'HH:mm');
+    const dayOfWeek = format(utcDate, 'EEEE', {
+        locale: enUS,
+    }).toLocaleLowerCase();
+
+    const applyableFras = fras.filter((fra) => {
+        if (fra.date !== null) {
+            return fra.date === eventDateStr;
+        }
+
+        const dayMatches = fra[
+            `${dayOfWeek}` as keyof AtcPositionFra
+        ] as boolean;
+
+        return dayMatches;
+        // return (
+        //     dayMatches &&
+        //     eventTimeStr >= fra.startTime &&
+        //     eventTimeStr <= fra.endTime
+        // );
+    });
+
+    return applyableFras.length === 0
+        ? ATCRatings[ATCRating.AS1]
+        : ATCRatings[applyableFras[0].min_atc as ATCRating];
+}
 </script>
 
 <template>
@@ -317,161 +392,184 @@ const atcSlotsByCallsign = computed(() => {
                         </p>
                     </div>
 
-                    <!-- Table -->
-                    <div
-                        v-else
-                        class="overflow-x-auto rounded-xl border border-slate-200 dark:border-white/10"
-                    >
-                        <table class="w-full text-sm">
-                            <thead>
-                                <tr
-                                    class="border-b border-slate-200 bg-slate-50 text-left text-xs font-semibold tracking-wider text-slate-500 uppercase dark:border-white/10 dark:bg-white/5 dark:text-white/45"
-                                >
-                                    <th class="px-4 py-3">
-                                        {{ $t('Airline') }}
-                                    </th>
-                                    <th class="px-4 py-3">
-                                        {{ $t('Callsign') }}
-                                    </th>
-                                    <th class="px-4 py-3">
-                                        {{ $t('Route') }}
-                                    </th>
-                                    <th class="px-4 py-3">
-                                        {{ $t('Aircraft') }}
-                                    </th>
-                                    <th class="px-4 py-3">
-                                        {{ $t('Departs At') }}
-                                    </th>
-                                    <th class="px-4 py-3">
-                                        {{ $t('Gate') }}
-                                    </th>
-                                    <th v-if="isLoggedIn" class="px-4 py-3">
-                                        {{ $t('Status') }}
-                                    </th>
-                                    <th v-if="isLoggedIn" class="px-4 py-3">
-                                        {{ $t('Pilot') }}
-                                    </th>
-                                    <th
-                                        v-if="isLoggedIn"
-                                        class="w-10 px-4 py-3"
-                                    />
-                                </tr>
-                            </thead>
-                            <tbody
-                                class="divide-y divide-slate-100 dark:divide-white/5"
+                    <!-- Grouped tables by airline -->
+                    <div v-else class="flex flex-col gap-4">
+                        <div
+                            v-for="(slots, airlineIcao) in pilotSlotsByAirline"
+                            :key="airlineIcao"
+                            class="overflow-hidden rounded-xl border border-slate-200 dark:border-white/10"
+                        >
+                            <!-- Airline header -->
+                            <div
+                                class="flex items-center gap-3 border-b border-slate-200 bg-slate-50 px-4 py-3 dark:border-white/10 dark:bg-white/5"
                             >
-                                <tr
-                                    v-for="slot in event.pilot_slots"
-                                    :key="slot.id"
-                                    class="transition-colors hover:bg-slate-50 dark:hover:bg-white/3"
+                                <img
+                                    v-if="airlineLogos[airlineIcao]"
+                                    :src="airlineLogos[airlineIcao]"
+                                    class="h-8 w-20 object-contain"
+                                    :alt="`${airlineIcao} logo`"
+                                />
+                                <span
+                                    v-else
+                                    class="font-mono text-sm font-bold tracking-wider text-slate-900 dark:text-white"
                                 >
-                                    <td
-                                        class="px-4 py-3.5 font-mono font-semibold text-slate-900 dark:text-white"
-                                    >
-                                        <img
-                                            v-if="
-                                                airlineLogos[slot.airline_icao]
-                                            "
-                                            :src="
-                                                airlineLogos[slot.airline_icao]
-                                            "
-                                            class="w-16 object-contain"
-                                            :alt="`${slot.airline_icao} Logo`"
-                                        />
-                                        <span v-else>{{
-                                            slot.airline_icao
-                                        }}</span>
-                                    </td>
-                                    <td
-                                        class="px-4 py-3.5 font-mono font-semibold text-slate-900 dark:text-white"
-                                    >
-                                        {{
-                                            `${slot.airline_icao}${slot.flight_number}`
-                                        }}
-                                    </td>
-                                    <td class="px-4 py-3.5">
-                                        <span
-                                            class="inline-flex items-center gap-1.5 text-slate-700 dark:text-white/75"
+                                    {{ airlineIcao }}
+                                </span>
+                                <span
+                                    class="ml-auto rounded-full border border-slate-200 bg-slate-100 px-2.5 py-0.5 text-xs font-semibold text-slate-500 dark:border-white/15 dark:bg-white/5 dark:text-white/60"
+                                >
+                                    {{ slots.length }}
+                                </span>
+                            </div>
+
+                            <!-- Flights table -->
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-sm">
+                                    <thead>
+                                        <tr
+                                            class="border-b border-slate-200 bg-slate-50 text-left text-xs font-semibold tracking-wider text-slate-500 uppercase dark:border-white/10 dark:bg-white/5 dark:text-white/45"
                                         >
-                                            <span class="font-mono">{{
-                                                slot.origin
-                                            }}</span>
-                                            <MoveRight
-                                                class="h-3.5 w-3.5 shrink-0 text-slate-400 dark:text-white/35"
+                                            <th class="px-4 py-3">
+                                                {{ $t('Callsign') }}
+                                            </th>
+                                            <th class="px-4 py-3">
+                                                {{ $t('Route') }}
+                                            </th>
+                                            <th class="px-4 py-3">
+                                                {{ $t('Aircraft') }}
+                                            </th>
+                                            <th class="px-4 py-3">
+                                                {{ $t('Departs At') }}
+                                            </th>
+                                            <th class="px-4 py-3">
+                                                {{ $t('Gate') }}
+                                            </th>
+                                            <th
+                                                v-if="isLoggedIn"
+                                                class="px-4 py-3"
+                                            >
+                                                {{ $t('Status') }}
+                                            </th>
+                                            <th
+                                                v-if="isLoggedIn"
+                                                class="px-4 py-3"
+                                            >
+                                                {{ $t('Pilot') }}
+                                            </th>
+                                            <th
+                                                v-if="isLoggedIn"
+                                                class="w-10 px-4 py-3"
                                             />
-                                            <span class="font-mono">{{
-                                                slot.destination
-                                            }}</span>
-                                        </span>
-                                    </td>
-                                    <td
-                                        class="px-4 py-3.5 text-slate-600 dark:text-white/65"
+                                        </tr>
+                                    </thead>
+                                    <tbody
+                                        class="divide-y divide-slate-100 dark:divide-white/5"
                                     >
-                                        {{ slot.aircraft }}
-                                    </td>
-                                    <td
-                                        class="px-4 py-3.5 text-slate-600 dark:text-white/65"
-                                    >
-                                        {{
-                                            formatDateTime(
-                                                slot.departs_at,
-                                                locale,
-                                            )
-                                        }}
-                                    </td>
-                                    <td
-                                        class="px-4 py-3.5 text-slate-500 dark:text-white/45"
-                                    >
-                                        {{ slot.gate ?? '—' }}
-                                    </td>
-                                    <td v-if="isLoggedIn" class="px-4 py-3.5">
-                                        <Badge
-                                            :variant="
-                                                SlotsConstants.statusVariants[
-                                                    slot.status
-                                                ]
-                                            "
-                                            class="text-xs"
+                                        <tr
+                                            v-for="slot in slots"
+                                            :key="slot.id"
+                                            class="transition-colors hover:bg-slate-50 dark:hover:bg-white/3"
                                         >
-                                            {{
-                                                SlotsConstants.statusLabels[
-                                                    slot.status
-                                                ]
-                                            }}
-                                        </Badge>
-                                    </td>
-                                    <td
-                                        v-if="isLoggedIn"
-                                        class="px-4 py-3.5 text-xs text-slate-600 dark:text-white/55"
-                                    >
-                                        <template v-if="slot.pilot">
-                                            {{ slot.pilot.name }} ({{
-                                                slot.pilot.vid
-                                            }})
-                                        </template>
-                                        <span
-                                            v-else
-                                            class="text-slate-400 dark:text-white/25"
-                                            >—</span
-                                        >
-                                    </td>
-                                    <td v-if="isLoggedIn" class="px-4 py-3.5">
-                                        <Button
-                                            v-if="
-                                                slot.status ===
-                                                SlotStatus.AVAILABLE
-                                            "
-                                            size="sm"
-                                            variant="outline"
-                                            class="border-sky-500/40 text-xs text-sky-300 hover:bg-sky-500/15 hover:text-sky-200"
-                                            disabled
-                                        >
-                                            {{ $t('Reserve') }}
-                                        </Button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                                            <td
+                                                class="px-4 py-3.5 font-mono font-semibold text-slate-900 dark:text-white"
+                                            >
+                                                {{
+                                                    `${slot.airline_icao}${slot.flight_number}`
+                                                }}
+                                            </td>
+                                            <td class="px-4 py-3.5">
+                                                <span
+                                                    class="inline-flex items-center gap-1.5 text-slate-700 dark:text-white/75"
+                                                >
+                                                    <span class="font-mono">{{
+                                                        slot.origin
+                                                    }}</span>
+                                                    <MoveRight
+                                                        class="h-3.5 w-3.5 shrink-0 text-slate-400 dark:text-white/35"
+                                                    />
+                                                    <span class="font-mono">{{
+                                                        slot.destination
+                                                    }}</span>
+                                                </span>
+                                            </td>
+                                            <td
+                                                class="px-4 py-3.5 text-slate-600 dark:text-white/65"
+                                            >
+                                                {{ slot.aircraft }}
+                                            </td>
+                                            <td
+                                                class="px-4 py-3.5 text-slate-600 dark:text-white/65"
+                                            >
+                                                {{
+                                                    formatDateTime(
+                                                        slot.departs_at,
+                                                        locale,
+                                                    )
+                                                }}
+                                            </td>
+                                            <td
+                                                class="px-4 py-3.5 text-slate-500 dark:text-white/45"
+                                            >
+                                                {{ slot.gate ?? '—' }}
+                                            </td>
+                                            <td
+                                                v-if="isLoggedIn"
+                                                class="px-4 py-3.5"
+                                            >
+                                                <Badge
+                                                    :variant="
+                                                        SlotsConstants
+                                                            .statusVariants[
+                                                            slot.status
+                                                        ]
+                                                    "
+                                                    class="text-xs"
+                                                >
+                                                    {{
+                                                        SlotsConstants
+                                                            .statusLabels[
+                                                            slot.status
+                                                        ]
+                                                    }}
+                                                </Badge>
+                                            </td>
+                                            <td
+                                                v-if="isLoggedIn"
+                                                class="px-4 py-3.5 text-xs text-slate-600 dark:text-white/55"
+                                            >
+                                                <template v-if="slot.pilot">
+                                                    {{ slot.pilot.name }} ({{
+                                                        slot.pilot.vid
+                                                    }})
+                                                </template>
+                                                <span
+                                                    v-else
+                                                    class="text-slate-400 dark:text-white/25"
+                                                    >—</span
+                                                >
+                                            </td>
+                                            <td
+                                                v-if="isLoggedIn"
+                                                class="px-4 py-3.5"
+                                            >
+                                                <Button
+                                                    v-if="
+                                                        slot.status ===
+                                                        SlotStatus.AVAILABLE
+                                                    "
+                                                    size="sm"
+                                                    variant="outline"
+                                                    class="border-sky-500/40 text-xs text-sky-300 hover:bg-sky-500/15 hover:text-sky-200"
+                                                    disabled
+                                                >
+                                                    {{ $t('Reserve') }}
+                                                </Button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -548,7 +646,9 @@ const atcSlotsByCallsign = computed(() => {
                         }"
                     >
                         <div
-                            v-for="(slots, callsign) in atcSlotsByCallsign"
+                            v-for="(
+                                callsignContent, callsign
+                            ) in atcSlotsByCallsign"
                             :key="callsign"
                             class="flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-white/10 dark:bg-white/3 dark:shadow-none"
                         >
@@ -567,6 +667,19 @@ const atcSlotsByCallsign = computed(() => {
                                 >
                                     {{ callsign }}
                                 </h3>
+                                <div class="ml-auto flex items-center gap-2">
+                                    <span class="text-xs">min.</span>
+                                    <img
+                                        :src="
+                                            callsignContent.min_atc_rating
+                                                .imageUrl
+                                        "
+                                        class="w-20"
+                                        :alt="
+                                            callsignContent.min_atc_rating.label
+                                        "
+                                    />
+                                </div>
                             </div>
 
                             <!-- Time slot rows -->
@@ -574,7 +687,7 @@ const atcSlotsByCallsign = computed(() => {
                                 class="flex flex-col divide-y divide-slate-100 dark:divide-white/5"
                             >
                                 <div
-                                    v-for="slot in slots"
+                                    v-for="slot in callsignContent.slots"
                                     :key="slot.id"
                                     class="flex flex-wrap items-center justify-between gap-3 px-4 py-3"
                                 >
@@ -585,8 +698,9 @@ const atcSlotsByCallsign = computed(() => {
                                         {{ formatAtcTime(slot.starts_at) }}
                                         <span
                                             class="mx-1 text-slate-400 dark:text-white/35"
-                                            >→</span
                                         >
+                                            →
+                                        </span>
                                         {{ formatAtcTime(slot.ends_at) }}
                                     </p>
 
@@ -595,7 +709,11 @@ const atcSlotsByCallsign = computed(() => {
                                         class="flex flex-wrap items-center gap-2"
                                     >
                                         <Badge
-                                            v-if="isLoggedIn"
+                                            v-if="
+                                                isLoggedIn &&
+                                                slot.status !==
+                                                    SlotStatus.AVAILABLE
+                                            "
                                             :variant="
                                                 SlotsConstants.statusVariants[
                                                     slot.status
@@ -609,20 +727,7 @@ const atcSlotsByCallsign = computed(() => {
                                                 ]
                                             }}
                                         </Badge>
-
-                                        <div
-                                            v-if="isLoggedIn && slot.atc"
-                                            class="flex items-center gap-1 text-xs text-slate-500 dark:text-white/50"
-                                        >
-                                            <User class="h-3 w-3 shrink-0" />
-                                            <span>
-                                                {{ slot.atc.name }} ({{
-                                                    slot.atc.vid
-                                                }})
-                                            </span>
-                                        </div>
-
-                                        <Button
+                                        <Link
                                             v-if="
                                                 isLoggedIn &&
                                                 slot.status ===
@@ -630,11 +735,27 @@ const atcSlotsByCallsign = computed(() => {
                                             "
                                             size="sm"
                                             variant="outline"
-                                            class="h-7 border-emerald-500/40 px-2.5 text-xs text-emerald-300 hover:bg-emerald-500/15 hover:text-emerald-200"
-                                            disabled
+                                            :class="{
+                                                'border-emerald-500/40 text-emerald-300 hover:bg-emerald-500/15 hover:text-emerald-200':
+                                                    callsignContent.can_reserve,
+                                                'border-black-500/40 text-black-300 hover:bg-black-500/15 hover:text-black-200':
+                                                    !callsignContent.can_reserve,
+                                            }"
+                                            class="h-7 px-2.5 text-xs"
+                                            :disabled="
+                                                !callsignContent.can_reserve
+                                            "
+                                            method="post"
+                                            :as="Button"
                                         >
-                                            {{ $t('Reserve') }}
-                                        </Button>
+                                            {{
+                                                callsignContent.can_reserve
+                                                    ? $t('Reserve')
+                                                    : $t(
+                                                          "You don't have the required rating",
+                                                      )
+                                            }}
+                                        </Link>
                                     </div>
                                 </div>
                             </div>

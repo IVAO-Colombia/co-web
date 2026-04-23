@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\Ivao;
 
-use App\Services\Ivao\Responses\AtcPosition;
 use Illuminate\Http\Client\PendingRequest;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
 
 class Ivao
@@ -20,9 +18,9 @@ class Ivao
     }
 
     /**
-     * @return Collection<int, AtcPosition>
+     * @return array<int, mixed>
      */
-    public function atcPositions(string $icao): Collection
+    public function atcPositions(string $icao): array
     {
         /** @var array<int, mixed>|null $response */
         $response = $this->baseClient()
@@ -30,21 +28,10 @@ class Ivao
             ->json();
 
         if (! $response) {
-            return collect();
+            return [];
         }
 
-        return collect($response)
-            ->map(fn (array $position): AtcPosition => new AtcPosition(
-                id: $position['id'],
-                airportId: $position['airportId'] ?? $position['centerId'],
-                atcCallsign: $position['atcCallsign'],
-                composePosition: $position['composePosition'],
-                middleIdentifier: $position['middleIdentifier'],
-                position: $position['position'],
-                order: $position['order'],
-                frequency: $position['frequency'],
-                radarRange: $position['radarRange'] ?? null,
-            ));
+        return $response;
     }
 
     /**

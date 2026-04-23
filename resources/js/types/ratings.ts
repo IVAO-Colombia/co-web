@@ -1,7 +1,7 @@
 import { ATCRating, PilotRating } from './backend.d';
 
 export type ATCRatingValue = {
-    key: string;
+    key: keyof typeof ATCRating;
     label: string;
     description: string;
     imageUrl: string;
@@ -73,7 +73,7 @@ export const ATCRatings: Record<ATCRating, ATCRatingValue> = {
 };
 
 export type PilotRatingValue = {
-    key: string;
+    key: keyof typeof PilotRating;
     label: string;
     description: string;
     imageUrl: string;

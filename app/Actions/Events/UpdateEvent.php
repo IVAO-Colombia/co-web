@@ -38,7 +38,7 @@ class UpdateEvent
             ]);
 
             if (! $event->pilotSlots()->reserved()->exists()) {
-                $event->pilotSlots()->delete();
+                $event->pilotSlots()->forceDelete();
 
                 if (! empty($validated['pilot_slots'])) {
                     $pilotSlots = array_map(fn (array $slot): array => [
@@ -61,7 +61,7 @@ class UpdateEvent
             $hasReservedAtcSlots = $event->atcSlots()->reserved()->exists();
 
             if (! $hasReservedAtcSlots) {
-                $event->atcSlots()->delete();
+                $event->atcSlots()->forceDelete();
 
                 if (! empty($validated['atc_slots'])) {
                     $atcSlots = array_map(fn (array $slot): array => [

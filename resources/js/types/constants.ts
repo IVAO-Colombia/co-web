@@ -52,8 +52,8 @@ export const SlotsConstants: SlotsConstantsType = {
         [SlotStatus.CANCELLED]: wTrans('Cancelled'),
     },
     statusVariants: {
-        [SlotStatus.AVAILABLE]: 'secondary',
-        [SlotStatus.RESERVED]: 'default',
+        [SlotStatus.AVAILABLE]: 'outline',
+        [SlotStatus.RESERVED]: 'secondary',
         [SlotStatus.CONFIRMED]: 'default',
         [SlotStatus.CANCELLED]: 'destructive',
     },
