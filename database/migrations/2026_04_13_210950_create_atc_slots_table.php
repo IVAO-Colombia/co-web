@@ -20,9 +20,10 @@ return new class extends Migration
             $table->foreignId('event_id')->constrained();
             $table->foreignId('atc_id')->nullable()->constrained('users');
             $table->string('callsign', 25)->index();
-            $table->time('starts_at');
-            $table->time('ends_at');
+            $table->dateTime('starts_at');
+            $table->dateTime('ends_at');
             $table->string('status', 50);
+            $table->jsonb('ivao_booking')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import { utc } from '@date-fns/utc';
 import { useHttp } from '@inertiajs/vue3';
+import { format, parseISO } from 'date-fns';
 import { wTrans } from 'laravel-vue-i18n';
 import { Loader2, Lock, Plus, Radio, Search, X } from 'lucide-vue-next';
 import { ref } from 'vue';
@@ -23,8 +25,8 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
-import type { AtcPosition, AtcSlotRow } from '@/types';
 import ivao from '@/routes/ivao';
+import type { AtcPosition, AtcSlotRow } from '@/types';
 
 const props = defineProps<{
     slots: AtcSlotRow[];
@@ -108,28 +110,18 @@ function generateAtcSlots(): void {
         return;
     }
 
-    const [startHour, startMin] = props.eventStartsAt
-        .split('T')[1]
-        .split(':')
-        .map(Number);
-    const [endHour, endMin] = props.eventEndsAt
-        .split('T')[1]
-        .split(':')
-        .map(Number);
-
-    const startMinutes = startHour * 60 + startMin;
-    const endMinutes = endHour * 60 + endMin;
+    const startMs = parseISO(props.eventStartsAt, { in: utc }).getTime();
+    const endMs = parseISO(props.eventEndsAt, { in: utc }).getTime();
+    const hourMs = 60 * 60 * 1000;
 
     const newSlots: AtcSlotRow[] = [];
 
-    for (
-        let slotStart = startMinutes;
-        slotStart < endMinutes;
-        slotStart += 60
-    ) {
-        const slotEnd = Math.min(slotStart + 60, endMinutes);
-        const startsAt = `${String(Math.floor(slotStart / 60)).padStart(2, '0')}:${String(slotStart % 60).padStart(2, '0')}`;
-        const endsAt = `${String(Math.floor(slotEnd / 60)).padStart(2, '0')}:${String(slotEnd % 60).padStart(2, '0')}`;
+    for (let ms = startMs; ms < endMs; ms += hourMs) {
+        const slotEndMs = Math.min(ms + hourMs, endMs);
+        const startsAt = format(new Date(ms), 'yyyy-MM-dd HH:mm', { in: utc });
+        const endsAt = format(new Date(slotEndMs), 'yyyy-MM-dd HH:mm', {
+            in: utc,
+        });
 
         for (const callsign of selectedCallsigns.value) {
             newSlots.push({ callsign, starts_at: startsAt, ends_at: endsAt });

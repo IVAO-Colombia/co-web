@@ -44,11 +44,4 @@ class PilotSlotFactory extends Factory
             'status' => SlotStatus::CONFIRMED,
         ]);
     }
-
-    public function cancelled(): self
-    {
-        return $this->state(fn (array $attributes) => [
-            'status' => SlotStatus::CANCELLED,
-        ]);
-    }
 }

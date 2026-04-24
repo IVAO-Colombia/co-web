@@ -37,6 +37,7 @@ export enum PagesComponents {
     LANDING_HOME = 'Welcome',
     LANDING_EVENTS = 'landing/events/Index',
     LANDING_EVENTS_SHOW = 'landing/events/Show',
+    LANDING_ABOUT_US = 'landing/Aboutus',
 }
 export enum Permission {
     STAFF_ACCESS = 'staff_access',
@@ -82,7 +83,6 @@ export enum SlotStatus {
     AVAILABLE = 'available',
     RESERVED = 'reserved',
     CONFIRMED = 'confirmed',
-    CANCELLED = 'cancelled',
 }
 export enum UserAwardReportStatus {
     PENDING = 'pending',

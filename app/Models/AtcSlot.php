@@ -18,9 +18,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int $event_id
  * @property int|null $atc_id
  * @property string $callsign
- * @property string $starts_at
- * @property string $ends_at
+ * @property CarbonImmutable $starts_at
+ * @property CarbonImmutable $ends_at
  * @property SlotStatus $status
+ * @property array<string, mixed>|null $ivao_booking
  * @property CarbonImmutable|null $created_at
  * @property CarbonImmutable|null $updated_at
  * @property CarbonImmutable|null $deleted_at
@@ -58,7 +59,10 @@ class AtcSlot extends Model
             'id' => 'integer',
             'event_id' => 'integer',
             'atc_id' => 'integer',
+            'starts_at' => 'immutable_datetime',
+            'ends_at' => 'immutable_datetime',
             'status' => SlotStatus::class,
+            'ivao_booking' => 'array',
         ];
     }
 

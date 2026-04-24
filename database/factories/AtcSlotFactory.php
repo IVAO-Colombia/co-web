@@ -22,8 +22,9 @@ class AtcSlotFactory extends Factory
         return [
             'event_id' => Event::factory(),
             'callsign' => fake()->regexify('[A-Z]{4}_[A-Z]{2}'),
-            'starts_at' => fake()->time(),
-            'ends_at' => fake()->time(),
+            'starts_at' => fake()->dateTimeThisYear(),
+            'ends_at' => fake()->dateTimeThisYear(),
+            'ivao_booking' => null,
             'status' => SlotStatus::AVAILABLE,
         ];
     }
@@ -39,13 +40,6 @@ class AtcSlotFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'status' => SlotStatus::CONFIRMED,
-        ]);
-    }
-
-    public function cancelled(): self
-    {
-        return $this->state(fn (array $attributes) => [
-            'status' => SlotStatus::CANCELLED,
         ]);
     }
 }
