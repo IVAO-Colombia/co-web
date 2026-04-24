@@ -1,7 +1,45 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { BookOpen } from 'lucide-vue-next';
+import { onMounted, ref } from 'vue';
 import Header from '@/components/landing/Header.vue';
+
+gsap.registerPlugin(ScrollTrigger);
+
+const heroRef = ref<HTMLElement | null>(null);
+const missionRef = ref<HTMLElement | null>(null);
+const imageRef = ref<HTMLElement | null>(null);
+
+onMounted(() => {
+    const targets = [heroRef.value, missionRef.value, imageRef.value].filter(
+        Boolean,
+    );
+
+    gsap.from(targets, {
+        opacity: 0,
+        y: 40,
+        duration: 1,
+        ease: 'power3.out',
+        stagger: 0.15,
+        scrollTrigger: {
+            trigger: heroRef.value,
+            start: 'top 80%',
+        },
+    });
+
+    gsap.to('.parallax-bg', {
+        yPercent: 12,
+        ease: 'none',
+        scrollTrigger: {
+            trigger: heroRef.value,
+            start: 'top top',
+            end: 'bottom top',
+            scrub: true,
+        },
+    });
+});
 </script>
 
 <template>
@@ -12,7 +50,7 @@ import Header from '@/components/landing/Header.vue';
     >
         <Header brand-tone="auto" />
 
-        <div class="absolute inset-0">
+        <div class="parallax-bg absolute inset-0">
             <!-- Light image -->
             <img
                 src="/about_day.jpg"
@@ -57,7 +95,10 @@ import Header from '@/components/landing/Header.vue';
                 </Link>
             </div>
 
-            <div class="flex flex-1 items-center py-12 sm:py-16 lg:py-20">
+            <div
+                ref="heroRef"
+                class="flex flex-1 items-center py-12 sm:py-16 lg:py-20"
+            >
                 <div class="grid w-full gap-10 lg:grid-cols-12 lg:gap-12">
                     <div class="lg:col-span-7">
                         <h1
@@ -76,12 +117,12 @@ import Header from '@/components/landing/Header.vue';
                             }}
                         </p>
                     </div>
-                    <div class="w-full lg:col-span-5">
+                    <div ref="imageRef" class="w-full lg:col-span-5">
                         <div class="mt-8">
                             <img
                                 src="/image_about.jpg"
                                 alt="About IVAO Colombia"
-                                class="rounded-2xl border border-slate-300/70 bg-white/75 object-cover backdrop-blur-sm dark:border-white/12 dark:bg-black/25"
+                                class="rounded-2xl border border-slate-300/70 bg-white/75 object-cover backdrop-blur-sm hover:scale-105 hover:transform hover:duration-200 dark:border-white/12 dark:bg-black/25"
                             />
                         </div>
                     </div>
@@ -90,12 +131,12 @@ import Header from '@/components/landing/Header.vue';
                 </div>
             </div>
 
-            <div id="our-mission" class="pb-10 sm:pb-14">
+            <div ref="missionRef" id="our-mission" class="pb-10 sm:pb-14">
                 <div
                     class="max-w-4xl rounded-2xl border border-slate-300/70 bg-white/75 p-6 backdrop-blur-sm sm:p-8 dark:border-white/12 dark:bg-black/25"
                 >
                     <h2 class="text-2xl font-black tracking-tight sm:text-3xl">
-                        Nuestra misión
+                        {{ $t('Our Beginnings') }}
                     </h2>
                     <p
                         class="mt-4 text-sm leading-relaxed text-slate-700 sm:text-base dark:text-white/78"

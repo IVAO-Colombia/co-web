@@ -146,3 +146,17 @@ export function getDateParts(
 
     return { day, month, year, time };
 }
+
+export function toUTCDateTime(value: string | null | undefined): string {
+    if (!value) {
+        return '';
+    }
+
+    try {
+        return format(parseISO(value, { in: utc }), 'yyyy-MM-dd HH:mm', {
+            in: utc,
+        });
+    } catch {
+        return '';
+    }
+}

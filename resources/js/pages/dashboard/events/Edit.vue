@@ -3,6 +3,10 @@ import { Head, Link, setLayoutProps, useForm } from '@inertiajs/vue3';
 import { wTrans } from 'laravel-vue-i18n';
 import { AlertCircle, ChevronLeft, ImagePlus, X } from 'lucide-vue-next';
 import { computed, onUnmounted, ref } from 'vue';
+import {
+    edit,
+    update,
+} from '@/actions/App/Http/Controllers/Dashboard/EventsController';
 import AtcSlotsCard from '@/components/dashboard/events/AtcSlotsCard.vue';
 import PilotSlotsCard from '@/components/dashboard/events/PilotSlotsCard.vue';
 import InputError from '@/components/InputError.vue';
@@ -27,6 +31,8 @@ import {
 } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
+import { toUTCDateTime } from '@/lib/utils';
+import { show as showRoute, index } from '@/routes/dashboard/events';
 import {
     EventConstants,
     EventTag,
@@ -39,11 +45,6 @@ import type {
     EventType,
     PilotSlotRow,
 } from '@/types';
-import {
-    edit,
-    update,
-} from '@/actions/App/Http/Controllers/Dashboard/EventsController';
-import { show as showRoute, index } from '@/routes/dashboard/events';
 
 type EventForm = {
     name: string;
@@ -69,46 +70,6 @@ const props = defineProps<{
     hasReservedAtcSlots: boolean;
 }>();
 
-function toDateTimeLocal(value: string | null | undefined): string {
-    if (!value) {
-        return '';
-    }
-
-    const d = new Date(value);
-
-    if (isNaN(d.getTime())) {
-        return '';
-    }
-
-    const yyyy = d.getUTCFullYear();
-    const MM = String(d.getUTCMonth() + 1).padStart(2, '0');
-    const dd = String(d.getUTCDate()).padStart(2, '0');
-    const HH = String(d.getUTCHours()).padStart(2, '0');
-    const mm = String(d.getUTCMinutes()).padStart(2, '0');
-
-    return `${yyyy}-${MM}-${dd}T${HH}:${mm}`;
-}
-
-function toPilotDepartsAt(value: string): string {
-    const d = new Date(value);
-
-    if (isNaN(d.getTime())) {
-        return value;
-    }
-
-    const yyyy = d.getUTCFullYear();
-    const MM = String(d.getUTCMonth() + 1).padStart(2, '0');
-    const dd = String(d.getUTCDate()).padStart(2, '0');
-    const HH = String(d.getUTCHours()).padStart(2, '0');
-    const mm = String(d.getUTCMinutes()).padStart(2, '0');
-
-    return `${yyyy}-${MM}-${dd} ${HH}:${mm}`;
-}
-
-function toTimeHHMM(value: string): string {
-    return value.substring(0, 5);
-}
-
 setLayoutProps({
     breadcrumbs: [
         { title: wTrans('Events'), href: index() },
@@ -130,8 +91,8 @@ const form = useForm<EventForm>({
     description_en: props.event.description_en ?? '',
     type: props.event.type,
     locations: props.event.locations,
-    starts_at: toDateTimeLocal(props.event.starts_at),
-    ends_at: toDateTimeLocal(props.event.ends_at),
+    starts_at: toUTCDateTime(props.event.starts_at),
+    ends_at: toUTCDateTime(props.event.ends_at),
     image: null,
     tags: [...props.event.tags],
     status: props.event.status,
@@ -143,7 +104,7 @@ const form = useForm<EventForm>({
             aircraft: slot.aircraft,
             origin: slot.origin,
             destination: slot.destination,
-            departs_at: toPilotDepartsAt(slot.departs_at),
+            departs_at: toUTCDateTime(slot.departs_at),
             gate: slot.gate ?? '',
         }),
     ),
@@ -151,8 +112,8 @@ const form = useForm<EventForm>({
     atc_slots: props.event.atc_slots.map(
         (slot): AtcSlotRow => ({
             callsign: slot.callsign,
-            starts_at: toTimeHHMM(slot.starts_at),
-            ends_at: toTimeHHMM(slot.ends_at),
+            starts_at: toUTCDateTime(slot.starts_at),
+            ends_at: toUTCDateTime(slot.ends_at),
         }),
     ),
 });
