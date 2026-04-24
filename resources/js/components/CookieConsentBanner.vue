@@ -6,27 +6,7 @@ const STORAGE_KEY = 'ivao_cookie_consent_v1';
 
 const isMounted = ref(false);
 const hasDecision = ref(false);
-const { locale } = useLocale();
 
-const text = computed(() => {
-    if (locale.value === 'es') {
-        return {
-            title: 'Uso de cookies',
-            description:
-                'Usamos cookies para mejorar tu experiencia y analizar el trafico del sitio. Al continuar, aceptas su uso.',
-            reject: 'Rechazar',
-            accept: 'Aceptar',
-        };
-    }
-
-    return {
-        title: 'Cookie usage',
-        description:
-            'We use cookies to improve your experience and analyze site traffic. By continuing, you accept their use.',
-        reject: 'Reject',
-        accept: 'Accept',
-    };
-});
 
 const shouldShowBanner = computed(() => isMounted.value && !hasDecision.value);
 
@@ -83,12 +63,12 @@ onMounted(() => {
             aria-label="Cookie consent"
         >
             <p class="text-sm font-semibold text-slate-900 dark:text-slate-100">
-                {{ text.title }}
+                {{ $t('Cookie usage') }}
             </p>
             <p
                 class="mt-1.5 text-sm leading-5 text-slate-600 dark:text-slate-300"
             >
-                {{ text.description }}
+                {{ $t('This site uses functional cookies that are necessary for it to work properly. We do not use tracking or advertising cookies.') }}
             </p>
 
             <div class="mt-3 flex items-center justify-end gap-2">
@@ -97,14 +77,14 @@ onMounted(() => {
                     class="inline-flex items-center rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-700"
                     @click="setConsent('rejected')"
                 >
-                    {{ text.reject }}
+                    {{ $t('Reject') }}
                 </button>
                 <button
                     type="button"
                     class="inline-flex items-center rounded-lg bg-[#1d4ed8] px-3 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#1e40af]"
                     @click="setConsent('accepted')"
                 >
-                    {{ text.accept }}
+                    {{ $t('Accept') }}
                 </button>
             </div>
         </aside>

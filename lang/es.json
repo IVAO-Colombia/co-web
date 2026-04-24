@@ -218,5 +218,9 @@
     "Log in to reserve": "Inicia sesión para reservar",
     "No pilot slots available for this event.": "No hay cupos de piloto disponibles para este evento.",
     "Log in to see slot availability and reserve your ATC position.": "Inicia sesión para ver la disponibilidad de cupos y reservar tu posición de ATC.",
-    "You don't have the required rating": "No tienes la calificación requerida"
+    "You don't have the required rating": "No tienes la calificación requerida",
+    "Cookie usage": "Uso de cookies",
+    "This site uses functional cookies that are necessary for it to work properly. We do not use tracking or advertising cookies.": "Este sitio utiliza cookies funcionales que son necesarias para que funcione correctamente. No utilizamos cookies de seguimiento o publicidad.",
+    "Reject": "Rechazar",
+    "Accept": "Aceptar"
 }
