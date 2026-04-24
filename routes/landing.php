@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
+use App\Enums\PagesComponents;
 use App\Http\Controllers\HomePageController;
 use App\Http\Controllers\Landing\EventsController;
 use Illuminate\Support\Facades\Route;
-use App\Enums\PagesComponents;
 
 Route::get('/', HomePageController::class)->name('home');
 Route::get('/events', [EventsController::class, 'index'])->name('home.events');
