@@ -6,7 +6,6 @@ const STORAGE_KEY = 'ivao_cookie_consent_v1';
 const isMounted = ref(false);
 const hasDecision = ref(false);
 
-
 const shouldShowBanner = computed(() => isMounted.value && !hasDecision.value);
 
 function setCookie(name: string, value: string, days = 365): void {
@@ -67,7 +66,11 @@ onMounted(() => {
             <p
                 class="mt-1.5 text-sm leading-5 text-slate-600 dark:text-slate-300"
             >
-                {{ $t('This site uses functional cookies that are necessary for it to work properly. We do not use tracking or advertising cookies.') }}
+                {{
+                    $t(
+                        'This site uses functional cookies that are necessary for it to work properly. We do not use tracking or advertising cookies.',
+                    )
+                }}
             </p>
 
             <div class="mt-3 flex items-center justify-end gap-2">
