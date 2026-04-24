@@ -63,7 +63,7 @@ const menuSections: MenuSection[] = [
         items: [
             {
                 title: 'About Us',
-                href: '#about-us-introduction',
+                href: '/about-us',
                 description: 'Learn more about IVAO Colombia.',
             },
             {
@@ -297,12 +297,12 @@ function toggleMobileSection(sectionTitle: string): void {
                     />
                     <template v-if="props.brandText">
                         <span
-                            class="hidden h-8 w-px bg-white/25 xl:block"
+                            class="hidden h-8 w-px bg-[var(--color-primary)] dark:bg-white/25 xl:block"
                         ></span>
                         <h1
-                            class="hidden max-w-40 truncate font-heading text-[0.95rem] font-bold tracking-[0.08em] whitespace-nowrap text-white xl:block 2xl:max-w-56"
+                            class="hidden max-w-40 truncate font-heading text-[0.95rem] font-bold tracking-[0.08em] whitespace-nowrap text-[var(--color-primary)] xl:block 2xl:max-w-56 dark:text-white/90"
                         >
-                            {{ props.brandText }}
+                            {{$t(props.brandText)}}
                         </h1>
                     </template>
                 </a>
