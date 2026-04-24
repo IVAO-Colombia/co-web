@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
-import { useLocale } from '@/composables/useLocale';
 
 const STORAGE_KEY = 'ivao_cookie_consent_v1';
 
