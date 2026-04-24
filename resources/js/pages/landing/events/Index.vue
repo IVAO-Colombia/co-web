@@ -16,23 +16,21 @@ defineProps<{
     <section
         class="relative min-h-screen overflow-hidden bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-white"
     >
-        <Header
-            :brand-text="$t('Events').toLocaleUpperCase()"
-        />
+        <Header :brand-text="$t('Events').toLocaleUpperCase()" />
 
-    <div class="absolute inset-0">
-        <img
-            src="/fonodo.jpg"
-            alt="IVAO Colombia events background"
-            class="h-full w-full object-cover opacity-75 dark:opacity-35"
-        />
-        <div
-            class="absolute inset-0 bg-linear-to-b from-white/40 via-slate-100/70 to-slate-50 dark:from-black/35 dark:via-slate-950/75 dark:to-slate-950"
-        ></div>
-        <div
-            class="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(13,44,153,0.18),transparent_45%)] dark:bg-[radial-gradient(circle_at_top,rgba(47,69,255,0.28),transparent_45%)]"
-        ></div>
-    </div>
+        <div class="absolute inset-0">
+            <img
+                src="/fonodo.jpg"
+                alt="IVAO Colombia events background"
+                class="h-full w-full object-cover opacity-75 dark:opacity-35"
+            />
+            <div
+                class="absolute inset-0 bg-linear-to-b from-white/40 via-slate-100/70 to-slate-50 dark:from-black/35 dark:via-slate-950/75 dark:to-slate-950"
+            ></div>
+            <div
+                class="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(13,44,153,0.18),transparent_45%)] dark:bg-[radial-gradient(circle_at_top,rgba(47,69,255,0.28),transparent_45%)]"
+            ></div>
+        </div>
 
         <div
             class="relative z-10 mx-auto flex min-h-screen w-full max-w-7xl flex-col px-4 py-5 sm:px-6 lg:px-8"
