@@ -19,9 +19,6 @@ import { Button } from '@/components/ui/button';
 import { useLocale } from '@/composables/useLocale';
 import { Ivao } from '@/lib/ivao';
 import { formatAtcTime, formatDateTime, getDateParts } from '@/lib/utils';
-import auth from '@/routes/auth';
-import { events } from '@/routes/home';
-import atcSlotRoutes from '@/routes/home/events/atc-slot';
 import {
     ATCRatings,
     EventConstants,
@@ -35,6 +32,9 @@ import type {
     AtcSlot,
     EventDetail,
 } from '@/types';
+import auth from '@/routes/auth';
+import { events } from '@/routes/home';
+import atcSlotRoutes from '@/routes/home/events/atc-slot';
 
 const props = defineProps<{
     event: EventDetail;
