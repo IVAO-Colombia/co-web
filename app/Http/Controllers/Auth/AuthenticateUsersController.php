@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Auth;
 
 use App\Actions\Auth\CreateUser;
+use App\Actions\Auth\StoreOAuthToken;
 use App\Actions\Auth\SyncUserRoles;
 use App\Http\Controllers\Controller;
 use App\Models\User;
@@ -18,10 +19,15 @@ class AuthenticateUsersController extends Controller
 {
     public function __invoke(): RedirectResponse
     {
-        Pipeline::send(Socialite::driver('ivao')->user())
+        /** @var SocialiteUser $ivaoUser */
+        $ivaoUser = Socialite::driver('ivao')->user();
+
+        /** @var User $user */
+        $user = Pipeline::send($ivaoUser)
             ->through([
-                fn (SocialiteUser $ivaoUser, Closure $next) => $next(new CreateUser()->handle($ivaoUser)),
+                fn (SocialiteUser $user, Closure $next) => $next(new CreateUser()->handle($user)),
                 fn (User $user, Closure $next) => $next(new SyncUserRoles()->handle($user)),
+                fn (User $user, Closure $next) => $next(new StoreOAuthToken()->handle($user, $ivaoUser)),
             ])
             ->then(fn (User $user) => auth()->guard()->login($user));
 

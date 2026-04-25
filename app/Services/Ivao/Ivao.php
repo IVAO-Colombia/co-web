@@ -10,12 +10,17 @@ use Illuminate\Support\Facades\Http;
 
 class Ivao
 {
-    private function baseClient(): PendingRequest
+    private function baseClientApiKey(): PendingRequest
     {
         return Http::baseUrl(config('services.ivao.api_url'))
             ->withHeaders([
                 'apiKey' => config('services.ivao.api_key'),
             ]);
+    }
+
+    private function baseClient(): PendingRequest
+    {
+        return Http::baseUrl(config('services.ivao.api_url'));
     }
 
     /**
@@ -24,7 +29,7 @@ class Ivao
     public function atcPositions(string $icao): array
     {
         /** @var array<int, mixed>|null $response */
-        $response = $this->baseClient()
+        $response = $this->baseClientApiKey()
             ->get("/airports/{$icao}/ATCPositions")
             ->json();
 
@@ -45,7 +50,7 @@ class Ivao
 
         do {
             /** @var array{totalItems: int, perPage: int, page: int, pages: int, items: array<int, mixed>}|null $response */
-            $response = $this->baseClient()
+            $response = $this->baseClientApiKey()
                 ->get('/fras', [
                     'page' => $page,
                     'countryId' => 'CO',
@@ -74,7 +79,7 @@ class Ivao
     public function allAtcPositions(): array
     {
         /** @var array<int, mixed>|null $result */
-        $result = $this->baseClient()
+        $result = $this->baseClientApiKey()
             ->get('/positions/search', [
                 'countryId' => 'CO',
                 'limit' => '100',
@@ -94,21 +99,24 @@ class Ivao
      */
     public function checkAtcReservationEligibility(string $callsign, int $vid, string $startDate): Response
     {
-        return $this->baseClient()
+        return $this->baseClientApiKey()
             ->get("/fras/check/{$callsign}/{$vid}", [
                 'startDate' => $startDate,
             ]);
     }
 
     /**
-     * Create an ATC booking on IVAO.
-     *
      * @param  string  $startDate  ISO-8601 datetime, e.g. "2023-09-10T14:00:00+00:00"
      * @param  string  $endDate  ISO-8601 datetime, e.g. "2023-09-10T15:00:00+00:00"
      */
-    public function createAtcBooking(string $atcPosition, string $startDate, string $endDate): Response
-    {
+    public function createAtcBookingAsUser(
+        string $accessToken,
+        string $atcPosition,
+        string $startDate,
+        string $endDate,
+    ): Response {
         return $this->baseClient()
+            ->withToken($accessToken)
             ->post('/atc/bookings', [
                 'atcPosition' => $atcPosition,
                 'training' => null,
@@ -116,5 +124,15 @@ class Ivao
                 'startDate' => $startDate,
                 'endDate' => $endDate,
             ]);
+    }
+
+    public function refreshAccessToken(string $refreshToken): Response
+    {
+        return $this->baseClient()->post('/oauth/token', [
+            'grant_type' => 'refresh_token',
+            'client_id' => config('services.ivao.client_id'),
+            'client_secret' => config('services.ivao.client_secret'),
+            'refresh_token' => $refreshToken,
+        ]);
     }
 }

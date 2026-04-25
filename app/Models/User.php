@@ -10,6 +10,7 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Notifications\DatabaseNotificationCollection;
@@ -33,6 +34,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property string|null $remember_token
  * @property CarbonImmutable|null $created_at
  * @property CarbonImmutable|null $updated_at
+ * @property-read UserOAuthToken|null $oauthToken
  * @property-read DatabaseNotificationCollection<int, DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
  * @property-read Collection<int, Permission> $permissions
@@ -70,5 +72,11 @@ class User extends Authenticatable
         return [
             'raw_data' => 'json',
         ];
+    }
+
+    /** @return HasOne<UserOAuthToken, $this> */
+    public function oauthToken(): HasOne
+    {
+        return $this->hasOne(UserOAuthToken::class);
     }
 }

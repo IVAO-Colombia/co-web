@@ -8,6 +8,7 @@ use App\Enums\SlotStatus;
 use App\Models\AtcSlot;
 use App\Models\Event;
 use App\Models\User;
+use App\Models\UserOAuthToken;
 use Illuminate\Support\Facades\Http;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -23,6 +24,7 @@ class AtcSlotReservationTest extends TestCase
         ]);
 
         $user = User::factory()->create(['atc_rating' => 5, 'vid' => 123456]);
+        UserOAuthToken::factory()->for($user)->create();
         $event = Event::factory()->create();
         $slot = AtcSlot::factory()->for($event)->create([
             'status' => SlotStatus::AVAILABLE,
@@ -143,6 +145,7 @@ class AtcSlotReservationTest extends TestCase
         ]);
 
         $user = User::factory()->create(['vid' => 123456]);
+        UserOAuthToken::factory()->for($user)->create();
         $event = Event::factory()->create();
         $slot = AtcSlot::factory()->for($event)->create([
             'status' => SlotStatus::AVAILABLE,
@@ -170,6 +173,7 @@ class AtcSlotReservationTest extends TestCase
         ]);
 
         $user = User::factory()->create(['vid' => 123456]);
+        UserOAuthToken::factory()->for($user)->create();
         $event = Event::factory()->create();
         $slot = AtcSlot::factory()->for($event)->create([
             'status' => SlotStatus::AVAILABLE,
@@ -199,6 +203,7 @@ class AtcSlotReservationTest extends TestCase
         ]);
 
         $user = User::factory()->create(['vid' => 123456]);
+        UserOAuthToken::factory()->for($user)->create();
         $event = Event::factory()->create();
         $slot = AtcSlot::factory()->for($event)->create([
             'status' => SlotStatus::AVAILABLE,
@@ -212,6 +217,84 @@ class AtcSlotReservationTest extends TestCase
 
         $response->assertRedirect(route('home.events.show', $event));
         $response->assertSessionHas('error', 'Not authorized to book this position');
+        $this->assertEquals(SlotStatus::AVAILABLE, $slot->fresh()->status);
+    }
+
+    #[Test]
+    public function redirects_to_auth_when_user_has_no_oauth_token(): void
+    {
+        Http::fake([
+            '*/v2/fras/check/*' => Http::response([], 200),
+        ]);
+
+        $user = User::factory()->create(['vid' => 123456]);
+        $event = Event::factory()->create();
+        $slot = AtcSlot::factory()->for($event)->create([
+            'status' => SlotStatus::AVAILABLE,
+            'starts_at' => now()->addDay()->setTime(14, 0),
+            'ends_at' => now()->addDay()->setTime(15, 0),
+        ]);
+
+        $response = $this->actingAs($user)
+            ->post(route('home.events.atc-slot.store', ['event' => $event->slug, 'slot' => $slot->id]));
+
+        $response->assertRedirect(route('auth.redirect'));
+        $this->assertEquals(SlotStatus::AVAILABLE, $slot->fresh()->status);
+    }
+
+    #[Test]
+    public function refreshes_expired_token_and_successfully_books(): void
+    {
+        $newAccessToken = 'new-access-token-abc';
+
+        Http::fake([
+            '*/v2/fras/check/*' => Http::response([], 200),
+            '*/v2/oauth/token' => Http::response([
+                'access_token' => $newAccessToken,
+                'refresh_token' => 'new-refresh-token',
+                'expires_in' => 3600,
+            ], 200),
+            '*/v2/atc/bookings' => Http::response(['id' => 'booking-456'], 201),
+        ]);
+
+        $user = User::factory()->create(['vid' => 123456]);
+        UserOAuthToken::factory()->for($user)->expired()->create();
+        $event = Event::factory()->create();
+        $slot = AtcSlot::factory()->for($event)->create([
+            'status' => SlotStatus::AVAILABLE,
+            'starts_at' => now()->addDay()->setTime(14, 0),
+            'ends_at' => now()->addDay()->setTime(15, 0),
+        ]);
+
+        $response = $this->actingAs($user)
+            ->post(route('home.events.atc-slot.store', ['event' => $event->slug, 'slot' => $slot->id]));
+
+        $response->assertRedirect(route('home.events.show', $event));
+        $response->assertSessionHas('success');
+        $this->assertEquals(SlotStatus::RESERVED, $slot->fresh()->status);
+    }
+
+    #[Test]
+    public function redirects_to_auth_when_token_refresh_fails(): void
+    {
+        Http::fake([
+            '*/v2/fras/check/*' => Http::response([], 200),
+            '*/v2/oauth/token' => Http::response(['error' => 'invalid_grant'], 400),
+        ]);
+
+        $user = User::factory()->create(['vid' => 123456]);
+        UserOAuthToken::factory()->for($user)->expired()->create();
+        $event = Event::factory()->create();
+        $slot = AtcSlot::factory()->for($event)->create([
+            'status' => SlotStatus::AVAILABLE,
+            'starts_at' => now()->addDay()->setTime(14, 0),
+            'ends_at' => now()->addDay()->setTime(15, 0),
+        ]);
+
+        $response = $this->actingAs($user)
+            ->post(route('home.events.atc-slot.store', ['event' => $event->slug, 'slot' => $slot->id]));
+
+        $response->assertRedirect(route('auth.redirect'));
         $this->assertEquals(SlotStatus::AVAILABLE, $slot->fresh()->status);
     }
 }

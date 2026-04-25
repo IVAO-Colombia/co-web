@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\Events;
 
+use App\Actions\Auth\RefreshOAuthToken;
 use App\Enums\SlotStatus;
 use App\Exceptions\AtcReauthRequiredException;
 use App\Exceptions\AtcReservationNotAllowedException;
@@ -37,7 +38,15 @@ class ReserveAtcSlot
             $eligibilityResponse->json('message') ?? ''
         );
 
-        $bookingResponse = $this->ivao->createAtcBooking(
+        $oauthToken = $user->oauthToken;
+        throw_if($oauthToken === null, AtcReauthRequiredException::class);
+
+        if ($oauthToken->isExpired()) {
+            $oauthToken = (new RefreshOAuthToken($this->ivao))->handle($oauthToken);
+        }
+
+        $bookingResponse = $this->ivao->createAtcBookingAsUser(
+            accessToken: $oauthToken->access_token,
             atcPosition: $slot->callsign,
             startDate: $slot->starts_at->toIso8601String(),
             endDate: $slot->ends_at->toIso8601String(),
