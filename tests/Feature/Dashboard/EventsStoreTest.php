@@ -160,18 +160,20 @@ class EventsStoreTest extends TestCase
     {
         $user = User::factory()->director()->create();
 
+        $startDate1 = now();
+        $endDate1 = now()->addHour();
         $payload = array_merge($this->validPayload(), [
             'atc_slots_enabled' => true,
             'atc_slots' => [
                 [
                     'callsign' => 'SEQM_APP',
-                    'starts_at' => '18:00',
-                    'ends_at' => '20:00',
+                    'starts_at' => $startDate1->format('Y-m-d H:i'),
+                    'ends_at' => $endDate1->format('Y-m-d H:i'),
                 ],
                 [
                     'callsign' => 'SEQM_TWR',
-                    'starts_at' => '18:00',
-                    'ends_at' => '22:00',
+                    'starts_at' => $startDate1->format('Y-m-d H:i'),
+                    'ends_at' => $endDate1->addHour()->format('Y-m-d H:i'),
                 ],
             ],
         ]);
@@ -186,8 +188,8 @@ class EventsStoreTest extends TestCase
         $this->assertDatabaseHas('atc_slots', [
             'event_id' => $event->id,
             'callsign' => 'SEQM_APP',
-            'starts_at' => '18:00',
-            'ends_at' => '20:00',
+            'starts_at' => $startDate1->startOfMinute()->toDateTimeString(),
+            'ends_at' => $endDate1->startOfMinute()->toDateTimeString(),
         ]);
     }
 

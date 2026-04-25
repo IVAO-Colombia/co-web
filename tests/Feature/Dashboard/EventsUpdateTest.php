@@ -28,8 +28,8 @@ class EventsUpdateTest extends TestCase
             'description_en' => $event->description_en ?? '',
             'type' => $event->type->value,
             'locations' => $event->locations,
-            'starts_at' => '2026-06-01T18:00',
-            'ends_at' => '2026-06-01T22:00',
+            'starts_at' => '2026-06-01 18:00',
+            'ends_at' => '2026-06-01 22:00',
             'tags' => [],
             'status' => EventStatus::ACTIVE->value,
             'pilot_slots_enabled' => false,
@@ -122,7 +122,7 @@ class EventsUpdateTest extends TestCase
             ->put(route('dashboard.events.update', $event), array_merge($this->validPayload($event), [
                 'atc_slots_enabled' => true,
                 'atc_slots' => [
-                    ['callsign' => 'SEQM_APP', 'starts_at' => '18:00', 'ends_at' => '19:00'],
+                    ['callsign' => 'SEQM_APP', 'starts_at' => now()->format('Y-m-d H:i'), 'ends_at' => now()->addHour()->format('Y-m-d H:i')],
                 ],
             ]));
 
@@ -144,7 +144,7 @@ class EventsUpdateTest extends TestCase
             ->put(route('dashboard.events.update', $event), array_merge($this->validPayload($event), [
                 'atc_slots_enabled' => true,
                 'atc_slots' => [
-                    ['callsign' => 'NEW_APP', 'starts_at' => '20:00', 'ends_at' => '21:00'],
+                    ['callsign' => 'NEW_APP', 'starts_at' => now()->format('Y-m-d H:i'), 'ends_at' => now()->addHour()->format('Y-m-d H:i')],
                 ],
             ]));
 

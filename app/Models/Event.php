@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\EventStatus;
+use App\Enums\EventType;
 use Carbon\CarbonImmutable;
 use Database\Factories\EventFactory;
 use Illuminate\Database\Eloquent\Attributes\Scope;
@@ -24,7 +25,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string|null $description_en
  * @property string $slug
  * @property string|null $image_url
- * @property string $type
+ * @property EventType $type
  * @property array<array-key, mixed> $tags
  * @property bool $pilot_slots_enabled
  * @property bool $atc_slots_enabled
@@ -37,15 +38,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property CarbonImmutable|null $created_at
  * @property CarbonImmutable|null $updated_at
  * @property CarbonImmutable|null $deleted_at
- * @property-read User|null $assignedTo
- * @property-read Collection<int, AtcSlot> $atcSlots
+ * @property-read \App\Models\User|null $assignedTo
+ * @property-read Collection<int, \App\Models\AtcSlot> $atcSlots
  * @property-read int|null $atc_slots_count
- * @property-read User|null $createdBy
- * @property-read Collection<int, PilotSlot> $pilotSlots
+ * @property-read \App\Models\User|null $createdBy
+ * @property-read Collection<int, \App\Models\PilotSlot> $pilotSlots
  * @property-read int|null $pilot_slots_count
- * @property-read Collection<int, UserAwardReport> $userAwardReports
+ * @property-read Collection<int, \App\Models\UserAwardReport> $userAwardReports
  * @property-read int|null $user_award_reports_count
- *
  * @method static Builder<static>|Event active()
  * @method static \Database\Factories\EventFactory factory($count = null, $state = [])
  * @method static Builder<static>|Event newModelQuery()
@@ -54,7 +54,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static Builder<static>|Event query()
  * @method static Builder<static>|Event withTrashed(bool $withTrashed = true)
  * @method static Builder<static>|Event withoutTrashed()
- *
  * @mixin \Eloquent
  */
 class Event extends Model
@@ -81,6 +80,7 @@ class Event extends Model
             'created_by' => 'integer',
             'assigned_to' => 'integer',
             'tags' => 'json',
+            'type' => EventType::class,
             'status' => EventStatus::class,
         ];
     }

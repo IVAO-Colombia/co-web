@@ -37,7 +37,7 @@ class UpdateEvent
                 'atc_slots_enabled' => $validated['atc_slots_enabled'] ?? false,
             ]);
 
-            if (! $event->pilotSlots()->reserved()->exists()) {
+            if ($event->pilotSlots()->reserved()->doesntExist()) {
                 $event->pilotSlots()->forceDelete();
 
                 if (! empty($validated['pilot_slots'])) {
@@ -58,9 +58,7 @@ class UpdateEvent
                 }
             }
 
-            $hasReservedAtcSlots = $event->atcSlots()->reserved()->exists();
-
-            if (! $hasReservedAtcSlots) {
+            if ($event->atcSlots()->reserved()->doesntExist()) {
                 $event->atcSlots()->forceDelete();
 
                 if (! empty($validated['atc_slots'])) {

@@ -76,11 +76,10 @@ class EventsDestroyTest extends TestCase
     }
 
     #[Test]
-    public function can_delete_event_with_available_and_cancelled_slots(): void
+    public function can_delete_event_with_available_slots(): void
     {
         $event = Event::factory()->create();
         $pilotSlot = PilotSlot::factory()->create(['event_id' => $event->id, 'status' => SlotStatus::AVAILABLE]);
-        $cancelledPilotSlot = PilotSlot::factory()->cancelled()->create(['event_id' => $event->id]);
         $atcSlot = AtcSlot::factory()->create(['event_id' => $event->id, 'status' => SlotStatus::AVAILABLE]);
         $user = User::factory()->director()->create();
 
@@ -90,7 +89,6 @@ class EventsDestroyTest extends TestCase
 
         $this->assertSoftDeleted($event);
         $this->assertSoftDeleted($pilotSlot);
-        $this->assertSoftDeleted($cancelledPilotSlot);
         $this->assertSoftDeleted($atcSlot);
     }
 

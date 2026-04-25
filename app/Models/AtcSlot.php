@@ -21,13 +21,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property CarbonImmutable $starts_at
  * @property CarbonImmutable $ends_at
  * @property SlotStatus $status
- * @property array<string, mixed>|null $ivao_booking
+ * @property array<array-key, mixed>|null $ivao_booking
  * @property CarbonImmutable|null $created_at
  * @property CarbonImmutable|null $updated_at
  * @property CarbonImmutable|null $deleted_at
- * @property-read User|null $atc
- * @property-read Event|null $event
- *
+ * @property-read \App\Models\User|null $atc
+ * @property-read \App\Models\Event|null $event
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AtcSlot available()
  * @method static \Database\Factories\AtcSlotFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AtcSlot newModelQuery()
@@ -37,7 +36,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AtcSlot reserved()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AtcSlot withTrashed(bool $withTrashed = true)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AtcSlot withoutTrashed()
- *
  * @mixin \Eloquent
  */
 class AtcSlot extends Model

@@ -16,16 +16,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $access_token
  * @property string|null $refresh_token
  * @property CarbonImmutable|null $expires_at
- * @property array<int, string>|null $scopes
+ * @property array<array-key, mixed>|null $scopes
  * @property CarbonImmutable|null $created_at
  * @property CarbonImmutable|null $updated_at
- * @property-read User $user
- *
- * @method static UserOAuthTokenFactory factory($count = null, $state = [])
+ * @property-read \App\Models\User $user
+ * @method static \Database\Factories\UserOAuthTokenFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserOAuthToken newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserOAuthToken newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserOAuthToken query()
- *
  * @mixin \Eloquent
  */
 class UserOAuthToken extends Model
