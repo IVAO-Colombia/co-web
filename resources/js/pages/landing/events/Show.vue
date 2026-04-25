@@ -13,12 +13,15 @@ import {
     Radio,
 } from 'lucide-vue-next';
 import { computed, onBeforeMount, ref } from 'vue';
+import { store as reserveAtcSlot } from '@/actions/App/Http/Controllers/Landing/AtcSlotReservationsController';
 import Header from '@/components/landing/Header.vue';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useLocale } from '@/composables/useLocale';
 import { Ivao } from '@/lib/ivao';
-import { formatDateTime, getDateParts } from '@/lib/utils';
+import { formatAtcTime, formatDateTime, getDateParts } from '@/lib/utils';
+import auth from '@/routes/auth';
+import { events } from '@/routes/home';
 import {
     ATCRatings,
     EventConstants,
@@ -32,13 +35,6 @@ import type {
     AtcSlot,
     EventDetail,
 } from '@/types';
-import auth from '@/routes/auth';
-import { events } from '@/routes/home';
-
-function formatAtcTime(time: string): string {
-    // ATC slot times come as plain 'HH:mm:ss' strings, not ISO datetimes
-    return time.slice(0, 5) + ' UTC';
-}
 
 const props = defineProps<{
     event: EventDetail;
@@ -51,7 +47,7 @@ const isLoggedIn = computed(() => !!user.value);
 const { locale } = useLocale();
 const airlineLogos = ref<Record<string, string>>({});
 
-const fallbackImage = '/img/day_2.png';
+const fallbackImage = '/img/16x9_image.jpg';
 
 onBeforeMount(async () => {
     // Preload airline logos for pilot slots
@@ -179,16 +175,13 @@ function getMinAtcRating(callsign: string): ATCRatingValue {
         class="min-h-screen bg-white text-slate-900 dark:bg-slate-950 dark:text-white"
     >
         <!-- Hero banner -->
-        <section class="relative overflow-hidden">
-            <Header
-                brand-tone="dark"
-                :brand-text="$t('Events').toLocaleUpperCase()"
-            />
+        <section class="relative">
+            <Header :brand-text="$t('Events').toLocaleUpperCase()" />
 
             <div class="absolute inset-0">
                 <img
-                    :src="event.image_url ?? fallbackImage"
-                    :alt="localizedName"
+                    :src="fallbackImage"
+                    alt="events"
                     class="h-full w-full object-cover opacity-35"
                 />
                 <div
@@ -267,12 +260,21 @@ function getMinAtcRating(callsign: string): ATCRatingValue {
         <!-- Main content -->
         <div class="mx-auto w-full max-w-7xl px-4 pb-20 sm:px-6 lg:px-8">
             <!-- Description -->
-            <div class="my-7 max-w-3xl">
-                <p
-                    class="text-base leading-relaxed text-slate-600 sm:text-lg dark:text-white/70"
-                >
-                    {{ localizedDescription }}
-                </p>
+            <div class="my-7 flex justify-between">
+                <div class="my-7 w-2/3">
+                    <p
+                        class="text-base leading-relaxed text-slate-600 sm:text-lg dark:text-white/70"
+                    >
+                        {{ localizedDescription }}
+                    </p>
+                </div>
+                <div class="aspect-video w-1/3 overflow-hidden">
+                    <img
+                        :src="event.image_url ?? fallbackImage"
+                        :alt="localizedName"
+                        class="h-full w-full object-contain"
+                    />
+                </div>
             </div>
 
             <!-- Slots section -->
@@ -761,6 +763,12 @@ function getMinAtcRating(callsign: string): ATCRatingValue {
                                             class="h-7 border-emerald-500/40 px-2.5 text-xs text-emerald-300 hover:bg-emerald-500/15 hover:text-emerald-200"
                                             method="post"
                                             :as="Button"
+                                            :href="
+                                                reserveAtcSlot.url({
+                                                    event: event.slug,
+                                                    slot: slot.id,
+                                                })
+                                            "
                                             :disabled="
                                                 !callsignContent.can_reserve
                                             "

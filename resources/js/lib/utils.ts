@@ -160,3 +160,7 @@ export function toUTCDateTime(value: string | null | undefined): string {
         return '';
     }
 }
+
+export function formatAtcTime(time: string): string {
+    return format(parseISO(time, { in: utc }), 'HH:mm') + ' UTC';
+}

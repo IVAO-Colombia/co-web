@@ -11,7 +11,7 @@ use Laravel\Socialite\Facades\Socialite;
 require __DIR__.'/landing.php';
 
 Route::get('/auth/redirect', fn () => Inertia::location(Socialite::driver('ivao')
-    ->scopes(['profile', 'email'])
+    ->scopes(['profile', 'email', 'bookings:read', 'bookings:write'])
     ->redirect()))->name('auth.redirect');
 
 Route::get('/auth/callback', AuthenticateUsersController::class)

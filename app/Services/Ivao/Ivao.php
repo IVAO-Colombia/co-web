@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\Ivao;
 
 use Illuminate\Http\Client\PendingRequest;
+use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 
 class Ivao
@@ -81,5 +82,39 @@ class Ivao
             ->json();
 
         return $result ?? [];
+    }
+
+    /**
+     * Check whether a member is eligible to reserve an ATC slot.
+     *
+     * Returns the raw response so the caller can inspect the HTTP status code:
+     *   200 – allowed, 401 – re-authentication required, 403 – not allowed.
+     *
+     * @param  string  $startDate  ISO-8601 datetime with milliseconds and Z suffix, e.g. "2023-08-07T09:00:00.000Z"
+     */
+    public function checkAtcReservationEligibility(string $callsign, int $vid, string $startDate): Response
+    {
+        return $this->baseClient()
+            ->get("/fras/check/{$callsign}/{$vid}", [
+                'startDate' => $startDate,
+            ]);
+    }
+
+    /**
+     * Create an ATC booking on IVAO.
+     *
+     * @param  string  $startDate  ISO-8601 datetime, e.g. "2023-09-10T14:00:00+00:00"
+     * @param  string  $endDate  ISO-8601 datetime, e.g. "2023-09-10T15:00:00+00:00"
+     */
+    public function createAtcBooking(string $atcPosition, string $startDate, string $endDate): Response
+    {
+        return $this->baseClient()
+            ->post('/atc/bookings', [
+                'atcPosition' => $atcPosition,
+                'training' => null,
+                'voice' => true,
+                'startDate' => $startDate,
+                'endDate' => $endDate,
+            ]);
     }
 }
