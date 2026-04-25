@@ -26,6 +26,28 @@ class AuthenticationTest extends TestCase
     }
 
     #[Test]
+    public function it_stores_the_previous_url_as_intended_before_redirecting(): void
+    {
+        $previousUrl = route('dashboard');
+
+        $this->from($previousUrl)
+            ->get(route('auth.redirect'));
+
+        $this->assertEquals($previousUrl, session('url.intended'));
+    }
+
+    #[Test]
+    public function it_stores_an_external_url_as_intended_before_redirecting(): void
+    {
+        $externalUrl = 'http://co-web.test/some/page';
+
+        $this->from($externalUrl)
+            ->get(route('auth.redirect'));
+
+        $this->assertEquals($externalUrl, session('url.intended'));
+    }
+
+    #[Test]
     public function a_user_successfully_registers_in_the_division_site_using_sso(): void
     {
         $ivaoUser = $this->mockSocialiteIvao();

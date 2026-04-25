@@ -13,6 +13,12 @@ parameters:
 			path: app/Actions/Events/UpdateEvent.php
 
 		-
+			message: '#^Call to an undefined method Laravel\\Socialite\\Contracts\\Provider\:\:scopes\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Controllers/Auth/RedirectToIvaoLoginController.php
+
+		-
 			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\HasMany\<App\\Models\\AtcSlot, App\\Models\\Event\>\:\:reserved\(\)\.$#'
 			identifier: method.notFound
 			count: 1

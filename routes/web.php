@@ -4,15 +4,12 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Auth\AuthenticateUsersController;
 use App\Http\Controllers\Auth\LogoutUsersController;
+use App\Http\Controllers\Auth\RedirectToIvaoLoginController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
-use Laravel\Socialite\Facades\Socialite;
 
 require __DIR__.'/landing.php';
 
-Route::get('/auth/redirect', fn () => Inertia::location(Socialite::driver('ivao')
-    ->scopes(['profile', 'email', 'bookings:read', 'bookings:write'])
-    ->redirect()))->name('auth.redirect');
+Route::get('/auth/redirect', RedirectToIvaoLoginController::class)->name('auth.redirect');
 
 Route::get('/auth/callback', AuthenticateUsersController::class)
     ->name('auth.callback');
