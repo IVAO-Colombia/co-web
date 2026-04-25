@@ -52,7 +52,7 @@ export const SlotsConstants: SlotsConstantsType = {
     },
     statusVariants: {
         [SlotStatus.AVAILABLE]: 'outline',
-        [SlotStatus.RESERVED]: 'secondary',
+        [SlotStatus.RESERVED]: 'outline',
         [SlotStatus.CONFIRMED]: 'default',
     },
 };

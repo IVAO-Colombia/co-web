@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { utc } from '@date-fns/utc';
-import { Head, Link, usePage } from '@inertiajs/vue3';
+import { Head, Link, useForm, usePage } from '@inertiajs/vue3';
 import { format, parseISO } from 'date-fns';
 import { enUS } from 'date-fns/locale';
 import {
@@ -19,6 +19,9 @@ import { Button } from '@/components/ui/button';
 import { useLocale } from '@/composables/useLocale';
 import { Ivao } from '@/lib/ivao';
 import { formatAtcTime, formatDateTime, getDateParts } from '@/lib/utils';
+import auth from '@/routes/auth';
+import { events } from '@/routes/home';
+import atcSlotRoutes from '@/routes/home/events/atc-slot';
 import {
     ATCRatings,
     EventConstants,
@@ -32,9 +35,6 @@ import type {
     AtcSlot,
     EventDetail,
 } from '@/types';
-import { store as reserveAtcSlot } from '@/actions/App/Http/Controllers/Landing/AtcSlotReservationsController';
-import auth from '@/routes/auth';
-import { events } from '@/routes/home';
 
 const props = defineProps<{
     event: EventDetail;
@@ -165,6 +165,25 @@ function getMinAtcRating(callsign: string): ATCRatingValue {
     return applyableFras.length === 0
         ? ATCRatings[ATCRating.AS1]
         : ATCRatings[applyableFras[0].min_atc as ATCRating];
+}
+
+const atcSlotForm = useForm();
+
+function reserveAtcSlot(slotId: number) {
+    atcSlotForm.post(
+        atcSlotRoutes.store.url({
+            event: props.event.slug,
+            slot: slotId,
+        }),
+    );
+}
+function cancelAtcSlotReservation(slotId: number) {
+    atcSlotForm.delete(
+        atcSlotRoutes.destroy.url({
+            event: props.event.slug,
+            slot: slotId,
+        }),
+    );
 }
 </script>
 
@@ -744,7 +763,7 @@ function getMinAtcRating(callsign: string): ATCRatingValue {
                                                     slot.status
                                                 ]
                                             "
-                                            class="text-xs"
+                                            class="border-yellow-500/90 bg-yellow-500/10 text-xs text-yellow-500"
                                         >
                                             {{
                                                 SlotsConstants.statusLabels[
@@ -752,29 +771,50 @@ function getMinAtcRating(callsign: string): ATCRatingValue {
                                                 ]
                                             }}
                                         </Badge>
-                                        <Link
+                                        <Button
                                             v-if="
                                                 isLoggedIn &&
                                                 slot.status ===
                                                     SlotStatus.AVAILABLE
                                             "
-                                            size="sm"
                                             variant="outline"
-                                            class="h-7 border-emerald-500/40 px-2.5 text-xs text-emerald-300 hover:bg-emerald-500/15 hover:text-emerald-200"
-                                            method="post"
-                                            :as="Button"
-                                            :href="
-                                                reserveAtcSlot.url({
-                                                    event: event.slug,
-                                                    slot: slot.id,
-                                                })
-                                            "
+                                            size="sm"
+                                            class="h-7 border-primary/90 px-2.5 text-xs text-primary hover:bg-primary/15 hover:text-primary/90"
                                             :disabled="
-                                                !callsignContent.can_reserve
+                                                !callsignContent.can_reserve ||
+                                                atcSlotForm.processing
+                                            "
+                                            @click="reserveAtcSlot(slot.id)"
+                                        >
+                                            {{
+                                                atcSlotForm.processing
+                                                    ? $t('Processing...')
+                                                    : $t('Reserve')
+                                            }}
+                                        </Button>
+                                        <Button
+                                            v-if="
+                                                isLoggedIn &&
+                                                slot.atc_id === user.id &&
+                                                slot.status !==
+                                                    SlotStatus.AVAILABLE
+                                            "
+                                            variant="destructive"
+                                            size="sm"
+                                            class="h-7"
+                                            :disabled="atcSlotForm.processing"
+                                            @click="
+                                                cancelAtcSlotReservation(
+                                                    slot.id,
+                                                )
                                             "
                                         >
-                                            {{ $t('Reserve') }}
-                                        </Link>
+                                            {{
+                                                atcSlotForm.processing
+                                                    ? $t('Processing...')
+                                                    : $t('Cancel')
+                                            }}
+                                        </Button>
                                     </div>
                                 </div>
                             </div>

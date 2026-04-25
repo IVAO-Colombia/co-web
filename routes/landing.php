@@ -15,3 +15,6 @@ Route::get('/events/{event:slug}', [EventsController::class, 'show'])->name('hom
 Route::post('/events/{event:slug}/atc-slot/{slot}/reserve', [AtcSlotReservationsController::class, 'store'])
     ->middleware('auth')
     ->name('home.events.atc-slot.store');
+Route::delete('/events/{event:slug}/atc-slot/{slot}/reserve', [AtcSlotReservationsController::class, 'destroy'])
+    ->middleware('auth')
+    ->name('home.events.atc-slot.destroy');

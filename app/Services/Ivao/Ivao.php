@@ -119,11 +119,24 @@ class Ivao
             ->withToken($accessToken)
             ->post('/atc/bookings', [
                 'atcPosition' => $atcPosition,
-                'training' => null,
+                'training' => null, // it can be training, exam
                 'voice' => true,
                 'startDate' => $startDate,
                 'endDate' => $endDate,
             ]);
+    }
+
+    /**
+     * Delete an ATC booking as the authenticated user.
+     *
+     * Returns the raw response so the caller can inspect the HTTP status code:
+     *   200 – deleted, 401 – re-authentication required, 403 – forbidden, 404 – not found.
+     */
+    public function deleteAtcBookingAsUser(string $accessToken, int $bookingId): Response
+    {
+        return $this->baseClient()
+            ->withToken($accessToken)
+            ->delete("/atc/bookings/{$bookingId}");
     }
 
     public function refreshAccessToken(string $refreshToken): Response

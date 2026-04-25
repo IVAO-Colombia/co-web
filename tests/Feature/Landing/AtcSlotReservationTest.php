@@ -297,4 +297,219 @@ class AtcSlotReservationTest extends TestCase
         $response->assertRedirect(route('auth.redirect'));
         $this->assertEquals(SlotStatus::AVAILABLE, $slot->fresh()->status);
     }
+
+    // -------------------------------------------------------------------------
+    // Cancellation tests
+    // -------------------------------------------------------------------------
+
+    #[Test]
+    public function authenticated_user_can_cancel_their_atc_slot_reservation(): void
+    {
+        Http::fake([
+            '*/v2/atc/bookings/*' => Http::response([], 200),
+        ]);
+
+        $user = User::factory()->create();
+        UserOAuthToken::factory()->for($user)->create();
+        $event = Event::factory()->create();
+        $slot = AtcSlot::factory()->for($event)->reserved()->create([
+            'atc_id' => $user->id,
+            'ivao_booking' => ['id' => 123],
+        ]);
+
+        $response = $this->actingAs($user)
+            ->delete(route('home.events.atc-slot.destroy', ['event' => $event->slug, 'slot' => $slot->id]));
+
+        $response->assertRedirect(route('home.events.show', $event));
+        $response->assertSessionHas('success');
+
+        $slot->refresh();
+        $this->assertEquals(SlotStatus::AVAILABLE, $slot->status);
+        $this->assertNull($slot->atc_id);
+        $this->assertNull($slot->ivao_booking);
+    }
+
+    #[Test]
+    public function cancels_locally_when_ivao_returns_404(): void
+    {
+        Http::fake([
+            '*/v2/atc/bookings/*' => Http::response([], 404),
+        ]);
+
+        $user = User::factory()->create();
+        UserOAuthToken::factory()->for($user)->create();
+        $event = Event::factory()->create();
+        $slot = AtcSlot::factory()->for($event)->reserved()->create([
+            'atc_id' => $user->id,
+            'ivao_booking' => ['id' => 456],
+        ]);
+
+        $response = $this->actingAs($user)
+            ->delete(route('home.events.atc-slot.destroy', ['event' => $event->slug, 'slot' => $slot->id]));
+
+        $response->assertRedirect(route('home.events.show', $event));
+        $response->assertSessionHas('success');
+
+        $slot->refresh();
+        $this->assertEquals(SlotStatus::AVAILABLE, $slot->status);
+        $this->assertNull($slot->atc_id);
+        $this->assertNull($slot->ivao_booking);
+    }
+
+    #[Test]
+    public function unauthenticated_user_is_redirected_to_home_on_cancel(): void
+    {
+        $event = Event::factory()->create();
+        $slot = AtcSlot::factory()->for($event)->reserved()->create([
+            'ivao_booking' => ['id' => 123],
+        ]);
+
+        $response = $this->delete(route('home.events.atc-slot.destroy', ['event' => $event->slug, 'slot' => $slot->id]));
+
+        $response->assertRedirect(route('home'));
+    }
+
+    #[Test]
+    public function returns_404_when_slot_does_not_belong_to_event_on_cancel(): void
+    {
+        $user = User::factory()->create();
+        $event = Event::factory()->create();
+        $otherEvent = Event::factory()->create();
+        $slot = AtcSlot::factory()->for($otherEvent)->reserved()->create([
+            'atc_id' => $user->id,
+            'ivao_booking' => ['id' => 123],
+        ]);
+
+        $response = $this->actingAs($user)
+            ->delete(route('home.events.atc-slot.destroy', ['event' => $event->slug, 'slot' => $slot->id]));
+
+        $response->assertNotFound();
+    }
+
+    #[Test]
+    public function returns_409_when_slot_is_not_reserved_on_cancel(): void
+    {
+        $user = User::factory()->create();
+        $event = Event::factory()->create();
+        $slot = AtcSlot::factory()->for($event)->create(['status' => SlotStatus::AVAILABLE]);
+
+        $response = $this->actingAs($user)
+            ->delete(route('home.events.atc-slot.destroy', ['event' => $event->slug, 'slot' => $slot->id]));
+
+        $response->assertStatus(409);
+    }
+
+    #[Test]
+    public function returns_403_when_user_does_not_own_the_slot(): void
+    {
+        $owner = User::factory()->create();
+        $otherUser = User::factory()->create();
+        $event = Event::factory()->create();
+        $slot = AtcSlot::factory()->for($event)->reserved()->create([
+            'atc_id' => $owner->id,
+            'ivao_booking' => ['id' => 123],
+        ]);
+
+        $response = $this->actingAs($otherUser)
+            ->delete(route('home.events.atc-slot.destroy', ['event' => $event->slug, 'slot' => $slot->id]));
+
+        $response->assertForbidden();
+    }
+
+    #[Test]
+    public function redirects_to_auth_when_user_has_no_oauth_token_on_cancel(): void
+    {
+        $user = User::factory()->create();
+        $event = Event::factory()->create();
+        $slot = AtcSlot::factory()->for($event)->reserved()->create([
+            'atc_id' => $user->id,
+            'ivao_booking' => ['id' => 123],
+        ]);
+
+        $response = $this->actingAs($user)
+            ->delete(route('home.events.atc-slot.destroy', ['event' => $event->slug, 'slot' => $slot->id]));
+
+        $response->assertRedirect(route('auth.redirect'));
+        $this->assertEquals(SlotStatus::RESERVED, $slot->fresh()->status);
+    }
+
+    #[Test]
+    public function refreshes_expired_token_and_successfully_cancels(): void
+    {
+        $newAccessToken = 'new-access-token-abc';
+
+        Http::fake([
+            '*/v2/oauth/token' => Http::response([
+                'access_token' => $newAccessToken,
+                'refresh_token' => 'new-refresh-token',
+                'expires_in' => 3600,
+            ], 200),
+            '*/v2/atc/bookings/*' => Http::response([], 200),
+        ]);
+
+        $user = User::factory()->create();
+        UserOAuthToken::factory()->for($user)->expired()->create();
+        $event = Event::factory()->create();
+        $slot = AtcSlot::factory()->for($event)->reserved()->create([
+            'atc_id' => $user->id,
+            'ivao_booking' => ['id' => 456],
+        ]);
+
+        $response = $this->actingAs($user)
+            ->delete(route('home.events.atc-slot.destroy', ['event' => $event->slug, 'slot' => $slot->id]));
+
+        $response->assertRedirect(route('home.events.show', $event));
+        $response->assertSessionHas('success');
+        $this->assertEquals(SlotStatus::AVAILABLE, $slot->fresh()->status);
+    }
+
+    #[Test]
+    public function redirects_to_auth_when_ivao_returns_401_on_cancel(): void
+    {
+        Http::fake([
+            '*/v2/atc/bookings/*' => Http::response(['message' => 'Unauthorized'], 401),
+        ]);
+
+        $user = User::factory()->create();
+        UserOAuthToken::factory()->for($user)->create();
+        $event = Event::factory()->create();
+        $slot = AtcSlot::factory()->for($event)->reserved()->create([
+            'atc_id' => $user->id,
+            'ivao_booking' => ['id' => 123],
+        ]);
+
+        $response = $this->actingAs($user)
+            ->delete(route('home.events.atc-slot.destroy', ['event' => $event->slug, 'slot' => $slot->id]));
+
+        $response->assertRedirect(route('auth.redirect'));
+        $this->assertEquals(SlotStatus::RESERVED, $slot->fresh()->status);
+    }
+
+    #[Test]
+    public function redirects_back_with_error_when_ivao_returns_403_on_cancel(): void
+    {
+        Http::fake([
+            '*/v2/atc/bookings/*' => Http::response([
+                'message' => 'Not authorized to cancel this booking',
+                'statusCode' => 403,
+                'error' => 'forbidden',
+            ], 403),
+        ]);
+
+        $user = User::factory()->create();
+        UserOAuthToken::factory()->for($user)->create();
+        $event = Event::factory()->create();
+        $slot = AtcSlot::factory()->for($event)->reserved()->create([
+            'atc_id' => $user->id,
+            'ivao_booking' => ['id' => 123],
+        ]);
+
+        $response = $this->actingAs($user)
+            ->from(route('home.events.show', $event))
+            ->delete(route('home.events.atc-slot.destroy', ['event' => $event->slug, 'slot' => $slot->id]));
+
+        $response->assertRedirect(route('home.events.show', $event));
+        $response->assertSessionHas('error', 'Not authorized to cancel this booking');
+        $this->assertEquals(SlotStatus::RESERVED, $slot->fresh()->status);
+    }
 }
