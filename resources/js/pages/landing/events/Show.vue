@@ -13,15 +13,12 @@ import {
     Radio,
 } from 'lucide-vue-next';
 import { computed, onBeforeMount, ref } from 'vue';
-import { store as reserveAtcSlot } from '@/actions/App/Http/Controllers/Landing/AtcSlotReservationsController';
 import Header from '@/components/landing/Header.vue';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useLocale } from '@/composables/useLocale';
 import { Ivao } from '@/lib/ivao';
 import { formatAtcTime, formatDateTime, getDateParts } from '@/lib/utils';
-import auth from '@/routes/auth';
-import { events } from '@/routes/home';
 import {
     ATCRatings,
     EventConstants,
@@ -35,6 +32,9 @@ import type {
     AtcSlot,
     EventDetail,
 } from '@/types';
+import { store as reserveAtcSlot } from '@/actions/App/Http/Controllers/Landing/AtcSlotReservationsController';
+import auth from '@/routes/auth';
+import { events } from '@/routes/home';
 
 const props = defineProps<{
     event: EventDetail;
