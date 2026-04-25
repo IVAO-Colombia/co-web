@@ -20,11 +20,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string|null $frequency
  * @property CarbonImmutable|null $created_at
  * @property CarbonImmutable|null $updated_at
- * @property-read Collection<int, \App\Models\AtcPositionFra> $fras
+ * @property-read Collection<int, AtcPositionFra> $fras
  * @property-read int|null $fras_count
+ *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AtcPosition newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AtcPosition newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AtcPosition query()
+ *
  * @mixin \Eloquent
  */
 class AtcPosition extends Model

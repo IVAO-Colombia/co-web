@@ -34,12 +34,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $is_blacklist
  * @property CarbonImmutable|null $created_at
  * @property CarbonImmutable|null $updated_at
- * @property-read \App\Models\AtcPosition $atcPosition
+ * @property-read AtcPosition $atcPosition
+ *
  * @method static Builder<static>|AtcPositionFra forDate(\Carbon\CarbonInterface $date)
  * @method static Builder<static>|AtcPositionFra forIcao(array|string $icao)
  * @method static Builder<static>|AtcPositionFra newModelQuery()
  * @method static Builder<static>|AtcPositionFra newQuery()
  * @method static Builder<static>|AtcPositionFra query()
+ *
  * @mixin \Eloquent
  */
 class AtcPositionFra extends Model

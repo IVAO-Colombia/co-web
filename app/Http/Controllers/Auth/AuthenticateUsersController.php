@@ -22,8 +22,7 @@ class AuthenticateUsersController extends Controller
         /** @var SocialiteUser $ivaoUser */
         $ivaoUser = Socialite::driver('ivao')->user();
 
-        /** @var User $user */
-        $user = Pipeline::send($ivaoUser)
+        Pipeline::send($ivaoUser)
             ->through([
                 fn (SocialiteUser $user, Closure $next) => $next(new CreateUser()->handle($user)),
                 fn (User $user, Closure $next) => $next(new SyncUserRoles()->handle($user)),

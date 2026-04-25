@@ -6,6 +6,7 @@ namespace App\Models;
 
 use Carbon\CarbonImmutable;
 use Database\Factories\UserOAuthTokenFactory;
+use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -19,19 +20,20 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property array<array-key, mixed>|null $scopes
  * @property CarbonImmutable|null $created_at
  * @property CarbonImmutable|null $updated_at
- * @property-read \App\Models\User $user
+ * @property-read User $user
+ *
  * @method static \Database\Factories\UserOAuthTokenFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserOAuthToken newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserOAuthToken newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserOAuthToken query()
+ *
  * @mixin \Eloquent
  */
+#[Table(name: 'user_oauth_tokens')]
 class UserOAuthToken extends Model
 {
     /** @use HasFactory<UserOAuthTokenFactory> */
     use HasFactory;
-
-    protected $table = 'user_oauth_tokens';
 
     /**
      * @return array{

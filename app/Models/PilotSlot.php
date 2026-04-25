@@ -28,8 +28,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property CarbonImmutable|null $created_at
  * @property CarbonImmutable|null $updated_at
  * @property CarbonImmutable|null $deleted_at
- * @property-read \App\Models\Event|null $event
- * @property-read \App\Models\User|null $pilot
+ * @property-read Event|null $event
+ * @property-read User|null $pilot
+ *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PilotSlot available()
  * @method static \Database\Factories\PilotSlotFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PilotSlot newModelQuery()
@@ -39,6 +40,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PilotSlot reserved()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PilotSlot withTrashed(bool $withTrashed = true)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PilotSlot withoutTrashed()
+ *
  * @mixin \Eloquent
  */
 class PilotSlot extends Model

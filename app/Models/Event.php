@@ -38,14 +38,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property CarbonImmutable|null $created_at
  * @property CarbonImmutable|null $updated_at
  * @property CarbonImmutable|null $deleted_at
- * @property-read \App\Models\User|null $assignedTo
- * @property-read Collection<int, \App\Models\AtcSlot> $atcSlots
+ * @property-read User|null $assignedTo
+ * @property-read Collection<int, AtcSlot> $atcSlots
  * @property-read int|null $atc_slots_count
- * @property-read \App\Models\User|null $createdBy
- * @property-read Collection<int, \App\Models\PilotSlot> $pilotSlots
+ * @property-read User|null $createdBy
+ * @property-read Collection<int, PilotSlot> $pilotSlots
  * @property-read int|null $pilot_slots_count
- * @property-read Collection<int, \App\Models\UserAwardReport> $userAwardReports
+ * @property-read Collection<int, UserAwardReport> $userAwardReports
  * @property-read int|null $user_award_reports_count
+ *
  * @method static Builder<static>|Event active()
  * @method static \Database\Factories\EventFactory factory($count = null, $state = [])
  * @method static Builder<static>|Event newModelQuery()
@@ -54,6 +55,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static Builder<static>|Event query()
  * @method static Builder<static>|Event withTrashed(bool $withTrashed = true)
  * @method static Builder<static>|Event withoutTrashed()
+ *
  * @mixin \Eloquent
  */
 class Event extends Model
