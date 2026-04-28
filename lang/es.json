@@ -216,6 +216,7 @@
     "Join IVAO Now": "Únete a IVAO ahora",
     "Log in to see slot availability and reserve your flight.": "Inicia sesión para ver la disponibilidad de cupos y reservar tu vuelo.",
     "Log in to reserve": "Inicia sesión para reservar",
+    "Reserve": "Reservar",
     "No pilot slots available for this event.": "No hay cupos de piloto disponibles para este evento.",
     "Log in to see slot availability and reserve your ATC position.": "Inicia sesión para ver la disponibilidad de cupos y reservar tu posición de ATC.",
     "You don't have the required rating": "No tienes la calificación requerida",
@@ -235,5 +236,15 @@
     "Terms of Use": "Términos de uso",
     "Partners": "Socios",
     "Divisional Forum": "Foro divisional",
-    "Hq Forum": "Foro HQ"
+    "Hq Forum": "Foro HQ",
+    "Forum": "Foro",
+    "HQ Forum": "Foro HQ",
+    "Confirmed": "Confirmado",
+    "Processing...": "Procesando...",
+    "Route": "Ruta",
+    "Starts At": "Inicia",
+    "Ends At": "Finaliza",
+    "Pilot": "Piloto",
+    "Sistemas": "Sistemas",
+    "No events available right now.": "No hay eventos disponibles por ahora"
 }
