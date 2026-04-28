@@ -19,6 +19,15 @@ import { Button } from '@/components/ui/button';
 import { useLocale } from '@/composables/useLocale';
 import { Ivao } from '@/lib/ivao';
 import { formatAtcTime, formatDateTime, getDateParts } from '@/lib/utils';
+import auth from '@/routes/auth';
+import { events } from '@/routes/home';
+import atcSlotRoutes from '@/routes/home/events/atc-slot';
+import type {
+    AtcPositionFra,
+    ATCRatingValue,
+    AtcSlot,
+    EventDetail,
+} from '@/types';
 import {
     ATCRatings,
     EventConstants,
@@ -26,15 +35,6 @@ import {
     SlotsConstants,
     ATCRating,
 } from '@/types';
-import type {
-    AtcPositionFra,
-    ATCRatingValue,
-    AtcSlot,
-    EventDetail,
-} from '@/types';
-import auth from '@/routes/auth';
-import { events } from '@/routes/home';
-import atcSlotRoutes from '@/routes/home/events/atc-slot';
 
 const props = defineProps<{
     event: EventDetail;
@@ -145,11 +145,13 @@ function getMinAtcRating(callsign: string): ATCRatingValue {
         locale: enUS,
     }).toLocaleLowerCase();
 
-    const applyableFras = fras.filter((fra) => {
-        if (fra.date !== null) {
-            return fra.date === eventDateStr;
-        }
+    const frasByDate = fras.filter((fra) => fra.date === eventDateStr);
 
+    if (frasByDate.length > 0) {
+        return ATCRatings[frasByDate[0].min_atc as ATCRating];
+    }
+
+    const frasByWeekDay = fras.filter((fra) => {
         const dayMatches = fra[
             `${dayOfWeek}` as keyof AtcPositionFra
         ] as boolean;
@@ -162,9 +164,9 @@ function getMinAtcRating(callsign: string): ATCRatingValue {
         // );
     });
 
-    return applyableFras.length === 0
+    return frasByWeekDay.length === 0
         ? ATCRatings[ATCRating.AS1]
-        : ATCRatings[applyableFras[0].min_atc as ATCRating];
+        : ATCRatings[frasByWeekDay[0].min_atc as ATCRating];
 }
 
 const atcSlotForm = useForm();
@@ -204,10 +206,10 @@ function cancelAtcSlotReservation(slotId: number) {
                     class="h-full w-full object-cover opacity-35"
                 />
                 <div
-                    class="absolute inset-0 bg-linear-to-b from-black/35 via-slate-950/75 to-slate-950"
+                    class="absolute inset-0 bg-linear-to-b from-white/40 via-slate-100/70 to-slate-50 dark:from-black/35 dark:via-slate-950/75 dark:to-slate-950"
                 ></div>
                 <div
-                    class="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(47,69,255,0.28),transparent_45%)]"
+                    class="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(13,44,153,0.18),transparent_45%)] dark:bg-[radial-gradient(circle_at_top,rgba(47,69,255,0.28),transparent_45%)]"
                 ></div>
             </div>
 
@@ -216,7 +218,7 @@ function cancelAtcSlotReservation(slotId: number) {
             >
                 <Link
                     :href="events()"
-                    class="inline-flex items-center gap-2 text-sm text-white/60 transition-colors hover:text-white"
+                    class="inline-flex items-center gap-2 text-sm text-slate-700/70 transition-colors hover:text-slate-900 dark:text-white/60 dark:hover:text-white"
                 >
                     <ArrowLeft class="h-4 w-4" />
                     {{ $t('Back to Events') }}
@@ -225,27 +227,27 @@ function cancelAtcSlotReservation(slotId: number) {
                 <div class="mt-8 max-w-4xl">
                     <div class="mb-4 flex flex-wrap items-center gap-2">
                         <span
-                            class="inline-flex items-center rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs font-semibold tracking-[0.2em] text-white/80 uppercase"
+                            class="inline-flex items-center rounded-full border border-slate-300/70 bg-white/60 px-3 py-1 text-xs font-semibold tracking-[0.2em] text-slate-700 uppercase dark:border-white/15 dark:bg-white/10 dark:text-white/80"
                         >
                             {{ EventConstants.typeLabels[event.type] }}
                         </span>
                         <span
                             v-for="tag in event.tags"
                             :key="tag"
-                            class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium text-white/60"
+                            class="rounded-full border border-slate-200 bg-white/40 px-3 py-1 text-xs font-medium text-slate-500 dark:border-white/10 dark:bg-white/5 dark:text-white/60"
                         >
                             {{ EventConstants.tagLabels[tag] }}
                         </span>
                     </div>
 
                     <h1
-                        class="text-4xl leading-tight font-black tracking-tight text-balance text-white sm:text-5xl lg:text-6xl"
+                        class="text-4xl leading-tight font-black tracking-tight text-balance text-slate-900 sm:text-5xl lg:text-6xl dark:text-white"
                     >
                         {{ localizedName }}
                     </h1>
 
                     <div
-                        class="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-white/65"
+                        class="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-slate-600 dark:text-white/65"
                     >
                         <span class="inline-flex items-center gap-2">
                             <CalendarDays class="h-4 w-4 shrink-0" />
@@ -263,7 +265,9 @@ function cancelAtcSlotReservation(slotId: number) {
                             <Clock class="h-4 w-4 shrink-0" />
                             {{ startsAtParts.time }}
                             <template v-if="endsAtParts">
-                                <MoveRight class="h-3.5 w-3.5 text-white/40" />
+                                <MoveRight
+                                    class="h-3.5 w-3.5 text-slate-400 dark:text-white/40"
+                                />
                                 {{ endsAtParts.time }}
                             </template>
                         </span>
@@ -749,9 +753,7 @@ function cancelAtcSlotReservation(slotId: number) {
                                     </p>
 
                                     <!-- Right side: status + controller + reserve -->
-                                    <div
-                                        class="flex flex-wrap items-center gap-2"
-                                    >
+                                    <div class="flex items-center gap-2">
                                         <Badge
                                             v-if="
                                                 isLoggedIn &&

@@ -36,8 +36,7 @@ class AtcSlotReservationsController extends Controller
                 ->with('error', $e->getMessage());
         }
 
-        return redirect()
-            ->route('home.events.show', $event)
+        return back()
             ->with('success', __('Your ATC slot has been reserved successfully.'));
     }
 

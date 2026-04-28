@@ -84,11 +84,14 @@ class AtcPositionFra extends Model
             CarbonInterface::SUNDAY => 'sunday',
         };
 
-        $query
-            ->where($column, true)
-            ->orWhere(function ($query) use ($date): void {
-                $query->whereNotNull('date')
-                    ->whereDate('date', $date->toDateString());
-            });
+        $query->where(function (Builder $query) use ($column, $date) {
+            $query
+                ->where($column, true)
+                ->orWhere(function ($query) use ($date): void {
+                    $query->whereNotNull('date')
+                        ->whereDate('date', $date->toDateString());
+                });
+        });
+
     }
 }
