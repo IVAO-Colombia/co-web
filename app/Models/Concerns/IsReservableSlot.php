@@ -9,10 +9,10 @@ use App\Models\AtcSlot;
 use App\Models\PilotSlot;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
 /**
- * @phpstan-require-implements PilotSlot
- * @phpstan-require-implements AtcSlot
+ * @phpstan-require-extends Model
  **/
 trait IsReservableSlot
 {

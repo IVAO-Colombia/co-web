@@ -15,9 +15,9 @@ import PilotSlotsTab from '@/components/landing/events/PilotSlotsTab.vue';
 import Header from '@/components/landing/Header.vue';
 import { useLocale } from '@/composables/useLocale';
 import { getDateParts } from '@/lib/utils';
+import { events } from '@/routes/home';
 import type { AtcPositionFra, EventDetail } from '@/types';
 import { EventConstants } from '@/types';
-import { events } from '@/routes/home';
 
 const props = defineProps<{
     event: EventDetail;

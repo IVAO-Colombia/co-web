@@ -43,6 +43,7 @@ import { useDebounce } from '@/composables/useDebounce';
 import { useLocale } from '@/composables/useLocale';
 import { usePermissions } from '@/composables/usePermissions';
 import { formatDateTime } from '@/lib/utils';
+import { index, create, destroy, show } from '@/routes/dashboard/events';
 import type {
     LengthAwarePaginator,
     Event,
@@ -51,7 +52,6 @@ import type {
 } from '@/types';
 import { Permission } from '@/types';
 import { EventConstants } from '@/types';
-import { index, create, destroy, show } from '@/routes/dashboard/events';
 
 const props = defineProps<{
     events: LengthAwarePaginator<number, Event>;

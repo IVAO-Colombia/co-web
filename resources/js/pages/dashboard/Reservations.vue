@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Head, Link, setLayoutProps, useForm } from '@inertiajs/vue3';
+import { Head, setLayoutProps, useForm } from '@inertiajs/vue3';
 import { wTrans } from 'laravel-vue-i18n';
 import { PlaneTakeoff, Radio } from 'lucide-vue-next';
 import { ref } from 'vue';
