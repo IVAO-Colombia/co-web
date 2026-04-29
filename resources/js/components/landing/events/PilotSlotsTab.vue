@@ -7,10 +7,10 @@ import Button from '@/components/ui/button/Button.vue';
 import { useLocale } from '@/composables/useLocale';
 import { Ivao } from '@/lib/ivao';
 import { formatDateTime } from '@/lib/utils';
-import auth from '@/routes/auth';
-import pilotSlotRoutes from '@/routes/home/events/pilot-slot';
 import { SlotsConstants, SlotStatus } from '@/types';
 import type { PilotSlot } from '@/types';
+import auth from '@/routes/auth';
+import pilotSlotRoutes from '@/routes/home/events/pilot-slot';
 
 const props = defineProps<{
     eventSlug: string;

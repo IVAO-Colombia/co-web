@@ -36,9 +36,9 @@ import {
 } from '@/components/ui/navigation-menu';
 import { useAppearance } from '@/composables/useAppearance';
 import { useLocale } from '@/composables/useLocale';
+import type { Locale } from '@/types';
 import { dashboard } from '@/routes';
 import auth from '@/routes/auth';
-import type { Locale } from '@/types';
 
 type SectionLink = {
     title: string;

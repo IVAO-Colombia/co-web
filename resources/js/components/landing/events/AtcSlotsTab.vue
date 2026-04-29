@@ -8,10 +8,10 @@ import { computed } from 'vue';
 import Badge from '@/components/ui/badge/Badge.vue';
 import Button from '@/components/ui/button/Button.vue';
 import { formatAtcTime } from '@/lib/utils';
-import auth from '@/routes/auth';
-import atcSlotRoutes from '@/routes/home/events/atc-slot';
 import { ATCRating, ATCRatings, SlotsConstants, SlotStatus } from '@/types';
 import type { AtcPositionFra, ATCRatingValue, AtcSlot } from '@/types';
+import auth from '@/routes/auth';
+import atcSlotRoutes from '@/routes/home/events/atc-slot';
 
 const props = defineProps<{
     eventSlug: string;
