@@ -3,6 +3,10 @@ import { Head, Link, setLayoutProps, useForm } from '@inertiajs/vue3';
 import { wTrans } from 'laravel-vue-i18n';
 import { AlertCircle, ChevronLeft, ImagePlus, X } from 'lucide-vue-next';
 import { computed, onUnmounted, ref } from 'vue';
+import {
+    edit,
+    update,
+} from '@/actions/App/Http/Controllers/Dashboard/EventsController';
 import AtcSlotsCard from '@/components/dashboard/events/AtcSlotsCard.vue';
 import PilotSlotsCard from '@/components/dashboard/events/PilotSlotsCard.vue';
 import InputError from '@/components/InputError.vue';
@@ -28,6 +32,7 @@ import {
 import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
 import { toUTCDateTime } from '@/lib/utils';
+import { show as showRoute, index } from '@/routes/dashboard/events';
 import {
     EventConstants,
     EventTag,
@@ -40,11 +45,6 @@ import type {
     EventType,
     PilotSlotRow,
 } from '@/types';
-import {
-    edit,
-    update,
-} from '@/actions/App/Http/Controllers/Dashboard/EventsController';
-import { show as showRoute, index } from '@/routes/dashboard/events';
 
 type EventForm = {
     name: string;

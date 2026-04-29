@@ -33,6 +33,7 @@ class AtcSlotReservationTest extends TestCase
         ]);
 
         $response = $this->actingAs($user)
+            ->from(route('home.events.show', $event))
             ->post(route('home.events.atc-slot.store', ['event' => $event->slug, 'slot' => $slot->id]));
 
         $response->assertRedirect(route('home.events.show', $event));
@@ -154,6 +155,7 @@ class AtcSlotReservationTest extends TestCase
         ]);
 
         $response = $this->actingAs($user)
+            ->from(route('home.events.show', $event))
             ->post(route('home.events.atc-slot.store', ['event' => $event->slug, 'slot' => $slot->id]));
 
         $response->assertRedirect(route('auth.redirect'));
@@ -267,6 +269,7 @@ class AtcSlotReservationTest extends TestCase
         ]);
 
         $response = $this->actingAs($user)
+            ->from(route('home.events.show', $event))
             ->post(route('home.events.atc-slot.store', ['event' => $event->slug, 'slot' => $slot->id]));
 
         $response->assertRedirect(route('home.events.show', $event));

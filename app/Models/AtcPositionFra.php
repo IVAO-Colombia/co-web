@@ -84,7 +84,7 @@ class AtcPositionFra extends Model
             CarbonInterface::SUNDAY => 'sunday',
         };
 
-        $query->where(function (Builder $query) use ($column, $date) {
+        $query->where(function (Builder $query) use ($column, $date): void {
             $query
                 ->where($column, true)
                 ->orWhere(function ($query) use ($date): void {

@@ -8,9 +8,9 @@ import { useLocale } from '@/composables/useLocale';
 import { Ivao } from '@/lib/ivao';
 import { formatDateTime } from '@/lib/utils';
 import auth from '@/routes/auth';
+import pilotSlotRoutes from '@/routes/home/events/pilot-slot';
 import { SlotsConstants, SlotStatus } from '@/types';
 import type { PilotSlot } from '@/types';
-// import pilotSlotRoutes from '@/routes/home/events/pilot-slot';
 
 const props = defineProps<{
     eventSlug: string;
@@ -251,6 +251,26 @@ function cancelPilotSlotReservation(slotId: number) {
                                             pilotSlotForm.processing
                                                 ? $t('Processing...')
                                                 : $t('Reserve')
+                                        }}
+                                    </Button>
+                                    <Button
+                                        v-if="
+                                            isLoggedIn &&
+                                            slot.pilot_id === user?.id &&
+                                            slot.status !== SlotStatus.AVAILABLE
+                                        "
+                                        variant="destructive"
+                                        size="sm"
+                                        class="h-7"
+                                        :disabled="pilotSlotForm.processing"
+                                        @click="
+                                            cancelPilotSlotReservation(slot.id)
+                                        "
+                                    >
+                                        {{
+                                            pilotSlotForm.processing
+                                                ? $t('Processing...')
+                                                : $t('Cancel')
                                         }}
                                     </Button>
                                 </td>
