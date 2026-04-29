@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Landing;
 
-use App\Actions\Events\CancelPilotSlot;
 use App\Actions\Events\ReservePilotSlot;
 use App\Http\Controllers\Controller;
 use App\Models\Event;
@@ -25,8 +24,8 @@ class PilotSlotReservationsController extends Controller
 
         (new ReservePilotSlot)->handle($user, $slot);
 
-        return back()
-            ->with('success', __('Your pilot slot has been reserved successfully.'));
+        return back();
+    }
     }
 
     public function destroy(Request $request, Event $event, PilotSlot $slot): RedirectResponse
@@ -39,10 +38,8 @@ class PilotSlotReservationsController extends Controller
 
         abort_if($slot->pilot_id !== $user->id, 403);
 
-        (new CancelPilotSlot)->handle($user, $slot);
+        $slot->cancel();
 
-        return redirect()
-            ->route('home.events.show', $event)
-            ->with('success', __('Your pilot slot reservation has been cancelled successfully.'));
+        return back();
     }
 }

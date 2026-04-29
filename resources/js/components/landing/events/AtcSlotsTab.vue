@@ -3,15 +3,18 @@ import { utc } from '@date-fns/utc';
 import { Link, useForm, usePage } from '@inertiajs/vue3';
 import { format, parseISO } from 'date-fns';
 import { enUS } from 'date-fns/locale';
+import { wTrans } from 'laravel-vue-i18n';
 import { Radio } from 'lucide-vue-next';
 import { computed } from 'vue';
+import { toast } from 'vue-sonner';
 import Badge from '@/components/ui/badge/Badge.vue';
 import Button from '@/components/ui/button/Button.vue';
 import { formatAtcTime } from '@/lib/utils';
+import auth from '@/routes/auth';
+import dashboardAtcSlotRoutes from '@/routes/dashboard/events/atc-slot';
+import atcSlotRoutes from '@/routes/dashboard/events/atc-slot';
 import { ATCRating, ATCRatings, SlotsConstants, SlotStatus } from '@/types';
 import type { AtcPositionFra, ATCRatingValue, AtcSlot } from '@/types';
-import auth from '@/routes/auth';
-import atcSlotRoutes from '@/routes/home/events/atc-slot';
 
 const props = defineProps<{
     eventSlug: string;
@@ -59,14 +62,29 @@ function reserveAtcSlot(slotId: number) {
             event: props.eventSlug,
             slot: slotId,
         }),
+        {
+            preserveScroll: true,
+            onSuccess: () =>
+                toast.success(wTrans('ATC slot reserved successfully!')),
+            onError: (errors) => {
+                if (errors.reservation) {
+                    toast.error(errors.reservation);
+                }
+            },
+        },
     );
 }
 function cancelAtcSlotReservation(slotId: number) {
     atcSlotForm.delete(
-        atcSlotRoutes.destroy.url({
+        dashboardAtcSlotRoutes.destroy.url({
             event: props.eventSlug,
             slot: slotId,
         }),
+        {
+            preserveScroll: true,
+            onSuccess: () =>
+                toast.success(wTrans('ATC slot cancelled successfully!')),
+        },
     );
 }
 

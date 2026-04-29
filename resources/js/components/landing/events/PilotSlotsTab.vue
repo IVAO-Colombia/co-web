@@ -1,16 +1,18 @@
 <script setup lang="ts">
 import { Link, useForm, usePage } from '@inertiajs/vue3';
+import { wTrans } from 'laravel-vue-i18n';
 import { MoveRight } from 'lucide-vue-next';
 import { computed, onBeforeMount, ref } from 'vue';
+import { toast } from 'vue-sonner';
 import Badge from '@/components/ui/badge/Badge.vue';
 import Button from '@/components/ui/button/Button.vue';
 import { useLocale } from '@/composables/useLocale';
 import { Ivao } from '@/lib/ivao';
 import { formatDateTime } from '@/lib/utils';
+import auth from '@/routes/auth';
+import dashboardPilotSlotRoutes from '@/routes/dashboard/events/pilot-slot';
 import { SlotsConstants, SlotStatus } from '@/types';
 import type { PilotSlot } from '@/types';
-import auth from '@/routes/auth';
-import pilotSlotRoutes from '@/routes/home/events/pilot-slot';
 
 const props = defineProps<{
     eventSlug: string;
@@ -51,18 +53,33 @@ const pilotSlotsByAirline = computed(() => {
 
 function reservePilotSlot(slotId: number) {
     pilotSlotForm.post(
-        pilotSlotRoutes.store.url({
+        dashboardPilotSlotRoutes.store.url({
             event: props.eventSlug,
             slot: slotId,
         }),
+        {
+            preserveScroll: true,
+            onSuccess: () =>
+                toast.success(wTrans('Pilot slot reserved successfully!')),
+            onError: (errors) => {
+                if (errors.reservation) {
+                    toast.error(errors.reservation);
+                }
+            },
+        },
     );
 }
 function cancelPilotSlotReservation(slotId: number) {
     pilotSlotForm.delete(
-        pilotSlotRoutes.destroy.url({
+        dashboardPilotSlotRoutes.destroy.url({
             event: props.eventSlug,
             slot: slotId,
         }),
+        {
+            preserveScroll: true,
+            onSuccess: () =>
+                toast.success(wTrans('Pilot slot cancelled successfully!')),
+        },
     );
 }
 </script>

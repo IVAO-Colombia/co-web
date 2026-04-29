@@ -33,11 +33,11 @@ class AtcSlotReservationsController extends Controller
         } catch (AtcReservationNotAllowedException $e) {
             return redirect()
                 ->back()
-                ->with('error', $e->getMessage());
+                ->withErrors(['reservation' => $e->getMessage()]);
         }
 
-        return back()
-            ->with('success', __('Your ATC slot has been reserved successfully.'));
+        return back();
+    }
     }
 
     public function destroy(Request $request, Event $event, AtcSlot $slot): RedirectResponse
@@ -57,11 +57,9 @@ class AtcSlotReservationsController extends Controller
         } catch (AtcReservationNotAllowedException $e) {
             return redirect()
                 ->back()
-                ->with('error', $e->getMessage());
+                ->withErrors(['reservation' => $e->getMessage()]);
         }
 
-        return redirect()
-            ->route('home.events.show', $event)
-            ->with('success', __('Your ATC slot reservation has been cancelled successfully.'));
+        return back();
     }
 }

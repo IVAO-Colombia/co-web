@@ -25,10 +25,9 @@ class PilotSlotReservationTest extends TestCase
         $slot = PilotSlot::factory()->for($event)->create(['status' => SlotStatus::AVAILABLE]);
 
         $response = $this->actingAs($user)
-            ->post(route('home.events.pilot-slot.store', ['event' => $event->slug, 'slot' => $slot->id]));
+            ->post(route('dashboard.events.pilot-slot.store', ['event' => $event->slug, 'slot' => $slot->id]));
 
         $response->assertRedirect();
-        $response->assertSessionHas('success');
 
         $slot->refresh();
         $this->assertEquals(SlotStatus::RESERVED, $slot->status);
@@ -41,7 +40,7 @@ class PilotSlotReservationTest extends TestCase
         $event = Event::factory()->create();
         $slot = PilotSlot::factory()->for($event)->create(['status' => SlotStatus::AVAILABLE]);
 
-        $response = $this->post(route('home.events.pilot-slot.store', ['event' => $event->slug, 'slot' => $slot->id]));
+        $response = $this->post(route('dashboard.events.pilot-slot.store', ['event' => $event->slug, 'slot' => $slot->id]));
 
         $response->assertRedirect(route('home'));
     }
@@ -55,7 +54,7 @@ class PilotSlotReservationTest extends TestCase
         $slot = PilotSlot::factory()->for($otherEvent)->create(['status' => SlotStatus::AVAILABLE]);
 
         $response = $this->actingAs($user)
-            ->post(route('home.events.pilot-slot.store', ['event' => $event->slug, 'slot' => $slot->id]));
+            ->post(route('dashboard.events.pilot-slot.store', ['event' => $event->slug, 'slot' => $slot->id]));
 
         $response->assertNotFound();
     }
@@ -68,7 +67,7 @@ class PilotSlotReservationTest extends TestCase
         $slot = PilotSlot::factory()->for($event)->reserved()->create();
 
         $response = $this->actingAs($user)
-            ->post(route('home.events.pilot-slot.store', ['event' => $event->slug, 'slot' => $slot->id]));
+            ->post(route('dashboard.events.pilot-slot.store', ['event' => $event->slug, 'slot' => $slot->id]));
 
         $response->assertStatus(409);
     }
@@ -85,10 +84,9 @@ class PilotSlotReservationTest extends TestCase
         $slot = PilotSlot::factory()->for($event)->reserved()->create(['pilot_id' => $user->id]);
 
         $response = $this->actingAs($user)
-            ->delete(route('home.events.pilot-slot.destroy', ['event' => $event->slug, 'slot' => $slot->id]));
+            ->delete(route('dashboard.events.pilot-slot.destroy', ['event' => $event->slug, 'slot' => $slot->id]));
 
-        $response->assertRedirect(route('home.events.show', $event));
-        $response->assertSessionHas('success');
+        $response->assertRedirect();
 
         $slot->refresh();
         $this->assertEquals(SlotStatus::AVAILABLE, $slot->status);
@@ -104,7 +102,7 @@ class PilotSlotReservationTest extends TestCase
         $slot = PilotSlot::factory()->for($event)->reserved()->create(['pilot_id' => $otherUser->id]);
 
         $response = $this->actingAs($user)
-            ->delete(route('home.events.pilot-slot.destroy', ['event' => $event->slug, 'slot' => $slot->id]));
+            ->delete(route('dashboard.events.pilot-slot.destroy', ['event' => $event->slug, 'slot' => $slot->id]));
 
         $response->assertForbidden();
         $this->assertEquals(SlotStatus::RESERVED, $slot->fresh()->status);
@@ -118,7 +116,7 @@ class PilotSlotReservationTest extends TestCase
         $slot = PilotSlot::factory()->for($event)->create(['status' => SlotStatus::AVAILABLE]);
 
         $response = $this->actingAs($user)
-            ->delete(route('home.events.pilot-slot.destroy', ['event' => $event->slug, 'slot' => $slot->id]));
+            ->delete(route('dashboard.events.pilot-slot.destroy', ['event' => $event->slug, 'slot' => $slot->id]));
 
         $response->assertStatus(409);
     }
@@ -132,7 +130,7 @@ class PilotSlotReservationTest extends TestCase
         $slot = PilotSlot::factory()->for($otherEvent)->reserved()->create(['pilot_id' => $user->id]);
 
         $response = $this->actingAs($user)
-            ->delete(route('home.events.pilot-slot.destroy', ['event' => $event->slug, 'slot' => $slot->id]));
+            ->delete(route('dashboard.events.pilot-slot.destroy', ['event' => $event->slug, 'slot' => $slot->id]));
 
         $response->assertNotFound();
     }

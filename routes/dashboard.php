@@ -2,17 +2,22 @@
 
 declare(strict_types=1);
 
-use App\Enums\PagesComponents;
 use App\Http\Controllers\Dashboard\EventsController;
+use App\Http\Controllers\Dashboard\ReservationsController;
+use App\Http\Controllers\Landing\AtcSlotReservationsController;
+use App\Http\Controllers\Landing\PilotSlotReservationsController;
 use Illuminate\Support\Facades\Route;
 
-// Route::get('events', [EventsController::class, 'index'])->name('dashboard.events.index');
-// Route::inertia('events/create', PagesComponents::EVENTS_CREATE)->name('dashboard.events.create');
-// Route::post('events', [EventsController::class, 'store'])->name('dashboard.events.store');
-// Route::get('events/{event:slug}', [EventsController::class, 'show'])->name('dashboard.events.show');
-// Route::get('events/{event:slug}/edit', [EventsController::class, 'edit'])->name('dashboard.events.edit');
-// Route::put('events/{event:slug}', [EventsController::class, 'update'])->name('dashboard.events.update');
-// Route::delete('events/{event:slug}', [EventsController::class, 'destroy'])->name('dashboard.events.destroy');
+Route::get('reservations', [ReservationsController::class, 'index'])->name('dashboard.reservations.index');
+
+Route::post('events/{event:slug}/reservations/atc-slot/{slot}', [AtcSlotReservationsController::class, 'store'])->name('dashboard.events.atc-slot.store');
+Route::patch('events/{event:slug}/reservations/atc-slot/{slot}', [AtcSlotReservationsController::class, 'update'])->name('dashboard.events.atc-slot.update');
+Route::delete('events/{event:slug}/reservations/atc-slot/{slot}', [AtcSlotReservationsController::class, 'destroy'])->name('dashboard.events.atc-slot.destroy');
+
+Route::post('/events/{event:slug}/reservations/pilot-slot/{slot}', [PilotSlotReservationsController::class, 'store'])->name('dashboard.events.pilot-slot.store');
+Route::patch('events/{event:slug}/reservations/pilot-slot/{slot}', [PilotSlotReservationsController::class, 'update'])->name('dashboard.events.pilot-slot.update');
+Route::delete('events/{event:slug}/reservations/pilot-slot/{slot}', [PilotSlotReservationsController::class, 'destroy'])->name('dashboard.events.pilot-slot.destroy');
+
 Route::resource('events', EventsController::class)
     ->scoped(['event' => 'slug'])
     ->names([

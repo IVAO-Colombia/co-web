@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Actions\Events;
 
 use App\Actions\Auth\RefreshOAuthToken;
-use App\Enums\SlotStatus;
 use App\Exceptions\AtcReauthRequiredException;
 use App\Exceptions\AtcReservationNotAllowedException;
 use App\Models\AtcSlot;
@@ -51,10 +50,6 @@ class CancelAtcSlot
         );
 
         // 404 means the booking no longer exists on IVAO — treat as already cancelled and proceed.
-        $slot->update([
-            'status' => SlotStatus::AVAILABLE,
-            'atc_id' => null,
-            'ivao_booking' => null,
-        ]);
+        $slot->cancel();
     }
 }

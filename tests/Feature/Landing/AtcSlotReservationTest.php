@@ -34,10 +34,9 @@ class AtcSlotReservationTest extends TestCase
 
         $response = $this->actingAs($user)
             ->from(route('home.events.show', $event))
-            ->post(route('home.events.atc-slot.store', ['event' => $event->slug, 'slot' => $slot->id]));
+            ->post(route('dashboard.events.atc-slot.store', ['event' => $event->slug, 'slot' => $slot->id]));
 
         $response->assertRedirect(route('home.events.show', $event));
-        $response->assertSessionHas('success');
 
         $slot->refresh();
         $this->assertEquals(SlotStatus::RESERVED, $slot->status);
@@ -51,7 +50,7 @@ class AtcSlotReservationTest extends TestCase
         $event = Event::factory()->create();
         $slot = AtcSlot::factory()->for($event)->create(['status' => SlotStatus::AVAILABLE]);
 
-        $response = $this->post(route('home.events.atc-slot.store', ['event' => $event->slug, 'slot' => $slot->id]));
+        $response = $this->post(route('dashboard.events.atc-slot.store', ['event' => $event->slug, 'slot' => $slot->id]));
 
         $response->assertRedirect(route('home'));
     }
@@ -65,7 +64,7 @@ class AtcSlotReservationTest extends TestCase
         $slot = AtcSlot::factory()->for($otherEvent)->create(['status' => SlotStatus::AVAILABLE]);
 
         $response = $this->actingAs($user)
-            ->post(route('home.events.atc-slot.store', ['event' => $event->slug, 'slot' => $slot->id]));
+            ->post(route('dashboard.events.atc-slot.store', ['event' => $event->slug, 'slot' => $slot->id]));
 
         $response->assertNotFound();
     }
@@ -78,7 +77,7 @@ class AtcSlotReservationTest extends TestCase
         $slot = AtcSlot::factory()->for($event)->reserved()->create();
 
         $response = $this->actingAs($user)
-            ->post(route('home.events.atc-slot.store', ['event' => $event->slug, 'slot' => $slot->id]));
+            ->post(route('dashboard.events.atc-slot.store', ['event' => $event->slug, 'slot' => $slot->id]));
 
         $response->assertStatus(409);
     }
@@ -99,7 +98,7 @@ class AtcSlotReservationTest extends TestCase
         ]);
 
         $response = $this->actingAs($user)
-            ->post(route('home.events.atc-slot.store', ['event' => $event->slug, 'slot' => $slot->id]));
+            ->post(route('dashboard.events.atc-slot.store', ['event' => $event->slug, 'slot' => $slot->id]));
 
         $response->assertRedirect(route('auth.redirect'));
         $this->assertEquals(SlotStatus::AVAILABLE, $slot->fresh()->status);
@@ -126,10 +125,10 @@ class AtcSlotReservationTest extends TestCase
 
         $response = $this->actingAs($user)
             ->from(route('home.events.show', $event))
-            ->post(route('home.events.atc-slot.store', ['event' => $event->slug, 'slot' => $slot->id]));
+            ->post(route('dashboard.events.atc-slot.store', ['event' => $event->slug, 'slot' => $slot->id]));
 
         $response->assertRedirect(route('home.events.show', $event));
-        $response->assertSessionHas('error', 'Rating not sufficient');
+        $response->assertSessionHasErrors('reservation');
         $this->assertEquals(SlotStatus::AVAILABLE, $slot->fresh()->status);
     }
 
@@ -156,7 +155,7 @@ class AtcSlotReservationTest extends TestCase
 
         $response = $this->actingAs($user)
             ->from(route('home.events.show', $event))
-            ->post(route('home.events.atc-slot.store', ['event' => $event->slug, 'slot' => $slot->id]));
+            ->post(route('dashboard.events.atc-slot.store', ['event' => $event->slug, 'slot' => $slot->id]));
 
         $response->assertRedirect(route('auth.redirect'));
         $this->assertEquals(SlotStatus::AVAILABLE, $slot->fresh()->status);
@@ -185,10 +184,10 @@ class AtcSlotReservationTest extends TestCase
 
         $response = $this->actingAs($user)
             ->from(route('home.events.show', $event))
-            ->post(route('home.events.atc-slot.store', ['event' => $event->slug, 'slot' => $slot->id]));
+            ->post(route('dashboard.events.atc-slot.store', ['event' => $event->slug, 'slot' => $slot->id]));
 
         $response->assertRedirect(route('home.events.show', $event));
-        $response->assertSessionHas('error', 'Slot already booked');
+        $response->assertSessionHasErrors('reservation');
         $this->assertEquals(SlotStatus::AVAILABLE, $slot->fresh()->status);
     }
 
@@ -215,10 +214,10 @@ class AtcSlotReservationTest extends TestCase
 
         $response = $this->actingAs($user)
             ->from(route('home.events.show', $event))
-            ->post(route('home.events.atc-slot.store', ['event' => $event->slug, 'slot' => $slot->id]));
+            ->post(route('dashboard.events.atc-slot.store', ['event' => $event->slug, 'slot' => $slot->id]));
 
         $response->assertRedirect(route('home.events.show', $event));
-        $response->assertSessionHas('error', 'Not authorized to book this position');
+        $response->assertSessionHasErrors('reservation');
         $this->assertEquals(SlotStatus::AVAILABLE, $slot->fresh()->status);
     }
 
@@ -238,7 +237,7 @@ class AtcSlotReservationTest extends TestCase
         ]);
 
         $response = $this->actingAs($user)
-            ->post(route('home.events.atc-slot.store', ['event' => $event->slug, 'slot' => $slot->id]));
+            ->post(route('dashboard.events.atc-slot.store', ['event' => $event->slug, 'slot' => $slot->id]));
 
         $response->assertRedirect(route('auth.redirect'));
         $this->assertEquals(SlotStatus::AVAILABLE, $slot->fresh()->status);
@@ -270,10 +269,9 @@ class AtcSlotReservationTest extends TestCase
 
         $response = $this->actingAs($user)
             ->from(route('home.events.show', $event))
-            ->post(route('home.events.atc-slot.store', ['event' => $event->slug, 'slot' => $slot->id]));
+            ->post(route('dashboard.events.atc-slot.store', ['event' => $event->slug, 'slot' => $slot->id]));
 
         $response->assertRedirect(route('home.events.show', $event));
-        $response->assertSessionHas('success');
         $this->assertEquals(SlotStatus::RESERVED, $slot->fresh()->status);
     }
 
@@ -295,7 +293,7 @@ class AtcSlotReservationTest extends TestCase
         ]);
 
         $response = $this->actingAs($user)
-            ->post(route('home.events.atc-slot.store', ['event' => $event->slug, 'slot' => $slot->id]));
+            ->post(route('dashboard.events.atc-slot.store', ['event' => $event->slug, 'slot' => $slot->id]));
 
         $response->assertRedirect(route('auth.redirect'));
         $this->assertEquals(SlotStatus::AVAILABLE, $slot->fresh()->status);
@@ -321,10 +319,9 @@ class AtcSlotReservationTest extends TestCase
         ]);
 
         $response = $this->actingAs($user)
-            ->delete(route('home.events.atc-slot.destroy', ['event' => $event->slug, 'slot' => $slot->id]));
+            ->delete(route('dashboard.events.atc-slot.destroy', ['event' => $event->slug, 'slot' => $slot->id]));
 
-        $response->assertRedirect(route('home.events.show', $event));
-        $response->assertSessionHas('success');
+        $response->assertRedirect();
 
         $slot->refresh();
         $this->assertEquals(SlotStatus::AVAILABLE, $slot->status);
@@ -348,10 +345,9 @@ class AtcSlotReservationTest extends TestCase
         ]);
 
         $response = $this->actingAs($user)
-            ->delete(route('home.events.atc-slot.destroy', ['event' => $event->slug, 'slot' => $slot->id]));
+            ->delete(route('dashboard.events.atc-slot.destroy', ['event' => $event->slug, 'slot' => $slot->id]));
 
-        $response->assertRedirect(route('home.events.show', $event));
-        $response->assertSessionHas('success');
+        $response->assertRedirect();
 
         $slot->refresh();
         $this->assertEquals(SlotStatus::AVAILABLE, $slot->status);
@@ -367,7 +363,7 @@ class AtcSlotReservationTest extends TestCase
             'ivao_booking' => ['id' => 123],
         ]);
 
-        $response = $this->delete(route('home.events.atc-slot.destroy', ['event' => $event->slug, 'slot' => $slot->id]));
+        $response = $this->delete(route('dashboard.events.atc-slot.destroy', ['event' => $event->slug, 'slot' => $slot->id]));
 
         $response->assertRedirect(route('home'));
     }
@@ -384,7 +380,7 @@ class AtcSlotReservationTest extends TestCase
         ]);
 
         $response = $this->actingAs($user)
-            ->delete(route('home.events.atc-slot.destroy', ['event' => $event->slug, 'slot' => $slot->id]));
+            ->delete(route('dashboard.events.atc-slot.destroy', ['event' => $event->slug, 'slot' => $slot->id]));
 
         $response->assertNotFound();
     }
@@ -397,7 +393,7 @@ class AtcSlotReservationTest extends TestCase
         $slot = AtcSlot::factory()->for($event)->create(['status' => SlotStatus::AVAILABLE]);
 
         $response = $this->actingAs($user)
-            ->delete(route('home.events.atc-slot.destroy', ['event' => $event->slug, 'slot' => $slot->id]));
+            ->delete(route('dashboard.events.atc-slot.destroy', ['event' => $event->slug, 'slot' => $slot->id]));
 
         $response->assertStatus(409);
     }
@@ -414,7 +410,7 @@ class AtcSlotReservationTest extends TestCase
         ]);
 
         $response = $this->actingAs($otherUser)
-            ->delete(route('home.events.atc-slot.destroy', ['event' => $event->slug, 'slot' => $slot->id]));
+            ->delete(route('dashboard.events.atc-slot.destroy', ['event' => $event->slug, 'slot' => $slot->id]));
 
         $response->assertForbidden();
     }
@@ -430,7 +426,7 @@ class AtcSlotReservationTest extends TestCase
         ]);
 
         $response = $this->actingAs($user)
-            ->delete(route('home.events.atc-slot.destroy', ['event' => $event->slug, 'slot' => $slot->id]));
+            ->delete(route('dashboard.events.atc-slot.destroy', ['event' => $event->slug, 'slot' => $slot->id]));
 
         $response->assertRedirect(route('auth.redirect'));
         $this->assertEquals(SlotStatus::RESERVED, $slot->fresh()->status);
@@ -459,10 +455,9 @@ class AtcSlotReservationTest extends TestCase
         ]);
 
         $response = $this->actingAs($user)
-            ->delete(route('home.events.atc-slot.destroy', ['event' => $event->slug, 'slot' => $slot->id]));
+            ->delete(route('dashboard.events.atc-slot.destroy', ['event' => $event->slug, 'slot' => $slot->id]));
 
-        $response->assertRedirect(route('home.events.show', $event));
-        $response->assertSessionHas('success');
+        $response->assertRedirect();
         $this->assertEquals(SlotStatus::AVAILABLE, $slot->fresh()->status);
     }
 
@@ -482,7 +477,7 @@ class AtcSlotReservationTest extends TestCase
         ]);
 
         $response = $this->actingAs($user)
-            ->delete(route('home.events.atc-slot.destroy', ['event' => $event->slug, 'slot' => $slot->id]));
+            ->delete(route('dashboard.events.atc-slot.destroy', ['event' => $event->slug, 'slot' => $slot->id]));
 
         $response->assertRedirect(route('auth.redirect'));
         $this->assertEquals(SlotStatus::RESERVED, $slot->fresh()->status);
@@ -509,10 +504,10 @@ class AtcSlotReservationTest extends TestCase
 
         $response = $this->actingAs($user)
             ->from(route('home.events.show', $event))
-            ->delete(route('home.events.atc-slot.destroy', ['event' => $event->slug, 'slot' => $slot->id]));
+            ->delete(route('dashboard.events.atc-slot.destroy', ['event' => $event->slug, 'slot' => $slot->id]));
 
         $response->assertRedirect(route('home.events.show', $event));
-        $response->assertSessionHas('error', 'Not authorized to cancel this booking');
+        $response->assertSessionHasErrors('reservation');
         $this->assertEquals(SlotStatus::RESERVED, $slot->fresh()->status);
     }
 }
