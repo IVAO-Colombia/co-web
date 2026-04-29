@@ -37,7 +37,7 @@ class CreateEvent
                 'ends_at' => $validated['ends_at'] ?? null,
                 'pilot_slots_enabled' => $validated['pilot_slots_enabled'] ?? false,
                 'atc_slots_enabled' => $validated['atc_slots_enabled'] ?? false,
-                'status' => EventStatus::DRAFT,
+                'status' => EventStatus::ACTIVE,
                 'created_by' => $request->user()?->id,
             ]);
 

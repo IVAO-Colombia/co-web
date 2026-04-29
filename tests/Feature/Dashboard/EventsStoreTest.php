@@ -62,20 +62,9 @@ class EventsStoreTest extends TestCase
             'name_en' => 'Test Event',
             'type' => EventType::ONLINE_DAY->value,
             'locations' => 'SEQM',
-            'status' => EventStatus::DRAFT->value,
+            'status' => EventStatus::ACTIVE->value,
             'created_by' => $user->id,
         ]);
-    }
-
-    #[Test]
-    public function event_is_always_created_as_draft(): void
-    {
-        $user = User::factory()->director()->create();
-
-        $this->actingAs($user)
-            ->post(route('dashboard.events.store'), $this->validPayload());
-
-        $this->assertDatabaseHas('events', ['status' => EventStatus::DRAFT->value]);
     }
 
     #[Test]

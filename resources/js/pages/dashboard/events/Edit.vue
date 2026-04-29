@@ -119,6 +119,7 @@ const form = useForm<EventForm>({
 });
 
 const editableStatuses = [
+    EventStatusEnum.DRAFT,
     EventStatusEnum.ACTIVE,
     EventStatusEnum.CANCELLED,
 ] as const;
@@ -290,31 +291,66 @@ function submit(): void {
                     <Separator />
 
                     <!-- Type + Locations + Status -->
-                    <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
-                        <div class="flex flex-col gap-1.5">
-                            <Label for="type">
-                                {{ $t('Type') }}
-                                <span class="ml-0.5 text-destructive">*</span>
-                            </Label>
-                            <Select v-model="form.type">
-                                <SelectTrigger id="type">
-                                    <SelectValue
-                                        :placeholder="$t('Select event type')"
-                                    />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem
-                                        v-for="(
-                                            label, value
-                                        ) in EventConstants.typeLabels"
-                                        :key="value"
-                                        :value="value"
+                    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                        <div class="flex gap-4">
+                            <div class="flex flex-col gap-1.5">
+                                <Label for="status">
+                                    {{ $t('Status') }}
+                                    <span class="ml-0.5 text-destructive"
+                                        >*</span
                                     >
-                                        {{ label }}
-                                    </SelectItem>
-                                </SelectContent>
-                            </Select>
-                            <InputError :message="form.errors.type" />
+                                </Label>
+                                <Select v-model="form.status">
+                                    <SelectTrigger id="status">
+                                        <SelectValue
+                                            :placeholder="$t('Select status')"
+                                        />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem
+                                            v-for="status in editableStatuses"
+                                            :key="status"
+                                            :value="status"
+                                        >
+                                            {{
+                                                EventConstants.statusLabels[
+                                                    status
+                                                ]
+                                            }}
+                                        </SelectItem>
+                                    </SelectContent>
+                                </Select>
+                                <InputError :message="form.errors.status" />
+                            </div>
+                            <div class="flex flex-col gap-1.5">
+                                <Label for="type">
+                                    {{ $t('Type') }}
+                                    <span class="ml-0.5 text-destructive"
+                                        >*</span
+                                    >
+                                </Label>
+                                <Select v-model="form.type">
+                                    <SelectTrigger id="type">
+                                        <SelectValue
+                                            :placeholder="
+                                                $t('Select event type')
+                                            "
+                                        />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem
+                                            v-for="(
+                                                label, value
+                                            ) in EventConstants.typeLabels"
+                                            :key="value"
+                                            :value="value"
+                                        >
+                                            {{ label }}
+                                        </SelectItem>
+                                    </SelectContent>
+                                </Select>
+                                <InputError :message="form.errors.type" />
+                            </div>
                         </div>
                         <div class="flex flex-col gap-1.5">
                             <Label for="locations">
@@ -327,31 +363,6 @@ function submit(): void {
                                 :placeholder="$t('e.g. SEQM, SEGU')"
                             />
                             <InputError :message="form.errors.locations" />
-                        </div>
-                        <div class="flex flex-col gap-1.5">
-                            <Label for="status">
-                                {{ $t('Status') }}
-                                <span class="ml-0.5 text-destructive">*</span>
-                            </Label>
-                            <Select v-model="form.status">
-                                <SelectTrigger id="status">
-                                    <SelectValue
-                                        :placeholder="$t('Select status')"
-                                    />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem
-                                        v-for="status in editableStatuses"
-                                        :key="status"
-                                        :value="status"
-                                    >
-                                        {{
-                                            EventConstants.statusLabels[status]
-                                        }}
-                                    </SelectItem>
-                                </SelectContent>
-                            </Select>
-                            <InputError :message="form.errors.status" />
                         </div>
                     </div>
 
