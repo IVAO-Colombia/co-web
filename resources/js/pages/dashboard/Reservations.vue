@@ -3,6 +3,7 @@ import { Head, setLayoutProps, useForm } from '@inertiajs/vue3';
 import { wTrans } from 'laravel-vue-i18n';
 import { PlaneTakeoff, Radio } from 'lucide-vue-next';
 import { ref } from 'vue';
+import { toast } from 'vue-sonner';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -23,12 +24,12 @@ import {
 } from '@/components/ui/table';
 import { useLocale } from '@/composables/useLocale';
 import { formatDateTime } from '@/lib/utils';
-import type { AtcSlot, Event, PilotSlot } from '@/types';
-import { SlotsConstants, SlotStatus } from '@/types';
 import dashboardAtcSlot from '@/routes/dashboard/events/atc-slot';
 import dashboardPilotSlot from '@/routes/dashboard/events/pilot-slot';
 import { index } from '@/routes/dashboard/reservations';
 import { show as eventShow } from '@/routes/home/events';
+import { SlotsConstants, SlotStatus } from '@/types';
+import type { AtcSlot, Event, PilotSlot } from '@/types';
 
 type AtcSlotWithEvent = AtcSlot & { event: Event };
 type PilotSlotWithEvent = PilotSlot & { event: Event };
@@ -55,6 +56,10 @@ function confirmAtcSlot(slot: AtcSlotWithEvent) {
             event: slot.event.slug,
             slot: slot.id,
         }),
+        {
+            onSuccess: () =>
+                toast.success(wTrans('ATC slot confirmed successfully.')),
+        },
     );
 }
 
@@ -64,6 +69,10 @@ function cancelAtcSlot(slot: AtcSlotWithEvent) {
             event: slot.event.slug,
             slot: slot.id,
         }),
+        {
+            onSuccess: () =>
+                toast.success(wTrans('ATC slot cancelled successfully.')),
+        },
     );
 }
 
@@ -73,6 +82,10 @@ function confirmPilotSlot(slot: PilotSlotWithEvent) {
             event: slot.event.slug,
             slot: slot.id,
         }),
+        {
+            onSuccess: () =>
+                toast.success(wTrans('Pilot slot confirmed successfully.')),
+        },
     );
 }
 
@@ -82,6 +95,10 @@ function cancelPilotSlot(slot: PilotSlotWithEvent) {
             event: slot.event.slug,
             slot: slot.id,
         }),
+        {
+            onSuccess: () =>
+                toast.success(wTrans('Pilot slot cancelled successfully.')),
+        },
     );
 }
 </script>
@@ -153,7 +170,7 @@ function cancelPilotSlot(slot: PilotSlotWithEvent) {
                         {{ $t('Your reserved and confirmed ATC positions.') }}
                     </CardDescription>
                 </CardHeader>
-                <CardContent class="p-0">
+                <CardContent>
                     <Table>
                         <TableHeader>
                             <TableRow>
@@ -259,7 +276,7 @@ function cancelPilotSlot(slot: PilotSlotWithEvent) {
                         {{ $t('Your reserved and confirmed pilot slots.') }}
                     </CardDescription>
                 </CardHeader>
-                <CardContent class="p-0">
+                <CardContent>
                     <Table>
                         <TableHeader>
                             <TableRow>
