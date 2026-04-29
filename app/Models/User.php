@@ -10,6 +10,7 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\DatabaseNotification;
@@ -78,5 +79,17 @@ class User extends Authenticatable
     public function oauthToken(): HasOne
     {
         return $this->hasOne(UserOAuthToken::class);
+    }
+
+    /** @return HasMany<AtcSlot, $this> */
+    public function atcSlots(): HasMany
+    {
+        return $this->hasMany(AtcSlot::class, 'atc_id');
+    }
+
+    /** @return HasMany<PilotSlot, $this> */
+    public function pilotSlots(): HasMany
+    {
+        return $this->hasMany(PilotSlot::class, 'pilot_id');
     }
 }

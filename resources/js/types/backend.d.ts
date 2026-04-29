@@ -34,6 +34,7 @@ export enum PagesComponents {
     EVENTS_CREATE = 'dashboard/events/Create',
     EVENTS_EDIT = 'dashboard/events/Edit',
     EVENTS_SHOW = 'dashboard/events/Show',
+    DASHBOARD_RESERVATIONS = 'dashboard/Reservations',
     LANDING_HOME = 'Welcome',
     LANDING_EVENTS = 'landing/events/Index',
     LANDING_EVENTS_SHOW = 'landing/events/Show',

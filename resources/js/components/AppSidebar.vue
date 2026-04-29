@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
 import { wTrans } from 'laravel-vue-i18n';
-import { Calendar1, LayoutGrid } from 'lucide-vue-next';
+import { Calendar1, LayoutGrid, CalendarCheck } from 'lucide-vue-next';
 import type { ComputedRef } from 'vue';
 import { computed } from 'vue';
 import AppLogo from '@/components/AppLogo.vue';
@@ -22,6 +22,7 @@ import { Permission } from '@/types';
 import type { NavItem } from '@/types';
 import { dashboard } from '@/routes';
 import events from '@/routes/dashboard/events';
+import { index as reservationsIndex } from '@/routes/dashboard/reservations';
 
 const { hasPermission } = usePermissions();
 
@@ -31,6 +32,12 @@ const mainNavItems: ComputedRef<NavItem[]> = computed(() =>
             title: wTrans('Dashboard'),
             href: dashboard(),
             icon: LayoutGrid,
+            visible: true,
+        },
+        {
+            title: wTrans('My Reservations'),
+            href: reservationsIndex(),
+            icon: CalendarCheck,
             visible: true,
         },
     ].filter((item) => item.visible),

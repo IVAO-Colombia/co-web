@@ -26,6 +26,19 @@ class PilotSlotReservationsController extends Controller
 
         return back();
     }
+
+    public function update(Request $request, Event $event, PilotSlot $slot): RedirectResponse
+    {
+        abort_if($slot->event_id !== $event->id, 404);
+
+        /** @var User */
+        $user = $request->user();
+
+        abort_if($slot->pilot_id !== $user->id, 403);
+
+        $slot->confirm();
+
+        return back();
     }
 
     public function destroy(Request $request, Event $event, PilotSlot $slot): RedirectResponse

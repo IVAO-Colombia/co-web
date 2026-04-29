@@ -38,6 +38,19 @@ class AtcSlotReservationsController extends Controller
 
         return back();
     }
+
+    public function update(Request $request, Event $event, AtcSlot $slot): RedirectResponse
+    {
+        abort_if($slot->event_id !== $event->id, 404);
+
+        /** @var User */
+        $user = $request->user();
+
+        abort_if($slot->atc_id !== $user->id, 403);
+
+        $slot->confirm();
+
+        return back();
     }
 
     public function destroy(Request $request, Event $event, AtcSlot $slot): RedirectResponse

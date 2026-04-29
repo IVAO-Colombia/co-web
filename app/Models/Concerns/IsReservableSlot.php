@@ -5,9 +5,15 @@ declare(strict_types=1);
 namespace App\Models\Concerns;
 
 use App\Enums\SlotStatus;
+use App\Models\AtcSlot;
+use App\Models\PilotSlot;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 
+/**
+ * @phpstan-require-implements PilotSlot
+ * @phpstan-require-implements AtcSlot
+ **/
 trait IsReservableSlot
 {
     /**
@@ -31,6 +37,13 @@ trait IsReservableSlot
     public function available(Builder $query): void
     {
         $query->where('status', SlotStatus::AVAILABLE);
+    }
+
+    public function confirm(): void
+    {
+        abort_if($this->status !== SlotStatus::RESERVED, 409, 'This slot cannot be confirmed.');
+
+        $this->update(['status' => SlotStatus::CONFIRMED]);
     }
 
     public function cancel(): void
