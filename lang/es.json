@@ -101,6 +101,7 @@
     "Please set the event start and end date/time before generating slots.": "Por favor establece la fecha y hora de inicio y fin del evento antes de generar cupos.",
     "Please select at least one ATC position.": "Por favor selecciona al menos una posición ATC.",
     "Failed to fetch positions for :icao.": "Error al obtener las posiciones para :icao.",
+    "Event date and time changed. Please review ATC and Pilot slots.": "La fecha y hora del evento han cambiado. Por favor revisa los cupos de ATC y piloto.",
     "Generate Slots": "Generar cupos",
     "Clear all": "Limpiar todo",
     ":count ATC slots confirmed.": ":count cupos de ATC confirmados.",

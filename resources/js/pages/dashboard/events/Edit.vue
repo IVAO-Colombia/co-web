@@ -2,7 +2,8 @@
 import { Head, Link, setLayoutProps, useForm } from '@inertiajs/vue3';
 import { wTrans } from 'laravel-vue-i18n';
 import { AlertCircle, ChevronLeft, ImagePlus, X } from 'lucide-vue-next';
-import { computed, onUnmounted, ref } from 'vue';
+import { computed, onUnmounted, ref, watch } from 'vue';
+import { toast } from 'vue-sonner';
 import AtcSlotsCard from '@/components/dashboard/events/AtcSlotsCard.vue';
 import PilotSlotsCard from '@/components/dashboard/events/PilotSlotsCard.vue';
 import InputError from '@/components/InputError.vue';
@@ -28,6 +29,8 @@ import {
 import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
 import { toUTCDateTime } from '@/lib/utils';
+import eventRoutes from '@/routes/dashboard/events';
+import { show as showRoute, index } from '@/routes/dashboard/events';
 import {
     EventConstants,
     EventTag,
@@ -40,11 +43,6 @@ import type {
     EventType,
     PilotSlotRow,
 } from '@/types';
-import {
-    edit,
-    update,
-} from '@/actions/App/Http/Controllers/Dashboard/EventsController';
-import { show as showRoute, index } from '@/routes/dashboard/events';
 
 type EventForm = {
     name: string;
@@ -79,7 +77,7 @@ setLayoutProps({
         },
         {
             title: wTrans('Edit Event'),
-            href: edit.url({ event: props.event.slug }),
+            href: eventRoutes.edit.url({ event: props.event.slug }),
         },
     ],
 });
@@ -123,6 +121,20 @@ const editableStatuses = [
     EventStatusEnum.ACTIVE,
     EventStatusEnum.CANCELLED,
 ] as const;
+
+watch([() => form.starts_at, () => form.ends_at], ([startsAt, endsAt]) => {
+    if (!startsAt || !endsAt) {
+        return;
+    }
+
+    form.atc_slots = [];
+    form.pilot_slots = [];
+    toast.info(
+        wTrans(
+            'Event date and time changed. Please review ATC and Pilot slots.',
+        ).value,
+    );
+});
 
 function toggleTag(tag: EventTag): void {
     if (form.tags.includes(tag)) {
@@ -184,7 +196,7 @@ const atcSlotErrors = computed(() => {
 });
 
 function submit(): void {
-    form.put(update.url(props.event.slug));
+    form.put(eventRoutes.update.url({ event: props.event.slug }));
 }
 </script>
 
@@ -376,6 +388,9 @@ function submit(): void {
                             <DateTimePicker
                                 v-model="form.starts_at"
                                 :placeholder="$t('Pick start date & time')"
+                                :disabled="
+                                    hasReservedAtcSlots || hasReservedPilotSlots
+                                "
                             />
                             <InputError :message="form.errors.starts_at" />
                         </div>
@@ -385,6 +400,9 @@ function submit(): void {
                                 v-model="form.ends_at"
                                 :min-value="form.starts_at || undefined"
                                 :placeholder="$t('Pick end date & time')"
+                                :disabled="
+                                    hasReservedAtcSlots || hasReservedPilotSlots
+                                "
                             />
                             <InputError :message="form.errors.ends_at" />
                         </div>

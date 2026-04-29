@@ -2,7 +2,8 @@
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import { wTrans } from 'laravel-vue-i18n';
 import { AlertCircle, ChevronLeft, ImagePlus, X } from 'lucide-vue-next';
-import { computed, onUnmounted, ref } from 'vue';
+import { computed, onUnmounted, ref, watch } from 'vue';
+import { toast } from 'vue-sonner';
 import AtcSlotsCard from '@/components/dashboard/events/AtcSlotsCard.vue';
 import PilotSlotsCard from '@/components/dashboard/events/PilotSlotsCard.vue';
 import InputError from '@/components/InputError.vue';
@@ -27,10 +28,10 @@ import {
 } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
+import eventRoutes from '@/routes/dashboard/events';
+import { index, create } from '@/routes/dashboard/events';
 import type { AtcSlotRow, EventType, PilotSlotRow } from '@/types';
 import { EventConstants, EventTag } from '@/types';
-import { store } from '@/actions/App/Http/Controllers/Dashboard/EventsController';
-import { index, create } from '@/routes/dashboard/events';
 
 type EventForm = {
     name: string;
@@ -73,6 +74,20 @@ const form = useForm<EventForm>({
     pilot_slots: [],
     atc_slots_enabled: false,
     atc_slots: [],
+});
+
+watch([() => form.starts_at, () => form.ends_at], ([startsAt, endsAt]) => {
+    if (!startsAt || !endsAt) {
+        return;
+    }
+
+    form.atc_slots = [];
+    form.pilot_slots = [];
+    toast.info(
+        wTrans(
+            'Event date and time changed. Please review ATC and Pilot slots.',
+        ).value,
+    );
 });
 
 function toggleTag(tag: EventTag): void {
@@ -135,7 +150,7 @@ const atcSlotErrors = computed(() => {
 });
 
 function submit(): void {
-    form.post(store.url());
+    form.post(eventRoutes.store.url());
 }
 </script>
 
