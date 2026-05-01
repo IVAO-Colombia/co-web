@@ -6,8 +6,8 @@ import { wTrans } from 'laravel-vue-i18n';
 import { Eye } from 'lucide-vue-next';
 import { onBeforeUnmount, onMounted, ref } from 'vue';
 import EventCard from '@/components/landing/EventCard.vue';
-import type { Event } from '@/types';
 import home from '@/routes/home';
+import type { Event } from '@/types';
 
 const props = defineProps<{
     events: Event[];
@@ -102,7 +102,7 @@ onBeforeUnmount(() => {
 <template>
     <section
         ref="sectionRef"
-        class="relative overflow-hidden bg-slate-100 py-16 sm:py-20 dark:bg-slate-900"
+        class="relative overflow-hidden py-16 sm:py-20 dark:bg-slate-950"
     >
         <div
             class="pointer-events-none absolute inset-x-0 top-0 h-48 bg-linear-to-b from-slate-300/60 to-transparent dark:from-slate-800/40"

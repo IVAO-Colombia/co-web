@@ -7,6 +7,8 @@ namespace App\Services\Ivao;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 class Ivao
 {
@@ -148,4 +150,164 @@ class Ivao
             'refresh_token' => $refreshToken,
         ]);
     }
+
+    /**
+     *  Get active flights from Whazzup that departed from SK* airports
+     * 
+     * @return array<int, mixed>
+     */
+    public function getWhazzupFlights(): array
+    {
+        
+        $lockKey = 'ivao:whazzup:lock';
+        $lastRequestKey = 'ivao:whazzup:last_request';
+        
+        if (! Cache::lock($lockKey, 1)->get()) {
+            return Cache::get('ivao:whazzup:sk', []);
+        }
+
+        try {
+            $lastRequest = Cache::get($lastRequestKey, 0);
+            $timeSinceLastRequest = now()->timestamp - $lastRequest;
+
+            if ($timeSinceLastRequest < 15) {
+                sleep(15 - $timeSinceLastRequest);
+            }
+
+            $etagKey = 'ivao:whazzup:etag';
+            $currentEtag = Cache::get($etagKey);
+
+            $headers = [];
+            if ($currentEtag) {
+                $headers['If-None-Match'] = $currentEtag;
+            }
+
+            $response = $this->baseClient()
+                ->withHeaders($headers)
+                ->get('/tracker/whazzup');
+
+            if ($response->status() === 304) {
+                Cache::put($lastRequestKey, now()->timestamp, 3600);
+                return Cache::get('ivao:whazzup:sk', []);
+            }
+
+            if (! $response->successful()) {
+                Log::warning('IVAO whazzup request failed', [
+                    'status' => $response->status(),
+                ]);
+                return Cache::get('ivao:whazzup:sk', []);
+            }
+
+            if ($response->hasHeader('ETag')) {
+                Cache::put($etagKey, $response->header('ETag'), 3600);
+            }
+
+            /** @var array{pilots?: array<int, array<string, mixed>>}|null $data */
+            $data = $response->json();
+            
+
+            if (! isset($data['clients']['pilots']) || ! is_array($data['clients']['pilots'])) {
+                Cache::put($lastRequestKey, now()->timestamp, 3600);
+                Log::info('IVAO whazzup: no pilots key in response', ['keys' => is_array($data) ? array_keys($data) : null]);
+                return [];
+            }
+
+            $filtered = [];
+            $parsed_ok = 0;
+            $filtered_out = 0;
+
+            foreach ($data['clients']['pilots'] as $pilot) {
+                $flight = $this->parseFlightData($pilot);
+
+                if ($flight === null) {
+                    continue;
+                }
+
+                $parsed_ok++;
+
+                $dep = strtoupper((string) ($flight['dep_icao'] ?? ''));
+                $arr = strtoupper((string) ($flight['arr_icao'] ?? ''));
+
+                if ($dep === '' && $arr === '') {
+                    $filtered_out++;
+                    continue;
+                }
+
+                
+                if (! (str_starts_with($dep, 'SK') || str_starts_with($arr, 'SK'))) {
+                    $filtered_out++;
+                    continue;
+                }
+
+                $filtered[] = $flight;
+            }
+            
+
+            Cache::put('ivao:whazzup:sk', $filtered, 15);
+            Cache::put($lastRequestKey, now()->timestamp, 3600);
+
+            return $filtered;
+        } finally {
+            Cache::lock($lockKey)->forceRelease();
+        }
+    }
+
+    /**
+     * Parse flight data from the whazzup response
+        * @param  array<string, mixed>  $pilot
+        * @return array<string, mixed>|null
+     */
+    private function parseFlightData(array $pilot): ?array
+    {
+        if (
+            ! isset($pilot['callsign']) ||
+            ! isset($pilot['flightPlan']) ||
+            ! isset($pilot['lastTrack'])
+        ) {
+            return null;
+        }
+
+        $flightPlan = $pilot['flightPlan'];
+        $lastTrack = $pilot['lastTrack'];
+
+        if (
+        ! isset($flightPlan['departureId'], $flightPlan['arrivalId']) ||
+        ! isset($lastTrack['latitude'], $lastTrack['longitude'], $lastTrack['altitude'], $lastTrack['groundSpeed'])
+        ) {
+            return null;
+        }
+
+        $lat = (float) $lastTrack['latitude'];
+        $lon = (float) $lastTrack['longitude'];
+
+        if($lat === 0 && $lon === 0){
+            return null;
+        }
+
+        return [
+            'flight_id' => $pilot['id'] ?? null,
+            'ivao_id' => $pilot['userId'] ?? null,
+            'callsign' => $pilot['callsign'],
+            'airline' => $this->extractAirlineFromCallsign($pilot['callsign']),
+            'dep_icao' => $flightPlan['departureId'],
+            'arr_icao' => $flightPlan['arrivalId'],
+            'aircraft' => $flightPlan['aircraftId'] ?? 'UNKNOWN',
+            'aircraft_model' => $flightPlan['aircraft']['model'] ?? null,
+            'latitude' => $lat,
+            'longitude' => $lon,
+            'altitude' => (int) $lastTrack['altitude'],
+            'ground_speed' => (int) $lastTrack['groundSpeed'],
+            'heading' => (int) ($lastTrack['heading'] ?? 0),
+            'state' => $lastTrack['state'] ?? 'Unknown',
+            'timestamp' => $lastTrack['timestamp'] ?? now()->toIso8601String(),
+        ];
+
+    }
+
+    private function extractAirlineFromCallsign(string $callsign): string
+    {
+        return strtoupper(substr($callsign, 0, 3));
+    }
+
+
 }

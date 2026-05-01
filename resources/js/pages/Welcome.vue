@@ -5,6 +5,7 @@ import { ArrowUpRight, ChevronLeft, ChevronRight } from 'lucide-vue-next';
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import EventsList from '@/components/landing/EventsList.vue';
 import Header from '@/components/landing/Header.vue';
+import WhazzupFlights from '@/components/landing/WhazzupFlights.vue';
 import { useAppearance } from '@/composables/useAppearance';
 import type { Event } from '@/types';
 
@@ -192,7 +193,7 @@ onBeforeUnmount(() => {
                 >
                     <p
                         v-if="currentSlide.eyebrow"
-                        class="inline-flex items-center gap-2 rounded-full border border-white/20 bg-[#161a29]/80 px-3 py-1 text-xs font-medium tracking-wide text-white/95 backdrop-blur-md sm:px-4 sm:py-1.5"
+                        class="inline-flex items-center gap-2 rounded-full border border-white/20 bg-calendar-surface/80 px-3 py-1 text-xs font-medium tracking-wide text-white/95 backdrop-blur-md sm:px-4 sm:py-1.5"
                     >
                         <span
                             class="inline-block h-2 w-2 rounded-full bg-blue-500"
@@ -221,13 +222,13 @@ onBeforeUnmount(() => {
                     >
                         <a
                             :href="currentSlide.urlone"
-                            class="inline-flex w-full max-w-xs items-center justify-center rounded-xl border border-white/20 bg-[#161a29]/60 px-6 py-3 text-sm font-semibold text-white backdrop-blur-md transition-colors hover:bg-white/10 sm:w-auto sm:px-8 sm:py-3.5"
+                            class="inline-flex w-full max-w-xs items-center justify-center rounded-xl border border-white/20 bg-calendar-surface/60 px-6 py-3 text-sm font-semibold text-white backdrop-blur-md transition-colors hover:bg-white/10 sm:w-auto sm:px-8 sm:py-3.5"
                         >
                             {{ $t(currentSlide.buttontextone) }}
                         </a>
                         <a
                             :href="currentSlide.urltwo"
-                            class="inline-flex w-full max-w-xs items-center justify-center gap-2 rounded-xl bg-[#2f45ff] px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-[#2f45ff]/40 transition-colors hover:bg-[#2438e6] sm:w-auto sm:px-8 sm:py-3.5"
+                            class="inline-flex w-full max-w-xs items-center justify-center gap-2 rounded-xl bg-calendar-primary px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-calendar-primary/40 transition-colors hover:bg-calendar-primary-hover sm:w-auto sm:px-8 sm:py-3.5"
                         >
                             {{ $t(currentSlide.buttontexttwo) }}
                             <span>→</span>
@@ -252,7 +253,7 @@ onBeforeUnmount(() => {
 
                 <button
                     type="button"
-                    class="absolute top-1/2 left-6 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-[#161a29]/60 text-white/90 backdrop-blur-md transition-colors hover:bg-white/15 md:left-12 md:inline-flex"
+                    class="absolute top-1/2 left-6 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-calendar-surface/60 text-white/90 backdrop-blur-md transition-colors hover:bg-white/15 md:left-12 md:inline-flex"
                     @click="
                         previousSlide();
                         restartAutoPlay();
@@ -264,7 +265,7 @@ onBeforeUnmount(() => {
 
                 <button
                     type="button"
-                    class="absolute top-1/2 right-6 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-[#161a29]/60 text-white/90 backdrop-blur-md transition-colors hover:bg-white/15 md:right-12 md:inline-flex"
+                    class="absolute top-1/2 right-6 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-calendar-surface/60 text-white/90 backdrop-blur-md transition-colors hover:bg-white/15 md:right-12 md:inline-flex"
                     @click="
                         nextSlide();
                         restartAutoPlay();
@@ -279,7 +280,7 @@ onBeforeUnmount(() => {
                 >
                     <button
                         type="button"
-                        class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/15 bg-[#161a29]/55 text-white/90 backdrop-blur-md md:hidden"
+                        class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/15 bg-calendar-surface/55 text-white/90 backdrop-blur-md md:hidden"
                         @click="
                             previousSlide();
                             restartAutoPlay();
@@ -308,7 +309,7 @@ onBeforeUnmount(() => {
 
                     <button
                         type="button"
-                        class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/15 bg-[#161a29]/55 text-white/90 backdrop-blur-md md:hidden"
+                        class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/15 bg-calendar-surface/55 text-white/90 backdrop-blur-md md:hidden"
                         @click="
                             nextSlide();
                             restartAutoPlay();
@@ -322,4 +323,5 @@ onBeforeUnmount(() => {
         </div>
     </section>
     <EventsList :events="events" />
+    <WhazzupFlights />
 </template>

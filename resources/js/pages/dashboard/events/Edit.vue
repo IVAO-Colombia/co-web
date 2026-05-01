@@ -37,6 +37,8 @@ import {
 import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
 import { toUTCDateTime } from '@/lib/utils';
+import eventRoutes from '@/routes/dashboard/events';
+import { show as showRoute, index } from '@/routes/dashboard/events';
 import {
     EventConstants,
     EventTag,
@@ -49,8 +51,6 @@ import type {
     EventType,
     PilotSlotRow,
 } from '@/types';
-import eventRoutes from '@/routes/dashboard/events';
-import { show as showRoute, index } from '@/routes/dashboard/events';
 
 type EventForm = {
     name: string;
