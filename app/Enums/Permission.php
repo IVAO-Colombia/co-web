@@ -14,6 +14,7 @@ enum Permission: string
     case CREATE_EVENTS = 'create_events';
     case UPDATE_EVENTS = 'update_events';
     case DELETE_EVENTS = 'delete_events';
+    case GENERATE_EVENT_IMAGES = 'generate_event_images';
 
     /**
      * Permissions that will be directly assigned to a user.
@@ -37,6 +38,17 @@ enum Permission: string
             self::CREATE_EVENTS,
             self::UPDATE_EVENTS,
             self::DELETE_EVENTS,
+        ];
+    }
+
+    /**
+     * @return array<Permission>
+     */
+    public static function staffPermissions(): array
+    {
+        return [
+            self::STAFF_ACCESS,
+            self::GENERATE_EVENT_IMAGES,
         ];
     }
 }

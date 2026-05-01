@@ -3,12 +3,15 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\Dashboard\EventsController;
+use App\Http\Controllers\Dashboard\ImageGeneratorController;
 use App\Http\Controllers\Dashboard\ReservationsController;
 use App\Http\Controllers\Landing\AtcSlotReservationsController;
 use App\Http\Controllers\Landing\PilotSlotReservationsController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('reservations', [ReservationsController::class, 'index'])->name('dashboard.reservations.index');
+
+Route::get('image-generator', [ImageGeneratorController::class, 'index'])->name('dashboard.image-generator');
 
 Route::post('events/{event:slug}/reservations/atc-slot/{slot}', [AtcSlotReservationsController::class, 'store'])->name('dashboard.events.atc-slot.store');
 Route::patch('events/{event:slug}/reservations/atc-slot/{slot}', [AtcSlotReservationsController::class, 'update'])->name('dashboard.events.atc-slot.update');

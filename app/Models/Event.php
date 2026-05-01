@@ -135,6 +135,14 @@ class Event extends Model
     {
         $query
             ->where('status', EventStatus::ACTIVE)
-            ->where('starts_at', '>=', now()->subDay());
+            ->where(function ($query) {
+                $query->where(function ($query) {
+                    $query->whereNotNull('ends_at')
+                        ->where('ends_at', '>=', now()->endOfDay());
+                })->orWhere(function ($query) {
+                    $query->whereNull('ends_at')
+                        ->where('starts_at', '>=', now()->endOfDay());
+                });
+            });
     }
 }

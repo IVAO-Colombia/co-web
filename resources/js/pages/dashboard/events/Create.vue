@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import { wTrans } from 'laravel-vue-i18n';
-import { AlertCircle, ChevronLeft, ImagePlus, X } from 'lucide-vue-next';
+import { AlertCircle, ChevronLeft, ImagePlus, Wand2, X } from 'lucide-vue-next';
 import { computed, onUnmounted, ref, watch } from 'vue';
 import { toast } from 'vue-sonner';
 import AtcSlotsCard from '@/components/dashboard/events/AtcSlotsCard.vue';
 import PilotSlotsCard from '@/components/dashboard/events/PilotSlotsCard.vue';
+import EventImageGenerator from '@/components/EventImageGenerator.vue';
 import InputError from '@/components/InputError.vue';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -17,6 +18,13 @@ import {
     CardTitle,
 } from '@/components/ui/card';
 import { DateTimePicker } from '@/components/ui/date-time-picker';
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
@@ -28,10 +36,10 @@ import {
 } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
-import type { AtcSlotRow, EventType, PilotSlotRow } from '@/types';
-import { EventConstants, EventTag } from '@/types';
 import eventRoutes from '@/routes/dashboard/events';
 import { index, create } from '@/routes/dashboard/events';
+import type { AtcSlotRow, EventType, PilotSlotRow } from '@/types';
+import { EventConstants, EventTag } from '@/types';
 
 type EventForm = {
     name: string;
@@ -100,6 +108,7 @@ function toggleTag(tag: EventTag): void {
 
 // --- Image ---
 const imagePreview = ref<string | null>(null);
+const showImageDialog = ref(false);
 
 function onImageChange(event: Event): void {
     const file = (event.target as HTMLInputElement).files?.[0];
@@ -124,6 +133,16 @@ function removeImage(): void {
 
     imagePreview.value = null;
     form.image = null;
+}
+
+function onImageGenerated(file: File): void {
+    if (imagePreview.value?.startsWith('blob:')) {
+        URL.revokeObjectURL(imagePreview.value);
+    }
+
+    form.image = file;
+    imagePreview.value = URL.createObjectURL(file);
+    showImageDialog.value = false;
 }
 
 onUnmounted(() => {
@@ -356,7 +375,33 @@ function submit(): void {
 
                     <!-- Image -->
                     <div class="flex flex-col gap-1.5">
-                        <Label>{{ $t('Event Image') }}</Label>
+                        <div class="flex items-center justify-between">
+                            <Label>{{ $t('Event Image') }}</Label>
+                            <Dialog v-model:open="showImageDialog">
+                                <DialogTrigger as-child>
+                                    <Button
+                                        type="button"
+                                        variant="outline"
+                                        size="sm"
+                                        class="gap-1.5"
+                                    >
+                                        <Wand2 class="size-3.5" />
+                                        {{ $t('Generate Image') }}
+                                    </Button>
+                                </DialogTrigger>
+                                <DialogContent class="max-w-2xl!">
+                                    <DialogHeader>
+                                        <DialogTitle>{{
+                                            $t('Generate Event Image')
+                                        }}</DialogTitle>
+                                    </DialogHeader>
+                                    <EventImageGenerator
+                                        :as-dialog="true"
+                                        @image-generated="onImageGenerated"
+                                    />
+                                </DialogContent>
+                            </Dialog>
+                        </div>
                         <div v-if="imagePreview" class="relative w-fit">
                             <img
                                 :src="imagePreview"

@@ -97,7 +97,7 @@ class SpatieRolesAndPermissionsSeeder extends Seeder
      */
     public function rolesPermissionsAssignmentMap(): array
     {
-        $basePermissions = collect()->push(EnumsPermission::STAFF_ACCESS);
+        $basePermissions = collect(EnumsPermission::staffPermissions());
 
         return [
             EnumsRole::DIR->value => $basePermissions->merge(EnumsPermission::eventsPermissions()),

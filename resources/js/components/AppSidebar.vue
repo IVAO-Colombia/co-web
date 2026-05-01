@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
 import { wTrans } from 'laravel-vue-i18n';
-import { Calendar1, LayoutGrid, CalendarCheck } from 'lucide-vue-next';
+import { Calendar1, LayoutGrid, CalendarCheck, Image } from 'lucide-vue-next';
 import type { ComputedRef } from 'vue';
 import { computed } from 'vue';
 import AppLogo from '@/components/AppLogo.vue';
@@ -18,11 +18,12 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { usePermissions } from '@/composables/usePermissions';
-import { Permission } from '@/types';
-import type { NavItem } from '@/types';
 import { dashboard } from '@/routes';
+import { imageGenerator } from '@/routes/dashboard';
 import events from '@/routes/dashboard/events';
 import { index as reservationsIndex } from '@/routes/dashboard/reservations';
+import type { NavItem } from '@/types';
+import { Permission } from '@/types';
 
 const { hasPermission } = usePermissions();
 
@@ -50,6 +51,12 @@ const footerNavItems: ComputedRef<NavItem[]> = computed(() =>
             href: events.index(),
             icon: Calendar1,
             visible: hasPermission(Permission.VIEW_EVENTS),
+        },
+        {
+            title: wTrans('Event Image Generator'),
+            href: imageGenerator(),
+            icon: Image,
+            visible: hasPermission(Permission.GENERATE_EVENT_IMAGES),
         },
     ].filter((item) => item.visible),
 );

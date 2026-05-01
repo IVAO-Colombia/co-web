@@ -35,6 +35,7 @@ export enum PagesComponents {
     EVENTS_EDIT = 'dashboard/events/Edit',
     EVENTS_SHOW = 'dashboard/events/Show',
     DASHBOARD_RESERVATIONS = 'dashboard/Reservations',
+    DASHBOARD_IMAGE_GENERATOR = 'dashboard/ImageGenerator',
     LANDING_HOME = 'Welcome',
     LANDING_EVENTS = 'landing/events/Index',
     LANDING_EVENTS_SHOW = 'landing/events/Show',
@@ -46,6 +47,7 @@ export enum Permission {
     CREATE_EVENTS = 'create_events',
     UPDATE_EVENTS = 'update_events',
     DELETE_EVENTS = 'delete_events',
+    GENERATE_EVENT_IMAGES = 'generate_event_images',
 }
 export enum PilotRating {
     FS1 = 2,
