@@ -9,7 +9,6 @@ import {
     CalendarClock,
     ChevronDown,
     Compass,
-    Crown,
     Globe,
     GraduationCap,
     Landmark,
@@ -43,7 +42,9 @@ import type { Locale } from '@/types';
 type SectionLink = {
     title: string;
     href: string;
+    isbrand?: boolean;
     description: string;
+    target?: '_self' | '_blank';
 };
 
 type MenuSection = {
@@ -68,8 +69,10 @@ const menuSections: MenuSection[] = [
             },
             {
                 title: 'Division Staff',
-                href: '#about-us-history',
+                href: 'https://www.ivao.aero/staff/division.asp?Id=CO',
+                isbrand: true,
                 description: 'Meet our team',
+                target: '_blank',
             },
             {
                 title: 'Work With Us',
@@ -78,7 +81,7 @@ const menuSections: MenuSection[] = [
             },
             {
                 title: 'Rating Transfer',
-                href: '#about-us-contact',
+                href: 'https://wiki.co.ivao.aero/es/home',
                 description:
                     'Transfer your ratings to IVAO Colombia and continue your progression with us.',
             },
@@ -93,24 +96,26 @@ const menuSections: MenuSection[] = [
         items: [
             {
                 title: 'First Steps',
-                href: '#controllers-training',
+                href: 'https://wiki.co.ivao.aero/es/home',
                 description:
                     'Instructions to start controlling in IVAO Colombia.',
             },
             {
                 title: 'Special Positions',
-                href: '#controllers-ratings',
+                href: 'https://atc.ivao.aero/fras?division=CO',
+                isbrand: true,
                 description:
                     'List of special positions and how to apply for them.',
             },
             {
                 title: 'ATC Booking',
-                href: '#controllers-events',
+                href: 'https://atc.ivao.aero/schedule',
+                isbrand: true,
                 description: 'Book ATC positions and check the schedule.',
             },
             {
                 title: 'Operations Manual',
-                href: '#controllers-training',
+                href: 'https://wiki.co.ivao.aero/es/home',
                 description:
                     'Specific procedures and guidelines for controlling in Colombia.',
             },
@@ -130,12 +135,13 @@ const menuSections: MenuSection[] = [
         items: [
             {
                 title: 'First Steps',
-                href: '#pilots-guides',
+                href: 'https://wiki.co.ivao.aero/es/home',
                 description: 'Instructions to start flying in IVAO Colombia.',
             },
             {
                 title: 'Tours',
-                href: '#pilots-flights',
+                href: 'https://tours.th.ivao.aero/index.php?div=CO',
+                isbrand: true,
                 description:
                     'Check out our division tours and fly with the community.',
             },
@@ -147,7 +153,8 @@ const menuSections: MenuSection[] = [
             },
             {
                 title: 'World Tours',
-                href: '#pilots-events',
+                href: 'https://wt.ivao.aero/',
+                isbrand: true,
                 description:
                     'Check out our flights around the world and fly with the community.',
             },
@@ -167,13 +174,13 @@ const menuSections: MenuSection[] = [
         items: [
             {
                 title: 'Discord',
-                href: '#community-news',
+                href: 'https://discord.co.ivao.aero/',
                 description:
                     'Authentic community interactions, announcements, and support.',
             },
             {
-                title: 'Useful Links',
-                href: '#community-discord',
+                title: 'Events & Activities',
+                href: '/events',
                 description:
                     'Important resources and platforms for IVAO Colombia members.',
             },
@@ -185,15 +192,10 @@ const menuSections: MenuSection[] = [
             },
             {
                 title: 'Division Awards',
-                href: '#community-events',
+                href: 'https://www.ivao.aero/divisions/awards.asp',
+                isbrand: true,
                 description:
                     'Recognition and rewards for outstanding contributions to the division.',
-            },
-            {
-                title: 'International Awards',
-                href: '#community-projects',
-                description:
-                    'Recognition and rewards for outstanding contributions to the international IVAO community.',
             },
         ],
     },
@@ -248,7 +250,6 @@ const itemIcons: Record<string, Component> = {
     'Useful Links': Link2,
     Calendar: CalendarClock,
     'Division Awards': Award,
-    'International Awards': Crown,
 };
 
 function resolveItemIcon(title: string): Component {
@@ -297,10 +298,10 @@ function toggleMobileSection(sectionTitle: string): void {
                     />
                     <template v-if="props.brandText">
                         <span
-                            class="hidden h-8 w-px bg-[var(--color-primary)] xl:block dark:bg-white/25"
+                            class="hidden h-8 w-px bg-(--color-primary) xl:block dark:bg-white/25"
                         ></span>
                         <h1
-                            class="hidden max-w-40 truncate font-heading text-[0.95rem] font-bold tracking-[0.08em] whitespace-nowrap text-[var(--color-primary)] xl:block 2xl:max-w-56 dark:text-white/90"
+                            class="hidden max-w-40 truncate font-heading text-[0.95rem] font-bold tracking-[0.08em] whitespace-nowrap text-(--color-primary) xl:block 2xl:max-w-56 dark:text-white/90"
                         >
                             {{ $t(props.brandText) }}
                         </h1>
@@ -550,6 +551,12 @@ function toggleMobileSection(sectionTitle: string): void {
                                             v-for="item in section.items"
                                             :key="item.title"
                                             :href="item.href"
+                                            :target="item.target ?? '_self'"
+                                            :rel="
+                                                item.target === '_blank'
+                                                    ? 'noreferrer noopener'
+                                                    : undefined
+                                            "
                                             class="group/item relative overflow-hidden rounded-md border border-transparent p-3 transition-all duration-200 hover:-translate-y-0.5 hover:border-[#1d4ed8]/40 hover:bg-accent/60 hover:shadow-sm focus-visible:ring-2 focus-visible:ring-[#1d4ed8]/35 focus-visible:outline-none"
                                         >
                                             <span
