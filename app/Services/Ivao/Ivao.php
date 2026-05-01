@@ -207,8 +207,9 @@ class Ivao
 
             /** @var array{clients?: array{pilots?: array<int, array<string, mixed>>}}|null $data */
             $data = $response->json();
+            
 
-            if (! is_array($data) || ! isset($data['clients']['pilots']) || ! is_array($data['clients']['pilots'])) {
+            if (! isset($data['clients']['pilots']) || ! is_array($data['clients']['pilots'])) {
                 Cache::put($lastRequestKey, now()->timestamp, 3600);
                 Log::info('IVAO whazzup: no pilots key in response', ['keys' => is_array($data) ? array_keys($data) : null]);
 
@@ -237,6 +238,7 @@ class Ivao
                     continue;
                 }
 
+                
                 if (! (str_starts_with($dep, 'SK') || str_starts_with($arr, 'SK'))) {
                     $filtered_out++;
 
@@ -284,7 +286,7 @@ class Ivao
         $lat = (float) $lastTrack['latitude'];
         $lon = (float) $lastTrack['longitude'];
 
-        if ($lat == 0 && $lon == 0) {
+        if($lat === 0 && $lon === 0){
             return null;
         }
 

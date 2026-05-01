@@ -10,9 +10,9 @@ use Illuminate\Http\JsonResponse;
 
 class WhazzupController extends Controller
 {
-    public function __construct(private readonly Ivao $ivaoService){}
+    public function __construct(private readonly Ivao $ivaoService) {}
 
-    public function index() : JsonResponse
+    public function index(): JsonResponse
     {
         $flights = $this->ivaoService->getWhazzupFlights();
 
