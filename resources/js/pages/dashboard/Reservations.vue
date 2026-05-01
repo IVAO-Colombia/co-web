@@ -24,12 +24,12 @@ import {
 } from '@/components/ui/table';
 import { useLocale } from '@/composables/useLocale';
 import { formatDateTime } from '@/lib/utils';
+import { SlotsConstants, SlotStatus } from '@/types';
+import type { AtcSlot, Event, PilotSlot } from '@/types';
 import dashboardAtcSlot from '@/routes/dashboard/events/atc-slot';
 import dashboardPilotSlot from '@/routes/dashboard/events/pilot-slot';
 import { index } from '@/routes/dashboard/reservations';
 import { show as eventShow } from '@/routes/home/events';
-import { SlotsConstants, SlotStatus } from '@/types';
-import type { AtcSlot, Event, PilotSlot } from '@/types';
 
 type AtcSlotWithEvent = AtcSlot & { event: Event };
 type PilotSlotWithEvent = PilotSlot & { event: Event };

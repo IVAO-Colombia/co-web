@@ -6,8 +6,8 @@ namespace App\Services\Ivao;
 
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\Response;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 class Ivao
@@ -153,15 +153,15 @@ class Ivao
 
     /**
      *  Get active flights from Whazzup that departed from SK* airports
-     * 
+     *
      * @return array<int, mixed>
      */
     public function getWhazzupFlights(): array
     {
-        
+
         $lockKey = 'ivao:whazzup:lock';
         $lastRequestKey = 'ivao:whazzup:last_request';
-        
+
         if (! Cache::lock($lockKey, 1)->get()) {
             return Cache::get('ivao:whazzup:sk', []);
         }
@@ -188,6 +188,7 @@ class Ivao
 
             if ($response->status() === 304) {
                 Cache::put($lastRequestKey, now()->timestamp, 3600);
+
                 return Cache::get('ivao:whazzup:sk', []);
             }
 
@@ -195,6 +196,7 @@ class Ivao
                 Log::warning('IVAO whazzup request failed', [
                     'status' => $response->status(),
                 ]);
+
                 return Cache::get('ivao:whazzup:sk', []);
             }
 
@@ -204,11 +206,11 @@ class Ivao
 
             /** @var array{pilots?: array<int, array<string, mixed>>}|null $data */
             $data = $response->json();
-            
 
             if (! isset($data['clients']['pilots']) || ! is_array($data['clients']['pilots'])) {
                 Cache::put($lastRequestKey, now()->timestamp, 3600);
                 Log::info('IVAO whazzup: no pilots key in response', ['keys' => is_array($data) ? array_keys($data) : null]);
+
                 return [];
             }
 
@@ -230,18 +232,18 @@ class Ivao
 
                 if ($dep === '' && $arr === '') {
                     $filtered_out++;
+
                     continue;
                 }
 
-                
-                if (! (str_starts_with($dep, 'SK') || str_starts_with($arr, 'SK'))) {
+                if (!str_starts_with($dep, 'SK') && !str_starts_with($arr, 'SK')) {
                     $filtered_out++;
+
                     continue;
                 }
 
                 $filtered[] = $flight;
             }
-            
 
             Cache::put('ivao:whazzup:sk', $filtered, 15);
             Cache::put($lastRequestKey, now()->timestamp, 3600);
@@ -254,8 +256,9 @@ class Ivao
 
     /**
      * Parse flight data from the whazzup response
-        * @param  array<string, mixed>  $pilot
-        * @return array<string, mixed>|null
+     *
+     * @param  array<string, mixed>  $pilot
+     * @return array<string, mixed>|null
      */
     private function parseFlightData(array $pilot): ?array
     {
@@ -271,8 +274,8 @@ class Ivao
         $lastTrack = $pilot['lastTrack'];
 
         if (
-        ! isset($flightPlan['departureId'], $flightPlan['arrivalId']) ||
-        ! isset($lastTrack['latitude'], $lastTrack['longitude'], $lastTrack['altitude'], $lastTrack['groundSpeed'])
+            ! isset($flightPlan['departureId'], $flightPlan['arrivalId']) ||
+            ! isset($lastTrack['latitude'], $lastTrack['longitude'], $lastTrack['altitude'], $lastTrack['groundSpeed'])
         ) {
             return null;
         }
@@ -280,7 +283,7 @@ class Ivao
         $lat = (float) $lastTrack['latitude'];
         $lon = (float) $lastTrack['longitude'];
 
-        if($lat === 0 && $lon === 0){
+        if ($lat === 0 && $lon === 0) {
             return null;
         }
 
@@ -308,6 +311,4 @@ class Ivao
     {
         return strtoupper(substr($callsign, 0, 3));
     }
-
-
 }
