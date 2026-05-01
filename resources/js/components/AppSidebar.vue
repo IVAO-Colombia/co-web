@@ -18,12 +18,12 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { usePermissions } from '@/composables/usePermissions';
+import type { NavItem } from '@/types';
+import { Permission } from '@/types';
 import { dashboard } from '@/routes';
 import { imageGenerator } from '@/routes/dashboard';
 import events from '@/routes/dashboard/events';
 import { index as reservationsIndex } from '@/routes/dashboard/reservations';
-import type { NavItem } from '@/types';
-import { Permission } from '@/types';
 
 const { hasPermission } = usePermissions();
 
