@@ -237,7 +237,7 @@ class Ivao
                     continue;
                 }
 
-                if (! (str_starts_with($dep, 'SK') || str_starts_with($arr, 'SK'))) {
+                if (!str_starts_with($dep, 'SK') && !str_starts_with($arr, 'SK')) {
                     $filtered_out++;
 
                     continue;
