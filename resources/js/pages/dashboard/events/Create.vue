@@ -28,10 +28,10 @@ import {
 } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
-import type { AtcSlotRow, EventType, PilotSlotRow } from '@/types';
-import { EventConstants, EventTag } from '@/types';
 import eventRoutes from '@/routes/dashboard/events';
 import { index, create } from '@/routes/dashboard/events';
+import type { AtcSlotRow, EventType, PilotSlotRow } from '@/types';
+import { EventConstants, EventTag } from '@/types';
 
 type EventForm = {
     name: string;
