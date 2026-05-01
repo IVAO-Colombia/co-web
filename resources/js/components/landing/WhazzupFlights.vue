@@ -166,9 +166,9 @@ onBeforeUnmount(() => {
                         </h3>
                         <p class="text-sm text-slate-500 dark:text-slate-400">
                             <span v-if="lastUpdatedAt"
-                                >Actualizado {{ lastUpdatedAt }}</span
+                                > {{ $t('Last updated') }}: {{ lastUpdatedAt }}</span
                             >
-                            <span v-else>Cargando...</span>
+                            <span v-else>{{ $t('Loading...') }}</span>
                         </p>
                     </div>
 
@@ -179,7 +179,7 @@ onBeforeUnmount(() => {
                         <span
                             class="h-2.5 w-2.5 animate-spin rounded-full border-2 border-current border-t-transparent"
                         ></span>
-                        Actualizando...
+                        {{ $t('Updating...') }}
                     </div>
                 </div>
             </div>
@@ -217,11 +217,10 @@ onBeforeUnmount(() => {
                 <h4
                     class="mt-4 text-lg font-semibold text-slate-900 dark:text-white"
                 >
-                    No hay vuelos en este momento
+                    {{ $t('There are no flights at this time') }}
                 </h4>
                 <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">
-                    Los vuelos que despeguen o aterricen en aeropuertos
-                    colombianos aparecerán aquí.
+                    {{ $t(' Flights taking off from or landing at Colombian airports will appear here') }}.
                 </p>
             </div>
 

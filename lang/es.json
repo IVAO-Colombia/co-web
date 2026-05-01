@@ -274,5 +274,10 @@
     "Choose to be a pilot, controller, or both and enjoy the incredible world of simulation.": "Elige ser piloto, controlador, o ambos y disfruta del increíble mundo de la simulación.",
     "Live Flight": "Vuelo en vivo",
     "Flights in real time": "Vuelos en tiempo real",
-    "Track flights taking off or landing at Colombian airports via the IVAO network.": "Monitorea vuelos que despegan o aterrizan en aeropuertos colombianos desde la red de IVAO."
+    "Track flights taking off or landing at Colombian airports via the IVAO network.": "Monitorea vuelos que despegan o aterrizan en aeropuertos colombianos desde la red de IVAO.",
+    "There are no flights at this time": "No hay vuelos en este momento",
+    " Flights taking off from or landing at Colombian airports will appear here": " Los vuelos que despeguen o aterricen en aeropuertos colombianos aparecerán aquí",
+    "Last updated": "Última actualización",
+    "Loading...": "Cargando...",
+    "Updating...": "Actualizando..."
 }
