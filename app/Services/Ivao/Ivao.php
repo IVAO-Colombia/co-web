@@ -216,15 +216,15 @@ class Ivao
             }
 
             $filtered = collect($data['clients']['pilots'])
-                ->map(fn ($pilot) => $this->parseFlightData($pilot))
+                ->map(fn (array $pilot): ?array => $this->parseFlightData($pilot))
                 ->filter()
-                ->filter(function ($flight) {
+                ->filter(function (array $flight): bool {
                     $dep = strtoupper((string) ($flight['dep_icao'] ?? ''));
                     $arr = strtoupper((string) ($flight['arr_icao'] ?? ''));
 
                     return $dep !== '' || $arr !== '';
                 })
-                ->filter(function ($flight) {
+                ->filter(function (array $flight): bool {
                     $dep = strtoupper((string) ($flight['dep_icao'] ?? ''));
                     $arr = strtoupper((string) ($flight['arr_icao'] ?? ''));
 

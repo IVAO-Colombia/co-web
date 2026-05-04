@@ -40,6 +40,7 @@ let abortController: AbortController | null = null;
 
 const getAirlineLogo = (airline: string): string => {
     const cacheKey = `airlines/${airline}/logo`;
+
     return Ivao.cache.get(cacheKey) || '';
 };
 
@@ -154,8 +155,9 @@ onBeforeUnmount(() => {
                             el aire
                         </h3>
                         <p class="text-sm text-slate-500 dark:text-slate-400">
-                            <span v-if="lastUpdatedAt"
-                                > {{ $t('Last updated') }}: {{ lastUpdatedAt }}</span
+                            <span v-if="lastUpdatedAt">
+                                {{ $t('Last updated') }}:
+                                {{ lastUpdatedAt }}</span
                             >
                             <span v-else>{{ $t('Loading...') }}</span>
                         </p>
@@ -209,7 +211,11 @@ onBeforeUnmount(() => {
                     {{ $t('There are no flights at this time') }}
                 </h4>
                 <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">
-                    {{ $t(' Flights taking off from or landing at Colombian airports will appear here') }}.
+                    {{
+                        $t(
+                            ' Flights taking off from or landing at Colombian airports will appear here',
+                        )
+                    }}.
                 </p>
             </div>
 
