@@ -34,24 +34,13 @@ const flights = ref<WhazzupFlight[]>([]);
 const isLoading = ref(true);
 const errorMessage = ref('');
 const lastUpdatedAt = ref<string | null>(null);
-const airlineLogo = ref<Map<string, string>>(new Map());
 
 let intervalId: number | null = null;
 let abortController: AbortController | null = null;
 
-const getAirlineLogo = async (airline: string): Promise<string> => {
-    if (airlineLogo.value.has(airline)) {
-        return airlineLogo.value.get(airline)!;
-    }
-
-    try {
-        const url = await Ivao.getAirlineLogoUrl(airline);
-        airlineLogo.value.set(airline, url);
-
-        return url;
-    } catch {
-        return '';
-    }
+const getAirlineLogo = (airline: string): string => {
+    const cacheKey = `airlines/${airline}/logo`;
+    return Ivao.cache.get(cacheKey) || '';
 };
 
 const getStateColor = (state: string): string => {
@@ -95,7 +84,7 @@ const fetchFlights = async (): Promise<void> => {
         flights.value = data.flights ?? [];
         lastUpdatedAt.value = data.cached_at;
 
-        // Preload logos for all airlines
+        // Preload logos for all airlines using Ivao cache
         for (const flight of flights.value) {
             void getAirlineLogo(flight.airline);
         }
@@ -165,9 +154,8 @@ onBeforeUnmount(() => {
                             el aire
                         </h3>
                         <p class="text-sm text-slate-500 dark:text-slate-400">
-                            <span v-if="lastUpdatedAt">
-                                {{ $t('Last updated') }}:
-                                {{ lastUpdatedAt }}</span
+                            <span v-if="lastUpdatedAt"
+                                > {{ $t('Last updated') }}: {{ lastUpdatedAt }}</span
                             >
                             <span v-else>{{ $t('Loading...') }}</span>
                         </p>
@@ -221,11 +209,7 @@ onBeforeUnmount(() => {
                     {{ $t('There are no flights at this time') }}
                 </h4>
                 <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">
-                    {{
-                        $t(
-                            ' Flights taking off from or landing at Colombian airports will appear here',
-                        )
-                    }}.
+                    {{ $t(' Flights taking off from or landing at Colombian airports will appear here') }}.
                 </p>
             </div>
 
@@ -248,20 +232,17 @@ onBeforeUnmount(() => {
                             class="col-span-3 flex items-center justify-center rounded-lg border border-slate-100/50 bg-gradient-to-br from-slate-50 to-slate-50/50 p-3 lg:col-span-2 lg:p-4 dark:border-slate-700/30 dark:from-slate-700/20 dark:to-slate-800/20"
                         >
                             <div
-                                v-if="!airlineLogo.has(flight.airline)"
+                                v-if="!getAirlineLogo(flight.airline)"
                                 class="h-12 w-16 animate-pulse rounded bg-slate-300 dark:bg-slate-600"
                             ></div>
                             <img
-                                v-else-if="airlineLogo.get(flight.airline)"
-                                :src="airlineLogo.get(flight.airline)"
+                                v-else
+                                :src="getAirlineLogo(flight.airline)"
                                 :alt="`${flight.airline} logo`"
                                 class="max-h-14 max-w-24 object-contain drop-shadow"
-                                @error="
-                                    () => airlineLogo.delete(flight.airline)
-                                "
                             />
                             <div
-                                v-else
+                                v-if="!getAirlineLogo(flight.airline)"
                                 class="flex max-h-14 max-w-24 items-center justify-center"
                             >
                                 <div class="text-center">

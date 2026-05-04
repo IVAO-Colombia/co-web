@@ -215,36 +215,23 @@ class Ivao
                 return [];
             }
 
-            $filtered = [];
-            $parsed_ok = 0;
-            $filtered_out = 0;
+            $filtered = collect($data['clients']['pilots'])
+                ->map(fn ($pilot) => $this->parseFlightData($pilot))
+                ->filter()
+                ->filter(function ($flight) {
+                    $dep = strtoupper((string) ($flight['dep_icao'] ?? ''));
+                    $arr = strtoupper((string) ($flight['arr_icao'] ?? ''));
 
-            foreach ($data['clients']['pilots'] as $pilot) {
-                $flight = $this->parseFlightData($pilot);
+                    return $dep !== '' || $arr !== '';
+                })
+                ->filter(function ($flight) {
+                    $dep = strtoupper((string) ($flight['dep_icao'] ?? ''));
+                    $arr = strtoupper((string) ($flight['arr_icao'] ?? ''));
 
-                if ($flight === null) {
-                    continue;
-                }
-
-                $parsed_ok++;
-
-                $dep = strtoupper((string) ($flight['dep_icao'] ?? ''));
-                $arr = strtoupper((string) ($flight['arr_icao'] ?? ''));
-
-                if ($dep === '' && $arr === '') {
-                    $filtered_out++;
-
-                    continue;
-                }
-
-                if (!str_starts_with($dep, 'SK') && !str_starts_with($arr, 'SK')) {
-                    $filtered_out++;
-
-                    continue;
-                }
-
-                $filtered[] = $flight;
-            }
+                    return str_starts_with($dep, 'SK') || str_starts_with($arr, 'SK');
+                })
+                ->values()
+                ->all();
 
             Cache::put('ivao:whazzup:sk', $filtered, 15);
             Cache::put($lastRequestKey, now()->timestamp, 3600);
