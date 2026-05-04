@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\RedirectToIvaoLoginController;
 use Illuminate\Support\Facades\Route;
 
 require __DIR__.'/landing.php';
+require __DIR__.'/ivao.php';
 
 Route::get('/auth/redirect', RedirectToIvaoLoginController::class)->name('auth.redirect');
 
@@ -18,7 +19,6 @@ Route::middleware(['auth'])->group(function (): void {
     Route::post('/auth/logout', LogoutUsersController::class)
         ->name('auth.logout');
     Route::inertia('dashboard', 'Dashboard')->name('dashboard');
-    require __DIR__.'/ivao.php';
 });
 
 Route::prefix('dashboard')->middleware(['auth'])->group(function (): void {

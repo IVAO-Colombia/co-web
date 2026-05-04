@@ -10,17 +10,15 @@ use Illuminate\Http\JsonResponse;
 
 class WhazzupController extends Controller
 {
-    public function __construct(private readonly Ivao $ivaoService) {}
-
-    public function index(): JsonResponse
+    public function __invoke(Ivao $ivaoService): JsonResponse
     {
-        $flights = $this->ivaoService->getWhazzupFlights();
+        $data = $ivaoService->getWhazzupFlights();
 
         return response()->json([
             'success' => true,
-            'flights' => $flights,
-            'count' => count($flights),
-            'cached_at' => now()->toIso8601String(),
+            'flights' => $data['flights'],
+            'count' => count($data['flights']),
+            'last_updated' => $data['last_updated'],
         ]);
     }
 }

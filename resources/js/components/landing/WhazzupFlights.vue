@@ -1,17 +1,18 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref } from 'vue';
+import { useHttp } from '@inertiajs/vue3';
+import { CircleAlert } from 'lucide-vue-next';
+import { onBeforeMount, onBeforeUnmount, ref } from 'vue';
 import { Ivao } from '@/lib/ivao';
-import whazzupRoutes from '@/routes/ivao/whazzup';
+import { toUTCDateTime } from '@/lib/utils';
+import { whazzup } from '@/routes/ivao';
 
 type WhazzupFlight = {
     flight_id: number;
     ivao_id: number | null;
     callsign: string;
     airline: string;
-    dep_icao: string;
-    dep_name: string;
-    arr_icao: string;
-    arr_name: string;
+    departure_icao: string;
+    arrival_icao: string;
     aircraft: string;
     aircraft_model: string | null;
     latitude: number;
@@ -21,28 +22,24 @@ type WhazzupFlight = {
     heading: number;
     state: string;
     timestamp: string;
+    airline_logo_url: string | null;
 };
 
 type WhazzupResponse = {
     success: boolean;
     flights: WhazzupFlight[];
     count: number;
-    cached_at: string;
+    last_updated: string | null;
 };
+
+const http = useHttp<WhazzupResponse, WhazzupResponse>();
 
 const flights = ref<WhazzupFlight[]>([]);
-const isLoading = ref(true);
-const errorMessage = ref('');
 const lastUpdatedAt = ref<string | null>(null);
+const loadingLogos = ref<boolean>(false);
 
-let intervalId: number | null = null;
-let abortController: AbortController | null = null;
-
-const getAirlineLogo = (airline: string): string => {
-    const cacheKey = `airlines/${airline}/logo`;
-
-    return Ivao.cache.get(cacheKey) || '';
-};
+onBeforeMount(() => fetchFlights());
+onBeforeUnmount(() => http.cancel());
 
 const getStateColor = (state: string): string => {
     const stateMap: Record<string, string> = {
@@ -62,60 +59,31 @@ const getStateColor = (state: string): string => {
 };
 
 const fetchFlights = async (): Promise<void> => {
-    abortController?.abort();
-    abortController = new AbortController();
-
-    isLoading.value = flights.value.length === 0;
-    errorMessage.value = '';
-
-    try {
-        const response = await fetch(whazzupRoutes.sk.url(), {
-            headers: {
-                Accept: 'application/json',
-            },
-            signal: abortController.signal,
-        });
-
-        if (!response.ok) {
-            throw new Error(`HTTP ${response.status}`);
-        }
-
-        const data = (await response.json()) as WhazzupResponse;
-
-        flights.value = data.flights ?? [];
-        lastUpdatedAt.value = data.cached_at;
-
-        // Preload logos for all airlines using Ivao cache
-        for (const flight of flights.value) {
-            void getAirlineLogo(flight.airline);
-        }
-    } catch (error) {
-        if (error instanceof DOMException && error.name === 'AbortError') {
-            return;
-        }
-
-        errorMessage.value =
-            'No se pudieron cargar los vuelos en este momento.';
-    } finally {
-        isLoading.value = false;
+    if (http.processing) {
+        http.cancel(); // Cancel any ongoing requests before starting a new one
     }
+
+    const response = await http.get(whazzup.url());
+
+    if (!http.wasSuccessful) {
+        return;
+    }
+
+    flights.value = response.flights;
+    lastUpdatedAt.value = response.last_updated;
+    loadAirlineLogos();
 };
 
-onMounted(() => {
-    void fetchFlights();
-
-    intervalId = window.setInterval(() => {
-        void fetchFlights();
-    }, 15000);
-});
-
-onBeforeUnmount(() => {
-    if (intervalId !== null) {
-        window.clearInterval(intervalId);
-    }
-
-    abortController?.abort();
-});
+async function loadAirlineLogos() {
+    loadingLogos.value = true;
+    flights.value = await Promise.all(
+        flights.value.map(async (flight) => ({
+            ...flight,
+            airline_logo_url: await Ivao.getAirlineLogoUrl(flight.airline),
+        })),
+    );
+    loadingLogos.value = false;
+}
 </script>
 
 <template>
@@ -146,7 +114,7 @@ onBeforeUnmount(() => {
                 <div
                     class="flex flex-wrap items-center justify-between gap-3 px-5 py-4 sm:px-6"
                 >
-                    <div>
+                    <div v-if="!http.processing && flights.length > 0">
                         <h3
                             class="text-lg font-bold text-slate-900 dark:text-white"
                         >
@@ -157,53 +125,43 @@ onBeforeUnmount(() => {
                         <p class="text-sm text-slate-500 dark:text-slate-400">
                             <span v-if="lastUpdatedAt">
                                 {{ $t('Last updated') }}:
-                                {{ lastUpdatedAt }}</span
+                                {{ toUTCDateTime(lastUpdatedAt) }} UTC</span
                             >
                             <span v-else>{{ $t('Loading...') }}</span>
                         </p>
                     </div>
 
                     <div
-                        v-if="isLoading && flights.length > 0"
+                        v-if="http.processing"
                         class="inline-flex items-center gap-2 text-sm text-sky-600 dark:text-sky-400"
                     >
                         <span
                             class="h-2.5 w-2.5 animate-spin rounded-full border-2 border-current border-t-transparent"
                         ></span>
-                        {{ $t('Updating...') }}
+                        {{ $t('Loading...') }}
                     </div>
                 </div>
             </div>
 
             <!-- Error Message -->
             <div
-                v-if="errorMessage"
+                v-if="http.hasErrors"
                 class="mt-4 rounded-xl border border-rose-200 bg-rose-50 px-5 py-4 text-sm text-rose-700 dark:border-rose-900/40 dark:bg-rose-950/30 dark:text-rose-200"
             >
-                {{ errorMessage }}
+                {{ $t('An error occurred while fetching flight data.') }}
             </div>
 
             <!-- Empty State -->
             <div
-                v-if="flights.length === 0 && !isLoading && !errorMessage"
+                v-else-if="
+                    flights.length === 0 && !http.processing && !http.hasErrors
+                "
                 class="mt-10 rounded-2xl border border-slate-200/60 bg-white/80 px-5 py-16 text-center backdrop-blur-sm dark:border-slate-700/40 dark:bg-slate-800/60"
             >
                 <div
                     class="inline-flex h-12 w-12 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-700"
                 >
-                    <svg
-                        class="h-6 w-6 text-slate-400"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M12 8v4m0 4v.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                        ></path>
-                    </svg>
+                    <CircleAlert class="size-6 text-slate-400" />
                 </div>
                 <h4
                     class="mt-4 text-lg font-semibold text-slate-900 dark:text-white"
@@ -235,34 +193,27 @@ onBeforeUnmount(() => {
                     >
                         <!-- Logo Section with Background -->
                         <div
-                            class="col-span-3 flex items-center justify-center rounded-lg border border-slate-100/50 bg-gradient-to-br from-slate-50 to-slate-50/50 p-3 lg:col-span-2 lg:p-4 dark:border-slate-700/30 dark:from-slate-700/20 dark:to-slate-800/20"
+                            class="col-span-3 flex items-center justify-center rounded-lg border border-slate-100/50 bg-linear-to-br from-slate-50 to-slate-50/50 p-3 lg:col-span-2 lg:p-4 dark:border-slate-700/30 dark:from-slate-700/20 dark:to-slate-800/20"
                         >
                             <div
-                                v-if="!getAirlineLogo(flight.airline)"
+                                v-if="loadingLogos"
                                 class="h-12 w-16 animate-pulse rounded bg-slate-300 dark:bg-slate-600"
                             ></div>
                             <img
-                                v-else
-                                :src="getAirlineLogo(flight.airline)"
+                                v-else-if="flight.airline_logo_url"
+                                :src="flight.airline_logo_url"
                                 :alt="`${flight.airline} logo`"
                                 class="max-h-14 max-w-24 object-contain drop-shadow"
                             />
                             <div
-                                v-if="!getAirlineLogo(flight.airline)"
-                                class="flex max-h-14 max-w-24 items-center justify-center"
+                                v-else
+                                class="flex max-h-14 max-w-24 items-center justify-center bg-primary p-2"
                             >
-                                <div class="text-center">
-                                    <div
-                                        class="mb-1 text-xs font-bold text-slate-600 dark:text-slate-300"
-                                    >
-                                        IVAO
-                                    </div>
-                                    <div
-                                        class="text-xs font-semibold text-slate-500 dark:text-slate-400"
-                                    >
-                                        CO
-                                    </div>
-                                </div>
+                                <img
+                                    src="/logo-white.png"
+                                    :alt="`${flight.airline} logo`"
+                                    class="object-contain"
+                                />
                             </div>
                         </div>
 
@@ -290,10 +241,10 @@ onBeforeUnmount(() => {
                             <div class="flex items-center gap-1.5">
                                 <span
                                     class="font-mono text-xs font-bold text-slate-900 lg:text-sm dark:text-white"
-                                    >{{ flight.dep_icao }}</span
+                                    >{{ flight.departure_icao }}</span
                                 >
                                 <svg
-                                    class="h-3 w-3 flex-shrink-0 text-slate-400 dark:text-slate-600"
+                                    class="h-3 w-3 shrink-0 text-slate-400 dark:text-slate-600"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -307,7 +258,7 @@ onBeforeUnmount(() => {
                                 </svg>
                                 <span
                                     class="font-mono text-xs font-bold text-slate-900 lg:text-sm dark:text-white"
-                                    >{{ flight.arr_icao }}</span
+                                    >{{ flight.arrival_icao }}</span
                                 >
                             </div>
                         </div>
@@ -339,7 +290,7 @@ onBeforeUnmount(() => {
                                 :href="`https://webeye.ivao.aero/?pilotId=${flight.flight_id}`"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                class="box-border inline-block cursor-pointer rounded-xl border border-transparent bg-[var(--color-primary)] px-4 py-2.5 text-sm leading-5 font-medium text-white shadow-xs transition-all duration-200 hover:brightness-90 focus:ring-4 focus:ring-[var(--color-primary)] focus:ring-offset-2 focus:outline-none"
+                                class="box-border inline-block cursor-pointer rounded-xl border border-transparent bg-primary px-4 py-2.5 text-sm leading-5 font-medium text-white shadow-xs transition-all duration-200 hover:brightness-90 focus:ring-4 focus:ring-primary focus:ring-offset-2 focus:outline-none"
                                 >{{ $t('Live Flight') }}</a
                             >
                         </div>
@@ -349,7 +300,7 @@ onBeforeUnmount(() => {
 
             <!-- Loading Skeleton -->
             <div
-                v-if="isLoading && flights.length === 0"
+                v-if="http.processing && flights.length === 0"
                 class="mt-8 overflow-hidden rounded-xl border border-slate-200/60 bg-white/80 dark:border-slate-700/40 dark:bg-slate-800/60"
             >
                 <div class="divide-y divide-slate-100 dark:divide-slate-700/30">
