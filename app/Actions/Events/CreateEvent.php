@@ -8,6 +8,7 @@ use App\Enums\EventStatus;
 use App\Enums\SlotStatus;
 use App\Http\Requests\StoreEventRequest;
 use App\Models\Event;
+use App\Models\TrainingRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -70,6 +71,11 @@ class CreateEvent
                 ], $validated['atc_slots']);
 
                 $event->atcSlots()->createMany($atcSlots);
+            }
+
+            if (! empty($validated['training_request_id'])) {
+                TrainingRequest::where('id', $validated['training_request_id'])
+                    ->update(['event_id' => $event->id]);
             }
         });
 

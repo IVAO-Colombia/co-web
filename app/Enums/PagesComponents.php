@@ -13,6 +13,10 @@ enum PagesComponents: string
     case DASHBOARD_RESERVATIONS = 'dashboard/Reservations';
     case DASHBOARD_IMAGE_GENERATOR = 'dashboard/ImageGenerator';
 
+    case DASHBOARD_TRAININGS = 'dashboard/trainings/Index';
+    case STAFF_TRAININGS_INDEX = 'dashboard/staff/trainings/Index';
+    case STAFF_TRAININGS_SHOW = 'dashboard/staff/trainings/Show';
+
     /** Frontend components for different event-related pages */
     case LANDING_HOME = 'Welcome';
     case LANDING_EVENTS = 'landing/events/Index';

@@ -98,28 +98,44 @@ class SpatieRolesAndPermissionsSeeder extends Seeder
     public function rolesPermissionsAssignmentMap(): array
     {
         $basePermissions = collect(EnumsPermission::staffPermissions());
+        $trainingPermissions = collect(EnumsPermission::trainingPermissions());
+        $eventsPermissions = collect(EnumsPermission::eventsPermissions());
 
         return [
-            EnumsRole::DIR->value => $basePermissions->merge(EnumsPermission::eventsPermissions()),
-            EnumsRole::ADIR->value => $basePermissions->merge(EnumsPermission::eventsPermissions()),
+            EnumsRole::DIR->value => $basePermissions
+                ->merge($eventsPermissions)
+                ->merge($trainingPermissions),
+            EnumsRole::ADIR->value => $basePermissions
+                ->merge($eventsPermissions)
+                ->merge($trainingPermissions),
             EnumsRole::FOC->value => $basePermissions,
             EnumsRole::FOAC->value => $basePermissions,
             EnumsRole::AOC->value => $basePermissions,
             EnumsRole::AOAC->value => $basePermissions,
-            EnumsRole::TC->value => $basePermissions,
-            EnumsRole::TAC->value => $basePermissions,
-            EnumsRole::TA->value => $basePermissions,
-            EnumsRole::T0->value => $basePermissions,
+            EnumsRole::TC->value => $basePermissions
+                ->merge($trainingPermissions),
+            EnumsRole::TAC->value => $basePermissions
+                ->merge($trainingPermissions),
+            EnumsRole::TA->value => $basePermissions
+                ->merge($trainingPermissions),
+            EnumsRole::T0->value => $basePermissions
+                ->merge($trainingPermissions),
             EnumsRole::MC->value => $basePermissions,
-            EnumsRole::EC->value => $basePermissions->merge(EnumsPermission::eventsPermissions()),
-            EnumsRole::EAC->value => $basePermissions->merge(EnumsPermission::eventsPermissions()),
-            EnumsRole::EA->value => $basePermissions->merge(EnumsPermission::eventsPermissions()),
+            EnumsRole::EC->value => $basePermissions->merge($eventsPermissions),
+            EnumsRole::EAC->value => $basePermissions->merge($eventsPermissions),
+            EnumsRole::EA->value => $basePermissions->merge($eventsPermissions),
             EnumsRole::PRC->value => $basePermissions,
             EnumsRole::PRAC->value => $basePermissions,
             EnumsRole::PRA->value => $basePermissions,
-            EnumsRole::WM->value => $basePermissions->merge(EnumsPermission::eventsPermissions()),
-            EnumsRole::AWM->value => $basePermissions->merge(EnumsPermission::eventsPermissions()),
-            EnumsRole::WMA->value => $basePermissions->merge(EnumsPermission::eventsPermissions()),
+            EnumsRole::WM->value => $basePermissions
+                ->merge($eventsPermissions)
+                ->merge($trainingPermissions),
+            EnumsRole::AWM->value => $basePermissions
+                ->merge($eventsPermissions)
+                ->merge($trainingPermissions),
+            EnumsRole::WMA->value => $basePermissions
+                ->merge($eventsPermissions)
+                ->merge($trainingPermissions),
         ];
     }
 }

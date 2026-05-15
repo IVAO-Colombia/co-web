@@ -5,6 +5,8 @@ declare(strict_types=1);
 use App\Http\Controllers\Dashboard\EventsController;
 use App\Http\Controllers\Dashboard\ImageGeneratorController;
 use App\Http\Controllers\Dashboard\ReservationsController;
+use App\Http\Controllers\Dashboard\Staff\TrainingRequestsController as StaffTrainingRequestsController;
+use App\Http\Controllers\Dashboard\TrainingsController;
 use App\Http\Controllers\Landing\AtcSlotReservationsController;
 use App\Http\Controllers\Landing\PilotSlotReservationsController;
 use Illuminate\Support\Facades\Route;
@@ -32,3 +34,16 @@ Route::resource('events', EventsController::class)
         'update' => 'dashboard.events.update',
         'destroy' => 'dashboard.events.destroy',
     ]);
+
+// User-facing training requests
+Route::get('trainings', [TrainingsController::class, 'index'])->name('dashboard.trainings.index');
+Route::post('trainings', [TrainingsController::class, 'store'])->name('dashboard.trainings.store');
+Route::delete('trainings/{trainingRequest}', [TrainingsController::class, 'destroy'])->name('dashboard.trainings.destroy');
+
+// Staff training requests
+Route::middleware(['can:manage_training_requests'])->group(function (): void {
+    Route::get('staff/training-requests', [StaffTrainingRequestsController::class, 'index'])->name('dashboard.staff.training-requests.index');
+    Route::get('staff/training-requests/{trainingRequest}', [StaffTrainingRequestsController::class, 'show'])->name('dashboard.staff.training-requests.show');
+    Route::patch('staff/training-requests/{trainingRequest}', [StaffTrainingRequestsController::class, 'update'])->name('dashboard.staff.training-requests.update');
+    Route::delete('staff/training-requests/{trainingRequest}', [StaffTrainingRequestsController::class, 'destroy'])->name('dashboard.staff.training-requests.destroy');
+});

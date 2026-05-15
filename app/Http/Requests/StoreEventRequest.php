@@ -48,6 +48,7 @@ class StoreEventRequest extends FormRequest
             'atc_slots.*.callsign' => ['required_with:atc_slots', 'string', 'max:20'],
             'atc_slots.*.starts_at' => ['required_with:atc_slots', 'date_format:Y-m-d H:i'],
             'atc_slots.*.ends_at' => ['required_with:atc_slots', 'date_format:Y-m-d H:i'],
+            'training_request_id' => ['nullable', 'integer', Rule::exists('training_requests', 'id')],
         ];
     }
 

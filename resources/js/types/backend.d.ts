@@ -9,6 +9,21 @@ export enum ATCRating {
     SAI = 9,
     CAI = 10,
 }
+export enum AtcTraining {
+    As2As3Intro = 'as2_as3_intro',
+    AdcTheory1 = 'adc_theory_1',
+    AdcTheory2 = 'adc_theory_2',
+    AdcTheory3 = 'adc_theory_3',
+    AdcTheory4 = 'adc_theory_4',
+    AdcPractical = 'adc_practical',
+    ApcTheory1 = 'apc_theory_1',
+    ApcTheory2 = 'apc_theory_2',
+    ApcTheory3 = 'apc_theory_3',
+    ApcPractical = 'apc_practical',
+    AccTheory1 = 'acc_theory_1',
+    AccTheory2 = 'acc_theory_2',
+    AccPractical = 'acc_practical',
+}
 export enum EventStatus {
     DRAFT = 'draft',
     ACTIVE = 'active',
@@ -36,6 +51,9 @@ export enum PagesComponents {
     EVENTS_SHOW = 'dashboard/events/Show',
     DASHBOARD_RESERVATIONS = 'dashboard/Reservations',
     DASHBOARD_IMAGE_GENERATOR = 'dashboard/ImageGenerator',
+    DASHBOARD_TRAININGS = 'dashboard/trainings/Index',
+    STAFF_TRAININGS_INDEX = 'dashboard/staff/trainings/Index',
+    STAFF_TRAININGS_SHOW = 'dashboard/staff/trainings/Show',
     LANDING_HOME = 'Welcome',
     LANDING_EVENTS = 'landing/events/Index',
     LANDING_EVENTS_SHOW = 'landing/events/Show',
@@ -48,6 +66,7 @@ export enum Permission {
     UPDATE_EVENTS = 'update_events',
     DELETE_EVENTS = 'delete_events',
     GENERATE_EVENT_IMAGES = 'generate_event_images',
+    MANAGE_TRAINING_REQUESTS = 'manage_training_requests',
 }
 export enum PilotRating {
     FS1 = 2,
@@ -59,6 +78,25 @@ export enum PilotRating {
     ATP = 8,
     SFI = 9,
     CFI = 10,
+}
+export enum PilotTraining {
+    Fs2Fs3Intro = 'fs2_fs3_intro',
+    PpTheory1 = 'pp_theory_1',
+    PpTheory2 = 'pp_theory_2',
+    PpTheory3 = 'pp_theory_3',
+    PpTheory4 = 'pp_theory_4',
+    PpTheory5 = 'pp_theory_5',
+    PpPractical = 'pp_practical',
+    SppTheory1 = 'spp_theory_1',
+    SppTheory2 = 'spp_theory_2',
+    SppTheory3 = 'spp_theory_3',
+    SppTheory4 = 'spp_theory_4',
+    SppPractical = 'spp_practical',
+    CpTheory1 = 'cp_theory_1',
+    CpTheory2 = 'cp_theory_2',
+    CpTheory3 = 'cp_theory_3',
+    CpTheory4 = 'cp_theory_4',
+    CpPractical = 'cp_practical',
 }
 export enum Role {
     DIR = 'director',
@@ -86,6 +124,16 @@ export enum SlotStatus {
     AVAILABLE = 'available',
     RESERVED = 'reserved',
     CONFIRMED = 'confirmed',
+}
+export enum TrainingRequestStatus {
+    Pending = 'pending',
+    Scheduled = 'scheduled',
+    Cancelled = 'cancelled',
+    Completed = 'completed',
+}
+export enum TrainingRequestType {
+    ATC = 'atc',
+    Pilot = 'pilot',
 }
 export enum UserAwardReportStatus {
     PENDING = 'pending',

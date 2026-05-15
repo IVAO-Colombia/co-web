@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Enums\ATCRating;
+use App\Enums\PilotRating;
 use Carbon\CarbonImmutable;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
@@ -29,19 +32,25 @@ use Spatie\Permission\Traits\HasRoles;
  * @property string|null $division_id
  * @property string|null $language_id
  * @property int|null $network_rating
- * @property int|null $atc_rating
- * @property int|null $pilot_rating
+ * @property ATCRating|null $atc_rating
+ * @property PilotRating|null $pilot_rating
  * @property array<array-key, mixed>|null $raw_data
  * @property string|null $remember_token
  * @property CarbonImmutable|null $created_at
  * @property CarbonImmutable|null $updated_at
+ * @property-read Collection<int, AtcSlot> $atcSlots
+ * @property-read int|null $atc_slots_count
  * @property-read DatabaseNotificationCollection<int, DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
  * @property-read UserOAuthToken|null $oauthToken
  * @property-read Collection<int, Permission> $permissions
  * @property-read int|null $permissions_count
+ * @property-read Collection<int, PilotSlot> $pilotSlots
+ * @property-read int|null $pilot_slots_count
  * @property-read Collection<int, Role> $roles
  * @property-read int|null $roles_count
+ * @property-read Collection<int, TrainingRequest> $trainingRequests
+ * @property-read int|null $training_requests_count
  *
  * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User newModelQuery()
@@ -72,6 +81,8 @@ class User extends Authenticatable
     {
         return [
             'raw_data' => 'json',
+            'atc_rating' => ATCRating::class,
+            'pilot_rating' => PilotRating::class,
         ];
     }
 
@@ -91,5 +102,11 @@ class User extends Authenticatable
     public function pilotSlots(): HasMany
     {
         return $this->hasMany(PilotSlot::class, 'pilot_id');
+    }
+
+    /** @return HasMany<TrainingRequest, $this> */
+    public function trainingRequests(): HasMany
+    {
+        return $this->hasMany(TrainingRequest::class, 'trainee_id');
     }
 }

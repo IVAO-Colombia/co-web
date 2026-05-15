@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Auth;
 
+use App\Enums\ATCRating;
+use App\Enums\PilotRating;
 use App\Enums\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -170,6 +172,9 @@ class AuthenticationTest extends TestCase
 
     private function getIvaoUser(): array
     {
+        $pilotRating = $this->faker->randomElement(PilotRating::cases());
+        $atcRating = $this->faker->randomElement(ATCRating::cases());
+
         return [
             'id' => $id = $this->faker->numberBetween(100000, 999999),
             'firstName' => $firstName = $this->faker->firstName(),
@@ -186,14 +191,14 @@ class AuthenticationTest extends TestCase
                 'isPilot' => true,
                 'isAtc' => true,
                 'pilotRating' => [
-                    'id' => $this->faker->randomDigitNotZero(),
-                    'name' => $this->faker->words(3, true),
+                    'id' => $pilotRating->value,
+                    'name' => $pilotRating->label(),
                     'shortName' => $this->faker->lexify('FS?'),
                     'description' => $this->faker->sentence(),
                 ],
                 'atcRating' => [
-                    'id' => $this->faker->randomDigitNotZero(),
-                    'name' => $this->faker->words(3, true),
+                    'id' => $atcRating->value,
+                    'name' => $atcRating->label(),
                     'shortName' => $this->faker->lexify('AS?'),
                     'description' => $this->faker->sentence(),
                 ],

@@ -1,7 +1,14 @@
 import { wTrans } from 'laravel-vue-i18n';
 import type { ComputedRef } from 'vue';
 import type { BadgeVariants } from '@/components/ui/badge';
-import { EventStatus, EventTag, EventType, SlotStatus } from './backend.d';
+import {
+    EventStatus,
+    EventTag,
+    EventType,
+    SlotStatus,
+    TrainingRequestStatus,
+    TrainingRequestType,
+} from './backend.d';
 
 export type EventConstantsType = {
     statusVariants: Record<EventStatus, BadgeVariants['variant']>;
@@ -54,5 +61,30 @@ export const SlotsConstants: SlotsConstantsType = {
         [SlotStatus.AVAILABLE]: 'outline',
         [SlotStatus.RESERVED]: 'outline',
         [SlotStatus.CONFIRMED]: 'default',
+    },
+};
+
+export type TrainingRequestConstantsType = {
+    statusVariants: Record<TrainingRequestStatus, BadgeVariants['variant']>;
+    statusLabels: Record<TrainingRequestStatus, string | ComputedRef<string>>;
+    typeLabels: Record<TrainingRequestType, string | ComputedRef<string>>;
+};
+
+export const TrainingRequestConstants: TrainingRequestConstantsType = {
+    statusVariants: {
+        [TrainingRequestStatus.Pending]: 'secondary',
+        [TrainingRequestStatus.Scheduled]: 'default',
+        [TrainingRequestStatus.Cancelled]: 'destructive',
+        [TrainingRequestStatus.Completed]: 'outline',
+    },
+    statusLabels: {
+        [TrainingRequestStatus.Pending]: wTrans('Pending'),
+        [TrainingRequestStatus.Scheduled]: wTrans('Scheduled'),
+        [TrainingRequestStatus.Cancelled]: wTrans('Cancelled'),
+        [TrainingRequestStatus.Completed]: wTrans('Completed'),
+    },
+    typeLabels: {
+        [TrainingRequestType.ATC]: wTrans('ATC'),
+        [TrainingRequestType.Pilot]: wTrans('Pilot'),
     },
 };

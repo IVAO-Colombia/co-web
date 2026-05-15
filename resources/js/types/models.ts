@@ -1,4 +1,13 @@
-import type { EventStatus, EventTag, EventType, SlotStatus } from './backend.d';
+import type {
+    AtcTraining,
+    EventStatus,
+    EventTag,
+    EventType,
+    PilotTraining,
+    SlotStatus,
+    TrainingRequestStatus,
+    TrainingRequestType,
+} from './backend.d';
 
 export type Event = {
     id: number;
@@ -108,4 +117,32 @@ export type AtcPositionFra = {
     is_blacklist: boolean;
     created_at: string | null;
     updated_at: string | null;
+};
+
+export type TrainingRequestUser = {
+    id: number;
+    name: string;
+    vid: number;
+    email: string;
+    atc_rating: number;
+    pilot_rating: number;
+};
+
+export type TrainingRequest = {
+    id: number;
+    type: TrainingRequestType;
+    category: AtcTraining | PilotTraining;
+    status: TrainingRequestStatus;
+    occurs_at: string | null;
+    internal_observations: string | null;
+    public_observations: string | null;
+    request_observations: string;
+    trainer_id: number | null;
+    trainee_id: number;
+    event_id: number | null;
+    created_at: string;
+    updated_at: string;
+    trainee?: TrainingRequestUser;
+    trainer?: TrainingRequestUser | null;
+    event?: { id: number; name: string; slug: string } | null;
 };

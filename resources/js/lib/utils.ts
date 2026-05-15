@@ -5,7 +5,10 @@ import type { ClassValue } from 'clsx';
 import { format, isValid, parse, parseISO } from 'date-fns';
 import { enUS, es } from 'date-fns/locale';
 import { twMerge } from 'tailwind-merge';
-import type { Locale } from '@/types';
+import { TrainingRequestType } from '@/types';
+import type { AtcTraining, PilotTraining } from '@/types';
+import type { Locale, TrainingRequest } from '@/types';
+import { AtcTrainings, PilotTrainings } from '@/types/trainings';
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
@@ -163,4 +166,14 @@ export function toUTCDateTime(value: string | null | undefined): string {
 
 export function formatAtcTime(time: string): string {
     return format(parseISO(time, { in: utc }), 'HH:mm') + ' UTC';
+}
+
+export function getTrainingCategoryLabel(request: TrainingRequest | null) {
+    if (!request) {
+        return '';
+    }
+
+    return request.type === TrainingRequestType.ATC
+        ? AtcTrainings[request.category as AtcTraining].label
+        : PilotTrainings[request.category as PilotTraining].label;
 }

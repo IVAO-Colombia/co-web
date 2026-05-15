@@ -9,10 +9,10 @@ import Button from '@/components/ui/button/Button.vue';
 import { useLocale } from '@/composables/useLocale';
 import { Ivao } from '@/lib/ivao';
 import { formatDateTime } from '@/lib/utils';
-import { SlotsConstants, SlotStatus } from '@/types';
-import type { PilotSlot } from '@/types';
 import auth from '@/routes/auth';
 import dashboardPilotSlotRoutes from '@/routes/dashboard/events/pilot-slot';
+import { SlotsConstants, SlotStatus } from '@/types';
+import type { PilotSlot } from '@/types';
 
 const props = defineProps<{
     eventSlug: string;
@@ -26,7 +26,7 @@ const user = computed(() => page.props.auth?.user);
 const isLoggedIn = computed(() => !!user.value);
 const pilotSlotForm = useForm();
 
-const airlineLogos = ref<Record<string, string>>({});
+const airlineLogos = ref<Record<string, string | null>>({});
 
 onBeforeMount(async () => {
     // Preload airline logos for pilot slots

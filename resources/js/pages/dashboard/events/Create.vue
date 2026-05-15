@@ -2,7 +2,7 @@
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import { wTrans } from 'laravel-vue-i18n';
 import { AlertCircle, ChevronLeft, ImagePlus, Wand2, X } from 'lucide-vue-next';
-import { computed, onUnmounted, ref, watch } from 'vue';
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 import { toast } from 'vue-sonner';
 import AtcSlotsCard from '@/components/dashboard/events/AtcSlotsCard.vue';
 import PilotSlotsCard from '@/components/dashboard/events/PilotSlotsCard.vue';
@@ -36,10 +36,10 @@ import {
 } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
-import type { AtcSlotRow, EventType, PilotSlotRow } from '@/types';
-import { EventConstants, EventTag } from '@/types';
 import eventRoutes from '@/routes/dashboard/events';
 import { index, create } from '@/routes/dashboard/events';
+import type { AtcSlotRow, EventType, PilotSlotRow } from '@/types';
+import { EventConstants, EventTag } from '@/types';
 
 type EventForm = {
     name: string;
@@ -56,6 +56,7 @@ type EventForm = {
     pilot_slots: PilotSlotRow[];
     atc_slots_enabled: boolean;
     atc_slots: AtcSlotRow[];
+    training_request_id: number | null;
 };
 
 defineOptions({
@@ -82,6 +83,26 @@ const form = useForm<EventForm>({
     pilot_slots: [],
     atc_slots_enabled: false,
     atc_slots: [],
+    training_request_id: null,
+});
+
+onMounted(() => {
+    const params = new URLSearchParams(window.location.search);
+    const trainingRequestId = params.get('training_request_id');
+    const name = params.get('name');
+    const type = params.get('type') as EventType | null;
+
+    if (trainingRequestId) {
+        form.training_request_id = Number(trainingRequestId);
+    }
+
+    if (name) {
+        form.name = name;
+    }
+
+    if (type) {
+        form.type = type;
+    }
 });
 
 watch([() => form.starts_at, () => form.ends_at], ([startsAt, endsAt]) => {
