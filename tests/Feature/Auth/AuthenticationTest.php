@@ -30,7 +30,7 @@ class AuthenticationTest extends TestCase
     #[Test]
     public function it_stores_the_previous_url_as_intended_before_redirecting(): void
     {
-        $previousUrl = route('dashboard');
+        $previousUrl = route('home.events');
 
         $this->from($previousUrl)
             ->get(route('auth.redirect'));

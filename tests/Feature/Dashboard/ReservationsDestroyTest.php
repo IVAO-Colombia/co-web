@@ -23,7 +23,7 @@ class ReservationsDestroyTest extends TestCase
         $slot = PilotSlot::factory()->for($event)->reserved()->create();
 
         $this->delete(route('dashboard.events.pilot-slot.destroy', ['event' => $event->slug, 'slot' => $slot->id]))
-            ->assertRedirect(route('home'));
+            ->assertRedirect(route('auth.redirect'));
     }
 
     #[Test]

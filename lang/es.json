@@ -350,5 +350,6 @@
     "Are you sure you want to cancel the request for \":name\"? This cannot be undone.": "¿Estás seguro de que quieres cancelar la solicitud de \":name\"? Esta acción no se puede deshacer.",
     "Training request updated.": "Solicitud de entrenamiento actualizada.",
     "You already have an active request": "Ya tienes una solicitud activa",
-    "You can only have one pending training request at a time. Cancel your current request to submit a new one.": "Solo puedes tener una solicitud de entrenamiento pendiente a la vez. Cancela tu solicitud actual para enviar una nueva."
+    "You can only have one pending training request at a time. Cancel your current request to submit a new one.": "Solo puedes tener una solicitud de entrenamiento pendiente a la vez. Cancela tu solicitud actual para enviar una nueva.",
+    "You are from another division. Please request your training on the": "Eres de otra división. Por favor solicita tu entrenamiento en el"
 }

@@ -35,9 +35,11 @@ import {
 } from '@/components/ui/navigation-menu';
 import { useAppearance } from '@/composables/useAppearance';
 import { useLocale } from '@/composables/useLocale';
-import type { Locale } from '@/types';
 import { dashboard } from '@/routes';
 import auth from '@/routes/auth';
+import trainings from '@/routes/dashboard/trainings';
+import { about, events } from '@/routes/home';
+import type { Locale } from '@/types';
 
 type SectionLink = {
     title: string;
@@ -64,7 +66,7 @@ const menuSections: MenuSection[] = [
         items: [
             {
                 title: 'About Us',
-                href: '/about-us',
+                href: about.url(),
                 description: 'Learn more about IVAO Colombia.',
             },
             {
@@ -74,11 +76,11 @@ const menuSections: MenuSection[] = [
                 description: 'Meet our team',
                 target: '_blank',
             },
-            {
-                title: 'Work With Us',
-                href: '#about-us-staff',
-                description: 'Join our team and contribute to the division.',
-            },
+            // {
+            //     title: 'Work With Us',
+            //     href: '#about-us-staff',
+            //     description: 'Join our team and contribute to the division.',
+            // },
             {
                 title: 'Rating Transfer',
                 href: 'https://wiki.co.ivao.aero/es/home',
@@ -121,7 +123,7 @@ const menuSections: MenuSection[] = [
             },
             {
                 title: 'Requests & Training',
-                href: '#controllers-training',
+                href: trainings.index.url(),
                 description:
                     'ATC training programs and resources for skill development.',
             },
@@ -145,12 +147,12 @@ const menuSections: MenuSection[] = [
                 description:
                     'Check out our division tours and fly with the community.',
             },
-            {
-                title: 'Virtual Airlines',
-                href: '#pilots-procedures',
-                description:
-                    'List of virtual airlines based in Colombia and how to join them.',
-            },
+            // {
+            //     title: 'Virtual Airlines',
+            //     href: '#pilots-procedures',
+            //     description:
+            //         'List of virtual airlines based in Colombia and how to join them.',
+            // },
             {
                 title: 'World Tours',
                 href: 'https://wt.ivao.aero/',
@@ -160,7 +162,7 @@ const menuSections: MenuSection[] = [
             },
             {
                 title: 'Requests & Training',
-                href: '#pilots-events',
+                href: trainings.index.url(),
                 description:
                     'Pilot training programs and resources for skill development.',
             },
@@ -180,16 +182,16 @@ const menuSections: MenuSection[] = [
             },
             {
                 title: 'Events & Activities',
-                href: '/events',
+                href: events.url(),
                 description:
                     'Important resources and platforms for IVAO Colombia members.',
             },
-            {
-                title: 'Calendar',
-                href: '#community-gallery',
-                description:
-                    'Stay updated with our events and activities schedule.',
-            },
+            // {
+            //     title: 'Calendar',
+            //     href: '#community-gallery',
+            //     description:
+            //         'Stay updated with our events and activities schedule.',
+            // },
             {
                 title: 'Division Awards',
                 href: 'https://www.ivao.aero/divisions/awards.asp',

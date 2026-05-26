@@ -45,7 +45,7 @@ class EventsUpdateTest extends TestCase
         $event = Event::factory()->create();
 
         $this->put(route('dashboard.events.update', $event), $this->validPayload($event))
-            ->assertRedirect(route('home'));
+            ->assertRedirect(route('auth.redirect'));
     }
 
     #[Test]

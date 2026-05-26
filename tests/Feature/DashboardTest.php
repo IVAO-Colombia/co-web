@@ -13,7 +13,7 @@ class DashboardTest extends TestCase
     #[Test]
     public function guests_are_redirected_to_the_home_page(): void
     {
-        $this->get(route('dashboard'))->assertRedirect(route('home'));
+        $this->get(route('dashboard'))->assertRedirect(route('auth.redirect'));
     }
 
     #[Test]

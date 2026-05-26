@@ -18,7 +18,7 @@ class TrainingsDestroyTest extends TestCase
         $request = TrainingRequest::factory()->pending()->create();
 
         $this->delete(route('dashboard.trainings.destroy', $request))
-            ->assertRedirect(route('home'));
+            ->assertRedirect(route('auth.redirect'));
     }
 
     #[Test]

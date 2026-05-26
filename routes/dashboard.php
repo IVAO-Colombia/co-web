@@ -9,7 +9,10 @@ use App\Http\Controllers\Dashboard\Staff\TrainingRequestsController as StaffTrai
 use App\Http\Controllers\Dashboard\TrainingsController;
 use App\Http\Controllers\Landing\AtcSlotReservationsController;
 use App\Http\Controllers\Landing\PilotSlotReservationsController;
+use App\Http\Controllers\Settings\ProfileController;
 use Illuminate\Support\Facades\Route;
+
+Route::inertia('/', 'Dashboard')->name('dashboard');
 
 Route::get('reservations', [ReservationsController::class, 'index'])->name('dashboard.reservations.index');
 
@@ -47,3 +50,9 @@ Route::middleware(['can:manage_training_requests'])->group(function (): void {
     Route::patch('staff/training-requests/{trainingRequest}', [StaffTrainingRequestsController::class, 'update'])->name('dashboard.staff.training-requests.update');
     Route::delete('staff/training-requests/{trainingRequest}', [StaffTrainingRequestsController::class, 'destroy'])->name('dashboard.staff.training-requests.destroy');
 });
+
+Route::redirect('settings', '/settings/profile');
+
+Route::get('settings/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+
+Route::inertia('settings/appearance', 'settings/Appearance')->name('appearance.edit');

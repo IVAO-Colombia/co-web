@@ -21,7 +21,7 @@ class ReservationsUpdateTest extends TestCase
         $slot = AtcSlot::factory()->for($event)->reserved()->create();
 
         $this->patch(route('dashboard.events.atc-slot.update', ['event' => $event->slug, 'slot' => $slot->id]))
-            ->assertRedirect(route('home'));
+            ->assertRedirect(route('auth.redirect'));
     }
 
     #[Test]

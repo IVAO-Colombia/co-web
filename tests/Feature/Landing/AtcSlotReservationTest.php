@@ -52,7 +52,7 @@ class AtcSlotReservationTest extends TestCase
 
         $response = $this->post(route('dashboard.events.atc-slot.store', ['event' => $event->slug, 'slot' => $slot->id]));
 
-        $response->assertRedirect(route('home'));
+        $response->assertRedirect(route('auth.redirect'));
     }
 
     #[Test]
@@ -365,7 +365,7 @@ class AtcSlotReservationTest extends TestCase
 
         $response = $this->delete(route('dashboard.events.atc-slot.destroy', ['event' => $event->slug, 'slot' => $slot->id]));
 
-        $response->assertRedirect(route('home'));
+        $response->assertRedirect(route('auth.redirect'));
     }
 
     #[Test]

@@ -35,7 +35,7 @@ class EventsStoreTest extends TestCase
     public function guests_are_redirected_from_store(): void
     {
         $this->post(route('dashboard.events.store'), $this->validPayload())
-            ->assertRedirect(route('home'));
+            ->assertRedirect(route('auth.redirect'));
     }
 
     #[Test]

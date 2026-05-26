@@ -18,7 +18,7 @@ class TrainingRequestsUpdateTest extends TestCase
         $request = TrainingRequest::factory()->create();
 
         $this->patch(route('dashboard.staff.training-requests.update', $request), [])
-            ->assertRedirect(route('home'));
+            ->assertRedirect(route('auth.redirect'));
     }
 
     #[Test]

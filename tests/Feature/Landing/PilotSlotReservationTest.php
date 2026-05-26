@@ -35,14 +35,14 @@ class PilotSlotReservationTest extends TestCase
     }
 
     #[Test]
-    public function unauthenticated_user_is_redirected_to_home(): void
+    public function unauthenticated_user_is_redirected_to_login(): void
     {
         $event = Event::factory()->create();
         $slot = PilotSlot::factory()->for($event)->create(['status' => SlotStatus::AVAILABLE]);
 
         $response = $this->post(route('dashboard.events.pilot-slot.store', ['event' => $event->slug, 'slot' => $slot->id]));
 
-        $response->assertRedirect(route('home'));
+        $response->assertRedirect(route('auth.redirect'));
     }
 
     #[Test]

@@ -18,7 +18,7 @@ class ReservationsIndexTest extends TestCase
     public function guests_are_redirected_from_reservations(): void
     {
         $this->get(route('dashboard.reservations.index'))
-            ->assertRedirect(route('home'));
+            ->assertRedirect(route('auth.redirect'));
     }
 
     #[Test]

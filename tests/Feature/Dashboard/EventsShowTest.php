@@ -19,7 +19,7 @@ class EventsShowTest extends TestCase
         $event = Event::factory()->create();
 
         $this->get(route('dashboard.events.show', $event))
-            ->assertRedirect(route('home'));
+            ->assertRedirect(route('auth.redirect'));
     }
 
     #[Test]

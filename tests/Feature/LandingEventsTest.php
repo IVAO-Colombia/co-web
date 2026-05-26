@@ -31,7 +31,7 @@ class LandingEventsTest extends TestCase
     #[Test]
     public function guests_are_redirected_from_events_index(): void
     {
-        $this->get(route('dashboard.events.index'))->assertRedirect(route('home'));
+        $this->get(route('dashboard.events.index'))->assertRedirect(route('auth.redirect'));
     }
 
     #[Test]

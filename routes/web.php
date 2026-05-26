@@ -18,10 +18,8 @@ Route::get('/auth/callback', AuthenticateUsersController::class)
 Route::middleware(['auth'])->group(function (): void {
     Route::post('/auth/logout', LogoutUsersController::class)
         ->name('auth.logout');
-    Route::inertia('dashboard', 'Dashboard')->name('dashboard');
 });
 
 Route::prefix('dashboard')->middleware(['auth'])->group(function (): void {
-    require __DIR__.'/settings.php';
     require __DIR__.'/dashboard.php';
 });

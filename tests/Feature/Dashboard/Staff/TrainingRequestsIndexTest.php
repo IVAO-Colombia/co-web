@@ -15,7 +15,7 @@ class TrainingRequestsIndexTest extends TestCase
     public function guests_are_redirected_from_staff_training_requests(): void
     {
         $this->get(route('dashboard.staff.training-requests.index'))
-            ->assertRedirect(route('home'));
+            ->assertRedirect(route('auth.redirect'));
     }
 
     #[Test]

@@ -13,7 +13,11 @@ class RedirectToIvaoLoginController extends Controller
 {
     public function __invoke(): Response
     {
-        session()->put('url.intended', url()->previous());
+        $previousUrl = str(url()->previous())->chopEnd('/')->toString();
+
+        if (! session()->has('url.intended') && $previousUrl !== route('home')) {
+            session()->put('url.intended', url()->previous());
+        }
 
         return Inertia::location(
             Socialite::driver('ivao')

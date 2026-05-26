@@ -17,7 +17,7 @@ class TrainingRequestsShowTest extends TestCase
         $request = TrainingRequest::factory()->create();
 
         $this->get(route('dashboard.staff.training-requests.show', $request))
-            ->assertRedirect(route('home'));
+            ->assertRedirect(route('auth.redirect'));
     }
 
     #[Test]

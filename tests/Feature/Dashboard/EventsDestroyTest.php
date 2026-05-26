@@ -20,7 +20,7 @@ class EventsDestroyTest extends TestCase
         $event = Event::factory()->create();
 
         $this->delete(route('dashboard.events.destroy', $event))
-            ->assertRedirect(route('home'));
+            ->assertRedirect(route('auth.redirect'));
     }
 
     #[Test]

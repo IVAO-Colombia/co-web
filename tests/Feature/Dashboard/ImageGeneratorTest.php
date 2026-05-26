@@ -14,7 +14,7 @@ class ImageGeneratorTest extends TestCase
     public function guests_are_redirected_from_image_generator(): void
     {
         $this->get(route('dashboard.image-generator'))
-            ->assertRedirect(route('home'));
+            ->assertRedirect(route('auth.redirect'));
     }
 
     #[Test]

@@ -22,7 +22,7 @@ class TrainingsStoreTest extends TestCase
             'type' => TrainingRequestType::ATC->value,
             'category' => AtcTraining::AdcTheory1->value,
             'request_observations' => 'Available on weekends.',
-        ])->assertRedirect(route('home'));
+        ])->assertRedirect(route('auth.redirect'));
     }
 
     #[Test]
