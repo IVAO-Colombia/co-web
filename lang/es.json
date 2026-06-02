@@ -351,5 +351,17 @@
     "Training request updated.": "Solicitud de entrenamiento actualizada.",
     "You already have an active request": "Ya tienes una solicitud activa",
     "You can only have one pending training request at a time. Cancel your current request to submit a new one.": "Solo puedes tener una solicitud de entrenamiento pendiente a la vez. Cancela tu solicitud actual para enviar una nueva.",
-    "You are from another division. Please request your training on the": "Eres de otra división. Por favor solicita tu entrenamiento en el"
+    "You are from another division. Please request your training on the": "Eres de otra división. Por favor solicita tu entrenamiento en el",
+    "Pilot Hours": "Horas de piloto",
+    "ATC Hours": "Horas de ATC",
+    "Staff Hours": "Horas de personal",
+    "Active Training Requests": "Solicitudes de entrenamiento activas",
+    "View trainings": "Ver entrenamientos",
+    "Event Reservations": "Reservas de eventos",
+    "View reservations": "Ver reservas",
+    "Recent Connections": "Conexiones recientes",
+    "Start": "Inicio",
+    "End": "Fin",
+    "Duration": "Duración",
+    "No recent connections found.": "No se encontraron conexiones recientes."
 }

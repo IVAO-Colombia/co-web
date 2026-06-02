@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\EventsController;
 use App\Http\Controllers\Dashboard\ImageGeneratorController;
 use App\Http\Controllers\Dashboard\ReservationsController;
@@ -12,7 +13,7 @@ use App\Http\Controllers\Landing\PilotSlotReservationsController;
 use App\Http\Controllers\Settings\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-Route::inertia('/', 'Dashboard')->name('dashboard');
+Route::get('/', DashboardController::class)->name('dashboard');
 
 Route::get('reservations', [ReservationsController::class, 'index'])->name('dashboard.reservations.index');
 

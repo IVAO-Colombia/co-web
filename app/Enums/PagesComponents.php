@@ -6,6 +6,7 @@ namespace App\Enums;
 
 enum PagesComponents: string
 {
+    case DASHBOARD = 'Dashboard';
     case EVENTS_INDEX = 'dashboard/events/Index';
     case EVENTS_CREATE = 'dashboard/events/Create';
     case EVENTS_EDIT = 'dashboard/events/Edit';

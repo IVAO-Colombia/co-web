@@ -21,7 +21,7 @@ class RedirectToIvaoLoginController extends Controller
 
         return Inertia::location(
             Socialite::driver('ivao')
-                ->scopes(['profile', 'email', 'bookings:read', 'bookings:write'])
+                ->scopes(['profile', 'email', 'bookings:read', 'bookings:write', 'tracker'])
                 ->redirect()
         );
     }

@@ -228,4 +228,22 @@ class Ivao
             ),
         ];
     }
+
+    /**
+     * Get the most recent tracker sessions for a given user.
+     *
+     * @return array<int, mixed>
+     */
+    public function getTrackerSessions(int $vid, int $perPage = 5): array
+    {
+        /** @var array{items: array<int, mixed>}|null $response */
+        $response = $this->baseClientApiKey()
+            ->get('/tracker/sessions', [
+                'userId' => $vid,
+                'perPage' => $perPage,
+            ])
+            ->json();
+
+        return $response['items'] ?? [];
+    }
 }
