@@ -130,10 +130,8 @@ class DashboardTest extends TestCase
             ->get(route('dashboard'))
             ->assertOk()
             ->assertInertia(fn ($page) => $page
-                ->where('atcRating.key', 'AS3')
-                ->where('atcRating.label', ATCRating::AS3->label())
-                ->where('pilotRating.key', 'FS3')
-                ->where('pilotRating.label', PilotRating::FS3->label())
+                ->where('atcRating', ATCRating::AS3->value)
+                ->where('pilotRating', PilotRating::FS3->value)
             );
     }
 
