@@ -136,13 +136,8 @@ class Event extends Model
         $query
             ->where('status', EventStatus::ACTIVE)
             ->where(function ($query): void {
-                $query->where(function ($query): void {
-                    $query->whereNotNull('ends_at')
-                        ->where('ends_at', '>=', now()->endOfDay());
-                })->orWhere(function ($query): void {
-                    $query->whereNull('ends_at')
-                        ->where('starts_at', '>=', now()->endOfDay());
-                });
+                $query->orWhere('ends_at', '>=', now()->startOfDay())
+                    ->orWhere('starts_at', '>=', now()->startOfDay());
             });
     }
 }
