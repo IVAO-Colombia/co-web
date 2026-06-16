@@ -94,6 +94,24 @@ class PilotSlotReservationTest extends TestCase
     }
 
     #[Test]
+    public function admin_user_can_cancel_another_users_pilot_slot_reservation(): void
+    {
+        $admin = User::factory()->director()->create();
+        $otherUser = User::factory()->create();
+        $event = Event::factory()->create();
+        $slot = PilotSlot::factory()->for($event)->reserved()->create(['pilot_id' => $otherUser->id]);
+
+        $response = $this->actingAs($admin)
+            ->delete(route('dashboard.events.pilot-slot.destroy', ['event' => $event->slug, 'slot' => $slot->id]));
+
+        $response->assertRedirect();
+
+        $slot->refresh();
+        $this->assertEquals(SlotStatus::AVAILABLE, $slot->status);
+        $this->assertNull($slot->pilot_id);
+    }
+
+    #[Test]
     public function returns_403_when_user_tries_to_cancel_another_users_reservation(): void
     {
         $user = User::factory()->create();

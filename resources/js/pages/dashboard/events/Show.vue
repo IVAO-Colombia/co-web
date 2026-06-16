@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Head, Link, router, setLayoutProps } from '@inertiajs/vue3';
+import { Head, Link, router, setLayoutProps, useForm } from '@inertiajs/vue3';
 import { trans, wTrans } from 'laravel-vue-i18n';
 import {
     CalendarDays,
@@ -38,14 +38,15 @@ import TooltipTrigger from '@/components/ui/tooltip/TooltipTrigger.vue';
 import { useLocale } from '@/composables/useLocale';
 import { usePermissions } from '@/composables/usePermissions';
 import { formatDateTime } from '@/lib/utils';
-import type { EventDetail } from '@/types';
+import { destroy, index, show as showRoute } from '@/routes/dashboard/events';
+import pilotSlotRoutes from '@/routes/dashboard/events/pilot-slot';
+import type { EventDetail, PilotSlot } from '@/types';
 import {
     EventConstants,
     Permission,
     SlotsConstants,
     SlotStatus,
 } from '@/types';
-import { destroy, index, show as showRoute } from '@/routes/dashboard/events';
 
 const props = defineProps<{
     event: EventDetail;
@@ -63,6 +64,7 @@ setLayoutProps({
 
 const { hasPermission } = usePermissions();
 const { locale } = useLocale();
+const pilotSlotDestroy = useForm();
 
 const deleteDescription = computed(() =>
     trans(
@@ -73,6 +75,9 @@ const deleteDescription = computed(() =>
 
 const showDeleteDialog = ref(false);
 const deleting = ref(false);
+const showCancelSlotDialog = ref(false);
+const slotToCancel = ref<PilotSlot | null>(null);
+const cancelling = ref(false);
 
 const canDelete = computed(() => {
     const hasReservedPilot = props.event.pilot_slots.some((s) =>
@@ -99,6 +104,35 @@ function confirmDelete(): void {
             deleting.value = false;
         },
     });
+}
+
+function confirmCancelPilotSlot(): void {
+    if (!slotToCancel.value) {
+        toast.error(wTrans('No slot selected.'));
+
+        return;
+    }
+
+    cancelling.value = true;
+    pilotSlotDestroy.delete(
+        pilotSlotRoutes.destroy.url({
+            event: props.event.slug,
+            slot: slotToCancel.value?.id,
+        }),
+        {
+            preserveScroll: true,
+            onSuccess: () =>
+                toast.success(wTrans('Pilot slot cancelled successfully!')),
+            onError: (errors) => {
+                toast.error(errors.reservation);
+            },
+            onFinish: () => {
+                cancelling.value = false;
+                showCancelSlotDialog.value = false;
+                slotToCancel.value = null;
+            },
+        },
+    );
 }
 </script>
 
@@ -362,31 +396,24 @@ function confirmDelete(): void {
                                     }}
                                 </TableCell>
                                 <TableCell>
-                                    <TooltipProvider
+                                    <Button
                                         v-if="
                                             [
                                                 SlotStatus.RESERVED,
                                                 SlotStatus.CONFIRMED,
                                             ].includes(slot.status)
                                         "
+                                        variant="ghost"
+                                        size="sm"
+                                        @click="
+                                            () => {
+                                                showCancelSlotDialog = true;
+                                                slotToCancel = slot;
+                                            }
+                                        "
                                     >
-                                        <Tooltip>
-                                            <TooltipTrigger as-child>
-                                                <span>
-                                                    <Button
-                                                        variant="ghost"
-                                                        size="sm"
-                                                        disabled
-                                                    >
-                                                        {{ $t('Cancel') }}
-                                                    </Button>
-                                                </span>
-                                            </TooltipTrigger>
-                                            <TooltipContent>
-                                                {{ $t('Coming soon') }}
-                                            </TooltipContent>
-                                        </Tooltip>
-                                    </TooltipProvider>
+                                        {{ $t('Cancel') }}
+                                    </Button>
                                 </TableCell>
                             </TableRow>
                         </TableBody>
@@ -510,6 +537,15 @@ function confirmDelete(): void {
             :processing="deleting"
             @update:open="showDeleteDialog = $event"
             @confirm="confirmDelete"
+        />
+        <!-- Cancel confirmation dialog -->
+        <DeleteDialog
+            :open="showCancelSlotDialog"
+            :title="$t('Cancel reservation')"
+            description="Are you sure you want to cancel this pilot slot reservation? This action cannot be undone."
+            :processing="cancelling"
+            @update:open="showCancelSlotDialog = $event"
+            @confirm="confirmCancelPilotSlot"
         />
     </div>
 </template>

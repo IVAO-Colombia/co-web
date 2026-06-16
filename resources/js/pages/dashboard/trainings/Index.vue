@@ -43,13 +43,13 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { useLocale } from '@/composables/useLocale';
 import { formatDateTime, getTrainingCategoryLabel } from '@/lib/utils';
+import { index, store, destroy } from '@/routes/dashboard/trainings';
 import type { LengthAwarePaginator, TrainingRequest } from '@/types';
 import {
     TrainingRequestConstants,
     TrainingRequestStatus,
     TrainingRequestType,
 } from '@/types';
-import { index, store, destroy } from '@/routes/dashboard/trainings';
 
 type TrainingOption = { value: string; label: string };
 
@@ -68,7 +68,7 @@ defineOptions({
 const { locale } = useLocale();
 const page = usePage();
 
-const activeTab = ref<'atc' | 'pilot'>('atc');
+const activeTab = ref<TrainingRequestType>(TrainingRequestType.ATC);
 
 const isFromDivision = computed(
     () => page.props.auth.user.division_id === 'CO',
@@ -142,19 +142,32 @@ function handleCancel() {
 }
 
 const currentTrainings = computed(() =>
-    activeTab.value === 'atc'
+    activeTab.value === TrainingRequestType.ATC
         ? props.availableAtcTrainings
         : props.availablePilotTrainings,
 );
 
-const canRequestTrainings = computed(
-    () =>
-        props.trainingRequests.data.filter(
-            (request) =>
-                request.status === TrainingRequestStatus.Pending ||
-                request.status === TrainingRequestStatus.Scheduled,
-        ).length === 0,
-);
+const canRequestTrainings = computed(() => {
+    const hasPendingATCRequest = props.trainingRequests.data.some(
+        (request) =>
+            (request.status === TrainingRequestStatus.Pending ||
+                request.status === TrainingRequestStatus.Scheduled) &&
+            request.type === TrainingRequestType.ATC,
+    );
+
+    const hasPendingPilotRequest = props.trainingRequests.data.some(
+        (request) =>
+            (request.status === TrainingRequestStatus.Pending ||
+                request.status === TrainingRequestStatus.Scheduled) &&
+            request.type === TrainingRequestType.Pilot,
+    );
+
+    if (activeTab.value === TrainingRequestType.ATC) {
+        return !hasPendingATCRequest;
+    } else {
+        return !hasPendingPilotRequest;
+    }
+});
 </script>
 
 <template>
@@ -193,31 +206,6 @@ const canRequestTrainings = computed(
             <div class="grid gap-6 lg:grid-cols-3">
                 <!-- Request form -->
                 <Card class="relative lg:col-span-1">
-                    <!-- Overlay: already has a pending request -->
-                    <div
-                        v-if="!canRequestTrainings"
-                        class="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 rounded-xl bg-background/80 p-6 text-center backdrop-blur-sm"
-                    >
-                        <div
-                            class="rounded-full bg-amber-100 p-3 dark:bg-amber-900/40"
-                        >
-                            <TriangleAlert
-                                class="size-6 text-amber-600 dark:text-amber-400"
-                            />
-                        </div>
-                        <div>
-                            <p class="font-semibold">
-                                {{ $t('You already have an active request') }}
-                            </p>
-                            <p class="mt-1 text-sm text-muted-foreground">
-                                {{
-                                    $t(
-                                        'You can only have one pending training request at a time. Cancel your current request to submit a new one.',
-                                    )
-                                }}
-                            </p>
-                        </div>
-                    </div>
                     <CardHeader>
                         <CardTitle class="flex items-center gap-2">
                             <BookOpen class="size-5" />
@@ -239,7 +227,7 @@ const canRequestTrainings = computed(
                             <button
                                 class="flex flex-1 items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition-colors"
                                 :class="
-                                    activeTab === 'atc'
+                                    activeTab === TrainingRequestType.ATC
                                         ? 'bg-white text-emerald-700 shadow-sm dark:bg-white/10 dark:text-emerald-400'
                                         : 'text-slate-500 hover:text-slate-700 dark:text-white/50 dark:hover:text-white/75'
                                 "
@@ -252,7 +240,7 @@ const canRequestTrainings = computed(
                             <button
                                 class="flex flex-1 items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition-colors"
                                 :class="
-                                    activeTab === 'pilot'
+                                    activeTab === TrainingRequestType.Pilot
                                         ? 'bg-white text-sky-700 shadow-sm dark:bg-white/10 dark:text-sky-400'
                                         : 'text-slate-500 hover:text-slate-700 dark:text-white/50 dark:hover:text-white/75'
                                 "
@@ -264,7 +252,39 @@ const canRequestTrainings = computed(
                             </button>
                         </div>
 
-                        <div class="flex flex-col gap-3">
+                        <div class="relative flex flex-col gap-3">
+                            <!-- Overlay: already has a pending request -->
+                            <div
+                                v-if="!canRequestTrainings"
+                                class="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 bg-background/80 p-6 text-center backdrop-blur-sm"
+                            >
+                                <div
+                                    class="rounded-full bg-amber-100 p-3 dark:bg-amber-900/40"
+                                >
+                                    <TriangleAlert
+                                        class="size-6 text-amber-600 dark:text-amber-400"
+                                    />
+                                </div>
+                                <div>
+                                    <p class="font-semibold">
+                                        {{
+                                            $t(
+                                                'You already have an active request',
+                                            )
+                                        }}
+                                    </p>
+                                    <p
+                                        class="mt-1 text-sm text-muted-foreground"
+                                    >
+                                        {{
+                                            $t(
+                                                'You can only have one pending training request at a time. Cancel your current request to submit a new one.',
+                                            )
+                                        }}
+                                    </p>
+                                </div>
+                            </div>
+
                             <div class="flex flex-col gap-1.5">
                                 <Label for="category">{{
                                     $t('Training')

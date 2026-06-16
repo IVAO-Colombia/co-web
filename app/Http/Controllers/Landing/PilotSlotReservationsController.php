@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Landing;
 
 use App\Actions\Events\ReservePilotSlot;
+use App\Enums\Permission;
 use App\Http\Controllers\Controller;
 use App\Models\Event;
 use App\Models\PilotSlot;
@@ -49,7 +50,9 @@ class PilotSlotReservationsController extends Controller
         /** @var User */
         $user = $request->user();
 
-        abort_if($slot->pilot_id !== $user->id, 403);
+        if ($user->cannot(Permission::CANCEL_PILOT_SLOT)) {
+            abort_if($slot->pilot_id !== $user->id, 403);
+        }
 
         $slot->cancel();
 

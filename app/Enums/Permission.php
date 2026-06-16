@@ -16,6 +16,7 @@ enum Permission: string
     case DELETE_EVENTS = 'delete_events';
     case GENERATE_EVENT_IMAGES = 'generate_event_images';
     case MANAGE_TRAINING_REQUESTS = 'manage_training_requests';
+    case CANCEL_PILOT_SLOT = 'cancel_pilot_slot';
 
     /**
      * Permissions that will be directly assigned to a user.
@@ -39,6 +40,7 @@ enum Permission: string
             self::CREATE_EVENTS,
             self::UPDATE_EVENTS,
             self::DELETE_EVENTS,
+            self::CANCEL_PILOT_SLOT,
         ];
     }
 
