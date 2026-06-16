@@ -43,13 +43,13 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { useLocale } from '@/composables/useLocale';
 import { formatDateTime, getTrainingCategoryLabel } from '@/lib/utils';
-import { index, store, destroy } from '@/routes/dashboard/trainings';
 import type { LengthAwarePaginator, TrainingRequest } from '@/types';
 import {
     TrainingRequestConstants,
     TrainingRequestStatus,
     TrainingRequestType,
 } from '@/types';
+import { index, store, destroy } from '@/routes/dashboard/trainings';
 
 type TrainingOption = { value: string; label: string };
 

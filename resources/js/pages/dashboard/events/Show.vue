@@ -38,8 +38,6 @@ import TooltipTrigger from '@/components/ui/tooltip/TooltipTrigger.vue';
 import { useLocale } from '@/composables/useLocale';
 import { usePermissions } from '@/composables/usePermissions';
 import { formatDateTime } from '@/lib/utils';
-import { destroy, index, show as showRoute } from '@/routes/dashboard/events';
-import pilotSlotRoutes from '@/routes/dashboard/events/pilot-slot';
 import type { EventDetail, PilotSlot } from '@/types';
 import {
     EventConstants,
@@ -47,6 +45,8 @@ import {
     SlotsConstants,
     SlotStatus,
 } from '@/types';
+import { destroy, index, show as showRoute } from '@/routes/dashboard/events';
+import pilotSlotRoutes from '@/routes/dashboard/events/pilot-slot';
 
 const props = defineProps<{
     event: EventDetail;
