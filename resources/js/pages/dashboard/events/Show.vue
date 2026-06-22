@@ -37,7 +37,7 @@ import TooltipProvider from '@/components/ui/tooltip/TooltipProvider.vue';
 import TooltipTrigger from '@/components/ui/tooltip/TooltipTrigger.vue';
 import { useLocale } from '@/composables/useLocale';
 import { usePermissions } from '@/composables/usePermissions';
-import { formatDateTime } from '@/lib/utils';
+import { formatAtcTime, formatDateTime, toUTCDateTime } from '@/lib/utils';
 import { destroy, index, show as showRoute } from '@/routes/dashboard/events';
 import pilotSlotRoutes from '@/routes/dashboard/events/pilot-slot';
 import type { EventDetail, PilotSlot } from '@/types';
@@ -369,7 +369,9 @@ function confirmCancelPilotSlot(): void {
                                 <TableCell class="font-mono">
                                     {{ slot.destination }}
                                 </TableCell>
-                                <TableCell>{{ slot.departs_at }}</TableCell>
+                                <TableCell>
+                                    {{ toUTCDateTime(slot.departs_at) }} UTC
+                                </TableCell>
                                 <TableCell>{{ slot.gate ?? '—' }}</TableCell>
                                 <TableCell>
                                     <Badge
@@ -469,8 +471,18 @@ function confirmCancelPilotSlot(): void {
                                 <TableCell class="font-mono">
                                     {{ slot.callsign }}
                                 </TableCell>
-                                <TableCell>{{ slot.starts_at }}</TableCell>
-                                <TableCell>{{ slot.ends_at }}</TableCell>
+                                <TableCell
+                                    >{{
+                                        toUTCDateTime(slot.starts_at)
+                                    }}
+                                    UTC</TableCell
+                                >
+                                <TableCell
+                                    >{{
+                                        toUTCDateTime(slot.ends_at)
+                                    }}
+                                    UTC</TableCell
+                                >
                                 <TableCell>
                                     <Badge
                                         :variant="
