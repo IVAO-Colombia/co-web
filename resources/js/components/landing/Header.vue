@@ -35,11 +35,11 @@ import {
 } from '@/components/ui/navigation-menu';
 import { useAppearance } from '@/composables/useAppearance';
 import { useLocale } from '@/composables/useLocale';
-import type { Locale } from '@/types';
 import { dashboard } from '@/routes';
 import auth from '@/routes/auth';
 import trainings from '@/routes/dashboard/trainings';
 import { about, events } from '@/routes/home';
+import type { Locale } from '@/types';
 
 type SectionLink = {
     title: string;

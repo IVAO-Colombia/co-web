@@ -33,6 +33,11 @@ import {
 } from '@/components/ui/table';
 import { useLocale } from '@/composables/useLocale';
 import { formatDateTime, getTrainingCategoryLabel } from '@/lib/utils';
+import {
+    index,
+    show,
+    destroy,
+} from '@/routes/dashboard/staff/training-requests';
 import type {
     LengthAwarePaginator,
     TrainingRequest,
@@ -40,11 +45,6 @@ import type {
     TrainingRequestType,
 } from '@/types';
 import { TrainingRequestConstants } from '@/types';
-import {
-    index,
-    show,
-    destroy,
-} from '@/routes/dashboard/staff/training-requests';
 
 type Counts = { pending: number; scheduled: number };
 
