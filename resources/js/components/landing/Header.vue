@@ -35,11 +35,11 @@ import {
 } from '@/components/ui/navigation-menu';
 import { useAppearance } from '@/composables/useAppearance';
 import { useLocale } from '@/composables/useLocale';
-import type { Locale } from '@/types';
 import { dashboard } from '@/routes';
 import auth from '@/routes/auth';
 import trainings from '@/routes/dashboard/trainings';
 import { about, events } from '@/routes/home';
+import type { Locale } from '@/types';
 
 type SectionLink = {
     title: string;
@@ -62,7 +62,7 @@ const menuSections: MenuSection[] = [
         title: 'ABOUT US',
         href: '#about-us',
         description: '',
-        imageSrc: '/img/about_img.jpg',
+        imageSrc: '/img/about_us_img.jpg',
         items: [
             {
                 title: 'About Us',
