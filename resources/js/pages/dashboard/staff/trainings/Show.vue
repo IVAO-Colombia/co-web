@@ -35,15 +35,6 @@ import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
 import { useLocale } from '@/composables/useLocale';
 import { formatDateTime, getTrainingCategoryLabel } from '@/lib/utils';
-import {
-    create as eventCreate,
-    show as eventShow,
-} from '@/routes/dashboard/events';
-import {
-    index,
-    update,
-    destroy,
-} from '@/routes/dashboard/staff/training-requests';
 import type {
     TrainingRequest,
     TrainingRequestUser,
@@ -57,6 +48,15 @@ import {
     TrainingRequestStatus,
     TrainingRequestType,
 } from '@/types';
+import {
+    create as eventCreate,
+    show as eventShow,
+} from '@/routes/dashboard/events';
+import {
+    index,
+    update,
+    destroy,
+} from '@/routes/dashboard/staff/training-requests';
 
 type AssignableStaff = { id: number; name: string; vid: number };
 

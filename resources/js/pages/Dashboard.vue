@@ -15,11 +15,11 @@ import {
 } from '@/components/ui/table';
 import { useLocale } from '@/composables/useLocale';
 import { formatDateTime } from '@/lib/utils';
+import type { ATCRating, PilotRating } from '@/types';
+import { ATCRatings, PilotRatings } from '@/types';
 import { dashboard } from '@/routes';
 import { index as reservationsIndex } from '@/routes/dashboard/reservations';
 import { index as trainingsIndex } from '@/routes/dashboard/trainings';
-import type { ATCRating, PilotRating } from '@/types';
-import { ATCRatings, PilotRatings } from '@/types';
 
 interface TrackerSession {
     id: number;
