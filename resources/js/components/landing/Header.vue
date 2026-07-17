@@ -35,11 +35,10 @@ import {
 } from '@/components/ui/navigation-menu';
 import { useAppearance } from '@/composables/useAppearance';
 import { useLocale } from '@/composables/useLocale';
-import type { Locale } from '@/types';
 import { dashboard } from '@/routes';
 import auth from '@/routes/auth';
-import trainings from '@/routes/dashboard/trainings';
-import { about, events } from '@/routes/home';
+import { about, events, training } from '@/routes/home';
+import type { Locale } from '@/types';
 
 type SectionLink = {
     title: string;
@@ -123,7 +122,7 @@ const menuSections: MenuSection[] = [
             },
             {
                 title: 'Requests & Training',
-                href: trainings.index.url(),
+                href: training.url(),
                 description:
                     'ATC training programs and resources for skill development.',
             },
@@ -162,7 +161,7 @@ const menuSections: MenuSection[] = [
             },
             {
                 title: 'Requests & Training',
-                href: trainings.index.url(),
+                href: training.url(),
                 description:
                     'Pilot training programs and resources for skill development.',
             },

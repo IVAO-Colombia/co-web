@@ -23,4 +23,5 @@ enum PagesComponents: string
     case LANDING_EVENTS = 'landing/events/Index';
     case LANDING_EVENTS_SHOW = 'landing/events/Show';
     case LANDING_ABOUT_US = 'landing/Aboutus';
+    case LANDING_TRAINING = 'landing/Training';
 }
