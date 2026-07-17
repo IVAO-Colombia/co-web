@@ -13,7 +13,7 @@ const examStatusUrl = 'https://www.ivao.aero/training/exam/status.asp';
     <section
         class="relative min-h-screen overflow-hidden bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-white"
     >
-        <Header :brand-text="$t('Training').toLocaleUpperCase()" />
+        <Header />
 
         <div class="absolute inset-0">
             <img
