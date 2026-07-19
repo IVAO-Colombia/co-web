@@ -15,6 +15,9 @@ export type EventConstantsType = {
     statusLabels: Record<EventStatus, string | ComputedRef<string>>;
     typeLabels: Record<EventType, string | ComputedRef<string>>;
     tagLabels: Record<EventTag, string | ComputedRef<string>>;
+    // Weekday values follow Carbon's dayOfWeek convention (0 = Sunday .. 6 = Saturday),
+    // ordered Monday-first for display.
+    weekdays: { value: number; label: string | ComputedRef<string> }[];
 };
 
 export const EventConstants: EventConstantsType = {
@@ -44,6 +47,15 @@ export const EventConstants: EventConstantsType = {
         [EventTag.Division]: wTrans('Division'),
         [EventTag.Hq]: wTrans('HQ'),
     },
+    weekdays: [
+        { value: 1, label: wTrans('Monday') },
+        { value: 2, label: wTrans('Tuesday') },
+        { value: 3, label: wTrans('Wednesday') },
+        { value: 4, label: wTrans('Thursday') },
+        { value: 5, label: wTrans('Friday') },
+        { value: 6, label: wTrans('Saturday') },
+        { value: 0, label: wTrans('Sunday') },
+    ],
 };
 
 export type SlotsConstantsType = {

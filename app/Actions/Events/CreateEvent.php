@@ -16,6 +16,8 @@ use Illuminate\Validation\ValidationException;
 
 class CreateEvent
 {
+    public function __construct(private readonly GenerateEventOccurrences $generateEventOccurrences) {}
+
     public function handle(StoreEventRequest $request): Event
     {
         $imageUrl = $this->storeFile($request);
@@ -23,6 +25,7 @@ class CreateEvent
 
         DB::transaction(function () use ($request, $imageUrl, &$event): void {
             $validated = $request->validated();
+            $isRecurring = $validated['is_recurring'] ?? false;
 
             $event = Event::create([
                 'name' => $validated['name'],
@@ -39,8 +42,26 @@ class CreateEvent
                 'pilot_slots_enabled' => $validated['pilot_slots_enabled'] ?? false,
                 'atc_slots_enabled' => $validated['atc_slots_enabled'] ?? false,
                 'status' => EventStatus::ACTIVE,
+                'is_recurring' => $isRecurring,
+                'recurrence_interval' => $isRecurring ? $validated['recurrence_interval'] : null,
+                'recurrence_weekdays' => $isRecurring ? $validated['recurrence_weekdays'] : null,
+                'recurrence_ends_at' => $isRecurring ? $validated['recurrence_ends_at'] : null,
                 'created_by' => $request->user()?->id,
             ]);
+
+            // A recurring template carries no slots of its own; the definitions are
+            // copied onto each generated occurrence with their datetimes shifted.
+            // Recurring events can never be linked to a training request (enforced
+            // in StoreEventRequest), so there is no training request to link here.
+            if ($isRecurring) {
+                $this->generateEventOccurrences->handle(
+                    $event,
+                    $validated['pilot_slots'] ?? [],
+                    $validated['atc_slots'] ?? [],
+                );
+
+                return;
+            }
 
             if (! empty($validated['pilot_slots'])) {
                 $pilotSlots = array_map(fn (array $slot): array => [

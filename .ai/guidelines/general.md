@@ -5,7 +5,6 @@ After each implementation we must verify the code by using the following compose
 - lint
 - rector
 - phpstan
-- lint:check
 
 Those are defined inside the `scripts` section of the composer.json file
 

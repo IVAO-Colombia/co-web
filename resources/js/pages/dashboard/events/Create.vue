@@ -1,7 +1,14 @@
 <script setup lang="ts">
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import { wTrans } from 'laravel-vue-i18n';
-import { AlertCircle, ChevronLeft, ImagePlus, Wand2, X } from 'lucide-vue-next';
+import {
+    AlertCircle,
+    ChevronLeft,
+    ImagePlus,
+    Repeat,
+    Wand2,
+    X,
+} from 'lucide-vue-next';
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 import { toast } from 'vue-sonner';
 import AtcSlotsCard from '@/components/dashboard/events/AtcSlotsCard.vue';
@@ -35,11 +42,12 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
+import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
-import type { AtcSlotRow, EventType, PilotSlotRow } from '@/types';
-import { EventConstants, EventTag } from '@/types';
 import eventRoutes from '@/routes/dashboard/events';
 import { index, create } from '@/routes/dashboard/events';
+import type { AtcSlotRow, EventType, PilotSlotRow } from '@/types';
+import { EventConstants, EventTag } from '@/types';
 
 type EventForm = {
     name: string;
@@ -56,6 +64,10 @@ type EventForm = {
     pilot_slots: PilotSlotRow[];
     atc_slots_enabled: boolean;
     atc_slots: AtcSlotRow[];
+    is_recurring: boolean;
+    recurrence_interval: number;
+    recurrence_weekdays: number[];
+    recurrence_ends_at: string;
     training_request_id: number | null;
 };
 
@@ -83,6 +95,10 @@ const form = useForm<EventForm>({
     pilot_slots: [],
     atc_slots_enabled: false,
     atc_slots: [],
+    is_recurring: false,
+    recurrence_interval: 1,
+    recurrence_weekdays: [],
+    recurrence_ends_at: '',
     training_request_id: null,
 });
 
@@ -126,6 +142,36 @@ function toggleTag(tag: EventTag): void {
         form.tags.push(tag);
     }
 }
+
+function toggleWeekday(weekday: number): void {
+    if (form.recurrence_weekdays.includes(weekday)) {
+        form.recurrence_weekdays = form.recurrence_weekdays.filter(
+            (w) => w !== weekday,
+        );
+    } else {
+        form.recurrence_weekdays.push(weekday);
+    }
+}
+
+// When recurrence is first enabled, default the weekday selection to the start
+// date's own weekday so the series lines up with the chosen start.
+watch(
+    () => form.is_recurring,
+    (isRecurring) => {
+        if (
+            isRecurring &&
+            form.recurrence_weekdays.length === 0 &&
+            form.starts_at
+        ) {
+            // Weekday of the start date in UTC (0 = Sunday .. 6 = Saturday), to
+            // match the backend's Carbon dayOfWeek convention.
+            const startDate = new Date(
+                form.starts_at.slice(0, 10) + 'T00:00:00Z',
+            );
+            form.recurrence_weekdays = [startDate.getUTCDay()];
+        }
+    },
+);
 
 // --- Image ---
 const imagePreview = ref<string | null>(null);
@@ -460,6 +506,100 @@ function submit(): void {
                 </CardContent>
             </Card>
 
+            <!-- Recurrence (not available for events tied to a training request) -->
+            <Card v-if="!form.training_request_id">
+                <CardHeader>
+                    <div class="flex items-start justify-between gap-4">
+                        <div class="space-y-1.5">
+                            <CardTitle class="flex items-center gap-2">
+                                <Repeat class="size-4" />
+                                {{ $t('Recurring Event') }}
+                            </CardTitle>
+                            <CardDescription>
+                                {{
+                                    $t(
+                                        'Automatically generate a copy of this event on a weekly schedule.',
+                                    )
+                                }}
+                            </CardDescription>
+                        </div>
+                        <Switch
+                            :model-value="form.is_recurring"
+                            @update:model-value="
+                                (val) => (form.is_recurring = val)
+                            "
+                        />
+                    </div>
+                </CardHeader>
+                <CardContent
+                    v-if="form.is_recurring"
+                    class="flex flex-col gap-6"
+                >
+                    <!-- Weekdays -->
+                    <div class="flex flex-col gap-1.5">
+                        <Label>
+                            {{ $t('Repeat on') }}
+                            <span class="ml-0.5 text-destructive">*</span>
+                        </Label>
+                        <div class="flex flex-wrap gap-2">
+                            <Badge
+                                v-for="weekday in EventConstants.weekdays"
+                                :key="weekday.value"
+                                as="button"
+                                type="button"
+                                :variant="
+                                    form.recurrence_weekdays.includes(
+                                        weekday.value,
+                                    )
+                                        ? 'default'
+                                        : 'outline'
+                                "
+                                class="cursor-pointer transition-colors"
+                                @click="toggleWeekday(weekday.value)"
+                            >
+                                {{ weekday.label }}
+                            </Badge>
+                        </div>
+                        <InputError
+                            :message="form.errors.recurrence_weekdays"
+                        />
+                    </div>
+
+                    <!-- Interval + end date -->
+                    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                        <div class="flex flex-col gap-1.5">
+                            <Label for="recurrence_interval">
+                                {{ $t('Repeat every (weeks)') }}
+                                <span class="ml-0.5 text-destructive">*</span>
+                            </Label>
+                            <Input
+                                id="recurrence_interval"
+                                v-model.number="form.recurrence_interval"
+                                type="number"
+                                min="1"
+                            />
+                            <InputError
+                                :message="form.errors.recurrence_interval"
+                            />
+                        </div>
+                        <div class="flex flex-col gap-1.5">
+                            <Label for="recurrence_ends_at">
+                                {{ $t('Repeat until') }}
+                                <span class="ml-0.5 text-destructive">*</span>
+                            </Label>
+                            <Input
+                                id="recurrence_ends_at"
+                                v-model="form.recurrence_ends_at"
+                                type="date"
+                            />
+                            <InputError
+                                :message="form.errors.recurrence_ends_at"
+                            />
+                        </div>
+                    </div>
+                </CardContent>
+            </Card>
+
             <!-- ATC Slots -->
             <AtcSlotsCard
                 v-model:slots="form.atc_slots"
@@ -494,9 +634,7 @@ function submit(): void {
                     </Link>
                 </Button>
                 <Button type="submit" :disabled="form.processing">
-                    {{
-                        form.processing ? $t('Saving...') : $t('Save as Draft')
-                    }}
+                    {{ form.processing ? $t('Saving...') : $t('Save Changes') }}
                 </Button>
             </div>
         </form>

@@ -7,6 +7,7 @@ namespace Tests\Feature\Dashboard;
 use App\Enums\EventStatus;
 use App\Enums\EventType;
 use App\Models\Event;
+use App\Models\TrainingRequest;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -180,6 +181,108 @@ class EventsStoreTest extends TestCase
             'starts_at' => $startDate1->startOfMinute()->toDateTimeString(),
             'ends_at' => $endDate1->startOfMinute()->toDateTimeString(),
         ]);
+    }
+
+    #[Test]
+    public function authorized_user_can_create_recurring_event(): void
+    {
+        $user = User::factory()->director()->create();
+
+        // 2026-06-01 is a Monday; weekly on Mondays through 2026-06-29 => 5 occurrences.
+        $payload = array_merge($this->validPayload(), [
+            'starts_at' => '2026-06-01 18:00',
+            'is_recurring' => true,
+            'recurrence_interval' => 1,
+            'recurrence_weekdays' => [1],
+            'recurrence_ends_at' => '2026-06-29',
+        ]);
+
+        $this->actingAs($user)->post(route('dashboard.events.store'), $payload)
+            ->assertRedirect(route('dashboard.events.index'));
+
+        $template = Event::where('is_recurring', true)->firstOrFail();
+        $this->assertNull($template->parent_event_id);
+        $this->assertSame([1], $template->recurrence_weekdays);
+
+        $occurrences = $template->occurrences()->orderBy('starts_at')->get();
+        $this->assertCount(5, $occurrences);
+        $occurrences->each(fn (Event $occurrence) => $this->assertFalse($occurrence->is_recurring));
+        $this->assertSame(
+            ['2026-06-01 18:00', '2026-06-08 18:00', '2026-06-15 18:00', '2026-06-22 18:00', '2026-06-29 18:00'],
+            $occurrences->map(fn (Event $occurrence): string => $occurrence->starts_at->format('Y-m-d H:i'))->all(),
+        );
+    }
+
+    #[Test]
+    public function recurring_event_with_interval_skips_weeks(): void
+    {
+        $user = User::factory()->director()->create();
+
+        // Every 2 weeks on Mondays from 2026-06-01 through 2026-06-29 => Jun 1, 15, 29.
+        $payload = array_merge($this->validPayload(), [
+            'starts_at' => '2026-06-01 18:00',
+            'is_recurring' => true,
+            'recurrence_interval' => 2,
+            'recurrence_weekdays' => [1],
+            'recurrence_ends_at' => '2026-06-29',
+        ]);
+
+        $this->actingAs($user)->post(route('dashboard.events.store'), $payload);
+
+        $template = Event::where('is_recurring', true)->firstOrFail();
+        $this->assertSame(
+            ['2026-06-01 18:00', '2026-06-15 18:00', '2026-06-29 18:00'],
+            $template->occurrences()->orderBy('starts_at')->get()
+                ->map(fn (Event $occurrence): string => $occurrence->starts_at->format('Y-m-d H:i'))->all(),
+        );
+    }
+
+    #[Test]
+    public function recurring_event_requires_recurrence_fields(): void
+    {
+        $user = User::factory()->director()->create();
+        $payload = array_merge($this->validPayload(), ['is_recurring' => true]);
+
+        $this->actingAs($user)
+            ->post(route('dashboard.events.store'), $payload)
+            ->assertSessionHasErrors(['recurrence_interval', 'recurrence_weekdays', 'recurrence_ends_at']);
+    }
+
+    #[Test]
+    public function recurrence_end_date_must_be_after_start(): void
+    {
+        $user = User::factory()->director()->create();
+        $payload = array_merge($this->validPayload(), [
+            'starts_at' => '2026-06-01 18:00',
+            'is_recurring' => true,
+            'recurrence_interval' => 1,
+            'recurrence_weekdays' => [1],
+            'recurrence_ends_at' => '2026-05-01',
+        ]);
+
+        $this->actingAs($user)
+            ->post(route('dashboard.events.store'), $payload)
+            ->assertSessionHasErrors('recurrence_ends_at');
+    }
+
+    #[Test]
+    public function recurrence_is_prohibited_when_linked_to_a_training_request(): void
+    {
+        $user = User::factory()->director()->create();
+        $trainingRequest = TrainingRequest::factory()->create();
+
+        $payload = array_merge($this->validPayload(), [
+            'starts_at' => '2026-06-01 18:00',
+            'is_recurring' => true,
+            'recurrence_interval' => 1,
+            'recurrence_weekdays' => [1],
+            'recurrence_ends_at' => '2026-06-29',
+            'training_request_id' => $trainingRequest->id,
+        ]);
+
+        $this->actingAs($user)
+            ->post(route('dashboard.events.store'), $payload)
+            ->assertSessionHasErrors('is_recurring');
     }
 
     #[Test]

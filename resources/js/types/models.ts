@@ -11,6 +11,7 @@ import type {
 
 export type Event = {
     id: number;
+    parent_event_id: number | null;
     name: string;
     name_en: string | null;
     description: string;
@@ -25,7 +26,12 @@ export type Event = {
     starts_at: string;
     ends_at: string | null;
     status: EventStatus;
+    is_recurring: boolean;
+    recurrence_interval: number | null;
+    recurrence_weekdays: number[] | null;
+    recurrence_ends_at: string | null;
     created_by: number;
+    occurrences?: Event[];
 };
 
 type SlotUser = {

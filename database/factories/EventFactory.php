@@ -8,6 +8,7 @@ use App\Enums\EventStatus;
 use App\Enums\EventType;
 use App\Models\Event;
 use App\Models\User;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -54,6 +55,24 @@ class EventFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'status' => EventStatus::FINALIZED,
+        ]);
+    }
+
+    public function recurring(): self
+    {
+        return $this->state(fn (array $attributes): array => [
+            'is_recurring' => true,
+            'recurrence_interval' => 1,
+            'recurrence_weekdays' => [(int) CarbonImmutable::parse($attributes['starts_at'])->dayOfWeek],
+            'recurrence_ends_at' => CarbonImmutable::parse($attributes['starts_at'])->addWeeks(4),
+        ]);
+    }
+
+    public function occurrenceOf(Event $template): self
+    {
+        return $this->state(fn (array $attributes): array => [
+            'parent_event_id' => $template->id,
+            'is_recurring' => false,
         ]);
     }
 }

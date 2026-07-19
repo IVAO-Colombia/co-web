@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property int $id
+ * @property int|null $parent_event_id
  * @property string $name
  * @property string $description
  * @property string|null $name_en
@@ -33,6 +34,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property CarbonImmutable $starts_at
  * @property CarbonImmutable|null $ends_at
  * @property EventStatus $status
+ * @property bool $is_recurring
+ * @property int|null $recurrence_interval
+ * @property array<array-key, int>|null $recurrence_weekdays
+ * @property CarbonImmutable|null $recurrence_ends_at
  * @property int $created_by
  * @property int|null $assigned_to
  * @property CarbonImmutable|null $created_at
@@ -42,6 +47,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read Collection<int, AtcSlot> $atcSlots
  * @property-read int|null $atc_slots_count
  * @property-read User|null $createdBy
+ * @property-read Event|null $parent
+ * @property-read Collection<int, Event> $occurrences
+ * @property-read int|null $occurrences_count
  * @property-read Collection<int, PilotSlot> $pilotSlots
  * @property-read int|null $pilot_slots_count
  * @property-read Collection<int, UserAwardReport> $userAwardReports
@@ -75,10 +83,15 @@ class Event extends Model
     {
         return [
             'id' => 'integer',
+            'parent_event_id' => 'integer',
             'pilot_slots_enabled' => 'boolean',
             'atc_slots_enabled' => 'boolean',
             'starts_at' => 'datetime',
             'ends_at' => 'datetime',
+            'is_recurring' => 'boolean',
+            'recurrence_interval' => 'integer',
+            'recurrence_weekdays' => 'json',
+            'recurrence_ends_at' => 'datetime',
             'created_by' => 'integer',
             'assigned_to' => 'integer',
             'tags' => 'json',
@@ -120,6 +133,26 @@ class Event extends Model
     }
 
     /**
+     * The recurring template this occurrence belongs to.
+     *
+     * @return BelongsTo<Event, $this>
+     */
+    public function parent(): BelongsTo
+    {
+        return $this->belongsTo(Event::class, 'parent_event_id');
+    }
+
+    /**
+     * The generated occurrences belonging to this recurring template.
+     *
+     * @return HasMany<Event, $this>
+     */
+    public function occurrences(): HasMany
+    {
+        return $this->hasMany(Event::class, 'parent_event_id');
+    }
+
+    /**
      * @return BelongsTo<User, $this>
      */
     public function assignedTo(): BelongsTo
@@ -135,6 +168,7 @@ class Event extends Model
     {
         $query
             ->where('status', EventStatus::ACTIVE)
+            ->where('is_recurring', false)
             ->where(function ($query): void {
                 $query->orWhere('ends_at', '>=', now()->startOfDay())
                     ->orWhere('starts_at', '>=', now()->startOfDay());

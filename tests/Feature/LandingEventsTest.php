@@ -58,6 +58,34 @@ class LandingEventsTest extends TestCase
     }
 
     #[Test]
+    public function admin_index_hides_generated_occurrences_but_shows_templates(): void
+    {
+        $this->actingAs(User::factory()->director()->create());
+
+        $template = Event::factory()->recurring()->create();
+        Event::factory()->occurrenceOf($template)->create();
+        Event::factory()->create();
+
+        // Template + single event are listed; the child occurrence is hidden.
+        $this->get(route('dashboard.events.index'))
+            ->assertOk()
+            ->assertInertia(fn ($page) => $page->has('events.data', 2));
+    }
+
+    #[Test]
+    public function public_listing_hides_templates_but_shows_occurrences(): void
+    {
+        $template = Event::factory()->recurring()->create(['starts_at' => now()->addDay()]);
+        Event::factory()->occurrenceOf($template)->create(['starts_at' => now()->addDay()]);
+        Event::factory()->create(['starts_at' => now()->addDay()]);
+
+        // Occurrence + single event are public; the recurring template is not.
+        $this->get(route('home.events'))
+            ->assertOk()
+            ->assertInertia(fn ($page) => $page->has('events', 2));
+    }
+
+    #[Test]
     public function events_index_filters_by_query(): void
     {
         $this->actingAs(User::factory()->director()->create());

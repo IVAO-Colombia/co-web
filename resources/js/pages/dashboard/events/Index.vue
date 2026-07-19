@@ -10,6 +10,7 @@ import {
     PlaneTakeoff,
     Plus,
     Radio,
+    Repeat,
     Trash2,
     X,
 } from 'lucide-vue-next';
@@ -43,6 +44,7 @@ import { useDebounce } from '@/composables/useDebounce';
 import { useLocale } from '@/composables/useLocale';
 import { usePermissions } from '@/composables/usePermissions';
 import { formatDateTime } from '@/lib/utils';
+import { index, create, destroy, show } from '@/routes/dashboard/events';
 import type {
     LengthAwarePaginator,
     Event,
@@ -51,7 +53,6 @@ import type {
 } from '@/types';
 import { Permission } from '@/types';
 import { EventConstants } from '@/types';
-import { index, create, destroy, show } from '@/routes/dashboard/events';
 
 const props = defineProps<{
     events: LengthAwarePaginator<number, Event>;
@@ -285,9 +286,17 @@ function handleDelete(): void {
                                 </div>
                                 <div class="min-w-0">
                                     <p
-                                        class="truncate leading-tight font-medium"
+                                        class="flex items-center gap-1.5 truncate leading-tight font-medium"
                                     >
                                         {{ event.name_en ?? event.name }}
+                                        <Badge
+                                            v-if="event.is_recurring"
+                                            variant="outline"
+                                            class="gap-1 text-xs font-normal"
+                                        >
+                                            <Repeat class="size-3" />
+                                            {{ $t('Recurring') }}
+                                        </Badge>
                                     </p>
                                     <div class="mt-0.5 flex flex-wrap gap-1">
                                         <Badge

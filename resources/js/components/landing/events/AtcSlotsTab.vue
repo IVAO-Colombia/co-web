@@ -10,11 +10,11 @@ import { toast } from 'vue-sonner';
 import Badge from '@/components/ui/badge/Badge.vue';
 import Button from '@/components/ui/button/Button.vue';
 import { formatAtcTime } from '@/lib/utils';
-import { ATCRating, ATCRatings, SlotsConstants, SlotStatus } from '@/types';
-import type { AtcPositionFra, ATCRatingValue, AtcSlot } from '@/types';
 import auth from '@/routes/auth';
 import dashboardAtcSlotRoutes from '@/routes/dashboard/events/atc-slot';
 import atcSlotRoutes from '@/routes/dashboard/events/atc-slot';
+import type { AtcPositionFra, ATCRatingValue, AtcSlot } from '@/types';
+import { ATCRating, ATCRatings, SlotsConstants, SlotStatus } from '@/types';
 
 const props = defineProps<{
     eventSlug: string;

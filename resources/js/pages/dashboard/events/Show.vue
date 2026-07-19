@@ -7,6 +7,7 @@ import {
     MapPin,
     PlaneTakeoff,
     Radio,
+    Repeat,
     Trash2,
 } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
@@ -38,6 +39,8 @@ import TooltipTrigger from '@/components/ui/tooltip/TooltipTrigger.vue';
 import { useLocale } from '@/composables/useLocale';
 import { usePermissions } from '@/composables/usePermissions';
 import { formatDateTime, toUTCDateTime } from '@/lib/utils';
+import { destroy, index, show as showRoute } from '@/routes/dashboard/events';
+import pilotSlotRoutes from '@/routes/dashboard/events/pilot-slot';
 import type { EventDetail, PilotSlot } from '@/types';
 import {
     EventConstants,
@@ -45,8 +48,6 @@ import {
     SlotsConstants,
     SlotStatus,
 } from '@/types';
-import { destroy, index, show as showRoute } from '@/routes/dashboard/events';
-import pilotSlotRoutes from '@/routes/dashboard/events/pilot-slot';
 
 const props = defineProps<{
     event: EventDetail;
@@ -179,6 +180,14 @@ function confirmCancelPilotSlot(): void {
                             {{ EventConstants.typeLabels[event.type] }}
                         </Badge>
                         <Badge
+                            v-if="event.is_recurring"
+                            variant="outline"
+                            class="gap-1"
+                        >
+                            <Repeat class="size-3" />
+                            {{ $t('Recurring') }}
+                        </Badge>
+                        <Badge
                             v-for="tag in event.tags"
                             :key="tag"
                             variant="secondary"
@@ -304,6 +313,131 @@ function confirmCancelPilotSlot(): void {
                             {{ formatDateTime(event.ends_at, locale) }}
                         </div>
                     </div>
+                </div>
+            </CardContent>
+        </Card>
+
+        <!-- Recurrence Card -->
+        <Card v-if="event.is_recurring">
+            <CardHeader>
+                <div class="flex items-center justify-between gap-4">
+                    <CardTitle class="flex items-center gap-2">
+                        <Repeat class="size-4" />
+                        {{ $t('Recurrence') }}
+                    </CardTitle>
+                    <Badge variant="outline">
+                        {{ event.occurrences?.length ?? 0 }}
+                        {{ $t('occurrences') }}
+                    </Badge>
+                </div>
+                <CardDescription>
+                    {{
+                        $t(
+                            'This is a recurring template. Editing it does not change occurrences that were already generated.',
+                        )
+                    }}
+                </CardDescription>
+            </CardHeader>
+            <CardContent class="flex flex-col gap-6">
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                    <div class="flex flex-col gap-1">
+                        <p class="text-sm font-medium">{{ $t('Repeat on') }}</p>
+                        <div class="flex flex-wrap gap-1">
+                            <Badge
+                                v-for="weekday in EventConstants.weekdays.filter(
+                                    (w) =>
+                                        event.recurrence_weekdays?.includes(
+                                            w.value,
+                                        ),
+                                )"
+                                :key="weekday.value"
+                                variant="secondary"
+                            >
+                                {{ weekday.label }}
+                            </Badge>
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <p class="text-sm font-medium">
+                            {{ $t('Repeat every (weeks)') }}
+                        </p>
+                        <p class="text-sm text-muted-foreground">
+                            {{ event.recurrence_interval }}
+                        </p>
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <p class="text-sm font-medium">
+                            {{ $t('Repeat until') }}
+                        </p>
+                        <p class="text-sm text-muted-foreground">
+                            {{ event.recurrence_ends_at }}
+                        </p>
+                    </div>
+                </div>
+
+                <Separator />
+
+                <div class="overflow-auto rounded-md border">
+                    <Table>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead>{{ $t('Occurrence') }}</TableHead>
+                                <TableHead>{{ $t('Status') }}</TableHead>
+                                <TableHead class="w-16" />
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            <TableEmpty
+                                v-if="(event.occurrences?.length ?? 0) === 0"
+                                :colspan="3"
+                            >
+                                <p class="py-6 text-sm text-muted-foreground">
+                                    {{ $t('No occurrences generated yet.') }}
+                                </p>
+                            </TableEmpty>
+                            <TableRow
+                                v-for="occurrence in event.occurrences"
+                                :key="occurrence.id"
+                            >
+                                <TableCell class="text-sm whitespace-nowrap">
+                                    {{
+                                        formatDateTime(
+                                            occurrence.starts_at,
+                                            locale,
+                                        )
+                                    }}
+                                </TableCell>
+                                <TableCell>
+                                    <Badge
+                                        :variant="
+                                            EventConstants.statusVariants[
+                                                occurrence.status
+                                            ]
+                                        "
+                                    >
+                                        {{
+                                            EventConstants.statusLabels[
+                                                occurrence.status
+                                            ]
+                                        }}
+                                    </Badge>
+                                </TableCell>
+                                <TableCell>
+                                    <Button variant="ghost" size="sm" as-child>
+                                        <Link
+                                            :href="
+                                                showRoute.url({
+                                                    event: occurrence.slug,
+                                                })
+                                            "
+                                        >
+                                            {{ $t('View') }}
+                                        </Link>
+                                    </Button>
+                                </TableCell>
+                            </TableRow>
+                        </TableBody>
+                    </Table>
                 </div>
             </CardContent>
         </Card>

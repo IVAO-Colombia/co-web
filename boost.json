@@ -6,12 +6,16 @@
     "guidelines": true,
     "mcp": true,
     "nightwatch_mcp": false,
+    "packages": [
+        "spatie/laravel-permission"
+    ],
     "sail": false,
     "skills": [
         "laravel-best-practices",
         "socialite-development",
         "wayfinder-development",
         "inertia-vue-development",
-        "tailwindcss-development"
+        "tailwindcss-development",
+        "laravel-permission-development"
     ]
 }

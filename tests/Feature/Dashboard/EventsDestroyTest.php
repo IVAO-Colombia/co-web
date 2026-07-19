@@ -106,4 +106,37 @@ class EventsDestroyTest extends TestCase
 
         $this->assertNotSoftDeleted($availableSlot);
     }
+
+    #[Test]
+    public function deleting_a_recurring_template_deletes_the_whole_series(): void
+    {
+        $template = Event::factory()->recurring()->create();
+        $occurrenceOne = Event::factory()->occurrenceOf($template)->create();
+        $occurrenceTwo = Event::factory()->occurrenceOf($template)->create();
+        $user = User::factory()->director()->create();
+
+        $this->actingAs($user)
+            ->delete(route('dashboard.events.destroy', $template))
+            ->assertRedirect(route('dashboard.events.index'));
+
+        $this->assertSoftDeleted($template);
+        $this->assertSoftDeleted($occurrenceOne);
+        $this->assertSoftDeleted($occurrenceTwo);
+    }
+
+    #[Test]
+    public function cannot_delete_a_series_when_an_occurrence_has_a_reserved_slot(): void
+    {
+        $template = Event::factory()->recurring()->create();
+        $occurrence = Event::factory()->occurrenceOf($template)->create();
+        PilotSlot::factory()->reserved()->create(['event_id' => $occurrence->id]);
+        $user = User::factory()->director()->create();
+
+        $this->actingAs($user)
+            ->delete(route('dashboard.events.destroy', $template))
+            ->assertSessionHasErrors('event');
+
+        $this->assertNotSoftDeleted($template);
+        $this->assertNotSoftDeleted($occurrence);
+    }
 }

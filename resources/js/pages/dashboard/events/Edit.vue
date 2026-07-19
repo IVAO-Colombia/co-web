@@ -1,7 +1,14 @@
 <script setup lang="ts">
 import { Head, Link, setLayoutProps, useForm } from '@inertiajs/vue3';
 import { wTrans } from 'laravel-vue-i18n';
-import { AlertCircle, ChevronLeft, ImagePlus, Wand2, X } from 'lucide-vue-next';
+import {
+    AlertCircle,
+    ChevronLeft,
+    ImagePlus,
+    Repeat,
+    Wand2,
+    X,
+} from 'lucide-vue-next';
 import { computed, onUnmounted, ref, watch } from 'vue';
 import { toast } from 'vue-sonner';
 import AtcSlotsCard from '@/components/dashboard/events/AtcSlotsCard.vue';
@@ -37,6 +44,8 @@ import {
 import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
 import { toUTCDateTime } from '@/lib/utils';
+import eventRoutes from '@/routes/dashboard/events';
+import { show as showRoute, index } from '@/routes/dashboard/events';
 import {
     EventConstants,
     EventTag,
@@ -49,8 +58,6 @@ import type {
     EventType,
     PilotSlotRow,
 } from '@/types';
-import eventRoutes from '@/routes/dashboard/events';
-import { show as showRoute, index } from '@/routes/dashboard/events';
 
 type EventForm = {
     name: string;
@@ -231,6 +238,21 @@ function submit(): void {
             <p class="text-sm text-muted-foreground">
                 {{ event.name }}
             </p>
+        </div>
+
+        <!-- Recurring template notice -->
+        <div
+            v-if="event.is_recurring"
+            class="flex items-start gap-2 rounded-md border border-border bg-muted/40 px-4 py-3 text-sm text-muted-foreground"
+        >
+            <Repeat class="mt-0.5 size-4 shrink-0" />
+            <span>
+                {{
+                    $t(
+                        'This is a recurring template. Changes here do not affect occurrences that were already generated.',
+                    )
+                }}
+            </span>
         </div>
 
         <form class="flex flex-col gap-6" @submit.prevent="submit">

@@ -27,6 +27,7 @@ class EventsController extends Controller
         Gate::authorize(Permission::VIEW_EVENTS);
 
         $events = Event::query()
+            ->whereNull('parent_event_id')
             ->when($request->string('query')->isNotEmpty(), function ($q) use ($request): void {
                 $search = $request->string('query')->toString();
                 $q->where(function ($q) use ($search): void {
@@ -67,6 +68,10 @@ class EventsController extends Controller
 
         $event->load(['pilotSlots.pilot', 'atcSlots.atc']);
 
+        if ($event->is_recurring) {
+            $event->load(['occurrences' => fn ($query) => $query->orderBy('starts_at')]);
+        }
+
         return inertia(PagesComponents::EVENTS_SHOW->value, [
             'event' => $event,
         ]);
@@ -96,19 +101,34 @@ class EventsController extends Controller
     {
         Gate::authorize(Permission::DELETE_EVENTS);
 
-        $hasReservedPilotSlot = $event->pilotSlots()->reserved()->exists();
-        $hasReservedAtcSlot = $event->atcSlots()->reserved()->exists();
+        // A recurring template is deleted together with its whole series. If any
+        // occurrence holds a reservation the deletion is blocked, so we never orphan
+        // a booked occurrence (child occurrences are hidden from the admin index).
+        $events = $event->is_recurring
+            ? $event->occurrences()->get()->push($event)
+            : collect([$event]);
 
-        if ($hasReservedPilotSlot || $hasReservedAtcSlot) {
+        if ($events->contains(fn (Event $item): bool => $this->hasReservedSlots($item))) {
             throw ValidationException::withMessages([
                 'event' => __('This event cannot be deleted because it has reserved slots.'),
             ]);
         }
 
-        $event->pilotSlots()->update(['deleted_at' => now()]);
-        $event->atcSlots()->update(['deleted_at' => now()]);
-        $event->delete();
+        $events->each(function (Event $item): void {
+            $item->pilotSlots()->update(['deleted_at' => now()]);
+            $item->atcSlots()->update(['deleted_at' => now()]);
+            $item->delete();
+        });
 
         return to_route('dashboard.events.index');
+    }
+
+    private function hasReservedSlots(Event $event): bool
+    {
+        if ($event->pilotSlots()->reserved()->exists()) {
+            return true;
+        }
+
+        return (bool) $event->atcSlots()->reserved()->exists();
     }
 }
