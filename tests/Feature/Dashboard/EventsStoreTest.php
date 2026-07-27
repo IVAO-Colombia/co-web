@@ -249,6 +249,26 @@ class EventsStoreTest extends TestCase
     }
 
     #[Test]
+    public function non_recurring_event_ignores_empty_recurrence_fields(): void
+    {
+        $user = User::factory()->director()->create();
+
+        // Mirrors the payload the frontend sends when the recurrence switch is
+        // off: is_recurring is false, but the still-present default form state
+        // includes an empty recurrence_weekdays array and a blank
+        // recurrence_ends_at, which must not trigger validation errors.
+        $payload = array_merge($this->validPayload(), [
+            'is_recurring' => false,
+            'recurrence_interval' => 1,
+            'recurrence_weekdays' => [],
+            'recurrence_ends_at' => '',
+        ]);
+
+        $this->actingAs($user)->post(route('dashboard.events.store'), $payload)
+            ->assertRedirect(route('dashboard.events.index'));
+    }
+
+    #[Test]
     public function recurrence_end_date_must_be_after_start(): void
     {
         $user = User::factory()->director()->create();

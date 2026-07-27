@@ -49,10 +49,10 @@ class StoreEventRequest extends FormRequest
             'atc_slots.*.starts_at' => ['required_with:atc_slots', 'date_format:Y-m-d H:i'],
             'atc_slots.*.ends_at' => ['required_with:atc_slots', 'date_format:Y-m-d H:i'],
             'is_recurring' => ['boolean', Rule::prohibitedIf($this->filled('training_request_id'))],
-            'recurrence_interval' => ['required_if:is_recurring,true', 'integer', 'min:1'],
-            'recurrence_weekdays' => ['required_if:is_recurring,true', 'array', 'min:1'],
+            'recurrence_interval' => ['exclude_unless:is_recurring,true', 'required', 'integer', 'min:1'],
+            'recurrence_weekdays' => ['exclude_unless:is_recurring,true', 'required', 'array', 'min:1'],
             'recurrence_weekdays.*' => ['integer', 'between:0,6'],
-            'recurrence_ends_at' => ['required_if:is_recurring,true', 'date', 'after:starts_at'],
+            'recurrence_ends_at' => ['exclude_unless:is_recurring,true', 'required', 'date', 'after:starts_at'],
             'training_request_id' => ['nullable', 'integer', Rule::exists('training_requests', 'id')],
         ];
     }
