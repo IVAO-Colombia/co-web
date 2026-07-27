@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Head, setLayoutProps, useForm } from '@inertiajs/vue3';
+import { Head, router, setLayoutProps, useForm } from '@inertiajs/vue3';
 import { wTrans } from 'laravel-vue-i18n';
 import { PlaneTakeoff, Radio } from 'lucide-vue-next';
 import { ref } from 'vue';
@@ -33,10 +33,12 @@ import { SlotsConstants, SlotStatus } from '@/types';
 
 type AtcSlotWithEvent = AtcSlot & { event: Event };
 type PilotSlotWithEvent = PilotSlot & { event: Event };
+type Tab = 'atc' | 'pilot';
 
-defineProps<{
+const props = defineProps<{
     atcSlots: AtcSlotWithEvent[];
     pilotSlots: PilotSlotWithEvent[];
+    tab: Tab;
 }>();
 
 setLayoutProps({
@@ -45,8 +47,17 @@ setLayoutProps({
 
 const { locale } = useLocale();
 
-type Tab = 'atc' | 'pilot';
-const activeTab = ref<Tab>('atc');
+const activeTab = ref<Tab>(props.tab);
+
+function selectTab(tab: Tab) {
+    activeTab.value = tab;
+    router.visit(index.url({ query: { tab } }), {
+        only: ['tab'],
+        preserveScroll: true,
+        preserveState: true,
+        replace: true,
+    });
+}
 
 const slotForm = useForm({});
 
@@ -117,7 +128,7 @@ function cancelPilotSlot(slot: PilotSlotWithEvent) {
                         ? 'bg-white text-emerald-700 shadow-sm dark:bg-white/10 dark:text-emerald-400'
                         : 'text-slate-500 hover:text-slate-700 dark:text-white/50 dark:hover:text-white/75'
                 "
-                @click="activeTab = 'atc'"
+                @click="selectTab('atc')"
             >
                 <Radio class="h-4 w-4" />
                 {{ $t('ATC Reservations') }}
@@ -140,7 +151,7 @@ function cancelPilotSlot(slot: PilotSlotWithEvent) {
                         ? 'bg-white text-sky-700 shadow-sm dark:bg-white/10 dark:text-sky-400'
                         : 'text-slate-500 hover:text-slate-700 dark:text-white/50 dark:hover:text-white/75'
                 "
-                @click="activeTab = 'pilot'"
+                @click="selectTab('pilot')"
             >
                 <PlaneTakeoff class="h-4 w-4" />
                 {{ $t('Pilot Reservations') }}

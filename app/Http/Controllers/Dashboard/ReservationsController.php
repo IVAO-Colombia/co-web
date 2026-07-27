@@ -23,6 +23,7 @@ class ReservationsController extends Controller
         return inertia(PagesComponents::DASHBOARD_RESERVATIONS->value, [
             'atcSlots' => $atcSlots,
             'pilotSlots' => $pilotSlots,
+            'tab' => $request->query('tab') === 'pilot' ? 'pilot' : 'atc',
         ]);
     }
 }

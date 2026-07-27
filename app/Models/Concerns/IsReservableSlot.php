@@ -59,6 +59,7 @@ trait IsReservableSlot
 
         if ($this instanceof PilotSlot) {
             $updates['pilot_id'] = null;
+            $updates['reminder_sent_at'] = null;
         }
 
         $this->update($updates);

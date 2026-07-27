@@ -60,7 +60,7 @@ class ReserveAtcSlot
         );
 
         $slot->update([
-            'status' => SlotStatus::RESERVED,
+            'status' => SlotStatus::CONFIRMED,
             'atc_id' => $user->id,
             'ivao_booking' => $bookingResponse->json(),
         ]);

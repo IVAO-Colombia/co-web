@@ -25,6 +25,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property CarbonImmutable $departs_at
  * @property string|null $gate
  * @property SlotStatus $status
+ * @property CarbonImmutable|null $reminder_sent_at
  * @property CarbonImmutable|null $created_at
  * @property CarbonImmutable|null $updated_at
  * @property CarbonImmutable|null $deleted_at
@@ -64,6 +65,7 @@ class PilotSlot extends Model
             'pilot_id' => 'integer',
             'departs_at' => 'datetime',
             'status' => SlotStatus::class,
+            'reminder_sent_at' => 'datetime',
         ];
     }
 

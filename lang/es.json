@@ -393,5 +393,16 @@
     "Request training": "Solicitar entrenamiento",
     "Request Exam": "Solicitar examen",
     "Access the official IVAO page for exam briefings and carefully read the corresponding exam briefing document. IVAO Colombia's exams have some specificities which are listed in the IVAO Colombia Wiki. The theoretical part is always carried out before the practical one, and if your knowledge is not sufficient, you will fail the exam, to ensure you have the necessary skills to pass the practical part of the exam.": "Accede a la página oficial de IVAO para los briefings de examen y lee cuidadosamente el documento de briefing correspondiente. Los exámenes de IVAO Colombia tienen algunas particularidades que están listadas en la Wiki de IVAO Colombia. La parte teórica siempre se realiza antes que la práctica, y si tus conocimientos no son suficientes, reprobarás el examen, para asegurar que tienes las habilidades necesarias para aprobar la parte práctica del examen.",
-    "Request exam": "Solicitar examen"
+    "Request exam": "Solicitar examen",
+    "Confirm your pilot slot reservation": "Confirma tu reserva de slot de piloto",
+    "The event :event is starting soon and your pilot slot reservation is still pending confirmation.": "El evento :event está por comenzar y tu reserva de slot de piloto aún está pendiente de confirmación.",
+    "Departure": "Salida",
+    "Please confirm your reservation before the event starts, or it will be automatically cancelled and released to other pilots.": "Por favor confirma tu reserva antes de que inicie el evento, o será cancelada automáticamente y liberada para otros pilotos.",
+    "Confirm reservation": "Confirmar reserva",
+    "Thanks for flying with us!": "¡Gracias por volar con nosotros!",
+    "Your pilot slot reservation has been cancelled": "Tu reserva de slot de piloto ha sido cancelada",
+    "Your reservation for :event was not confirmed in time and has been automatically cancelled and released to other pilots.": "Tu reserva para :event no fue confirmada a tiempo y ha sido cancelada automáticamente y liberada para otros pilotos.",
+    "If the slot is still available, you may reserve it again from the event page.": "Si el slot aún está disponible, puedes reservarlo de nuevo desde la página del evento.",
+    "View my reservations": "Ver mis reservas",
+    "All rights reserved.": "Todos los derechos reservados."
 }

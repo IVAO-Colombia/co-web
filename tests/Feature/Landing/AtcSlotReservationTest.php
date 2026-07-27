@@ -39,7 +39,7 @@ class AtcSlotReservationTest extends TestCase
         $response->assertRedirect(route('home.events.show', $event));
 
         $slot->refresh();
-        $this->assertEquals(SlotStatus::RESERVED, $slot->status);
+        $this->assertEquals(SlotStatus::CONFIRMED, $slot->status);
         $this->assertEquals($user->id, $slot->atc_id);
         $this->assertNotNull($slot->ivao_booking);
     }
@@ -272,7 +272,7 @@ class AtcSlotReservationTest extends TestCase
             ->post(route('dashboard.events.atc-slot.store', ['event' => $event->slug, 'slot' => $slot->id]));
 
         $response->assertRedirect(route('home.events.show', $event));
-        $this->assertEquals(SlotStatus::RESERVED, $slot->fresh()->status);
+        $this->assertEquals(SlotStatus::CONFIRMED, $slot->fresh()->status);
     }
 
     #[Test]

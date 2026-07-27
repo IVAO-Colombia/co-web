@@ -100,4 +100,37 @@ class ReservationsIndexTest extends TestCase
                 ->has('pilotSlots', 2)
             );
     }
+
+    #[Test]
+    public function tab_defaults_to_atc(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)
+            ->get(route('dashboard.reservations.index'))
+            ->assertOk()
+            ->assertInertia(fn ($page) => $page->where('tab', 'atc'));
+    }
+
+    #[Test]
+    public function tab_can_be_set_to_pilot_via_query_param(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)
+            ->get(route('dashboard.reservations.index', ['tab' => 'pilot']))
+            ->assertOk()
+            ->assertInertia(fn ($page) => $page->where('tab', 'pilot'));
+    }
+
+    #[Test]
+    public function unrecognized_tab_query_param_falls_back_to_atc(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)
+            ->get(route('dashboard.reservations.index', ['tab' => 'invalid']))
+            ->assertOk()
+            ->assertInertia(fn ($page) => $page->where('tab', 'atc'));
+    }
 }
