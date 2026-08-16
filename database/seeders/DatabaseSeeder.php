@@ -1,22 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use DB;
-use Database\Seeders\TeamSeeder;
+
 class DatabaseSeeder extends Seeder
 {
     /**
      * Seed the application's database.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
-        \App\Models\User::factory(10)->create();
-        $this->call(TeamSeeder::class);
-        $this->call(DepartmentsSeeder::class);
-        DB::unprepared(file_get_contents(__DIR__ . "/airports.sql"));
+        $this->call([
+            SpatieRolesAndPermissionsSeeder::class,
+        ]);
     }
 }

@@ -1,78 +1,56 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Factories;
 
-use App\Models\Team;
+use App\Enums\ATCRating;
+use App\Enums\PilotRating;
+use App\Enums\Role;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
-use Laravel\Jetstream\Features;
 
+/**
+ * @extends Factory<User>
+ */
 class UserFactory extends Factory
 {
     /**
-     * The name of the factory's corresponding model.
-     *
-     * @var string
+     * The current password being used by the factory.
      */
-    protected $model = User::class;
+    protected static ?string $password;
 
     /**
      * Define the model's default state.
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
         return [
-            "firstname" => $this->faker->name(),
-            "lastname" => $this->faker->lastname(),
-            "email" => $this->faker->unique()->safeEmail(),
-            "ratingatc" => rand(1, 4),
-            "ratingpilot" => rand(1, 4),
-            "division" => "CO",
-            "country" => "CO",
-            "email_verified_at" => now(),
-            "password" =>
-                '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-            "remember_token" => Str::random(10),
+            'name' => fake()->name(),
+            'email' => fake()->unique()->safeEmail(),
+            'vid' => fake()->unique()->numberBetween(100000, 999999),
+            'division_id' => fake()->countryCode(),
+            'country_id' => fake()->countryCode(),
+            'language_id' => fake()->languageCode(),
+            'network_rating' => fake()->numberBetween(1, 10),
+            'atc_rating' => fake()->randomElement(ATCRating::cases()),
+            'pilot_rating' => fake()->randomElement(PilotRating::cases()),
         ];
     }
 
-    /**
-     * Indicate that the model's email address should be unverified.
-     *
-     * @return \Illuminate\Database\Eloquent\Factories\Factory
-     */
-    public function unverified()
+    public function director(): self
     {
-        return $this->state(function (array $attributes) {
-            return [
-                "email_verified_at" => null,
-            ];
+        return $this->afterCreating(function (User $user) {
+            $user->assignRole(Role::DIR);
         });
     }
 
-    /**
-     * Indicate that the user should have a personal team.
-     *
-     * @return $this
-     */
-    public function withPersonalTeam()
+    public function trainer(): self
     {
-        if (!Features::hasTeamFeatures()) {
-            return $this->state([]);
-        }
-
-        return $this->has(
-            Team::factory()->state(function (array $attributes, User $user) {
-                return [
-                    "name" => $user->firstname . '\'s Team',
-                    "user_id" => $user->id,
-                    "personal_team" => true,
-                ];
-            }),
-            "ownedTeams"
-        );
+        return $this->afterCreating(function (User $user) {
+            $user->assignRole(Role::T0);
+        });
     }
 }

@@ -1,19 +1,13 @@
 <?php
 
-use Illuminate\Foundation\Inspiring;
-use Illuminate\Support\Facades\Artisan;
+declare(strict_types=1);
 
-/*
-|--------------------------------------------------------------------------
-| Console Routes
-|--------------------------------------------------------------------------
-|
-| This file is where you may define all of your Closure based console
-| commands. Each Closure is bound to a command instance allowing a
-| simple approach to interacting with each command's IO methods.
-|
-*/
+use App\Console\Commands\IvaoFetchAtcPositionFras;
+use App\Console\Commands\IvaoFetchAtcPositions;
+use App\Console\Commands\ProcessPilotSlotConfirmations;
+use Illuminate\Support\Facades\Schedule;
 
-Artisan::command('inspire', function () {
-    $this->comment(Inspiring::quote());
-})->purpose('Display an inspiring quote');
+Schedule::command(IvaoFetchAtcPositions::class)->dailyAt('01:00');
+Schedule::command(IvaoFetchAtcPositionFras::class)->dailyAt('01:30');
+// 05:00 UTC-5 (Colombia time)
+Schedule::command(ProcessPilotSlotConfirmations::class)->dailyAt('10:00');
