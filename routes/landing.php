@@ -13,7 +13,7 @@ if (time() > strtotime('August 16 2026 20:00:00')) {
     Route::view('/', 'countdown')->name('home');
 }
 
-Route::get('/about-us', fn() => inertia(PagesComponents::LANDING_ABOUT_US->value))->name('home.about');
-Route::get('/training', fn() => inertia(PagesComponents::LANDING_TRAINING->value))->name('home.training');
+Route::get('/about-us', fn () => inertia(PagesComponents::LANDING_ABOUT_US->value))->name('home.about');
+Route::get('/training', fn () => inertia(PagesComponents::LANDING_TRAINING->value))->name('home.training');
 Route::get('/events', [EventsController::class, 'index'])->name('home.events');
 Route::get('/events/{event:slug}', [EventsController::class, 'show'])->name('home.events.show');
