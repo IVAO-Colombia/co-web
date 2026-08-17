@@ -32,6 +32,7 @@ import {
     TableRow,
 } from '@/components/ui/table';
 import { useLocale } from '@/composables/useLocale';
+import { usePermissions } from '@/composables/usePermissions';
 import { formatDateTime, getTrainingCategoryLabel } from '@/lib/utils';
 import {
     index,
@@ -44,7 +45,7 @@ import type {
     TrainingRequestStatus,
     TrainingRequestType,
 } from '@/types';
-import { TrainingRequestConstants } from '@/types';
+import { Permission, TrainingRequestConstants } from '@/types';
 
 type Counts = { pending: number; scheduled: number };
 
@@ -64,6 +65,11 @@ defineOptions({
 });
 
 const { locale } = useLocale();
+const { hasPermission } = usePermissions();
+
+const canUpdate = computed(() =>
+    hasPermission(Permission.UPDATE_TRAINING_REQUESTS),
+);
 
 const statusFilter = ref<TrainingRequestStatus | 'all'>(
     props.filters.status ?? 'all',
@@ -290,6 +296,7 @@ const typeLabels = TrainingRequestConstants.typeLabels;
                                     <Eye class="size-4" />
                                 </Button>
                                 <button
+                                    v-if="canUpdate"
                                     class="rounded-md p-1 text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
                                     :title="$t('Cancel request')"
                                     @click="pendingCancel = request"

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\TrainingNoteVisibility;
 use App\Enums\TrainingRequestStatus;
 use App\Enums\TrainingRequestType;
 use Carbon\CarbonImmutable;
@@ -23,6 +24,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string|null $public_observations
  * @property string $request_observations
  * @property int|null $trainer_id
+ * @property list<array{at: string, by_id: int, by_name: string, trainer_id: int|null, trainer_name: string|null}>|null $assignment_history
  * @property int $trainee_id
  * @property int|null $event_id
  * @property CarbonImmutable|null $created_at
@@ -46,7 +48,7 @@ class TrainingRequest extends Model
     /** @use HasFactory<TrainingRequestFactory> */
     use HasFactory;
 
-    /** @return array{type: class-string<TrainingRequestType>, status: class-string<TrainingRequestStatus>, occurs_at: 'immutable_datetime'} */
+    /** @return array{type: class-string<TrainingRequestType>, status: class-string<TrainingRequestStatus>, occurs_at: 'immutable_datetime', assignment_history: 'array'} */
     #[\Override]
     protected function casts(): array
     {
@@ -54,6 +56,7 @@ class TrainingRequest extends Model
             'type' => TrainingRequestType::class,
             'status' => TrainingRequestStatus::class,
             'occurs_at' => 'immutable_datetime',
+            'assignment_history' => 'array',
         ];
     }
 
@@ -78,7 +81,7 @@ class TrainingRequest extends Model
     /** @param Builder<static> $query */
     public function scopePending(Builder $query): void
     {
-        $query->where('status', TrainingRequestStatus::Pending);
+        $query->where('status', TrainingRequestStatus::PENDING);
     }
 
     /**
@@ -99,7 +102,44 @@ class TrainingRequest extends Model
 
     public function cancel(): void
     {
-        $this->status = TrainingRequestStatus::Cancelled;
+        $this->status = TrainingRequestStatus::CANCELLED;
+        $this->save();
+    }
+
+    /**
+     * Assign (or clear, when $trainer is null) the trainer and append the
+     * change to the assignment history.
+     */
+    public function assignTrainer(User $actor, ?User $trainer): void
+    {
+        $this->trainer_id = $trainer?->id;
+        $this->assignment_history = [
+            ...($this->assignment_history ?? []),
+            [
+                'at' => now()->toIso8601String(),
+                'by_id' => $actor->id,
+                'by_name' => $actor->name,
+                'trainer_id' => $trainer?->id,
+                'trainer_name' => $trainer?->name,
+            ],
+        ];
+
+        $this->save();
+    }
+
+    /**
+     * Append an attributed, timestamped note to the given observations column.
+     */
+    public function appendNote(User $author, TrainingNoteVisibility $visibility, string $body): void
+    {
+        $column = $visibility->column();
+        $entry = sprintf('[%s] %s: %s', now()->format('Y-m-d H:i'), $author->name, $body);
+        $existing = $this->{$column};
+
+        $this->{$column} = $existing === null || $existing === ''
+            ? $entry
+            : $existing."\n\n".$entry;
+
         $this->save();
     }
 }

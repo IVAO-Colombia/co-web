@@ -15,7 +15,11 @@ enum Permission: string
     case UPDATE_EVENTS = 'update_events';
     case DELETE_EVENTS = 'delete_events';
     case GENERATE_EVENT_IMAGES = 'generate_event_images';
-    case MANAGE_TRAINING_REQUESTS = 'manage_training_requests';
+    case VIEW_TRAINING_REQUESTS = 'view_training_requests';
+    case UPDATE_TRAINING_REQUESTS = 'update_training_requests';
+    case ASSIGN_TRAINING_REQUESTS = 'assign_training_requests';
+    case EDIT_TRAINING_NOTES = 'edit_training_notes';
+    case BE_ASSIGNED_TO_TRAININGS = 'be_assigned_to_trainings';
     case CANCEL_PILOT_SLOT = 'cancel_pilot_slot';
 
     /**
@@ -27,41 +31,6 @@ enum Permission: string
     public static function directlyAssignable(): array
     {
         return [
-        ];
-    }
-
-    /**
-     * @return array<Permission>
-     */
-    public static function eventsPermissions(): array
-    {
-        return [
-            self::VIEW_EVENTS,
-            self::CREATE_EVENTS,
-            self::UPDATE_EVENTS,
-            self::DELETE_EVENTS,
-            self::CANCEL_PILOT_SLOT,
-        ];
-    }
-
-    /**
-     * @return array<Permission>
-     */
-    public static function staffPermissions(): array
-    {
-        return [
-            self::STAFF_ACCESS,
-            self::GENERATE_EVENT_IMAGES,
-        ];
-    }
-
-    /**
-     * @return array<Permission>
-     */
-    public static function trainingPermissions(): array
-    {
-        return [
-            self::MANAGE_TRAINING_REQUESTS,
         ];
     }
 }

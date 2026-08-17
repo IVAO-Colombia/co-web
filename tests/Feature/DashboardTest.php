@@ -84,9 +84,9 @@ class DashboardTest extends TestCase
         $this->mock(Ivao::class)->shouldReceive('getTrackerSessions')->andReturn([]);
 
         $user = User::factory()->create();
-        TrainingRequest::factory()->create(['trainee_id' => $user->id, 'status' => TrainingRequestStatus::Pending]);
-        TrainingRequest::factory()->create(['trainee_id' => $user->id, 'status' => TrainingRequestStatus::Scheduled]);
-        TrainingRequest::factory()->create(['trainee_id' => $user->id, 'status' => TrainingRequestStatus::Completed]);
+        TrainingRequest::factory()->create(['trainee_id' => $user->id, 'status' => TrainingRequestStatus::PENDING]);
+        TrainingRequest::factory()->create(['trainee_id' => $user->id, 'status' => TrainingRequestStatus::SCHEDULED]);
+        TrainingRequest::factory()->create(['trainee_id' => $user->id, 'status' => TrainingRequestStatus::COMPLETED]);
 
         $this->actingAs($user)
             ->get(route('dashboard'))

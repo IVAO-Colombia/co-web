@@ -26,7 +26,7 @@ class DashboardController extends Controller
         );
 
         $activeTrainingRequestsCount = $user->trainingRequests()
-            ->whereIn('status', [TrainingRequestStatus::Pending->value, TrainingRequestStatus::Scheduled->value])
+            ->whereIn('status', [TrainingRequestStatus::PENDING->value, TrainingRequestStatus::SCHEDULED->value])
             ->count();
 
         $reservationsCount = [

@@ -34,7 +34,7 @@ class TrainingRequestsShowTest extends TestCase
     #[Test]
     public function staff_can_view_a_training_request(): void
     {
-        $staff = User::factory()->director()->create();
+        $staff = User::factory()->trainingCoordinator()->create();
         $request = TrainingRequest::factory()->create();
 
         $this->actingAs($staff)
@@ -51,20 +51,40 @@ class TrainingRequestsShowTest extends TestCase
     }
 
     #[Test]
-    public function assignable_staff_contains_users_with_manage_permission(): void
+    public function view_only_staff_can_view_a_training_request(): void
     {
-        $staff = User::factory()->director()->create();
-        User::factory()->trainer()->create();
+        $viewer = User::factory()->membershipCoordinator()->create();
         $request = TrainingRequest::factory()->create();
 
-        $this->actingAs($staff)
+        $this->actingAs($viewer)
+            ->get(route('dashboard.staff.training-requests.show', $request))
+            ->assertOk();
+    }
+
+    #[Test]
+    public function assignable_staff_only_contains_users_who_can_be_assigned(): void
+    {
+        $staff = User::factory()->trainingCoordinator()->create();
+        $trainer = User::factory()->trainer()->create();
+        $director = User::factory()->director()->create();
+        $request = TrainingRequest::factory()->create();
+
+        $response = $this->actingAs($staff)
             ->get(route('dashboard.staff.training-requests.show', $request))
             ->assertOk()
             ->assertInertia(fn ($page) => $page
-                ->has('assignableStaff', fn ($page) => $page
-                    ->hasAll(['0.id', '0.name', '0.vid'])
+                ->has('assignableStaff', 2, fn ($page) => $page
+                    ->hasAll(['id', 'name', 'vid'])
                     ->etc()
                 )
             );
+
+        $assignableIds = collect($response->viewData('page')['props']['assignableStaff'])
+            ->pluck('id')
+            ->all();
+
+        $this->assertContains($trainer->id, $assignableIds);
+        $this->assertContains($staff->id, $assignableIds);
+        $this->assertNotContains($director->id, $assignableIds);
     }
 }

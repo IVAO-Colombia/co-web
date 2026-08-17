@@ -57,7 +57,7 @@ class TrainingsController extends Controller
             'category' => $validated['category'],
             'request_observations' => $validated['request_observations'],
             'trainee_id' => $user->id,
-            'status' => TrainingRequestStatus::Pending,
+            'status' => TrainingRequestStatus::PENDING,
         ]);
 
         return redirect()->route('dashboard.trainings.index');
@@ -70,7 +70,7 @@ class TrainingsController extends Controller
 
         abort_if($trainingRequest->trainee_id !== $user->id, 403);
 
-        if ($trainingRequest->status !== TrainingRequestStatus::Pending) {
+        if ($trainingRequest->status !== TrainingRequestStatus::PENDING) {
             throw ValidationException::withMessages([
                 'status' => __('Only pending training requests can be cancelled.'),
             ]);

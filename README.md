@@ -34,7 +34,7 @@ cp .env.example .env
 
 ```bash
 composer install
-npm run install
+npm install
 php artisan migrate --seed
 php artisan ivao:fetch-atc-positions
 php artisan ivao:fetch-atc-position-fras

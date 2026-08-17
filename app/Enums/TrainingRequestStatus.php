@@ -6,18 +6,30 @@ namespace App\Enums;
 
 enum TrainingRequestStatus: string
 {
-    case Pending = 'pending';
-    case Scheduled = 'scheduled';
-    case Cancelled = 'cancelled';
-    case Completed = 'completed';
+    case PENDING = 'pending';
+    case SCHEDULED = 'scheduled';
+    case CANCELLED = 'cancelled';
+    case COMPLETED = 'completed';
 
     public function label(): string
     {
         return match ($this) {
-            self::Pending => 'Pending',
-            self::Scheduled => 'Scheduled',
-            self::Cancelled => 'Cancelled',
-            self::Completed => 'Completed',
+            self::PENDING => 'Pending',
+            self::SCHEDULED => 'Scheduled',
+            self::CANCELLED => 'Cancelled',
+            self::COMPLETED => 'Completed',
+        };
+    }
+
+    /**
+     * Final statuses close the request: the trainer and the schedule can no
+     * longer be changed, only notes and the status itself.
+     */
+    public function isFinal(): bool
+    {
+        return match ($this) {
+            self::CANCELLED, self::COMPLETED => true,
+            self::PENDING, self::SCHEDULED => false,
         };
     }
 }

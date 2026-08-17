@@ -29,9 +29,20 @@ class TrainingRequestsIndexTest extends TestCase
     }
 
     #[Test]
+    public function view_only_staff_can_list_training_requests(): void
+    {
+        $viewer = User::factory()->membershipCoordinator()->create();
+        TrainingRequest::factory()->create();
+
+        $this->actingAs($viewer)
+            ->get(route('dashboard.staff.training-requests.index'))
+            ->assertOk();
+    }
+
+    #[Test]
     public function staff_can_view_all_training_requests(): void
     {
-        $staff = User::factory()->director()->create();
+        $staff = User::factory()->trainingCoordinator()->create();
         $request = TrainingRequest::factory()->create();
 
         $this->actingAs($staff)
@@ -49,7 +60,7 @@ class TrainingRequestsIndexTest extends TestCase
     #[Test]
     public function staff_can_filter_by_status(): void
     {
-        $staff = User::factory()->director()->create();
+        $staff = User::factory()->trainingCoordinator()->create();
         TrainingRequest::factory()->pending()->create();
         TrainingRequest::factory()->scheduled()->create();
 
@@ -64,7 +75,7 @@ class TrainingRequestsIndexTest extends TestCase
     #[Test]
     public function staff_can_filter_by_type(): void
     {
-        $staff = User::factory()->director()->create();
+        $staff = User::factory()->trainingCoordinator()->create();
         TrainingRequest::factory()->create();
         TrainingRequest::factory()->pilot()->create();
 
@@ -79,7 +90,7 @@ class TrainingRequestsIndexTest extends TestCase
     #[Test]
     public function counts_reflect_pending_and_scheduled_totals(): void
     {
-        $staff = User::factory()->director()->create();
+        $staff = User::factory()->trainingCoordinator()->create();
         TrainingRequest::factory()->pending()->count(3)->create();
         TrainingRequest::factory()->scheduled()->count(2)->create();
 

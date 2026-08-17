@@ -33,9 +33,20 @@ class TrainingRequestsDestroyTest extends TestCase
     }
 
     #[Test]
+    public function view_only_staff_cannot_cancel_a_training_request(): void
+    {
+        $viewer = User::factory()->membershipCoordinator()->create();
+        $request = TrainingRequest::factory()->pending()->create();
+
+        $this->actingAs($viewer)
+            ->delete(route('dashboard.staff.training-requests.destroy', $request))
+            ->assertForbidden();
+    }
+
+    #[Test]
     public function staff_can_cancel_any_pending_request(): void
     {
-        $staff = User::factory()->director()->create();
+        $staff = User::factory()->trainingCoordinator()->create();
         $request = TrainingRequest::factory()->pending()->create();
 
         $this->actingAs($staff)
@@ -43,13 +54,13 @@ class TrainingRequestsDestroyTest extends TestCase
             ->assertRedirect(route('dashboard.staff.training-requests.index'));
 
         $request->refresh();
-        $this->assertEquals(TrainingRequestStatus::Cancelled, $request->status);
+        $this->assertEquals(TrainingRequestStatus::CANCELLED, $request->status);
     }
 
     #[Test]
     public function staff_can_cancel_a_scheduled_request(): void
     {
-        $staff = User::factory()->director()->create();
+        $staff = User::factory()->trainingCoordinator()->create();
         $request = TrainingRequest::factory()->scheduled()->create();
 
         $this->actingAs($staff)
@@ -57,7 +68,7 @@ class TrainingRequestsDestroyTest extends TestCase
             ->assertRedirect(route('dashboard.staff.training-requests.index'));
 
         $request->refresh();
-        $this->assertEquals(TrainingRequestStatus::Cancelled, $request->status);
+        $this->assertEquals(TrainingRequestStatus::CANCELLED, $request->status);
     }
 
     #[Test]
@@ -71,6 +82,6 @@ class TrainingRequestsDestroyTest extends TestCase
             ->assertRedirect(route('dashboard.staff.training-requests.index'));
 
         $request->refresh();
-        $this->assertEquals(TrainingRequestStatus::Cancelled, $request->status);
+        $this->assertEquals(TrainingRequestStatus::CANCELLED, $request->status);
     }
 }

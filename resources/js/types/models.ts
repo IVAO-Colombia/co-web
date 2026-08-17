@@ -134,6 +134,14 @@ export type TrainingRequestUser = {
     pilot_rating: number;
 };
 
+export type TrainingRequestAssignmentEntry = {
+    at: string;
+    by_id: number;
+    by_name: string;
+    trainer_id: number | null;
+    trainer_name: string | null;
+};
+
 export type TrainingRequest = {
     id: number;
     type: TrainingRequestType;
@@ -144,6 +152,7 @@ export type TrainingRequest = {
     public_observations: string | null;
     request_observations: string;
     trainer_id: number | null;
+    assignment_history: TrainingRequestAssignmentEntry[] | null;
     trainee_id: number;
     event_id: number | null;
     created_at: string;

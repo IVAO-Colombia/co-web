@@ -76,7 +76,7 @@ const footerNavItems: ComputedRef<NavItem[]> = computed(() =>
             title: wTrans('Training Requests'),
             href: staffTrainingRequestsIndex(),
             icon: GraduationCap,
-            visible: hasPermission(Permission.MANAGE_TRAINING_REQUESTS),
+            visible: hasPermission(Permission.VIEW_TRAINING_REQUESTS),
         },
     ].filter((item) => item.visible),
 );

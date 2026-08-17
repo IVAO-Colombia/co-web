@@ -32,7 +32,7 @@ class TrainingsDestroyTest extends TestCase
             ->assertRedirect(route('dashboard.trainings.index'));
 
         $request->refresh();
-        $this->assertEquals(TrainingRequestStatus::Cancelled, $request->status);
+        $this->assertEquals(TrainingRequestStatus::CANCELLED, $request->status);
     }
 
     #[Test]

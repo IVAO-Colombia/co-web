@@ -53,4 +53,35 @@ class UserFactory extends Factory
             $user->assignRole(Role::T0);
         });
     }
+
+    /**
+     * A staff member with view-only access to training requests.
+     */
+    public function membershipCoordinator(): self
+    {
+        return $this->afterCreating(function (User $user) {
+            $user->assignRole(Role::MC);
+        });
+    }
+
+    public function trainingCoordinator(): self
+    {
+        return $this->afterCreating(function (User $user) {
+            $user->assignRole(Role::TC);
+        });
+    }
+
+    public function trainingAssistantCoordinator(): self
+    {
+        return $this->afterCreating(function (User $user) {
+            $user->assignRole(Role::TAC);
+        });
+    }
+
+    public function trainingAdvisor(): self
+    {
+        return $this->afterCreating(function (User $user) {
+            $user->assignRole(Role::TA);
+        });
+    }
 }

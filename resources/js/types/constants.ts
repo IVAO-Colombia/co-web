@@ -39,6 +39,7 @@ export const EventConstants: EventConstantsType = {
         [EventType.TRAINING]: wTrans('Training'),
         [EventType.RFO]: wTrans('RFO'),
         [EventType.RFE]: wTrans('RFE'),
+        [EventType.REGULAR]: wTrans('Regular'),
     },
     tagLabels: {
         [EventTag.VFR]: wTrans('VFR'),
@@ -84,16 +85,16 @@ export type TrainingRequestConstantsType = {
 
 export const TrainingRequestConstants: TrainingRequestConstantsType = {
     statusVariants: {
-        [TrainingRequestStatus.Pending]: 'secondary',
-        [TrainingRequestStatus.Scheduled]: 'default',
-        [TrainingRequestStatus.Cancelled]: 'destructive',
-        [TrainingRequestStatus.Completed]: 'outline',
+        [TrainingRequestStatus.PENDING]: 'secondary',
+        [TrainingRequestStatus.SCHEDULED]: 'default',
+        [TrainingRequestStatus.CANCELLED]: 'destructive',
+        [TrainingRequestStatus.COMPLETED]: 'outline',
     },
     statusLabels: {
-        [TrainingRequestStatus.Pending]: wTrans('Pending'),
-        [TrainingRequestStatus.Scheduled]: wTrans('Scheduled'),
-        [TrainingRequestStatus.Cancelled]: wTrans('Cancelled'),
-        [TrainingRequestStatus.Completed]: wTrans('Completed'),
+        [TrainingRequestStatus.PENDING]: wTrans('Pending'),
+        [TrainingRequestStatus.SCHEDULED]: wTrans('Scheduled'),
+        [TrainingRequestStatus.CANCELLED]: wTrans('Cancelled'),
+        [TrainingRequestStatus.COMPLETED]: wTrans('Completed'),
     },
     typeLabels: {
         [TrainingRequestType.ATC]: wTrans('ATC'),

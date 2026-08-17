@@ -45,10 +45,12 @@ Route::post('trainings', [TrainingsController::class, 'store'])->name('dashboard
 Route::delete('trainings/{trainingRequest}', [TrainingsController::class, 'destroy'])->name('dashboard.trainings.destroy');
 
 // Staff training requests
-Route::middleware(['can:manage_training_requests'])->group(function (): void {
+Route::middleware(['can:view_training_requests'])->group(function (): void {
     Route::get('staff/training-requests', [StaffTrainingRequestsController::class, 'index'])->name('dashboard.staff.training-requests.index');
     Route::get('staff/training-requests/{trainingRequest}', [StaffTrainingRequestsController::class, 'show'])->name('dashboard.staff.training-requests.show');
     Route::patch('staff/training-requests/{trainingRequest}', [StaffTrainingRequestsController::class, 'update'])->name('dashboard.staff.training-requests.update');
+    Route::patch('staff/training-requests/{trainingRequest}/trainer', [StaffTrainingRequestsController::class, 'assignTrainer'])->name('dashboard.staff.training-requests.trainer.update');
+    Route::post('staff/training-requests/{trainingRequest}/notes', [StaffTrainingRequestsController::class, 'storeNote'])->name('dashboard.staff.training-requests.notes.store');
     Route::delete('staff/training-requests/{trainingRequest}', [StaffTrainingRequestsController::class, 'destroy'])->name('dashboard.staff.training-requests.destroy');
 });
 

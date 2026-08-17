@@ -11,4 +11,5 @@ enum EventType: string
     case TRAINING = 'training';
     case RFO = 'rfo';
     case RFE = 'rfe';
+    case REGULAR = 'REGULAR';
 }

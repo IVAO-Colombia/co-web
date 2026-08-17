@@ -97,63 +97,186 @@ class SpatieRolesAndPermissionsSeeder extends Seeder
      */
     public function rolesPermissionsAssignmentMap(): array
     {
-        $basePermissions = collect(EnumsPermission::staffPermissions());
-        $trainingPermissions = collect(EnumsPermission::trainingPermissions());
-        $eventsPermissions = collect(EnumsPermission::eventsPermissions());
-
         return [
-            EnumsRole::DIR->value => $basePermissions
-                ->merge($eventsPermissions)
-                ->merge($trainingPermissions),
-            EnumsRole::ADIR->value => $basePermissions
-                ->merge($eventsPermissions)
-                ->merge($trainingPermissions),
-            EnumsRole::FOC->value => $basePermissions
-                ->merge([EnumsPermission::VIEW_EVENTS]),
-            EnumsRole::FOAC->value => $basePermissions
-                ->merge([EnumsPermission::VIEW_EVENTS]),
-            EnumsRole::AOC->value => $basePermissions
-                ->merge([EnumsPermission::VIEW_EVENTS]),
-            EnumsRole::AOAC->value => $basePermissions
-                ->merge([EnumsPermission::VIEW_EVENTS]),
-            EnumsRole::TC->value => $basePermissions
-                ->merge($trainingPermissions)
-                ->merge([EnumsPermission::VIEW_EVENTS]),
-            EnumsRole::TAC->value => $basePermissions
-                ->merge($trainingPermissions)
-                ->merge([EnumsPermission::VIEW_EVENTS]),
-            EnumsRole::TA->value => $basePermissions
-                ->merge($trainingPermissions)
-                ->merge([EnumsPermission::VIEW_EVENTS]),
-            EnumsRole::T0->value => $basePermissions
-                ->merge($trainingPermissions)
-                ->merge([EnumsPermission::VIEW_EVENTS]),
-            EnumsRole::MC->value => $basePermissions
-                ->merge([EnumsPermission::VIEW_EVENTS]),
-            EnumsRole::EC->value => $basePermissions
-                ->merge($eventsPermissions)
-                ->merge([EnumsPermission::VIEW_EVENTS]),
-            EnumsRole::EAC->value => $basePermissions
-                ->merge($eventsPermissions)
-                ->merge([EnumsPermission::VIEW_EVENTS]),
-            EnumsRole::EA->value => $basePermissions
-                ->merge($eventsPermissions)
-                ->merge([EnumsPermission::VIEW_EVENTS]),
-            EnumsRole::PRC->value => $basePermissions
-                ->merge([EnumsPermission::VIEW_EVENTS]),
-            EnumsRole::PRAC->value => $basePermissions
-                ->merge([EnumsPermission::VIEW_EVENTS]),
-            EnumsRole::PRA->value => $basePermissions
-                ->merge([EnumsPermission::VIEW_EVENTS]),
-            EnumsRole::WM->value => $basePermissions
-                ->merge($eventsPermissions)
-                ->merge($trainingPermissions),
-            EnumsRole::AWM->value => $basePermissions
-                ->merge($eventsPermissions)
-                ->merge($trainingPermissions),
-            EnumsRole::WMA->value => $basePermissions
-                ->merge($eventsPermissions)
-                ->merge($trainingPermissions),
+            EnumsRole::DIR->value => [
+                EnumsPermission::STAFF_ACCESS,
+                EnumsPermission::GENERATE_EVENT_IMAGES,
+                EnumsPermission::VIEW_EVENTS,
+                EnumsPermission::CREATE_EVENTS,
+                EnumsPermission::UPDATE_EVENTS,
+                EnumsPermission::DELETE_EVENTS,
+                EnumsPermission::CANCEL_PILOT_SLOT,
+                EnumsPermission::VIEW_TRAINING_REQUESTS,
+                EnumsPermission::UPDATE_TRAINING_REQUESTS,
+                EnumsPermission::ASSIGN_TRAINING_REQUESTS,
+                EnumsPermission::EDIT_TRAINING_NOTES,
+            ],
+            EnumsRole::ADIR->value => [
+                EnumsPermission::STAFF_ACCESS,
+                EnumsPermission::GENERATE_EVENT_IMAGES,
+                EnumsPermission::VIEW_EVENTS,
+                EnumsPermission::CREATE_EVENTS,
+                EnumsPermission::UPDATE_EVENTS,
+                EnumsPermission::DELETE_EVENTS,
+                EnumsPermission::CANCEL_PILOT_SLOT,
+                EnumsPermission::VIEW_TRAINING_REQUESTS,
+                EnumsPermission::UPDATE_TRAINING_REQUESTS,
+                EnumsPermission::ASSIGN_TRAINING_REQUESTS,
+                EnumsPermission::EDIT_TRAINING_NOTES,
+            ],
+            EnumsRole::FOC->value => [
+                EnumsPermission::STAFF_ACCESS,
+                EnumsPermission::GENERATE_EVENT_IMAGES,
+                EnumsPermission::VIEW_EVENTS,
+                EnumsPermission::VIEW_TRAINING_REQUESTS,
+            ],
+            EnumsRole::FOAC->value => [
+                EnumsPermission::STAFF_ACCESS,
+                EnumsPermission::GENERATE_EVENT_IMAGES,
+                EnumsPermission::VIEW_EVENTS,
+                EnumsPermission::VIEW_TRAINING_REQUESTS,
+            ],
+            EnumsRole::AOC->value => [
+                EnumsPermission::STAFF_ACCESS,
+                EnumsPermission::GENERATE_EVENT_IMAGES,
+                EnumsPermission::VIEW_EVENTS,
+                EnumsPermission::VIEW_TRAINING_REQUESTS,
+            ],
+            EnumsRole::AOAC->value => [
+                EnumsPermission::STAFF_ACCESS,
+                EnumsPermission::GENERATE_EVENT_IMAGES,
+                EnumsPermission::VIEW_EVENTS,
+                EnumsPermission::VIEW_TRAINING_REQUESTS,
+            ],
+            EnumsRole::TC->value => [
+                EnumsPermission::STAFF_ACCESS,
+                EnumsPermission::GENERATE_EVENT_IMAGES,
+                EnumsPermission::VIEW_EVENTS,
+                EnumsPermission::VIEW_TRAINING_REQUESTS,
+                EnumsPermission::UPDATE_TRAINING_REQUESTS,
+                EnumsPermission::ASSIGN_TRAINING_REQUESTS,
+                EnumsPermission::EDIT_TRAINING_NOTES,
+                EnumsPermission::BE_ASSIGNED_TO_TRAININGS,
+            ],
+            EnumsRole::TAC->value => [
+                EnumsPermission::STAFF_ACCESS,
+                EnumsPermission::GENERATE_EVENT_IMAGES,
+                EnumsPermission::VIEW_EVENTS,
+                EnumsPermission::VIEW_TRAINING_REQUESTS,
+                EnumsPermission::UPDATE_TRAINING_REQUESTS,
+                EnumsPermission::ASSIGN_TRAINING_REQUESTS,
+                EnumsPermission::EDIT_TRAINING_NOTES,
+                EnumsPermission::BE_ASSIGNED_TO_TRAININGS,
+            ],
+            EnumsRole::TA->value => [
+                EnumsPermission::STAFF_ACCESS,
+                EnumsPermission::GENERATE_EVENT_IMAGES,
+                EnumsPermission::VIEW_EVENTS,
+                EnumsPermission::VIEW_TRAINING_REQUESTS,
+                EnumsPermission::UPDATE_TRAINING_REQUESTS,
+                EnumsPermission::BE_ASSIGNED_TO_TRAININGS,
+            ],
+            EnumsRole::T0->value => [
+                EnumsPermission::STAFF_ACCESS,
+                EnumsPermission::GENERATE_EVENT_IMAGES,
+                EnumsPermission::VIEW_EVENTS,
+                EnumsPermission::VIEW_TRAINING_REQUESTS,
+                EnumsPermission::UPDATE_TRAINING_REQUESTS,
+                EnumsPermission::BE_ASSIGNED_TO_TRAININGS,
+            ],
+            EnumsRole::MC->value => [
+                EnumsPermission::STAFF_ACCESS,
+                EnumsPermission::GENERATE_EVENT_IMAGES,
+                EnumsPermission::VIEW_EVENTS,
+                EnumsPermission::VIEW_TRAINING_REQUESTS,
+            ],
+            EnumsRole::EC->value => [
+                EnumsPermission::STAFF_ACCESS,
+                EnumsPermission::GENERATE_EVENT_IMAGES,
+                EnumsPermission::VIEW_EVENTS,
+                EnumsPermission::CREATE_EVENTS,
+                EnumsPermission::UPDATE_EVENTS,
+                EnumsPermission::DELETE_EVENTS,
+                EnumsPermission::CANCEL_PILOT_SLOT,
+                EnumsPermission::VIEW_TRAINING_REQUESTS,
+            ],
+            EnumsRole::EAC->value => [
+                EnumsPermission::STAFF_ACCESS,
+                EnumsPermission::GENERATE_EVENT_IMAGES,
+                EnumsPermission::VIEW_EVENTS,
+                EnumsPermission::CREATE_EVENTS,
+                EnumsPermission::UPDATE_EVENTS,
+                EnumsPermission::DELETE_EVENTS,
+                EnumsPermission::CANCEL_PILOT_SLOT,
+                EnumsPermission::VIEW_TRAINING_REQUESTS,
+            ],
+            EnumsRole::EA->value => [
+                EnumsPermission::STAFF_ACCESS,
+                EnumsPermission::GENERATE_EVENT_IMAGES,
+                EnumsPermission::VIEW_EVENTS,
+                EnumsPermission::CREATE_EVENTS,
+                EnumsPermission::UPDATE_EVENTS,
+                EnumsPermission::DELETE_EVENTS,
+                EnumsPermission::CANCEL_PILOT_SLOT,
+                EnumsPermission::VIEW_TRAINING_REQUESTS,
+            ],
+            EnumsRole::PRC->value => [
+                EnumsPermission::STAFF_ACCESS,
+                EnumsPermission::GENERATE_EVENT_IMAGES,
+                EnumsPermission::VIEW_EVENTS,
+                EnumsPermission::VIEW_TRAINING_REQUESTS,
+            ],
+            EnumsRole::PRAC->value => [
+                EnumsPermission::STAFF_ACCESS,
+                EnumsPermission::GENERATE_EVENT_IMAGES,
+                EnumsPermission::VIEW_EVENTS,
+                EnumsPermission::VIEW_TRAINING_REQUESTS,
+            ],
+            EnumsRole::PRA->value => [
+                EnumsPermission::STAFF_ACCESS,
+                EnumsPermission::GENERATE_EVENT_IMAGES,
+                EnumsPermission::VIEW_EVENTS,
+                EnumsPermission::VIEW_TRAINING_REQUESTS,
+            ],
+            EnumsRole::WM->value => [
+                EnumsPermission::STAFF_ACCESS,
+                EnumsPermission::GENERATE_EVENT_IMAGES,
+                EnumsPermission::VIEW_EVENTS,
+                EnumsPermission::CREATE_EVENTS,
+                EnumsPermission::UPDATE_EVENTS,
+                EnumsPermission::DELETE_EVENTS,
+                EnumsPermission::CANCEL_PILOT_SLOT,
+                EnumsPermission::VIEW_TRAINING_REQUESTS,
+                EnumsPermission::UPDATE_TRAINING_REQUESTS,
+                EnumsPermission::ASSIGN_TRAINING_REQUESTS,
+                EnumsPermission::EDIT_TRAINING_NOTES,
+            ],
+            EnumsRole::AWM->value => [
+                EnumsPermission::STAFF_ACCESS,
+                EnumsPermission::GENERATE_EVENT_IMAGES,
+                EnumsPermission::VIEW_EVENTS,
+                EnumsPermission::CREATE_EVENTS,
+                EnumsPermission::UPDATE_EVENTS,
+                EnumsPermission::DELETE_EVENTS,
+                EnumsPermission::CANCEL_PILOT_SLOT,
+                EnumsPermission::VIEW_TRAINING_REQUESTS,
+                EnumsPermission::UPDATE_TRAINING_REQUESTS,
+                EnumsPermission::ASSIGN_TRAINING_REQUESTS,
+                EnumsPermission::EDIT_TRAINING_NOTES,
+            ],
+            EnumsRole::WMA->value => [
+                EnumsPermission::STAFF_ACCESS,
+                EnumsPermission::GENERATE_EVENT_IMAGES,
+                EnumsPermission::VIEW_EVENTS,
+                EnumsPermission::CREATE_EVENTS,
+                EnumsPermission::UPDATE_EVENTS,
+                EnumsPermission::DELETE_EVENTS,
+                EnumsPermission::CANCEL_PILOT_SLOT,
+                EnumsPermission::VIEW_TRAINING_REQUESTS,
+                EnumsPermission::UPDATE_TRAINING_REQUESTS,
+                EnumsPermission::ASSIGN_TRAINING_REQUESTS,
+                EnumsPermission::EDIT_TRAINING_NOTES,
+            ],
         ];
     }
 }

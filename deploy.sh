@@ -79,6 +79,9 @@ npm run build
 step "Running database migrations"
 php artisan migrate --force
 
+step "Seeding roles and permissions"
+php artisan db:seed --class=SpatieRolesAndPermissionsSeeder --force
+
 # --- Storage symlink -------------------------------------------------------
 
 if [ ! -L "public/storage" ]; then

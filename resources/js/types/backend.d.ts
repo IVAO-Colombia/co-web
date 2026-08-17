@@ -43,8 +43,10 @@ export enum EventType {
     TRAINING = 'training',
     RFO = 'rfo',
     RFE = 'rfe',
+    REGULAR = 'REGULAR',
 }
 export enum PagesComponents {
+    DASHBOARD = 'Dashboard',
     EVENTS_INDEX = 'dashboard/events/Index',
     EVENTS_CREATE = 'dashboard/events/Create',
     EVENTS_EDIT = 'dashboard/events/Edit',
@@ -58,6 +60,7 @@ export enum PagesComponents {
     LANDING_EVENTS = 'landing/events/Index',
     LANDING_EVENTS_SHOW = 'landing/events/Show',
     LANDING_ABOUT_US = 'landing/Aboutus',
+    LANDING_TRAINING = 'landing/Training',
 }
 export enum Permission {
     STAFF_ACCESS = 'staff_access',
@@ -66,7 +69,12 @@ export enum Permission {
     UPDATE_EVENTS = 'update_events',
     DELETE_EVENTS = 'delete_events',
     GENERATE_EVENT_IMAGES = 'generate_event_images',
-    MANAGE_TRAINING_REQUESTS = 'manage_training_requests',
+    VIEW_TRAINING_REQUESTS = 'view_training_requests',
+    UPDATE_TRAINING_REQUESTS = 'update_training_requests',
+    ASSIGN_TRAINING_REQUESTS = 'assign_training_requests',
+    EDIT_TRAINING_NOTES = 'edit_training_notes',
+    BE_ASSIGNED_TO_TRAININGS = 'be_assigned_to_trainings',
+    CANCEL_PILOT_SLOT = 'cancel_pilot_slot',
 }
 export enum PilotRating {
     FS1 = 2,
@@ -125,11 +133,15 @@ export enum SlotStatus {
     RESERVED = 'reserved',
     CONFIRMED = 'confirmed',
 }
+export enum TrainingNoteVisibility {
+    PublicNote = 'public',
+    InternalNote = 'internal',
+}
 export enum TrainingRequestStatus {
-    Pending = 'pending',
-    Scheduled = 'scheduled',
-    Cancelled = 'cancelled',
-    Completed = 'completed',
+    PENDING = 'pending',
+    SCHEDULED = 'scheduled',
+    CANCELLED = 'cancelled',
+    COMPLETED = 'completed',
 }
 export enum TrainingRequestType {
     ATC = 'atc',

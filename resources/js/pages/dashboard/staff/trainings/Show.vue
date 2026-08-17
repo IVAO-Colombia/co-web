@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { router, setLayoutProps, useForm } from '@inertiajs/vue3';
+import { router, setLayoutProps, useForm, usePage } from '@inertiajs/vue3';
 import { trans, wTrans } from 'laravel-vue-i18n';
 import {
     CalendarClock,
     ExternalLink,
+    History,
     Mail,
     PlaneTakeoff,
     Radio,
@@ -13,6 +14,7 @@ import {
 import { computed, ref } from 'vue';
 import { toast } from 'vue-sonner';
 import DeleteDialog from '@/components/DeleteDialog.vue';
+import TrainingNoteSection from '@/components/TrainingNoteSection.vue';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -32,8 +34,8 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
-import { Textarea } from '@/components/ui/textarea';
 import { useLocale } from '@/composables/useLocale';
+import { usePermissions } from '@/composables/usePermissions';
 import { formatDateTime, getTrainingCategoryLabel } from '@/lib/utils';
 import {
     create as eventCreate,
@@ -44,7 +46,9 @@ import {
     update,
     destroy,
 } from '@/routes/dashboard/staff/training-requests';
+import { update as trainerUpdate } from '@/routes/dashboard/staff/training-requests/trainer';
 import type {
+    Auth,
     TrainingRequest,
     TrainingRequestUser,
     ATCRating,
@@ -53,6 +57,8 @@ import type {
 import {
     ATCRatings,
     PilotRatings,
+    Permission,
+    TrainingNoteVisibility,
     TrainingRequestConstants,
     TrainingRequestStatus,
     TrainingRequestType,
@@ -86,41 +92,87 @@ setLayoutProps({
 });
 
 const { locale } = useLocale();
+const { hasPermission } = usePermissions();
 
 const UNASSIGNED = 'none';
 
+const canUpdate = computed(() =>
+    hasPermission(Permission.UPDATE_TRAINING_REQUESTS),
+);
+
+/** Cancelled and completed requests freeze the trainer and the schedule. */
+const isFinal = computed(
+    () =>
+        props.trainingRequest.status === TrainingRequestStatus.CANCELLED ||
+        props.trainingRequest.status === TrainingRequestStatus.COMPLETED,
+);
+
+const canAssignTrainer = computed(
+    () => hasPermission(Permission.ASSIGN_TRAINING_REQUESTS) && !isFinal.value,
+);
+
+const trainerCardDescription = computed(() => {
+    if (isFinal.value) {
+        return trans(
+            'The trainer cannot be changed once the request is completed or cancelled.',
+        );
+    }
+
+    return canAssignTrainer.value
+        ? trans('Assign the staff member who will run this session.')
+        : trans('Only training coordinators can change the assignment.');
+});
+const canEditNotes = computed(() =>
+    hasPermission(Permission.EDIT_TRAINING_NOTES),
+);
+
+const auth = usePage().props.auth as Auth;
+
+const canAddNotes = computed(
+    () =>
+        canEditNotes.value || auth.user.id === props.trainingRequest.trainer_id,
+);
+
 const form = useForm({
-    trainer_id: props.trainingRequest.trainer_id
-        ? String(props.trainingRequest.trainer_id)
-        : UNASSIGNED,
     occurs_at: props.trainingRequest.occurs_at
         ? props.trainingRequest.occurs_at.replace('T', ' ').substring(0, 16)
         : '',
-    public_observations: props.trainingRequest.public_observations ?? '',
-    internal_observations: props.trainingRequest.internal_observations ?? '',
     status: props.trainingRequest.status,
 });
 
 function save() {
-    const trainerIdBeforeSave = form.trainer_id;
-
-    if (form.trainer_id === UNASSIGNED) {
-        form.trainer_id = '';
-    }
-
     form.patch(update.url({ trainingRequest: props.trainingRequest.id }), {
-        onError: () => {
-            form.trainer_id = trainerIdBeforeSave;
-        },
         onSuccess: () => {
-            if (form.trainer_id === '') {
-                form.trainer_id = UNASSIGNED;
-            }
-
             toast.success(wTrans('Training request updated.'));
         },
     });
 }
+
+const trainerForm = useForm({
+    trainer_id: props.trainingRequest.trainer_id
+        ? String(props.trainingRequest.trainer_id)
+        : UNASSIGNED,
+});
+
+function saveTrainer() {
+    trainerForm
+        .transform((data) => ({
+            trainer_id:
+                data.trainer_id === UNASSIGNED ? null : Number(data.trainer_id),
+        }))
+        .patch(
+            trainerUpdate.url({ trainingRequest: props.trainingRequest.id }),
+            {
+                onSuccess: () => {
+                    toast.success(wTrans('Trainer updated.'));
+                },
+            },
+        );
+}
+
+const assignmentHistory = computed(
+    () => props.trainingRequest.assignment_history ?? [],
+);
 
 const showCancelDialog = ref(false);
 const cancelling = ref(false);
@@ -210,10 +262,11 @@ const typeLabels = TrainingRequestConstants.typeLabels;
             <div class="flex items-center gap-2">
                 <Button
                     v-if="
+                        canUpdate &&
                         trainingRequest.status !==
-                            TrainingRequestStatus.Cancelled &&
+                            TrainingRequestStatus.CANCELLED &&
                         trainingRequest.status !==
-                            TrainingRequestStatus.Completed
+                            TrainingRequestStatus.COMPLETED
                     "
                     variant="destructive"
                     size="sm"
@@ -305,6 +358,41 @@ const typeLabels = TrainingRequestConstants.typeLabels;
                     </CardContent>
                 </Card>
 
+                <!-- Assignment history -->
+                <Card v-if="assignmentHistory.length > 0">
+                    <CardHeader class="pb-3">
+                        <CardTitle class="flex items-center gap-2 text-base">
+                            <History class="size-4" />
+                            {{ $t('Assignment History') }}
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <ul class="flex flex-col gap-2">
+                            <li
+                                v-for="(entry, i) in assignmentHistory"
+                                :key="i"
+                                class="text-sm"
+                            >
+                                <p>
+                                    <span class="font-medium">
+                                        {{ entry.by_name }}
+                                    </span>
+                                    {{
+                                        entry.trainer_name
+                                            ? $t('assigned :trainer', {
+                                                  trainer: entry.trainer_name,
+                                              })
+                                            : $t('removed the assignment')
+                                    }}
+                                </p>
+                                <p class="text-xs text-muted-foreground">
+                                    {{ formatDateTime(entry.at, locale) }}
+                                </p>
+                            </li>
+                        </ul>
+                    </CardContent>
+                </Card>
+
                 <!-- Linked event -->
                 <Card v-if="trainingRequest.event">
                     <CardHeader class="pb-3">
@@ -329,141 +417,216 @@ const typeLabels = TrainingRequestConstants.typeLabels;
                 </Card>
             </div>
 
-            <!-- Right: management form -->
-            <Card class="lg:col-span-3">
-                <CardHeader>
-                    <CardTitle>{{ $t('Manage Request') }}</CardTitle>
-                    <CardDescription>
-                        {{
-                            $t(
-                                'Assign a trainer, schedule the session, and update the status.',
-                            )
-                        }}
-                    </CardDescription>
-                </CardHeader>
-                <CardContent class="flex flex-col gap-5">
-                    <div class="flex flex-col gap-1.5">
-                        <Label for="trainer">{{ $t('Assign Trainer') }}</Label>
-                        <Select v-model="form.trainer_id">
-                            <SelectTrigger id="trainer">
-                                <SelectValue
-                                    :placeholder="$t('Select a trainer...')"
-                                />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem :value="UNASSIGNED">
-                                    {{ $t('Unassigned') }}
-                                </SelectItem>
-                                <SelectItem
-                                    v-for="staff in assignableStaff"
-                                    :key="staff.id"
-                                    :value="String(staff.id)"
+            <!-- Right: management -->
+            <div class="flex flex-col gap-4 lg:col-span-3">
+                <!-- Trainer -->
+                <Card>
+                    <CardHeader class="pb-3">
+                        <CardTitle class="text-base">
+                            {{ $t('Trainer') }}
+                        </CardTitle>
+                        <CardDescription>
+                            {{ trainerCardDescription }}
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <div
+                            v-if="canAssignTrainer"
+                            class="flex flex-col gap-1.5"
+                        >
+                            <div class="flex items-center gap-2">
+                                <Select v-model="trainerForm.trainer_id">
+                                    <SelectTrigger id="trainer" class="flex-1">
+                                        <SelectValue
+                                            :placeholder="
+                                                $t('Select a trainer...')
+                                            "
+                                        />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem :value="UNASSIGNED">
+                                            {{ $t('Unassigned') }}
+                                        </SelectItem>
+                                        <SelectItem
+                                            v-for="staff in assignableStaff"
+                                            :key="staff.id"
+                                            :value="String(staff.id)"
+                                        >
+                                            {{ staff.name }}
+                                            <span class="text-muted-foreground">
+                                                (VID {{ staff.vid }})
+                                            </span>
+                                        </SelectItem>
+                                    </SelectContent>
+                                </Select>
+                                <Button
+                                    variant="outline"
+                                    :disabled="trainerForm.processing"
+                                    @click="saveTrainer"
                                 >
-                                    {{ staff.name }}
-                                    <span class="text-muted-foreground">
-                                        (VID {{ staff.vid }})
-                                    </span>
-                                </SelectItem>
-                            </SelectContent>
-                        </Select>
-                        <p
-                            v-if="form.errors.trainer_id"
-                            class="text-sm text-destructive"
-                        >
-                            {{ form.errors.trainer_id }}
-                        </p>
-                    </div>
-
-                    <div class="flex flex-col gap-1.5">
-                        <Label for="occurs_at">{{
-                            $t('Session Date & Time')
-                        }}</Label>
-                        <DateTimePicker
-                            id="occurs_at"
-                            v-model="form.occurs_at"
-                            :placeholder="$t('Pick a date and time')"
-                        />
-                        <p
-                            v-if="form.errors.occurs_at"
-                            class="text-sm text-destructive"
-                        >
-                            {{ form.errors.occurs_at }}
-                        </p>
-                    </div>
-
-                    <div class="flex flex-col gap-1.5">
-                        <Label for="status">{{ $t('Status') }}</Label>
-                        <Select v-model="form.status">
-                            <SelectTrigger id="status">
-                                <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem
-                                    v-for="(label, key) in statusLabels"
-                                    :key="key"
-                                    :value="key"
-                                >
-                                    {{ label }}
-                                </SelectItem>
-                            </SelectContent>
-                        </Select>
-                    </div>
-
-                    <div class="flex flex-col gap-1.5">
-                        <Label for="public_observations">
-                            {{ $t('Public Notes') }}
-                        </Label>
-                        <p class="text-xs text-muted-foreground">
-                            {{ $t('Visible to the trainee.') }}
-                        </p>
-                        <Textarea
-                            id="public_observations"
-                            v-model="form.public_observations"
-                            :placeholder="$t('Notes visible to the trainee...')"
-                            rows="3"
-                        />
-                    </div>
-
-                    <div class="flex flex-col gap-1.5">
-                        <Label for="internal_observations">
-                            {{ $t('Internal Notes') }}
-                        </Label>
-                        <p class="text-xs text-muted-foreground">
-                            {{ $t('Only visible to staff.') }}
-                        </p>
-                        <Textarea
-                            id="internal_observations"
-                            v-model="form.internal_observations"
-                            :placeholder="$t('Internal staff notes...')"
-                            rows="3"
-                        />
-                    </div>
-
-                    <Separator />
-
-                    <div
-                        class="flex flex-wrap items-center justify-between gap-3"
-                    >
-                        <Button
-                            v-if="!trainingRequest.event"
-                            variant="outline"
-                            @click="generateEvent"
-                        >
-                            <CalendarClock class="mr-1.5 size-4" />
-                            {{ $t('Generate Event') }}
-                        </Button>
-                        <span v-else />
-
-                        <Button :disabled="form.processing" @click="save">
+                                    {{ $t('Assign') }}
+                                </Button>
+                            </div>
+                            <p
+                                v-if="trainerForm.errors.trainer_id"
+                                class="text-sm text-destructive"
+                            >
+                                {{ trainerForm.errors.trainer_id }}
+                            </p>
+                        </div>
+                        <p v-else class="text-sm">
                             {{
-                                form.processing
-                                    ? $t('Saving...')
-                                    : $t('Save Changes')
+                                trainingRequest.trainer?.name ??
+                                $t('Unassigned')
                             }}
-                        </Button>
-                    </div>
-                </CardContent>
-            </Card>
+                        </p>
+                    </CardContent>
+                </Card>
+
+                <!-- Scheduling -->
+                <Card>
+                    <CardHeader class="pb-3">
+                        <CardTitle class="text-base">
+                            {{ $t('Scheduling') }}
+                        </CardTitle>
+                        <CardDescription>
+                            {{
+                                isFinal
+                                    ? $t(
+                                          'This request is closed. Only the status can still be changed.',
+                                      )
+                                    : $t(
+                                          'Set the session date and the request status.',
+                                      )
+                            }}
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent class="flex flex-col gap-5">
+                        <div class="flex flex-col gap-1.5">
+                            <Label for="occurs_at">{{
+                                $t('Session Date & Time')
+                            }}</Label>
+                            <DateTimePicker
+                                v-if="canUpdate && !isFinal"
+                                id="occurs_at"
+                                v-model="form.occurs_at"
+                                :placeholder="$t('Pick a date and time')"
+                            />
+                            <p v-else class="text-sm">
+                                {{
+                                    trainingRequest.occurs_at
+                                        ? formatDateTime(
+                                              trainingRequest.occurs_at,
+                                              locale,
+                                          )
+                                        : $t('Not scheduled yet.')
+                                }}
+                            </p>
+                            <p
+                                v-if="form.errors.occurs_at"
+                                class="text-sm text-destructive"
+                            >
+                                {{ form.errors.occurs_at }}
+                            </p>
+                        </div>
+
+                        <div class="flex flex-col gap-1.5">
+                            <Label for="status">{{ $t('Status') }}</Label>
+                            <Select v-if="canUpdate" v-model="form.status">
+                                <SelectTrigger id="status">
+                                    <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem
+                                        v-for="(label, key) in statusLabels"
+                                        :key="key"
+                                        :value="key"
+                                    >
+                                        {{ label }}
+                                    </SelectItem>
+                                </SelectContent>
+                            </Select>
+                            <p v-else class="text-sm">
+                                {{ statusLabels[trainingRequest.status] }}
+                            </p>
+                        </div>
+
+                        <template v-if="canUpdate">
+                            <Separator />
+
+                            <div
+                                class="flex flex-wrap items-center justify-between gap-3"
+                            >
+                                <Button
+                                    v-if="!trainingRequest.event && !isFinal"
+                                    variant="outline"
+                                    @click="generateEvent"
+                                >
+                                    <CalendarClock class="mr-1.5 size-4" />
+                                    {{ $t('Generate Event') }}
+                                </Button>
+                                <span v-else />
+
+                                <Button
+                                    :disabled="form.processing"
+                                    @click="save"
+                                >
+                                    {{
+                                        form.processing
+                                            ? $t('Saving...')
+                                            : $t('Save Changes')
+                                    }}
+                                </Button>
+                            </div>
+                        </template>
+                    </CardContent>
+                </Card>
+
+                <!-- Notes -->
+                <Card>
+                    <CardHeader class="pb-3">
+                        <CardTitle class="text-base">
+                            {{ $t('Notes') }}
+                        </CardTitle>
+                        <CardDescription>
+                            {{
+                                $t(
+                                    'Notes are appended with your name and the date.',
+                                )
+                            }}
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent class="flex flex-col gap-5">
+                        <TrainingNoteSection
+                            :training-request-id="trainingRequest.id"
+                            :title="$t('Public Notes')"
+                            :description="$t('Visible to the trainee.')"
+                            :content="trainingRequest.public_observations"
+                            field="public_observations"
+                            :visibility="TrainingNoteVisibility.PublicNote"
+                            :add-placeholder="
+                                $t('Notes visible to the trainee...')
+                            "
+                            :can-edit="canEditNotes"
+                            :can-add="canAddNotes"
+                        />
+
+                        <Separator />
+
+                        <TrainingNoteSection
+                            :training-request-id="trainingRequest.id"
+                            :title="$t('Internal Notes')"
+                            :description="$t('Only visible to staff.')"
+                            :content="trainingRequest.internal_observations"
+                            field="internal_observations"
+                            :visibility="TrainingNoteVisibility.InternalNote"
+                            :add-placeholder="$t('Internal staff notes...')"
+                            :can-edit="canEditNotes"
+                            :can-add="canAddNotes"
+                        />
+                    </CardContent>
+                </Card>
+            </div>
         </div>
 
         <!-- Cancel dialog -->

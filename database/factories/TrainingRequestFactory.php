@@ -22,7 +22,7 @@ class TrainingRequestFactory extends Factory
         return [
             'type' => TrainingRequestType::ATC,
             'category' => AtcTraining::AdcTheory1->value,
-            'status' => TrainingRequestStatus::Pending,
+            'status' => TrainingRequestStatus::PENDING,
             'occurs_at' => null,
             'internal_observations' => null,
             'public_observations' => null,
@@ -34,20 +34,20 @@ class TrainingRequestFactory extends Factory
 
     public function pending(): self
     {
-        return $this->state(['status' => TrainingRequestStatus::Pending]);
+        return $this->state(['status' => TrainingRequestStatus::PENDING]);
     }
 
     public function scheduled(): self
     {
         return $this->state([
-            'status' => TrainingRequestStatus::Scheduled,
+            'status' => TrainingRequestStatus::SCHEDULED,
             'occurs_at' => now()->addDays(7),
         ]);
     }
 
     public function cancelled(): self
     {
-        return $this->state(['status' => TrainingRequestStatus::Cancelled]);
+        return $this->state(['status' => TrainingRequestStatus::CANCELLED]);
     }
 
     public function pilot(): self

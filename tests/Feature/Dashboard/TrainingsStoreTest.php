@@ -42,7 +42,7 @@ class TrainingsStoreTest extends TestCase
             'trainee_id' => $user->id,
             'type' => TrainingRequestType::ATC->value,
             'category' => AtcTraining::AdcTheory1->value,
-            'status' => TrainingRequestStatus::Pending->value,
+            'status' => TrainingRequestStatus::PENDING->value,
         ]);
     }
 

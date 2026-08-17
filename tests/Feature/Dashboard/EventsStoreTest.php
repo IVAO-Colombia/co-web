@@ -306,6 +306,30 @@ class EventsStoreTest extends TestCase
     }
 
     #[Test]
+    public function event_can_be_created_from_a_training_request(): void
+    {
+        $user = User::factory()->director()->create();
+        $trainingRequest = TrainingRequest::factory()->create();
+
+        // Mirrors the exact payload the frontend sends from a training request:
+        // the recurrence card is hidden, but the default form state still
+        // carries is_recurring => false, which must not trip the prohibited
+        // rule that only targets recurring events.
+        $payload = array_merge($this->validPayload(), [
+            'is_recurring' => false,
+            'recurrence_interval' => 1,
+            'recurrence_weekdays' => [],
+            'recurrence_ends_at' => '',
+            'training_request_id' => $trainingRequest->id,
+        ]);
+
+        $this->actingAs($user)->post(route('dashboard.events.store'), $payload)
+            ->assertRedirect(route('dashboard.events.index'));
+
+        $this->assertNotNull($trainingRequest->refresh()->event_id);
+    }
+
+    #[Test]
     public function store_requires_name(): void
     {
         $user = User::factory()->director()->create();

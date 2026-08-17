@@ -150,15 +150,15 @@ const currentTrainings = computed(() =>
 const canRequestTrainings = computed(() => {
     const hasPendingATCRequest = props.trainingRequests.data.some(
         (request) =>
-            (request.status === TrainingRequestStatus.Pending ||
-                request.status === TrainingRequestStatus.Scheduled) &&
+            (request.status === TrainingRequestStatus.PENDING ||
+                request.status === TrainingRequestStatus.SCHEDULED) &&
             request.type === TrainingRequestType.ATC,
     );
 
     const hasPendingPilotRequest = props.trainingRequests.data.some(
         (request) =>
-            (request.status === TrainingRequestStatus.Pending ||
-                request.status === TrainingRequestStatus.Scheduled) &&
+            (request.status === TrainingRequestStatus.PENDING ||
+                request.status === TrainingRequestStatus.SCHEDULED) &&
             request.type === TrainingRequestType.Pilot,
     );
 
@@ -460,7 +460,7 @@ const canRequestTrainings = computed(() => {
                                         <button
                                             v-if="
                                                 request.status ===
-                                                TrainingRequestStatus.Pending
+                                                TrainingRequestStatus.PENDING
                                             "
                                             class="rounded-md p-1 text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
                                             :title="$t('Cancel request')"
