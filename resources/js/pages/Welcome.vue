@@ -8,6 +8,7 @@ import Header from '@/components/landing/Header.vue';
 import WhazzupFlights from '@/components/landing/WhazzupFlights.vue';
 import { useAppearance } from '@/composables/useAppearance';
 import type { Event } from '@/types';
+import MessageWelcome from '@/components/MessageWelcome.vue';
 
 type HeroSlide = {
     eyebrow: string;
@@ -324,4 +325,5 @@ onBeforeUnmount(() => {
     </section>
     <EventsList :events="events" />
     <WhazzupFlights />
+    <MessageWelcome />
 </template>

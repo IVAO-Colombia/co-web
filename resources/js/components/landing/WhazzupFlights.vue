@@ -180,121 +180,272 @@ async function loadAirlineLogos() {
             </div>
 
             <!-- Flights Table - Compact and Beautiful -->
+            <!-- Flights List -->
             <div
                 v-else
                 class="mt-8 overflow-hidden rounded-xl border border-slate-200/60 bg-white/80 backdrop-blur-sm dark:border-slate-700/40 dark:bg-slate-800/60"
             >
-                <!-- Table Rows -->
-                <div
-                    class="divide-y divide-slate-100/60 dark:divide-slate-700/30"
-                >
+                <!-- Scroll Container -->
+                <div class="max-h-[650px] overflow-y-auto overscroll-contain">
                     <div
-                        v-for="flight in flights"
-                        :key="`${flight.flight_id}-${flight.timestamp}`"
-                        class="group grid grid-cols-12 items-center gap-4 px-4 py-4 transition-colors duration-200 hover:bg-sky-50/30 lg:px-6 lg:py-5 dark:hover:bg-sky-950/10"
+                        class="divide-y divide-slate-100/60 dark:divide-slate-700/30"
                     >
-                        <!-- Logo Section with Background -->
                         <div
-                            class="col-span-3 flex items-center justify-center rounded-lg border border-slate-100/50 bg-linear-to-br from-slate-50 to-slate-50/50 p-3 lg:col-span-2 lg:p-4 dark:border-slate-700/30 dark:from-slate-700/20 dark:to-slate-800/20"
+                            v-for="flight in flights"
+                            :key="`${flight.flight_id}-${flight.timestamp}`"
+                            class="group px-4 py-4 transition-colors duration-200 hover:bg-sky-50/30 sm:px-5 lg:px-6 lg:py-5 dark:hover:bg-sky-950/10"
                         >
-                            <div
-                                v-if="loadingLogos"
-                                class="h-12 w-16 animate-pulse rounded bg-slate-300 dark:bg-slate-600"
-                            ></div>
-                            <img
-                                v-else-if="flight.airline_logo_url"
-                                :src="flight.airline_logo_url"
-                                :alt="`${flight.airline} logo`"
-                                class="max-h-14 max-w-24 object-contain drop-shadow"
-                            />
-                            <div
-                                v-else
-                                class="flex max-h-14 max-w-24 items-center justify-center bg-primary p-2"
-                            >
-                                <img
-                                    src="/logo-white.png"
-                                    :alt="`${flight.airline} logo`"
-                                    class="object-contain"
-                                />
+                            <!-- ========================= -->
+                            <!-- MOBILE / TABLET -->
+                            <!-- ========================= -->
+                            <div class="lg:hidden">
+                                <!-- Top Row -->
+                                <div class="flex items-center gap-3">
+                                    <!-- Logo -->
+                                    <div
+                                        class="flex h-14 w-16 shrink-0 items-center justify-center rounded-lg border border-slate-100/50 bg-linear-to-br from-slate-50 to-slate-50/50 p-2 dark:border-slate-700/30 dark:from-slate-700/20 dark:to-slate-800/20"
+                                    >
+                                        <div
+                                            v-if="loadingLogos"
+                                            class="h-8 w-12 animate-pulse rounded bg-slate-300 dark:bg-slate-600"
+                                        ></div>
+
+                                        <img
+                                            v-else-if="flight.airline_logo_url"
+                                            :src="flight.airline_logo_url"
+                                            :alt="`${flight.airline} logo`"
+                                            class="max-h-10 max-w-14 object-contain"
+                                        />
+
+                                        <div
+                                            v-else
+                                            class="flex h-full w-full items-center justify-center rounded bg-primary p-2"
+                                        >
+                                            <img
+                                                src="/logo-white.png"
+                                                :alt="`${flight.airline} logo`"
+                                                class="max-h-8 object-contain"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <!-- Callsign + Aircraft -->
+                                    <div class="min-w-0 flex-1">
+                                        <p
+                                            class="font-mono text-base font-bold text-slate-900 dark:text-white"
+                                        >
+                                            {{ flight.callsign }}
+                                        </p>
+
+                                        <p
+                                            class="mt-0.5 truncate text-xs text-slate-500 dark:text-slate-400"
+                                        >
+                                            {{
+                                                flight.aircraft_model ??
+                                                flight.aircraft
+                                            }}
+                                        </p>
+                                    </div>
+
+                                    <!-- Status -->
+                                    <span
+                                        :class="`inline-flex shrink-0 items-center rounded-full px-2.5 py-1 text-[11px] font-semibold whitespace-nowrap ${getStateColor(flight.state)}`"
+                                    >
+                                        {{ $t(flight.state) }}
+                                    </span>
+                                </div>
+
+                                <!-- Route -->
+                                <div
+                                    class="mt-4 flex items-center justify-between rounded-lg bg-slate-50/80 px-3 py-2.5 dark:bg-slate-900/30"
+                                >
+                                    <div class="text-center">
+                                        <p
+                                            class="font-mono text-sm font-bold text-slate-900 dark:text-white"
+                                        >
+                                            {{ flight.departure_icao }}
+                                        </p>
+
+                                        <p
+                                            class="text-[10px] font-medium tracking-wide text-slate-400 uppercase"
+                                        >
+                                            {{ $t('Departure') }}
+                                        </p>
+                                    </div>
+
+                                    <div
+                                        class="flex flex-1 items-center justify-center px-3"
+                                    >
+                                        <div
+                                            class="h-px flex-1 bg-slate-200 dark:bg-slate-700"
+                                        ></div>
+
+                                        <svg
+                                            class="mx-2 h-4 w-4 shrink-0 text-slate-400"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="M13 7l5 5m0 0l-5 5m5-5H6"
+                                            />
+                                        </svg>
+
+                                        <div
+                                            class="h-px flex-1 bg-slate-200 dark:bg-slate-700"
+                                        ></div>
+                                    </div>
+
+                                    <div class="text-center">
+                                        <p
+                                            class="font-mono text-sm font-bold text-slate-900 dark:text-white"
+                                        >
+                                            {{ flight.arrival_icao }}
+                                        </p>
+
+                                        <p
+                                            class="text-[10px] font-medium tracking-wide text-slate-400 uppercase"
+                                        >
+                                            {{ $t('Arrival') }}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <!-- Live Flight -->
+                                <a
+                                    :href="`https://webeye.ivao.aero/?pilotId=${flight.flight_id}`"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="mt-3 flex w-full items-center justify-center rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-white shadow-xs transition-all duration-200 hover:brightness-90 focus:ring-4 focus:ring-primary focus:ring-offset-2 focus:outline-none"
+                                >
+                                    {{ $t('Live Flight') }}
+                                </a>
                             </div>
-                        </div>
 
-                        <!-- Callsign -->
-                        <div class="lg:col-span-1.5 col-span-2">
-                            <p
-                                class="mb-1 text-xs font-semibold tracking-wide text-slate-500 uppercase lg:hidden dark:text-slate-400"
+                            <!-- ========================= -->
+                            <!-- DESKTOP -->
+                            <!-- ========================= -->
+                            <div
+                                class="hidden lg:grid lg:grid-cols-[100px_1fr_1.5fr_1.5fr_120px_130px] lg:items-center lg:gap-5"
                             >
-                                Vuelo
-                            </p>
-                            <p
-                                class="font-mono text-sm font-bold text-slate-900 lg:text-base dark:text-white"
-                            >
-                                {{ flight.callsign }}
-                            </p>
-                        </div>
+                                <!-- Logo -->
+                                <div
+                                    class="flex h-16 items-center justify-center rounded-lg border border-slate-100/50 bg-linear-to-br from-slate-50 to-slate-50/50 p-3 dark:border-slate-700/30 dark:from-slate-700/20 dark:to-slate-800/20"
+                                >
+                                    <div
+                                        v-if="loadingLogos"
+                                        class="h-10 w-14 animate-pulse rounded bg-slate-300 dark:bg-slate-600"
+                                    ></div>
 
-                        <!-- Route -->
-                        <div class="col-span-3 hidden sm:block lg:col-span-2">
-                            <p
-                                class="mb-1 text-xs font-semibold tracking-wide text-slate-500 uppercase lg:hidden dark:text-slate-400"
-                            >
-                                Ruta
-                            </p>
-                            <div class="flex items-center gap-1.5">
-                                <span
-                                    class="font-mono text-xs font-bold text-slate-900 lg:text-sm dark:text-white"
-                                    >{{ flight.departure_icao }}</span
-                                >
-                                <svg
-                                    class="h-3 w-3 shrink-0 text-slate-400 dark:text-slate-600"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M13 7l5 5m0 0l-5 5m5-5H6"
-                                    ></path>
-                                </svg>
-                                <span
-                                    class="font-mono text-xs font-bold text-slate-900 lg:text-sm dark:text-white"
-                                    >{{ flight.arrival_icao }}</span
-                                >
+                                    <img
+                                        v-else-if="flight.airline_logo_url"
+                                        :src="flight.airline_logo_url"
+                                        :alt="`${flight.airline} logo`"
+                                        class="max-h-12 max-w-20 object-contain drop-shadow"
+                                    />
+
+                                    <div
+                                        v-else
+                                        class="flex h-full w-full items-center justify-center rounded bg-primary p-2"
+                                    >
+                                        <img
+                                            src="/logo-white.png"
+                                            :alt="`${flight.airline} logo`"
+                                            class="max-h-10 object-contain"
+                                        />
+                                    </div>
+                                </div>
+
+                                <!-- Callsign -->
+                                <div class="min-w-0">
+                                    <p
+                                        class="font-mono text-base font-bold text-slate-900 dark:text-white"
+                                    >
+                                        {{ flight.callsign }}
+                                    </p>
+
+                                    <p
+                                        class="mt-1 truncate text-xs text-slate-500 dark:text-slate-400"
+                                    >
+                                        {{ flight.airline }}
+                                    </p>
+                                </div>
+
+                                <!-- Route -->
+                                <div>
+                                    <div class="flex items-center gap-2">
+                                        <span
+                                            class="font-mono text-sm font-bold text-slate-900 dark:text-white"
+                                        >
+                                            {{ flight.departure_icao }}
+                                        </span>
+
+                                        <svg
+                                            class="h-4 w-4 shrink-0 text-slate-400"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="M13 7l5 5m0 0l-5 5m5-5H6"
+                                            />
+                                        </svg>
+
+                                        <span
+                                            class="font-mono text-sm font-bold text-slate-900 dark:text-white"
+                                        >
+                                            {{ flight.arrival_icao }}
+                                        </span>
+                                    </div>
+
+                                    <p class="mt-1 text-xs text-slate-400">
+                                        {{ $t('Route') }}
+                                    </p>
+                                </div>
+
+                                <!-- Aircraft -->
+                                <div class="min-w-0">
+                                    <p
+                                        class="truncate font-mono text-sm font-medium text-slate-700 dark:text-slate-300"
+                                    >
+                                        {{
+                                            flight.aircraft_model ??
+                                            flight.aircraft
+                                        }}
+                                    </p>
+
+                                    <p class="mt-1 text-xs text-slate-400">
+                                        {{ $t('Aircraft') }}
+                                    </p>
+                                </div>
+
+                                <!-- Status -->
+                                <div>
+                                    <span
+                                        :class="`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold whitespace-nowrap ${getStateColor(flight.state)}`"
+                                    >
+                                        {{ $t(flight.state) }}
+                                    </span>
+                                </div>
+
+                                <!-- Live Flight -->
+                                <div>
+                                    <a
+                                        :href="`https://webeye.ivao.aero/?pilotId=${flight.flight_id}`"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        class="inline-flex w-full items-center justify-center rounded-lg bg-primary px-3 py-2.5 text-sm font-medium text-white shadow-xs transition-all duration-200 hover:brightness-90 focus:ring-4 focus:ring-primary focus:ring-offset-2 focus:outline-none"
+                                    >
+                                        {{ $t('Live Flight') }}
+                                    </a>
+                                </div>
                             </div>
-                        </div>
-
-                        <!-- Aircraft (hidden on mobile) -->
-                        <div class="hidden lg:col-span-2 lg:block">
-                            <p
-                                class="truncate font-mono text-xs font-medium text-slate-700 dark:text-slate-300"
-                            >
-                                {{ flight.aircraft_model ?? flight.aircraft }}
-                            </p>
-                        </div>
-
-                        <!-- Estado / Status Badge -->
-                        <div
-                            class="col-span-3 flex items-center justify-end lg:col-span-2 lg:justify-start"
-                        >
-                            <span
-                                :class="`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold whitespace-nowrap ${getStateColor(flight.state)}`"
-                            >
-                                {{ $t(flight.state) }}
-                            </span>
-                        </div>
-
-                        <div
-                            class="col-span-3 flex items-center justify-end lg:col-span-2 lg:justify-start"
-                        >
-                            <a
-                                :href="`https://webeye.ivao.aero/?pilotId=${flight.flight_id}`"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                class="box-border inline-block cursor-pointer rounded-xl border border-transparent bg-primary px-4 py-2.5 text-sm leading-5 font-medium text-white shadow-xs transition-all duration-200 hover:brightness-90 focus:ring-4 focus:ring-primary focus:ring-offset-2 focus:outline-none"
-                                >{{ $t('Live Flight') }}</a
-                            >
                         </div>
                     </div>
                 </div>

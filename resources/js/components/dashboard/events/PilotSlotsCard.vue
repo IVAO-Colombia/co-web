@@ -72,17 +72,15 @@ function onCsvChange(event: Event): void {
         const rows = parseCsv(e.target?.result as string) as PilotSlotCSV[];
         emit(
             'update:slots',
-            rows.map(
-                (row): PilotSlotRow => ({
-                    ...row,
-                    departs_at:
-                        row.departure_date && row.departure_time
-                            ? normalizeDatetime(
-                                  `${row.departure_date} ${row.departure_time}`,
-                              )
-                            : `${row.departure_date} ${row.departure_time}`,
-                }),
-            ),
+            rows.map((row): PilotSlotRow => ({
+                ...row,
+                departs_at:
+                    row.departure_date && row.departure_time
+                        ? normalizeDatetime(
+                              `${row.departure_date} ${row.departure_time}`,
+                          )
+                        : `${row.departure_date} ${row.departure_time}`,
+            })),
         );
     };
     reader.readAsText(file);

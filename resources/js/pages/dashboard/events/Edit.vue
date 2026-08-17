@@ -110,25 +110,21 @@ const form = useForm<EventForm>({
     tags: [...props.event.tags],
     status: props.event.status,
     pilot_slots_enabled: props.event.pilot_slots_enabled,
-    pilot_slots: props.event.pilot_slots.map(
-        (slot): PilotSlotRow => ({
-            airline_icao: slot.airline_icao,
-            flight_number: slot.flight_number,
-            aircraft: slot.aircraft,
-            origin: slot.origin,
-            destination: slot.destination,
-            departs_at: toUTCDateTime(slot.departs_at),
-            gate: slot.gate ?? '',
-        }),
-    ),
+    pilot_slots: props.event.pilot_slots.map((slot): PilotSlotRow => ({
+        airline_icao: slot.airline_icao,
+        flight_number: slot.flight_number,
+        aircraft: slot.aircraft,
+        origin: slot.origin,
+        destination: slot.destination,
+        departs_at: toUTCDateTime(slot.departs_at),
+        gate: slot.gate ?? '',
+    })),
     atc_slots_enabled: props.event.atc_slots_enabled,
-    atc_slots: props.event.atc_slots.map(
-        (slot): AtcSlotRow => ({
-            callsign: slot.callsign,
-            starts_at: toUTCDateTime(slot.starts_at),
-            ends_at: toUTCDateTime(slot.ends_at),
-        }),
-    ),
+    atc_slots: props.event.atc_slots.map((slot): AtcSlotRow => ({
+        callsign: slot.callsign,
+        starts_at: toUTCDateTime(slot.starts_at),
+        ends_at: toUTCDateTime(slot.ends_at),
+    })),
 });
 
 const editableStatuses = [
