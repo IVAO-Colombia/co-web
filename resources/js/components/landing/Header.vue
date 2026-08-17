@@ -102,11 +102,11 @@ const menuSections: MenuSection[] = [
                     'Instructions to start controlling in IVAO Colombia.',
             },
             {
-                title: 'Special Positions',
+                title: 'Control Our Airports',
                 href: 'https://atc.ivao.aero/fras?division=CO',
                 isbrand: true,
                 description:
-                    'List of special positions and how to apply for them.',
+                    'Explore the airports available for control according to your current ATC rating and continue developing your skills with IVAO Colombia.',
             },
             {
                 title: 'ATC Booking',

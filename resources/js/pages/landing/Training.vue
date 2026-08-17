@@ -127,7 +127,7 @@ const trainingImage =
                     >
                         {{
                             $t(
-                                'Develop your knowledge, improve your air traffic control skills and prepare for your next qualification with the support of IVAO Colombia instructors.',
+                                'Develop your knowledge, improve your aviation skills as a pilot or air traffic controller, and prepare for your next qualification with the support of IVAO Colombia instructors.',
                             )
                         }}
                     </p>
@@ -237,7 +237,7 @@ const trainingImage =
                     >
                         {{
                             $t(
-                                'Start your training journey or continue towards your next controller qualification.',
+                                'Explore our training resources and start building your experience as an IVAO Colombia pilot or controller.',
                             )
                         }}
                     </p>
@@ -279,7 +279,7 @@ const trainingImage =
                                 >
                                     {{
                                         $t(
-                                            'Request a training session with our instructors and begin your training process towards your next controller qualification.',
+                                            'Request a training session with our instructors and begin your training process towards your next pilot or controller qualification.',
                                         )
                                     }}
                                 </p>
@@ -379,7 +379,7 @@ const trainingImage =
                         >
                             {{
                                 $t(
-                                    'Explore our training resources and start building your experience as an IVAO Colombia controller.',
+                                    'Explore our training resources and start building your experience as an IVAO Colombia pilot or controller.',
                                 )
                             }}
                         </p>

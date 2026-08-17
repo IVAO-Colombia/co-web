@@ -4,7 +4,7 @@ import { wTrans } from 'laravel-vue-i18n';
 import {
     Calendar1,
     GraduationCap,
-    LayoutGrid,
+    House,
     CalendarCheck,
     Image,
 } from 'lucide-vue-next';
@@ -40,7 +40,7 @@ const mainNavItems: ComputedRef<NavItem[]> = computed(() =>
         {
             title: wTrans('Dashboard'),
             href: dashboard(),
-            icon: LayoutGrid,
+            icon: House,
             visible: true,
         },
         {
