@@ -66,6 +66,9 @@ MAINTENANCE_MODE_ON=1
 step "Installing composer dependencies"
 composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
 
+# --- Clear caches -------------------------------------------------------
+php artisan optimize:clear
+
 # --- Frontend dependencies & build --------------------------------------
 
 step "Installing npm dependencies"
@@ -92,7 +95,6 @@ fi
 # --- Caches ---------------------------------------------------------------
 
 step "Refreshing application caches"
-php artisan optimize:clear
 php artisan optimize
 
 # --- Queue workers ----------------------------------------------------
