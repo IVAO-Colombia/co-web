@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\AtcTraining;
+use App\Enums\PilotTraining;
 use App\Enums\TrainingNoteVisibility;
 use App\Enums\TrainingRequestStatus;
 use App\Enums\TrainingRequestType;
@@ -27,6 +29,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property list<array{at: string, by_id: int, by_name: string, trainer_id: int|null, trainer_name: string|null}>|null $assignment_history
  * @property int $trainee_id
  * @property int|null $event_id
+ * @property CarbonImmutable|null $ivao_reminder_sent_at
  * @property CarbonImmutable|null $created_at
  * @property CarbonImmutable|null $updated_at
  * @property-read Event|null $event
@@ -48,7 +51,7 @@ class TrainingRequest extends Model
     /** @use HasFactory<TrainingRequestFactory> */
     use HasFactory;
 
-    /** @return array{type: class-string<TrainingRequestType>, status: class-string<TrainingRequestStatus>, occurs_at: 'immutable_datetime', assignment_history: 'array'} */
+    /** @return array{type: class-string<TrainingRequestType>, status: class-string<TrainingRequestStatus>, occurs_at: 'immutable_datetime', assignment_history: 'array', ivao_reminder_sent_at: 'immutable_datetime'} */
     #[\Override]
     protected function casts(): array
     {
@@ -57,6 +60,7 @@ class TrainingRequest extends Model
             'status' => TrainingRequestStatus::class,
             'occurs_at' => 'immutable_datetime',
             'assignment_history' => 'array',
+            'ivao_reminder_sent_at' => 'immutable_datetime',
         ];
     }
 
@@ -103,6 +107,33 @@ class TrainingRequest extends Model
     public function cancel(): void
     {
         $this->status = TrainingRequestStatus::CANCELLED;
+        $this->save();
+    }
+
+    /**
+     * The human-readable label for this request's category, resolved
+     * through the enum matching its type.
+     */
+    public function categoryLabel(): string
+    {
+        return $this->type === TrainingRequestType::ATC
+            ? AtcTraining::from($this->category)->label()
+            : PilotTraining::from($this->category)->label();
+    }
+
+    /**
+     * Whether staff can send another "request it on IVAO" reminder, i.e. one
+     * has never been sent, or the cooldown has elapsed.
+     */
+    public function canSendIvaoReminder(): bool
+    {
+        return $this->ivao_reminder_sent_at === null
+            || $this->ivao_reminder_sent_at->lt(now()->subHours(config('training.ivao_reminder_cooldown_hours')));
+    }
+
+    public function markIvaoReminderSent(): void
+    {
+        $this->ivao_reminder_sent_at = now();
         $this->save();
     }
 

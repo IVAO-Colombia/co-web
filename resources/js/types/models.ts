@@ -155,6 +155,7 @@ export type TrainingRequest = {
     assignment_history: TrainingRequestAssignmentEntry[] | null;
     trainee_id: number;
     event_id: number | null;
+    ivao_reminder_sent_at: string | null;
     created_at: string;
     updated_at: string;
     trainee?: TrainingRequestUser;

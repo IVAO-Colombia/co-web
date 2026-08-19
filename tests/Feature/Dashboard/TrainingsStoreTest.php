@@ -9,7 +9,10 @@ use App\Enums\AtcTraining;
 use App\Enums\PilotTraining;
 use App\Enums\TrainingRequestStatus;
 use App\Enums\TrainingRequestType;
+use App\Mail\TrainingRequestSubmitted;
+use App\Mail\TrainingRequestSubmittedForCoordinators;
 use App\Models\User;
+use Illuminate\Support\Facades\Mail;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -28,6 +31,8 @@ class TrainingsStoreTest extends TestCase
     #[Test]
     public function user_can_submit_an_atc_training_request(): void
     {
+        Mail::fake();
+
         $user = User::factory()->create(['atc_rating' => ATCRating::AS3]);
 
         $this->actingAs($user)
@@ -44,6 +49,32 @@ class TrainingsStoreTest extends TestCase
             'category' => AtcTraining::AdcTheory1->value,
             'status' => TrainingRequestStatus::PENDING->value,
         ]);
+    }
+
+    #[Test]
+    public function submitting_a_request_emails_the_trainee_and_the_coordinators(): void
+    {
+        Mail::fake();
+
+        $user = User::factory()->create(['atc_rating' => ATCRating::AS3]);
+
+        $this->actingAs($user)
+            ->post(route('dashboard.trainings.store'), [
+                'type' => TrainingRequestType::ATC->value,
+                'category' => AtcTraining::AdcTheory1->value,
+                'request_observations' => 'Available on weekends.',
+            ])
+            ->assertRedirect(route('dashboard.trainings.index'));
+
+        Mail::assertQueued(
+            TrainingRequestSubmitted::class,
+            fn ($mail): bool => $mail->hasTo($user->email)
+        );
+
+        Mail::assertQueued(
+            TrainingRequestSubmittedForCoordinators::class,
+            fn ($mail): bool => $mail->hasTo('co-tc@ivao.aero') && $mail->hasTo('co-tac@ivao.aero')
+        );
     }
 
     #[Test]

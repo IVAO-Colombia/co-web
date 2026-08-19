@@ -6,6 +6,7 @@ use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\EventsController;
 use App\Http\Controllers\Dashboard\ImageGeneratorController;
 use App\Http\Controllers\Dashboard\ReservationsController;
+use App\Http\Controllers\Dashboard\Staff\SendIvaoTrainingRequestReminderController;
 use App\Http\Controllers\Dashboard\Staff\TrainingRequestsController as StaffTrainingRequestsController;
 use App\Http\Controllers\Dashboard\TrainingsController;
 use App\Http\Controllers\Landing\AtcSlotReservationsController;
@@ -51,6 +52,7 @@ Route::middleware(['can:view_training_requests'])->group(function (): void {
     Route::patch('staff/training-requests/{trainingRequest}', [StaffTrainingRequestsController::class, 'update'])->name('dashboard.staff.training-requests.update');
     Route::patch('staff/training-requests/{trainingRequest}/trainer', [StaffTrainingRequestsController::class, 'assignTrainer'])->name('dashboard.staff.training-requests.trainer.update');
     Route::post('staff/training-requests/{trainingRequest}/notes', [StaffTrainingRequestsController::class, 'storeNote'])->name('dashboard.staff.training-requests.notes.store');
+    Route::post('staff/training-requests/{trainingRequest}/ivao-reminder', SendIvaoTrainingRequestReminderController::class)->name('dashboard.staff.training-requests.ivao-reminder.store');
     Route::delete('staff/training-requests/{trainingRequest}', [StaffTrainingRequestsController::class, 'destroy'])->name('dashboard.staff.training-requests.destroy');
 });
 

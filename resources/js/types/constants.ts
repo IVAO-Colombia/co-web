@@ -101,3 +101,14 @@ export const TrainingRequestConstants: TrainingRequestConstantsType = {
         [TrainingRequestType.Pilot]: wTrans('Pilot'),
     },
 };
+
+/**
+ * Submitting a request on this site is not enough: the member must also open
+ * the request on the IVAO website.
+ *
+ * Shared with the backend through IVAO_TRAINING_REQUEST_URL in .env, which
+ * also feeds config('training.ivao_request_url') for the emails. Vite inlines
+ * this at build time, so changing it requires a rebuild.
+ */
+export const IVAO_TRAINING_REQUEST_URL: string = import.meta.env
+    .VITE_IVAO_TRAINING_REQUEST_URL;

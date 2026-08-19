@@ -66,6 +66,7 @@ class TrainingRequestsController extends Controller
         return inertia(PagesComponents::STAFF_TRAININGS_SHOW->value, [
             'trainingRequest' => $trainingRequest,
             'assignableStaff' => $assignableStaff,
+            'canSendIvaoReminder' => $trainingRequest->canSendIvaoReminder(),
         ]);
     }
 

@@ -8,6 +8,7 @@ import {
     Mail,
     PlaneTakeoff,
     Radio,
+    Send,
     User,
     X,
 } from 'lucide-vue-next';
@@ -46,6 +47,7 @@ import {
     update,
     destroy,
 } from '@/routes/dashboard/staff/training-requests';
+import { store as ivaoReminderStore } from '@/routes/dashboard/staff/training-requests/ivao-reminder';
 import { update as trainerUpdate } from '@/routes/dashboard/staff/training-requests/trainer';
 import type {
     Auth,
@@ -73,6 +75,7 @@ const props = defineProps<{
         event: { id: number; name: string; slug: string } | null;
     };
     assignableStaff: AssignableStaff[];
+    canSendIvaoReminder: boolean;
 }>();
 
 defineOptions({
@@ -199,6 +202,25 @@ function handleCancel() {
     });
 }
 
+const sendingIvaoReminder = ref(false);
+
+function sendIvaoReminder() {
+    sendingIvaoReminder.value = true;
+    router.post(
+        ivaoReminderStore.url({ trainingRequest: props.trainingRequest.id }),
+        {},
+        {
+            preserveScroll: true,
+            onSuccess: () => {
+                toast.success(wTrans('IVAO reminder sent to the trainee.'));
+            },
+            onFinish: () => {
+                sendingIvaoReminder.value = false;
+            },
+        },
+    );
+}
+
 function generateEvent() {
     const params = new URLSearchParams({
         training_request_id: String(props.trainingRequest.id),
@@ -258,8 +280,31 @@ const typeLabels = TrainingRequestConstants.typeLabels;
                         })
                     }}
                 </p>
+                <p
+                    v-if="trainingRequest.ivao_reminder_sent_at"
+                    class="text-sm text-muted-foreground"
+                >
+                    {{
+                        $t('Last IVAO reminder sent on :date', {
+                            date: formatDateTime(
+                                trainingRequest.ivao_reminder_sent_at,
+                                locale,
+                            ),
+                        })
+                    }}
+                </p>
             </div>
             <div class="flex items-center gap-2">
+                <Button
+                    v-if="canUpdate && !isFinal"
+                    variant="outline"
+                    size="sm"
+                    :disabled="!canSendIvaoReminder || sendingIvaoReminder"
+                    @click="sendIvaoReminder"
+                >
+                    <Send class="mr-1.5 size-4" />
+                    {{ $t('Send IVAO Reminder') }}
+                </Button>
                 <Button
                     v-if="
                         canUpdate &&

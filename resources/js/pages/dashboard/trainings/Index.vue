@@ -46,6 +46,7 @@ import { formatDateTime, getTrainingCategoryLabel } from '@/lib/utils';
 import { index, store, destroy } from '@/routes/dashboard/trainings';
 import type { LengthAwarePaginator, TrainingRequest } from '@/types';
 import {
+    IVAO_TRAINING_REQUEST_URL,
     TrainingRequestConstants,
     TrainingRequestStatus,
     TrainingRequestType,
@@ -191,7 +192,7 @@ const canRequestTrainings = computed(() => {
                 <p class="text-sm">
                     {{ $t('You must also request your training on the') }}
                     <a
-                        href="https://ivao.aero/training/training/statustraining.asp"
+                        :href="IVAO_TRAINING_REQUEST_URL"
                         target="_blank"
                         rel="noopener noreferrer"
                         class="inline-flex items-center gap-1 font-semibold underline underline-offset-2 hover:opacity-80"
@@ -527,7 +528,7 @@ const canRequestTrainings = computed(() => {
                         )
                     }}
                     <a
-                        href="https://ivao.aero/training/training/statustraining.asp"
+                        :href="IVAO_TRAINING_REQUEST_URL"
                         target="_blank"
                         rel="noopener noreferrer"
                         class="inline-flex items-center gap-1 font-semibold underline underline-offset-2 hover:opacity-80"

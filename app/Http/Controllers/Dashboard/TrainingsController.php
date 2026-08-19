@@ -10,10 +10,13 @@ use App\Enums\PilotTraining;
 use App\Enums\TrainingRequestStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTrainingRequestRequest;
+use App\Mail\TrainingRequestSubmitted;
+use App\Mail\TrainingRequestSubmittedForCoordinators;
 use App\Models\TrainingRequest;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\ValidationException;
 use Inertia\Response;
 
@@ -52,7 +55,7 @@ class TrainingsController extends Controller
 
         $validated = $request->validated();
 
-        TrainingRequest::create([
+        $trainingRequest = TrainingRequest::create([
             'type' => $validated['type'],
             'category' => $validated['category'],
             'request_observations' => $validated['request_observations'],
@@ -60,7 +63,16 @@ class TrainingsController extends Controller
             'status' => TrainingRequestStatus::PENDING,
         ]);
 
-        return redirect()->route('dashboard.trainings.index');
+        Mail::to($trainingRequest->trainee)
+            ->locale(config('app.locale'))
+            ->send(new TrainingRequestSubmitted($trainingRequest));
+
+        Mail::to(config('training.coordinator_emails'))
+            ->locale(config('app.locale'))
+            ->send(new TrainingRequestSubmittedForCoordinators($trainingRequest));
+
+        return redirect()->route('dashboard.trainings.index')
+            ->with('success', __('Training request submitted successfully.'));
     }
 
     public function destroy(Request $request, TrainingRequest $trainingRequest): RedirectResponse
