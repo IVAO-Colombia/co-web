@@ -15,7 +15,7 @@ Those are defined inside the `scripts` section of the composer.json file
 
 # Laravel code
 
-- Whenever possible use the PHP #\[Attributes\] to add things like tables
+- Whenever possible use the Laravel PHP contextual attributes #\[Attributes\]. https://laravel.com/docs/13.x/container#contextual-attributes
 - Don't add guarded or fillable attributes to models as we are using Model::unguard().
 
 ## Conventions
