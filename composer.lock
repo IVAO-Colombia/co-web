@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c3e70e91a96f667313f7b9686f24450f",
+    "content-hash": "49d7167ff37724c714f3abbd8afae9ea",
     "packages": [
         {
             "name": "brick/math",
@@ -3276,6 +3276,56 @@
                 "source": "https://github.com/phpstan/phpdoc-parser/tree/2.3.2"
             },
             "time": "2026-01-25T14:56:51+00:00"
+        },
+        {
+            "name": "plesk/ext-laravel-integration",
+            "version": "v8.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/plesk/ext-laravel-integration.git",
+                "reference": "b3be60ab73bb92309d013640ad178a92ebf0f783"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/plesk/ext-laravel-integration/zipball/b3be60ab73bb92309d013640ad178a92ebf0f783",
+                "reference": "b3be60ab73bb92309d013640ad178a92ebf0f783",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/framework": ">=7.0.0",
+                "php": ">=7.4"
+            },
+            "require-dev": {
+                "orchestra/testbench": "10.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "PleskExtLaravel\\Providers\\ConsoleServiceProvider"
+                    ]
+                },
+                "component": "package"
+            },
+            "autoload": {
+                "psr-4": {
+                    "PleskExtLaravel\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "description": "Plesk Laravel Toolkit integration with Laravel applications.",
+            "keywords": [
+                "laravel",
+                "plesk"
+            ],
+            "support": {
+                "issues": "https://github.com/plesk/ext-laravel-integration/issues",
+                "source": "https://github.com/plesk/ext-laravel-integration/tree/v8.0.0"
+            },
+            "time": "2026-07-28T12:41:45+00:00"
         },
         {
             "name": "psr/clock",
