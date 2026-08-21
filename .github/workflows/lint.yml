@@ -1,12 +1,7 @@
 name: linter
 
 on:
-  push:
-    branches:
-      - new-web
-  pull_request:
-    branches:
-      - new-web
+  workflow_call:
 
 permissions:
   contents: write
