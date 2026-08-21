@@ -18,6 +18,30 @@ class StoreEventRequest extends FormRequest
     }
 
     /**
+     * Multipart submissions (any request carrying the image file) stringify every
+     * scalar, so the weekdays arrive as `["4"]` and survive the `integer` rule,
+     * which validates without casting. Cast numeric entries back so the stored
+     * JSON holds real integers; leave anything else untouched for the rules to
+     * reject.
+     */
+    #[\Override]
+    protected function prepareForValidation(): void
+    {
+        $weekdays = $this->input('recurrence_weekdays');
+
+        if (! is_array($weekdays)) {
+            return;
+        }
+
+        $this->merge([
+            'recurrence_weekdays' => array_map(
+                fn (mixed $weekday): mixed => is_numeric($weekday) ? (int) $weekday : $weekday,
+                $weekdays,
+            ),
+        ]);
+    }
+
+    /**
      * @return array<string, mixed>
      */
     public function rules(): array

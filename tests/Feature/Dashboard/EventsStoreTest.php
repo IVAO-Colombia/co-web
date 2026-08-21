@@ -238,6 +238,52 @@ class EventsStoreTest extends TestCase
     }
 
     #[Test]
+    public function recurring_event_with_an_image_stores_weekdays_as_integers(): void
+    {
+        Storage::fake('public');
+
+        $user = User::factory()->director()->create();
+
+        // Attaching an image makes Inertia submit as multipart/form-data, which
+        // stringifies every scalar. The weekdays must still land in the database
+        // as integers, or the strict comparison in GenerateEventOccurrences
+        // matches nothing and the series comes out empty.
+        $payload = array_merge($this->validPayload(), [
+            'starts_at' => '2026-06-01 18:00',
+            'image' => UploadedFile::fake()->image('banner.jpg', 800, 400),
+            'is_recurring' => '1',
+            'recurrence_interval' => '1',
+            'recurrence_weekdays' => ['1'],
+            'recurrence_ends_at' => '2026-06-29',
+        ]);
+
+        $this->actingAs($user)->post(route('dashboard.events.store'), $payload)
+            ->assertRedirect(route('dashboard.events.index'));
+
+        $template = Event::where('is_recurring', true)->firstOrFail();
+        $this->assertSame([1], $template->recurrence_weekdays);
+        $this->assertCount(5, $template->occurrences);
+    }
+
+    #[Test]
+    public function recurring_event_rejects_non_numeric_weekdays(): void
+    {
+        $user = User::factory()->director()->create();
+
+        $payload = array_merge($this->validPayload(), [
+            'starts_at' => '2026-06-01 18:00',
+            'is_recurring' => true,
+            'recurrence_interval' => 1,
+            'recurrence_weekdays' => ['monday'],
+            'recurrence_ends_at' => '2026-06-29',
+        ]);
+
+        $this->actingAs($user)
+            ->post(route('dashboard.events.store'), $payload)
+            ->assertSessionHasErrors('recurrence_weekdays.0');
+    }
+
+    #[Test]
     public function recurring_event_requires_recurrence_fields(): void
     {
         $user = User::factory()->director()->create();
