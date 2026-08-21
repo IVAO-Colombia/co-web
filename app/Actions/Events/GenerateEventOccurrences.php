@@ -15,7 +15,7 @@ class GenerateEventOccurrences
     /**
      * Materialize every weekly occurrence for a recurring template.
      *
-     * @param  array<int, array{airline_icao: string, flight_number: string, aircraft: string, origin: string, destination: string, departs_at: string, gate?: string|null}>  $pilotSlots
+     * @param  array<int, array{airline_icao: string, flight_number: string, aircraft: string, origin: string, destination: string, departs_at: string, arrives_at?: string|null, gate?: string|null}>  $pilotSlots
      * @param  array<int, array{callsign: string, starts_at: string, ends_at: string}>  $atcSlots
      */
     public function handle(Event $template, array $pilotSlots = [], array $atcSlots = []): void
@@ -48,6 +48,7 @@ class GenerateEventOccurrences
                     'origin' => $slot['origin'],
                     'destination' => $slot['destination'],
                     'departs_at' => $this->shift($slot['departs_at'], $dayOffset),
+                    'arrives_at' => isset($slot['arrives_at']) ? $this->shift($slot['arrives_at'], $dayOffset) : null,
                     'gate' => $slot['gate'] ?? null,
                     'status' => SlotStatus::AVAILABLE,
                     'created_at' => now(),

@@ -23,6 +23,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $origin
  * @property string $destination
  * @property CarbonImmutable $departs_at
+ * @property CarbonImmutable|null $arrives_at
  * @property string|null $gate
  * @property SlotStatus $status
  * @property CarbonImmutable|null $reminder_sent_at
@@ -63,9 +64,10 @@ class PilotSlot extends Model
             'id' => 'integer',
             'event_id' => 'integer',
             'pilot_id' => 'integer',
-            'departs_at' => 'datetime',
+            'departs_at' => 'immutable_datetime',
+            'arrives_at' => 'immutable_datetime',
             'status' => SlotStatus::class,
-            'reminder_sent_at' => 'datetime',
+            'reminder_sent_at' => 'immutable_datetime',
         ];
     }
 

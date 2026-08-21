@@ -67,6 +67,7 @@ class StoreEventRequest extends FormRequest
             'pilot_slots.*.origin' => ['required_with:pilot_slots', 'string', 'size:4'],
             'pilot_slots.*.destination' => ['required_with:pilot_slots', 'string', 'size:4'],
             'pilot_slots.*.departs_at' => ['required_with:pilot_slots', 'date_format:Y-m-d H:i'],
+            'pilot_slots.*.arrives_at' => ['nullable', 'date_format:Y-m-d H:i', 'after:pilot_slots.*.departs_at'],
             'pilot_slots.*.gate' => ['nullable', 'string', 'max:10'],
             'atc_slots' => ['nullable', 'array', Rule::requiredIf($this->boolean('atc_slots_enabled'))],
             'atc_slots.*.callsign' => ['required_with:atc_slots', 'string', 'max:20'],

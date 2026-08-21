@@ -170,13 +170,18 @@ class EventsUpdateTest extends TestCase
                         'origin' => 'SEQM',
                         'destination' => 'SEGU',
                         'departs_at' => '2026-06-01 18:00',
+                        'arrives_at' => '2026-06-01 19:30',
                         'gate' => 'A1',
                     ],
                 ],
             ]));
 
         $this->assertDatabaseMissing('pilot_slots', ['event_id' => $event->id, 'airline_icao' => 'OLD']);
-        $this->assertDatabaseHas('pilot_slots', ['event_id' => $event->id, 'airline_icao' => 'ECA']);
+        $this->assertDatabaseHas('pilot_slots', [
+            'event_id' => $event->id,
+            'airline_icao' => 'ECA',
+            'arrives_at' => '2026-06-01 19:30:00',
+        ]);
     }
 
     #[Test]

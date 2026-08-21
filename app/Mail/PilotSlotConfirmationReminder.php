@@ -46,6 +46,7 @@ class PilotSlotConfirmationReminder extends Mailable implements ShouldQueue
                 'origin' => $this->slot->origin,
                 'destination' => $this->slot->destination,
                 'departsAt' => $this->slot->departs_at,
+                'arrivesAt' => $this->slot->arrives_at,
                 'confirmationUrl' => route('dashboard.reservations.index', ['tab' => 'pilot']),
             ],
         );

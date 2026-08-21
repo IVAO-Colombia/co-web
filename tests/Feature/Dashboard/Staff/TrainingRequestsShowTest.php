@@ -67,13 +67,14 @@ class TrainingRequestsShowTest extends TestCase
         $staff = User::factory()->trainingCoordinator()->create();
         $trainer = User::factory()->trainer()->create();
         $director = User::factory()->director()->create();
+        $viewOnlyStaff = User::factory()->membershipCoordinator()->create();
         $request = TrainingRequest::factory()->create();
 
         $response = $this->actingAs($staff)
             ->get(route('dashboard.staff.training-requests.show', $request))
             ->assertOk()
             ->assertInertia(fn ($page) => $page
-                ->has('assignableStaff', 2, fn ($page) => $page
+                ->has('assignableStaff', 3, fn ($page) => $page
                     ->hasAll(['id', 'name', 'vid'])
                     ->etc()
                 )
@@ -85,6 +86,7 @@ class TrainingRequestsShowTest extends TestCase
 
         $this->assertContains($trainer->id, $assignableIds);
         $this->assertContains($staff->id, $assignableIds);
-        $this->assertNotContains($director->id, $assignableIds);
+        $this->assertContains($director->id, $assignableIds);
+        $this->assertNotContains($viewOnlyStaff->id, $assignableIds);
     }
 }

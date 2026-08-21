@@ -62,6 +62,7 @@ class GenerateEventOccurrencesTest extends TestCase
                 'origin' => 'SEQM',
                 'destination' => 'SEGU',
                 'departs_at' => '2026-06-01 18:30',
+                'arrives_at' => '2026-06-01 20:15',
                 'gate' => 'B12',
             ]],
             atcSlots: [[
@@ -79,6 +80,10 @@ class GenerateEventOccurrencesTest extends TestCase
             $secondWeek->pilotSlots->first()->departs_at->format('Y-m-d H:i'),
         );
         $this->assertSame(
+            '2026-06-08 20:15',
+            $secondWeek->pilotSlots->first()->arrives_at?->format('Y-m-d H:i'),
+        );
+        $this->assertSame(
             '2026-06-08 18:00',
             $secondWeek->atcSlots->first()->starts_at->format('Y-m-d H:i'),
         );
@@ -90,5 +95,40 @@ class GenerateEventOccurrencesTest extends TestCase
         // The template itself never carries slots.
         $this->assertCount(0, $template->pilotSlots);
         $this->assertCount(0, $template->atcSlots);
+    }
+
+    #[Test]
+    public function it_keeps_a_missing_pilot_slot_arrival_empty_on_every_occurrence(): void
+    {
+        $template = Event::factory()->create([
+            'starts_at' => '2026-06-01 18:00',
+            'pilot_slots_enabled' => true,
+            'is_recurring' => true,
+            'recurrence_interval' => 1,
+            'recurrence_weekdays' => [1],
+            'recurrence_ends_at' => '2026-06-08',
+        ]);
+
+        app(GenerateEventOccurrences::class)->handle(
+            $template,
+            pilotSlots: [[
+                'airline_icao' => 'AVA',
+                'flight_number' => '001',
+                'aircraft' => 'A320',
+                'origin' => 'SEQM',
+                'destination' => 'SEGU',
+                'departs_at' => '2026-06-01 18:30',
+                'arrives_at' => null,
+                'gate' => 'B12',
+            ]],
+        );
+
+        $occurrences = $template->occurrences()->with('pilotSlots')->get();
+
+        $this->assertCount(2, $occurrences);
+
+        foreach ($occurrences as $occurrence) {
+            $this->assertNull($occurrence->pilotSlots->first()->arrives_at);
+        }
     }
 }

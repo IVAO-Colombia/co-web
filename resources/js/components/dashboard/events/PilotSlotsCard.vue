@@ -37,6 +37,8 @@ type PilotSlotCSV = {
     destination: string;
     departure_date: string;
     departure_time: string;
+    arrival_date: string;
+    arrival_time: string;
     gate: string;
 };
 
@@ -56,9 +58,19 @@ const fileInput = ref<HTMLInputElement | null>(null);
 
 const templateCsvUrl = computed(() =>
     csvDataUri(
-        'airline_icao,flight_number,aircraft,origin,destination,departure_date,departure_time,gate',
+        'airline_icao,flight_number,aircraft,origin,destination,departure_date,departure_time,arrival_date,arrival_time,gate',
     ),
 );
+
+/**
+ * Merge a CSV date/time pair into the `Y-m-d H:i` value the backend expects.
+ * A half-filled pair is passed through untouched so server validation reports it.
+ */
+function mergeDateTime(date: string, time: string): string {
+    return date && time
+        ? normalizeDatetime(`${date} ${time}`)
+        : `${date} ${time}`;
+}
 
 function onCsvChange(event: Event): void {
     const file = (event.target as HTMLInputElement).files?.[0];
@@ -75,12 +87,16 @@ function onCsvChange(event: Event): void {
             rows.map(
                 (row): PilotSlotRow => ({
                     ...row,
-                    departs_at:
-                        row.departure_date && row.departure_time
-                            ? normalizeDatetime(
-                                  `${row.departure_date} ${row.departure_time}`,
-                              )
-                            : `${row.departure_date} ${row.departure_time}`,
+                    departs_at: mergeDateTime(
+                        row.departure_date,
+                        row.departure_time,
+                    ),
+                    // Arrival is optional, but both halves must be filled together:
+                    // a half-filled pair is sent as-is so the backend rejects it.
+                    arrives_at:
+                        row.arrival_date || row.arrival_time
+                            ? mergeDateTime(row.arrival_date, row.arrival_time)
+                            : null,
                 }),
             ),
         );
@@ -182,7 +198,7 @@ function clearSlots(): void {
                         >
                             {{
                                 $t(
-                                    'The departure_date must be in YYYY-MM-DD format, and departure_time in HH:MM (24h) format.',
+                                    'Dates must be in YYYY-MM-DD format and times in HH:MM (24h) format. arrival_date and arrival_time are optional, but you must fill both or leave both empty.',
                                 )
                             }}
                         </p>
@@ -231,6 +247,7 @@ function clearSlots(): void {
                                 <TableHead>{{ $t('Origin') }}</TableHead>
                                 <TableHead>{{ $t('Destination') }}</TableHead>
                                 <TableHead>{{ $t('Departs At') }}</TableHead>
+                                <TableHead>{{ $t('Arrives At') }}</TableHead>
                                 <TableHead>{{ $t('Gate') }}</TableHead>
                             </TableRow>
                         </TableHeader>
@@ -250,6 +267,9 @@ function clearSlots(): void {
                                     slot.destination
                                 }}</TableCell>
                                 <TableCell>{{ slot.departs_at }}</TableCell>
+                                <TableCell>{{
+                                    slot.arrives_at || '—'
+                                }}</TableCell>
                                 <TableCell>{{ slot.gate || '—' }}</TableCell>
                             </TableRow>
                         </TableBody>

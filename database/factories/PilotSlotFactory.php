@@ -19,6 +19,8 @@ class PilotSlotFactory extends Factory
      */
     public function definition(): array
     {
+        $departsAt = fake()->dateTime();
+
         return [
             'event_id' => Event::factory(),
             'airline_icao' => fake()->regexify('[A-Z]{3}'),
@@ -26,7 +28,8 @@ class PilotSlotFactory extends Factory
             'aircraft' => fake()->regexify('[A-Za-z0-9]{4}'),
             'origin' => fake()->regexify('[A-Za-z0-9]{10}'),
             'destination' => fake()->regexify('[A-Za-z0-9]{10}'),
-            'departs_at' => fake()->dateTime(),
+            'departs_at' => $departsAt,
+            'arrives_at' => (clone $departsAt)->modify('+2 hours'),
             'status' => SlotStatus::AVAILABLE,
         ];
     }

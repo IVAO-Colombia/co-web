@@ -118,6 +118,7 @@ const form = useForm<EventForm>({
             origin: slot.origin,
             destination: slot.destination,
             departs_at: toUTCDateTime(slot.departs_at),
+            arrives_at: slot.arrives_at ? toUTCDateTime(slot.arrives_at) : null,
             gate: slot.gate ?? '',
         }),
     ),

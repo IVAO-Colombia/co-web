@@ -50,6 +50,7 @@ export type PilotSlot = {
     origin: string;
     destination: string;
     departs_at: string;
+    arrives_at: string | null;
     gate: string | null;
     status: SlotStatus;
     pilot: SlotUser | null;
@@ -84,6 +85,7 @@ export type PilotSlotRow = {
     origin: string;
     destination: string;
     departs_at: string;
+    arrives_at: string | null;
     gate: string;
 };
 

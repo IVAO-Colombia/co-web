@@ -164,6 +164,9 @@ function cancelPilotSlotReservation(slotId: number) {
                                     {{ $t('Departs At') }}
                                 </th>
                                 <th class="px-4 py-3">
+                                    {{ $t('Arrives At') }}
+                                </th>
+                                <th class="px-4 py-3">
                                     {{ $t('Gate') }}
                                 </th>
                                 <th v-if="isLoggedIn" class="px-4 py-3">
@@ -215,6 +218,18 @@ function cancelPilotSlotReservation(slotId: number) {
                                 >
                                     {{
                                         formatDateTime(slot.departs_at, locale)
+                                    }}
+                                </td>
+                                <td
+                                    class="px-4 py-3.5 text-slate-600 dark:text-white/65"
+                                >
+                                    {{
+                                        slot.arrives_at
+                                            ? formatDateTime(
+                                                  slot.arrives_at,
+                                                  locale,
+                                              )
+                                            : '—'
                                     }}
                                 </td>
                                 <td

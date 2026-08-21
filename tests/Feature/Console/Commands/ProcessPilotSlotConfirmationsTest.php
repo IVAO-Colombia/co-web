@@ -38,6 +38,32 @@ class ProcessPilotSlotConfirmationsTest extends TestCase
     }
 
     #[Test]
+    public function the_reminder_shows_the_arrival_only_when_the_slot_has_one(): void
+    {
+        $event = Event::factory()->create(['status' => EventStatus::ACTIVE]);
+
+        $withArrival = PilotSlot::factory()->for($event)->reserved()->create([
+            'departs_at' => '2026-06-01 18:00',
+            'arrives_at' => '2026-06-01 20:15',
+        ]);
+
+        $rendered = (new PilotSlotConfirmationReminder($withArrival))->render();
+
+        $this->assertStringContainsString('Jun 1, 2026 18:00 UTC', $rendered);
+        $this->assertStringContainsString('Jun 1, 2026 20:15 UTC', $rendered);
+
+        $withoutArrival = PilotSlot::factory()->for($event)->reserved()->create([
+            'departs_at' => '2026-06-01 18:00',
+            'arrives_at' => null,
+        ]);
+
+        $rendered = (new PilotSlotConfirmationReminder($withoutArrival))->render();
+
+        $this->assertStringContainsString('Jun 1, 2026 18:00 UTC', $rendered);
+        $this->assertStringNotContainsString('Arrival', $rendered);
+    }
+
+    #[Test]
     public function it_does_not_remind_a_confirmed_slot(): void
     {
         Mail::fake();

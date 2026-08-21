@@ -7,6 +7,9 @@
 **{{ __('Flight') }}:** {{ $flightNumber }}<br>
 **{{ __('Route') }}:** {{ $origin }} → {{ $destination }}<br>
 **{{ __('Departure') }}:** {{ $departsAt->format('M j, Y H:i') }} UTC
+@if ($arrivesAt)
+<br>**{{ __('Arrival') }}:** {{ $arrivesAt->format('M j, Y H:i') }} UTC
+@endif
 </x-mail::panel>
 
 {{ __('Please confirm your reservation before the event starts, or it will be automatically cancelled and released to other pilots.') }}

@@ -471,6 +471,7 @@ function confirmCancelPilotSlot(): void {
                                 <TableHead>{{ $t('Origin') }}</TableHead>
                                 <TableHead>{{ $t('Destination') }}</TableHead>
                                 <TableHead>{{ $t('Departs At') }}</TableHead>
+                                <TableHead>{{ $t('Arrives At') }}</TableHead>
                                 <TableHead>{{ $t('Gate') }}</TableHead>
                                 <TableHead>{{ $t('Status') }}</TableHead>
                                 <TableHead>{{ $t('Reserved By') }}</TableHead>
@@ -480,7 +481,7 @@ function confirmCancelPilotSlot(): void {
                         <TableBody>
                             <TableEmpty
                                 v-if="event.pilot_slots.length === 0"
-                                :colspan="10"
+                                :colspan="11"
                             >
                                 <p class="py-6 text-sm text-muted-foreground">
                                     {{ $t('No pilot slots added yet.') }}
@@ -505,6 +506,12 @@ function confirmCancelPilotSlot(): void {
                                 </TableCell>
                                 <TableCell>
                                     {{ toUTCDateTime(slot.departs_at) }} UTC
+                                </TableCell>
+                                <TableCell>
+                                    <template v-if="slot.arrives_at">
+                                        {{ toUTCDateTime(slot.arrives_at) }} UTC
+                                    </template>
+                                    <template v-else>—</template>
                                 </TableCell>
                                 <TableCell>{{ slot.gate ?? '—' }}</TableCell>
                                 <TableCell>

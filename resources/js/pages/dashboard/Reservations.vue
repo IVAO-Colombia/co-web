@@ -296,6 +296,7 @@ function cancelPilotSlot(slot: PilotSlotWithEvent) {
                                 <TableHead>{{ $t('Route') }}</TableHead>
                                 <TableHead>{{ $t('Aircraft') }}</TableHead>
                                 <TableHead>{{ $t('Departs At') }}</TableHead>
+                                <TableHead>{{ $t('Arrives At') }}</TableHead>
                                 <TableHead>{{ $t('Status') }}</TableHead>
                                 <TableHead class="w-1" />
                             </TableRow>
@@ -303,7 +304,7 @@ function cancelPilotSlot(slot: PilotSlotWithEvent) {
                         <TableBody>
                             <TableEmpty
                                 v-if="pilotSlots.length === 0"
-                                :colspan="7"
+                                :colspan="8"
                             >
                                 {{ $t('No pilot reservations yet.') }}
                             </TableEmpty>
@@ -348,6 +349,18 @@ function cancelPilotSlot(slot: PilotSlotWithEvent) {
                                 >
                                     {{
                                         formatDateTime(slot.departs_at, locale)
+                                    }}
+                                </TableCell>
+                                <TableCell
+                                    class="text-slate-600 dark:text-white/65"
+                                >
+                                    {{
+                                        slot.arrives_at
+                                            ? formatDateTime(
+                                                  slot.arrives_at,
+                                                  locale,
+                                              )
+                                            : '—'
                                     }}
                                 </TableCell>
                                 <TableCell>

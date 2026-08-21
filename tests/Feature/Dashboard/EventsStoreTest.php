@@ -115,6 +115,7 @@ class EventsStoreTest extends TestCase
                     'origin' => 'SEQM',
                     'destination' => 'SEGU',
                     'departs_at' => '2026-06-01 18:00',
+                    'arrives_at' => '2026-06-01 19:30',
                     'gate' => 'B12',
                 ],
                 [
@@ -124,6 +125,7 @@ class EventsStoreTest extends TestCase
                     'origin' => 'SEGU',
                     'destination' => 'SEQM',
                     'departs_at' => '2026-06-01 20:00',
+                    'arrives_at' => null,
                     'gate' => null,
                 ],
             ],
@@ -142,7 +144,70 @@ class EventsStoreTest extends TestCase
             'aircraft' => 'A320',
             'origin' => 'SEQM',
             'destination' => 'SEGU',
+            'arrives_at' => '2026-06-01 19:30:00',
         ]);
+
+        $this->assertDatabaseHas('pilot_slots', [
+            'event_id' => $event->id,
+            'flight_number' => '002',
+            'arrives_at' => null,
+        ]);
+    }
+
+    #[Test]
+    public function pilot_slot_arrival_must_have_both_date_and_time(): void
+    {
+        $user = User::factory()->director()->create();
+
+        $payload = array_merge($this->validPayload(), [
+            'pilot_slots_enabled' => true,
+            'pilot_slots' => [
+                [
+                    'airline_icao' => 'AVA',
+                    'flight_number' => '001',
+                    'aircraft' => 'A320',
+                    'origin' => 'SEQM',
+                    'destination' => 'SEGU',
+                    'departs_at' => '2026-06-01 18:00',
+                    // The CSV row only filled arrival_date, so the merged value
+                    // arrives half-formed and must be rejected.
+                    'arrives_at' => '2026-06-01 ',
+                    'gate' => 'B12',
+                ],
+            ],
+        ]);
+
+        $this->actingAs($user)->post(route('dashboard.events.store'), $payload)
+            ->assertSessionHasErrors('pilot_slots.0.arrives_at');
+
+        $this->assertDatabaseCount('pilot_slots', 0);
+    }
+
+    #[Test]
+    public function pilot_slot_arrival_must_be_after_its_departure(): void
+    {
+        $user = User::factory()->director()->create();
+
+        $payload = array_merge($this->validPayload(), [
+            'pilot_slots_enabled' => true,
+            'pilot_slots' => [
+                [
+                    'airline_icao' => 'AVA',
+                    'flight_number' => '001',
+                    'aircraft' => 'A320',
+                    'origin' => 'SEQM',
+                    'destination' => 'SEGU',
+                    'departs_at' => '2026-06-01 18:00',
+                    'arrives_at' => '2026-06-01 17:00',
+                    'gate' => 'B12',
+                ],
+            ],
+        ]);
+
+        $this->actingAs($user)->post(route('dashboard.events.store'), $payload)
+            ->assertSessionHasErrors('pilot_slots.0.arrives_at');
+
+        $this->assertDatabaseCount('pilot_slots', 0);
     }
 
     #[Test]

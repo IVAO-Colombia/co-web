@@ -72,6 +72,7 @@ class CreateEvent
                     'origin' => $slot['origin'],
                     'destination' => $slot['destination'],
                     'departs_at' => $slot['departs_at'],
+                    'arrives_at' => $slot['arrives_at'] ?? null,
                     'gate' => $slot['gate'] ?? null,
                     'status' => SlotStatus::AVAILABLE,
                     'created_at' => now(),

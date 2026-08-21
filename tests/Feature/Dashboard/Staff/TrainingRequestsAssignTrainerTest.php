@@ -138,12 +138,12 @@ class TrainingRequestsAssignTrainerTest extends TestCase
     public function a_user_who_cannot_be_assigned_is_rejected(): void
     {
         $coordinator = User::factory()->trainingCoordinator()->create();
-        $director = User::factory()->director()->create();
+        $viewOnlyStaff = User::factory()->membershipCoordinator()->create();
         $request = TrainingRequest::factory()->create();
 
         $this->actingAs($coordinator)
             ->patch(route('dashboard.staff.training-requests.trainer.update', $request), [
-                'trainer_id' => $director->id,
+                'trainer_id' => $viewOnlyStaff->id,
             ])
             ->assertSessionHasErrors('trainer_id');
 
