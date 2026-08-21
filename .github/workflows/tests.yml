@@ -3,10 +3,10 @@ name: tests
 on:
   push:
     branches:
-      - new-web
+      - main
   pull_request:
     branches:
-      - new-web
+      - main
 
 jobs:
   ci:
