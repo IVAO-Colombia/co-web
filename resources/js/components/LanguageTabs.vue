@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Moon, Sun } from 'lucide-vue-next';
-import { useLocale } from '@/composables/useLocale';
 import { useAppearance } from '@/composables/useAppearance';
+import { useLocale } from '@/composables/useLocale';
 
 const { locale, updateLocale } = useLocale();
 const { appearance, updateAppearance } = useAppearance();

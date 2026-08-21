@@ -6,9 +6,9 @@ import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import EventsList from '@/components/landing/EventsList.vue';
 import Header from '@/components/landing/Header.vue';
 import WhazzupFlights from '@/components/landing/WhazzupFlights.vue';
+import MessageWelcome from '@/components/MessageWelcome.vue';
 import { useAppearance } from '@/composables/useAppearance';
 import type { Event } from '@/types';
-import MessageWelcome from '@/components/MessageWelcome.vue';
 
 type HeroSlide = {
     eyebrow: string;
