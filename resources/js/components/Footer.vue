@@ -56,7 +56,7 @@ const logoSrc = computed(() =>
                             </li>
                             <li class="mb-4">
                                 <a
-                                    href="https://tailwindcss.com/"
+                                    href="https://www.ivao.aero/staff/division.asp?Id=CO"
                                     class="hover:underline"
                                     >{{ $t('Team') }}</a
                                 >
