@@ -283,7 +283,7 @@ function toggleMobileSection(sectionTitle: string): void {
         <nav
             class="relative mx-auto max-w-7xl rounded-3xl border border-slate-200/70 bg-white/80 px-3 py-2.5 shadow-[0_18px_50px_rgba(15,23,42,0.16)] backdrop-blur-xl sm:rounded-[28px] sm:px-4 sm:py-3 dark:border-slate-700/60 dark:bg-slate-900/75"
         >
-            <div class="flex items-center justify-between gap-2 sm:gap-4">
+            <div class="flex items-center justify-between gap-2">
                 <a
                     href="/"
                     class="flex min-w-0 shrink-0 items-center gap-2 sm:gap-3"
@@ -308,9 +308,7 @@ function toggleMobileSection(sectionTitle: string): void {
                         </h1>
                     </template>
                 </a>
-                <div
-                    class="flex shrink-0 items-center gap-2 sm:gap-3 lg:order-2"
-                >
+                <div class="flex shrink-0 items-center gap-2 lg:order-2">
                     <div class="hidden items-center gap-2 sm:flex">
                         <div
                             class="inline-flex rounded-full border border-slate-300/90 bg-white/80 p-1 shadow-sm dark:border-slate-600 dark:bg-slate-800/80"
@@ -505,13 +503,13 @@ function toggleMobileSection(sectionTitle: string): void {
                 </div>
 
                 <NavigationMenu class="hidden lg:order-1 lg:flex">
-                    <NavigationMenuList class="gap-2">
+                    <NavigationMenuList class="gap-1">
                         <NavigationMenuItem
                             v-for="section in menuSections"
                             :key="section.title"
                         >
                             <NavigationMenuTrigger
-                                class="bg-transparent font-heading text-[0.84rem] font-semibold tracking-wide text-slate-600 transition-colors hover:bg-slate-100 hover:text-[#1d4ed8] data-[state=open]:bg-transparent data-[state=open]:text-[#1d4ed8] dark:bg-transparent dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-blue-300 dark:data-[state=open]:bg-transparent dark:data-[state=open]:text-blue-300"
+                                class="bg-transparent px-2! font-heading text-[0.84rem] font-semibold tracking-wide text-slate-600 transition-colors hover:bg-slate-100 hover:text-[#1d4ed8] data-[state=open]:bg-transparent data-[state=open]:text-[#1d4ed8] dark:bg-transparent dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-blue-300 dark:data-[state=open]:bg-transparent dark:data-[state=open]:text-blue-300"
                             >
                                 {{ $t(section.title) }}
                             </NavigationMenuTrigger>
