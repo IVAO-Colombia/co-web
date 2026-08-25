@@ -46,7 +46,7 @@ class TrainingRequestsShowTest extends TestCase
                     ->has('trainee')
                     ->etc()
                 )
-                ->has('assignableStaff')
+                ->has('assignableTrainers')
             );
     }
 
@@ -74,13 +74,13 @@ class TrainingRequestsShowTest extends TestCase
             ->get(route('dashboard.staff.training-requests.show', $request))
             ->assertOk()
             ->assertInertia(fn ($page) => $page
-                ->has('assignableStaff', 3, fn ($page) => $page
-                    ->hasAll(['id', 'name', 'vid'])
+                ->has('assignableTrainers', 3, fn ($page) => $page
+                    ->hasAll(['id', 'name', 'vid', 'atc_trainings_count', 'pilot_trainings_count'])
                     ->etc()
                 )
             );
 
-        $assignableIds = collect($response->viewData('page')['props']['assignableStaff'])
+        $assignableIds = collect($response->viewData('page')['props']['assignableTrainers'])
             ->pluck('id')
             ->all();
 

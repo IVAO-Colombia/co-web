@@ -50,6 +50,7 @@ import {
 import { store as ivaoReminderStore } from '@/routes/dashboard/staff/training-requests/ivao-reminder';
 import { update as trainerUpdate } from '@/routes/dashboard/staff/training-requests/trainer';
 import type {
+    AssignableTrainer,
     Auth,
     TrainingRequest,
     TrainingRequestUser,
@@ -66,15 +67,13 @@ import {
     TrainingRequestType,
 } from '@/types';
 
-type AssignableStaff = { id: number; name: string; vid: number };
-
 const props = defineProps<{
     trainingRequest: TrainingRequest & {
         trainee: TrainingRequestUser;
         trainer: TrainingRequestUser | null;
         event: { id: number; name: string; slug: string } | null;
     };
-    assignableStaff: AssignableStaff[];
+    assignableTrainers: AssignableTrainer[];
     canSendIvaoReminder: boolean;
 }>();
 
@@ -493,13 +492,20 @@ const typeLabels = TrainingRequestConstants.typeLabels;
                                             {{ $t('Unassigned') }}
                                         </SelectItem>
                                         <SelectItem
-                                            v-for="staff in assignableStaff"
-                                            :key="staff.id"
-                                            :value="String(staff.id)"
+                                            v-for="trainer in assignableTrainers"
+                                            :key="trainer.id"
+                                            :value="String(trainer.id)"
                                         >
-                                            {{ staff.name }}
+                                            {{ trainer.name }}
                                             <span class="text-muted-foreground">
-                                                (VID {{ staff.vid }})
+                                                (VID {{ trainer.vid }} · ATC
+                                                {{
+                                                    trainer.atc_trainings_count
+                                                }}
+                                                · Pilot
+                                                {{
+                                                    trainer.pilot_trainings_count
+                                                }})
                                             </span>
                                         </SelectItem>
                                     </SelectContent>

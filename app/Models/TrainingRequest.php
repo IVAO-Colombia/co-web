@@ -11,6 +11,7 @@ use App\Enums\TrainingRequestStatus;
 use App\Enums\TrainingRequestType;
 use Carbon\CarbonImmutable;
 use Database\Factories\TrainingRequestFactory;
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -42,6 +43,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static Builder<static>|TrainingRequest newQuery()
  * @method static Builder<static>|TrainingRequest ofType(\App\Enums\TrainingRequestType $type)
  * @method static Builder<static>|TrainingRequest pending()
+ * @method static Builder<static>|TrainingRequest active()
  * @method static Builder<static>|TrainingRequest query()
  *
  * @mixin \Eloquent
@@ -86,6 +88,18 @@ class TrainingRequest extends Model
     public function scopePending(Builder $query): void
     {
         $query->where('status', TrainingRequestStatus::PENDING);
+    }
+
+    /**
+     * Requests that still require staff attention: not yet cancelled or
+     * completed.
+     *
+     * @param  Builder<static>  $query
+     */
+    #[Scope]
+    protected function active(Builder $query): void
+    {
+        $query->whereIn('status', [TrainingRequestStatus::PENDING, TrainingRequestStatus::SCHEDULED]);
     }
 
     /**

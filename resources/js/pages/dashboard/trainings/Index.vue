@@ -390,7 +390,7 @@ const canRequestTrainings = computed(() => {
                             <TableBody>
                                 <TableEmpty
                                     v-if="trainingRequests.data.length === 0"
-                                    :col-span="6"
+                                    :colspan="6"
                                 >
                                     {{
                                         $t(

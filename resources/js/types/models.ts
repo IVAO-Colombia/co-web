@@ -136,6 +136,14 @@ export type TrainingRequestUser = {
     pilot_rating: number;
 };
 
+export type AssignableTrainer = {
+    id: number;
+    name: string;
+    vid: number;
+    atc_trainings_count: number;
+    pilot_trainings_count: number;
+};
+
 export type TrainingRequestAssignmentEntry = {
     at: string;
     by_id: number;

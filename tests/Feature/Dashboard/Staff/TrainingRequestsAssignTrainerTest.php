@@ -29,10 +29,31 @@ class TrainingRequestsAssignTrainerTest extends TestCase
         $request = TrainingRequest::factory()->create();
 
         $this->actingAs($coordinator)
+            ->from(route('dashboard.staff.training-requests.show', $request))
             ->patch(route('dashboard.staff.training-requests.trainer.update', $request), [
                 'trainer_id' => $trainer->id,
             ])
             ->assertRedirect(route('dashboard.staff.training-requests.show', $request));
+
+        $request->refresh();
+        $this->assertEquals($trainer->id, $request->trainer_id);
+    }
+
+    #[Test]
+    public function assigning_a_trainer_from_the_index_redirects_back_to_the_index_with_its_filters(): void
+    {
+        $coordinator = User::factory()->trainingCoordinator()->create();
+        $trainer = User::factory()->trainer()->create();
+        $request = TrainingRequest::factory()->create();
+
+        $indexUrl = route('dashboard.staff.training-requests.index', ['type' => 'atc']);
+
+        $this->actingAs($coordinator)
+            ->from($indexUrl)
+            ->patch(route('dashboard.staff.training-requests.trainer.update', $request), [
+                'trainer_id' => $trainer->id,
+            ])
+            ->assertRedirect($indexUrl);
 
         $request->refresh();
         $this->assertEquals($trainer->id, $request->trainer_id);

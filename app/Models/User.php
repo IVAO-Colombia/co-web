@@ -11,6 +11,8 @@ use App\Enums\PilotRating;
 use Carbon\CarbonImmutable;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -51,8 +53,11 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read int|null $roles_count
  * @property-read Collection<int, TrainingRequest> $trainingRequests
  * @property-read int|null $training_requests_count
+ * @property-read Collection<int, TrainingRequest> $assignedTrainings
+ * @property-read int|null $assigned_trainings_count
  *
  * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User assignableToTrainings()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User permission($permissions, bool $without = false)
@@ -108,5 +113,22 @@ class User extends Authenticatable
     public function trainingRequests(): HasMany
     {
         return $this->hasMany(TrainingRequest::class, 'trainee_id');
+    }
+
+    /** @return HasMany<TrainingRequest, $this> */
+    public function assignedTrainings(): HasMany
+    {
+        return $this->hasMany(TrainingRequest::class, 'trainer_id');
+    }
+
+    /**
+     * Staff members who may be assigned as a trainer on a training request.
+     *
+     * @param  Builder<static>  $query
+     */
+    #[Scope]
+    protected function assignableToTrainings(Builder $query): void
+    {
+        $query->permission(\App\Enums\Permission::BE_ASSIGNED_TO_TRAININGS->value);
     }
 }
