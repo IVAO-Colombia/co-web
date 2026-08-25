@@ -111,6 +111,22 @@ class TrainingsStoreTest extends TestCase
     }
 
     #[Test]
+    public function type_is_required(): void
+    {
+        $user = User::factory()->create(['atc_rating' => ATCRating::AS3]);
+
+        $this->actingAs($user)
+            ->post(route('dashboard.trainings.store'), [
+                'type' => '',
+                'category' => AtcTraining::AdcTheory1->value,
+                'request_observations' => 'Available on weekends.',
+            ])
+            ->assertSessionHasErrors('type');
+
+        $this->assertDatabaseEmpty('training_requests');
+    }
+
+    #[Test]
     public function request_observations_is_required(): void
     {
         $user = User::factory()->create(['atc_rating' => ATCRating::AS2]);

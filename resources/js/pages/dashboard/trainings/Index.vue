@@ -69,8 +69,6 @@ defineOptions({
 const { locale } = useLocale();
 const page = usePage();
 
-const activeTab = ref<TrainingRequestType>(TrainingRequestType.ATC);
-
 const isFromDivision = computed(
     () => page.props.auth.user.division_id === 'CO',
 );
@@ -80,13 +78,12 @@ const hasPilotTrainings = computed(
 );
 
 const form = useForm({
-    type: '' as TrainingRequestType | '',
+    type: TrainingRequestType.ATC as TrainingRequestType,
     category: '',
     request_observations: '',
 });
 
 function selectTab(tab: TrainingRequestType) {
-    activeTab.value = tab;
     form.type = tab;
     form.category = '';
 }
@@ -106,6 +103,13 @@ function submitRequest() {
         onSuccess: () => {
             toast.success(wTrans('Training request submitted successfully.'));
             form.reset();
+        },
+        onError: (errors) => {
+            if (errors.category || errors.request_observations) {
+                return;
+            }
+
+            toast.error(errors.type ?? wTrans('Something went wrong.'));
         },
     });
 }
@@ -143,7 +147,7 @@ function handleCancel() {
 }
 
 const currentTrainings = computed(() =>
-    activeTab.value === TrainingRequestType.ATC
+    form.type === TrainingRequestType.ATC
         ? props.availableAtcTrainings
         : props.availablePilotTrainings,
 );
@@ -163,7 +167,7 @@ const canRequestTrainings = computed(() => {
             request.type === TrainingRequestType.Pilot,
     );
 
-    if (activeTab.value === TrainingRequestType.ATC) {
+    if (form.type === TrainingRequestType.ATC) {
         return !hasPendingATCRequest;
     } else {
         return !hasPendingPilotRequest;
@@ -228,7 +232,7 @@ const canRequestTrainings = computed(() => {
                             <button
                                 class="flex flex-1 items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition-colors"
                                 :class="
-                                    activeTab === TrainingRequestType.ATC
+                                    form.type === TrainingRequestType.ATC
                                         ? 'bg-white text-emerald-700 shadow-sm dark:bg-white/10 dark:text-emerald-400'
                                         : 'text-slate-500 hover:text-slate-700 dark:text-white/50 dark:hover:text-white/75'
                                 "
@@ -241,7 +245,7 @@ const canRequestTrainings = computed(() => {
                             <button
                                 class="flex flex-1 items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition-colors"
                                 :class="
-                                    activeTab === TrainingRequestType.Pilot
+                                    form.type === TrainingRequestType.Pilot
                                         ? 'bg-white text-sky-700 shadow-sm dark:bg-white/10 dark:text-sky-400'
                                         : 'text-slate-500 hover:text-slate-700 dark:text-white/50 dark:hover:text-white/75'
                                 "
