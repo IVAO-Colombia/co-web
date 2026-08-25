@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Dashboard;
 
 use App\Enums\EventStatus;
+use App\Enums\PilotSlotCategory;
 use App\Models\AtcSlot;
 use App\Models\Event;
 use App\Models\PilotSlot;
@@ -169,6 +170,7 @@ class EventsUpdateTest extends TestCase
                         'aircraft' => 'B738',
                         'origin' => 'SEQM',
                         'destination' => 'SEGU',
+                        'category' => PilotSlotCategory::ARRIVAL->value,
                         'departs_at' => '2026-06-01 18:00',
                         'arrives_at' => '2026-06-01 19:30',
                         'gate' => 'A1',
@@ -180,6 +182,7 @@ class EventsUpdateTest extends TestCase
         $this->assertDatabaseHas('pilot_slots', [
             'event_id' => $event->id,
             'airline_icao' => 'ECA',
+            'category' => PilotSlotCategory::ARRIVAL->value,
             'arrives_at' => '2026-06-01 19:30:00',
         ]);
     }
@@ -205,6 +208,7 @@ class EventsUpdateTest extends TestCase
                         'aircraft' => 'A320',
                         'origin' => 'SEQM',
                         'destination' => 'SEGU',
+                        'category' => PilotSlotCategory::DEPARTURE->value,
                         'departs_at' => '2026-06-01 18:00',
                         'gate' => '',
                     ],

@@ -6,6 +6,7 @@ namespace Tests\Feature\Dashboard;
 
 use App\Enums\EventStatus;
 use App\Enums\EventType;
+use App\Enums\PilotSlotCategory;
 use App\Models\Event;
 use App\Models\TrainingRequest;
 use App\Models\User;
@@ -114,6 +115,7 @@ class EventsStoreTest extends TestCase
                     'aircraft' => 'A320',
                     'origin' => 'SEQM',
                     'destination' => 'SEGU',
+                    'category' => PilotSlotCategory::DEPARTURE->value,
                     'departs_at' => '2026-06-01 18:00',
                     'arrives_at' => '2026-06-01 19:30',
                     'gate' => 'B12',
@@ -124,6 +126,7 @@ class EventsStoreTest extends TestCase
                     'aircraft' => 'B738',
                     'origin' => 'SEGU',
                     'destination' => 'SEQM',
+                    'category' => PilotSlotCategory::ARRIVAL->value,
                     'departs_at' => '2026-06-01 20:00',
                     'arrives_at' => null,
                     'gate' => null,
@@ -144,14 +147,71 @@ class EventsStoreTest extends TestCase
             'aircraft' => 'A320',
             'origin' => 'SEQM',
             'destination' => 'SEGU',
+            'category' => PilotSlotCategory::DEPARTURE->value,
             'arrives_at' => '2026-06-01 19:30:00',
         ]);
 
         $this->assertDatabaseHas('pilot_slots', [
             'event_id' => $event->id,
             'flight_number' => '002',
+            'category' => PilotSlotCategory::ARRIVAL->value,
             'arrives_at' => null,
         ]);
+    }
+
+    #[Test]
+    public function pilot_slot_category_is_required(): void
+    {
+        $user = User::factory()->director()->create();
+
+        $payload = array_merge($this->validPayload(), [
+            'pilot_slots_enabled' => true,
+            'pilot_slots' => [
+                [
+                    'airline_icao' => 'AVA',
+                    'flight_number' => '001',
+                    'aircraft' => 'A320',
+                    'origin' => 'SEQM',
+                    'destination' => 'SEGU',
+                    'departs_at' => '2026-06-01 18:00',
+                    'arrives_at' => null,
+                    'gate' => 'B12',
+                ],
+            ],
+        ]);
+
+        $this->actingAs($user)->post(route('dashboard.events.store'), $payload)
+            ->assertSessionHasErrors('pilot_slots.0.category');
+
+        $this->assertDatabaseCount('pilot_slots', 0);
+    }
+
+    #[Test]
+    public function pilot_slot_category_must_be_a_valid_value(): void
+    {
+        $user = User::factory()->director()->create();
+
+        $payload = array_merge($this->validPayload(), [
+            'pilot_slots_enabled' => true,
+            'pilot_slots' => [
+                [
+                    'airline_icao' => 'AVA',
+                    'flight_number' => '001',
+                    'aircraft' => 'A320',
+                    'origin' => 'SEQM',
+                    'destination' => 'SEGU',
+                    'category' => 'private',
+                    'departs_at' => '2026-06-01 18:00',
+                    'arrives_at' => null,
+                    'gate' => 'B12',
+                ],
+            ],
+        ]);
+
+        $this->actingAs($user)->post(route('dashboard.events.store'), $payload)
+            ->assertSessionHasErrors('pilot_slots.0.category');
+
+        $this->assertDatabaseCount('pilot_slots', 0);
     }
 
     #[Test]
@@ -168,9 +228,10 @@ class EventsStoreTest extends TestCase
                     'aircraft' => 'A320',
                     'origin' => 'SEQM',
                     'destination' => 'SEGU',
+                    'category' => PilotSlotCategory::DEPARTURE->value,
                     'departs_at' => '2026-06-01 18:00',
-                    // The CSV row only filled arrival_date, so the merged value
-                    // arrives half-formed and must be rejected.
+                    // A half-filled arrival value (only the date, no time) must
+                    // be rejected rather than silently accepted.
                     'arrives_at' => '2026-06-01 ',
                     'gate' => 'B12',
                 ],
@@ -197,6 +258,7 @@ class EventsStoreTest extends TestCase
                     'aircraft' => 'A320',
                     'origin' => 'SEQM',
                     'destination' => 'SEGU',
+                    'category' => PilotSlotCategory::DEPARTURE->value,
                     'departs_at' => '2026-06-01 18:00',
                     'arrives_at' => '2026-06-01 17:00',
                     'gate' => 'B12',

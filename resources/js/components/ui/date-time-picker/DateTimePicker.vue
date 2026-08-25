@@ -12,7 +12,7 @@ const props = withDefaults(
         modelValue?: string;
         placeholder?: string;
         disabled?: boolean;
-        /** ISO datetime string (yyyy-MM-ddTHH:mm) — only dates/times at or after this are selectable */
+        /** ISO datetime string (yyyy-MM-ddTHH:mm) — only dates/times strictly after this are selectable */
         minValue?: string;
     }>(),
     {
@@ -60,7 +60,7 @@ const minTime = computed<string | undefined>(() => {
 
 const timeOptions = computed<string[]>(() => {
     if (!minTime.value) return allTimeOptions;
-    return allTimeOptions.filter((t) => t >= minTime.value!);
+    return allTimeOptions.filter((t) => t > minTime.value!);
 });
 
 function parseModelValue(value: string): { date: CalendarDate | undefined; time: string } {
@@ -141,7 +141,7 @@ function scrollToSelected(): void {
 watch(
     () => props.minValue,
     () => {
-        if (selectedTime.value && minTime.value && selectedTime.value < minTime.value) {
+        if (selectedTime.value && minTime.value && selectedTime.value <= minTime.value) {
             selectedTime.value = '';
             emit('update:modelValue', '');
         }
@@ -189,6 +189,12 @@ watch(open, (isOpen) => {
                     ref="timeListRef"
                     class="h-64 w-28 overflow-y-auto py-1"
                 >
+                    <p
+                        v-if="timeOptions.length === 0"
+                        class="px-2 py-1.5 text-center text-xs text-muted-foreground"
+                    >
+                        {{ $t('No times available for this date.') }}
+                    </p>
                     <button
                         v-for="time in timeOptions"
                         :key="time"

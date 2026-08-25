@@ -87,6 +87,10 @@ export enum PilotRating {
     SFI = 9,
     CFI = 10,
 }
+export enum PilotSlotCategory {
+    DEPARTURE = 'departure',
+    ARRIVAL = 'arrival',
+}
 export enum PilotTraining {
     Fs2Fs3Intro = 'fs2_fs3_intro',
     PpTheory1 = 'pp_theory_1',

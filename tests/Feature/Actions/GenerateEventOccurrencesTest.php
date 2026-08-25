@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Actions;
 
 use App\Actions\Events\GenerateEventOccurrences;
+use App\Enums\PilotSlotCategory;
 use App\Models\Event;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -61,6 +62,7 @@ class GenerateEventOccurrencesTest extends TestCase
                 'aircraft' => 'A320',
                 'origin' => 'SEQM',
                 'destination' => 'SEGU',
+                'category' => PilotSlotCategory::ARRIVAL->value,
                 'departs_at' => '2026-06-01 18:30',
                 'arrives_at' => '2026-06-01 20:15',
                 'gate' => 'B12',
@@ -82,6 +84,10 @@ class GenerateEventOccurrencesTest extends TestCase
         $this->assertSame(
             '2026-06-08 20:15',
             $secondWeek->pilotSlots->first()->arrives_at?->format('Y-m-d H:i'),
+        );
+        $this->assertSame(
+            PilotSlotCategory::ARRIVAL,
+            $secondWeek->pilotSlots->first()->category,
         );
         $this->assertSame(
             '2026-06-08 18:00',
@@ -117,6 +123,7 @@ class GenerateEventOccurrencesTest extends TestCase
                 'aircraft' => 'A320',
                 'origin' => 'SEQM',
                 'destination' => 'SEGU',
+                'category' => PilotSlotCategory::DEPARTURE->value,
                 'departs_at' => '2026-06-01 18:30',
                 'arrives_at' => null,
                 'gate' => 'B12',

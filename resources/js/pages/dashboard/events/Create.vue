@@ -126,8 +126,10 @@ watch([() => form.starts_at, () => form.ends_at], ([startsAt, endsAt]) => {
         return;
     }
 
-    form.atc_slots = [];
-    form.pilot_slots = [];
+    if (form.atc_slots.length === 0 && form.pilot_slots.length === 0) {
+        return;
+    }
+
     toast.info(
         wTrans(
             'Event date and time changed. Please review ATC and Pilot slots.',
@@ -614,6 +616,7 @@ function submit(): void {
                 v-model:slots="form.pilot_slots"
                 v-model:enabled="form.pilot_slots_enabled"
                 :error="form.errors.pilot_slots ?? pilotSlotErrors"
+                :field-errors="form.errors"
             />
 
             <!-- Global error -->

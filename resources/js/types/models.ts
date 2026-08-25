@@ -3,6 +3,7 @@ import type {
     EventStatus,
     EventTag,
     EventType,
+    PilotSlotCategory,
     PilotTraining,
     SlotStatus,
     TrainingRequestStatus,
@@ -49,6 +50,7 @@ export type PilotSlot = {
     aircraft: string;
     origin: string;
     destination: string;
+    category: PilotSlotCategory;
     departs_at: string;
     arrives_at: string | null;
     gate: string | null;
@@ -84,6 +86,7 @@ export type PilotSlotRow = {
     aircraft: string;
     origin: string;
     destination: string;
+    category: PilotSlotCategory;
     departs_at: string;
     arrives_at: string | null;
     gate: string;

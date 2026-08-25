@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\PilotSlotCategory;
 use App\Enums\SlotStatus;
 use App\Models\Concerns\IsReservableSlot;
 use Carbon\CarbonImmutable;
@@ -22,6 +23,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $aircraft
  * @property string $origin
  * @property string $destination
+ * @property PilotSlotCategory $category
  * @property CarbonImmutable $departs_at
  * @property CarbonImmutable|null $arrives_at
  * @property string|null $gate
@@ -64,6 +66,7 @@ class PilotSlot extends Model
             'id' => 'integer',
             'event_id' => 'integer',
             'pilot_id' => 'integer',
+            'category' => PilotSlotCategory::class,
             'departs_at' => 'immutable_datetime',
             'arrives_at' => 'immutable_datetime',
             'status' => SlotStatus::class,

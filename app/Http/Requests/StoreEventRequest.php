@@ -7,6 +7,7 @@ namespace App\Http\Requests;
 use App\Enums\EventTag;
 use App\Enums\EventType;
 use App\Enums\Permission;
+use App\Enums\PilotSlotCategory;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -66,6 +67,7 @@ class StoreEventRequest extends FormRequest
             'pilot_slots.*.aircraft' => ['required_with:pilot_slots', 'string', 'max:10'],
             'pilot_slots.*.origin' => ['required_with:pilot_slots', 'string', 'size:4'],
             'pilot_slots.*.destination' => ['required_with:pilot_slots', 'string', 'size:4'],
+            'pilot_slots.*.category' => ['required_with:pilot_slots', Rule::enum(PilotSlotCategory::class)],
             'pilot_slots.*.departs_at' => ['required_with:pilot_slots', 'date_format:Y-m-d H:i'],
             'pilot_slots.*.arrives_at' => ['nullable', 'date_format:Y-m-d H:i', 'after:pilot_slots.*.departs_at'],
             'pilot_slots.*.gate' => ['nullable', 'string', 'max:10'],
