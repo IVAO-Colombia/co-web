@@ -17,6 +17,7 @@ enum PagesComponents: string
     case DASHBOARD_TRAININGS = 'dashboard/trainings/Index';
     case STAFF_TRAININGS_INDEX = 'dashboard/staff/trainings/Index';
     case STAFF_TRAININGS_SHOW = 'dashboard/staff/trainings/Show';
+    case STAFF_USERS_INDEX = 'dashboard/staff/users/Index';
 
     /** Frontend components for different event-related pages */
     case LANDING_HOME = 'Welcome';

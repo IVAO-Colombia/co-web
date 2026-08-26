@@ -111,6 +111,7 @@ class SpatieRolesAndPermissionsSeeder extends Seeder
                 EnumsPermission::UPDATE_TRAINING_REQUESTS,
                 EnumsPermission::ASSIGN_TRAINING_REQUESTS,
                 EnumsPermission::EDIT_TRAINING_NOTES,
+                EnumsPermission::VIEW_USERS,
             ],
             EnumsRole::ADIR->value => [
                 EnumsPermission::STAFF_ACCESS,
@@ -125,6 +126,7 @@ class SpatieRolesAndPermissionsSeeder extends Seeder
                 EnumsPermission::UPDATE_TRAINING_REQUESTS,
                 EnumsPermission::ASSIGN_TRAINING_REQUESTS,
                 EnumsPermission::EDIT_TRAINING_NOTES,
+                EnumsPermission::VIEW_USERS,
             ],
             EnumsRole::FOC->value => [
                 EnumsPermission::STAFF_ACCESS,
@@ -203,6 +205,7 @@ class SpatieRolesAndPermissionsSeeder extends Seeder
                 EnumsPermission::GENERATE_EVENT_IMAGES,
                 EnumsPermission::VIEW_EVENTS,
                 EnumsPermission::VIEW_TRAINING_REQUESTS,
+                EnumsPermission::VIEW_USERS,
             ],
             EnumsRole::EC->value => [
                 EnumsPermission::STAFF_ACCESS,
@@ -264,6 +267,7 @@ class SpatieRolesAndPermissionsSeeder extends Seeder
                 EnumsPermission::UPDATE_TRAINING_REQUESTS,
                 EnumsPermission::ASSIGN_TRAINING_REQUESTS,
                 EnumsPermission::EDIT_TRAINING_NOTES,
+                EnumsPermission::VIEW_USERS,
             ],
             EnumsRole::AWM->value => [
                 EnumsPermission::STAFF_ACCESS,
@@ -277,6 +281,7 @@ class SpatieRolesAndPermissionsSeeder extends Seeder
                 EnumsPermission::UPDATE_TRAINING_REQUESTS,
                 EnumsPermission::ASSIGN_TRAINING_REQUESTS,
                 EnumsPermission::EDIT_TRAINING_NOTES,
+                EnumsPermission::VIEW_USERS,
             ],
             EnumsRole::WMA->value => [
                 EnumsPermission::STAFF_ACCESS,
@@ -290,6 +295,7 @@ class SpatieRolesAndPermissionsSeeder extends Seeder
                 EnumsPermission::UPDATE_TRAINING_REQUESTS,
                 EnumsPermission::ASSIGN_TRAINING_REQUESTS,
                 EnumsPermission::EDIT_TRAINING_NOTES,
+                EnumsPermission::VIEW_USERS,
             ],
         ];
     }

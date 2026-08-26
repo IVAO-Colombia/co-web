@@ -7,6 +7,7 @@ import {
     House,
     CalendarCheck,
     Image,
+    Users,
 } from 'lucide-vue-next';
 import type { ComputedRef } from 'vue';
 import { computed } from 'vue';
@@ -29,6 +30,7 @@ import { imageGenerator } from '@/routes/dashboard';
 import events from '@/routes/dashboard/events';
 import { index as reservationsIndex } from '@/routes/dashboard/reservations';
 import { index as staffTrainingRequestsIndex } from '@/routes/dashboard/staff/training-requests';
+import { index as staffUsersIndex } from '@/routes/dashboard/staff/users';
 import { index as trainingsIndex } from '@/routes/dashboard/trainings';
 import type { NavItem } from '@/types';
 import { Permission } from '@/types';
@@ -67,16 +69,22 @@ const footerNavItems: ComputedRef<NavItem[]> = computed(() =>
             visible: hasPermission(Permission.VIEW_EVENTS),
         },
         {
+            title: wTrans('Trainings'),
+            href: staffTrainingRequestsIndex(),
+            icon: GraduationCap,
+            visible: hasPermission(Permission.VIEW_TRAINING_REQUESTS),
+        },
+        {
+            title: wTrans('Users'),
+            href: staffUsersIndex(),
+            icon: Users,
+            visible: hasPermission(Permission.VIEW_USERS),
+        },
+        {
             title: wTrans('Event Image Generator'),
             href: imageGenerator(),
             icon: Image,
             visible: hasPermission(Permission.GENERATE_EVENT_IMAGES),
-        },
-        {
-            title: wTrans('Training Requests'),
-            href: staffTrainingRequestsIndex(),
-            icon: GraduationCap,
-            visible: hasPermission(Permission.VIEW_TRAINING_REQUESTS),
         },
     ].filter((item) => item.visible),
 );

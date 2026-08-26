@@ -5,6 +5,7 @@ import {
     EventStatus,
     EventTag,
     EventType,
+    Role,
     SlotStatus,
     TrainingRequestStatus,
     TrainingRequestType,
@@ -99,6 +100,35 @@ export const TrainingRequestConstants: TrainingRequestConstantsType = {
     typeLabels: {
         [TrainingRequestType.ATC]: wTrans('ATC'),
         [TrainingRequestType.Pilot]: wTrans('Pilot'),
+    },
+};
+
+export type RoleConstantsType = {
+    labels: Record<Role, string | ComputedRef<string>>;
+};
+
+export const RoleConstants: RoleConstantsType = {
+    labels: {
+        [Role.DIR]: wTrans('Director'),
+        [Role.ADIR]: wTrans('Assistant Director'),
+        [Role.FOC]: wTrans('Flight Operations Coordinator'),
+        [Role.FOAC]: wTrans('Flight Operations Assistant Coordinator'),
+        [Role.AOC]: wTrans('ATC Operations Coordinator'),
+        [Role.AOAC]: wTrans('ATC Operations Assistant Coordinator'),
+        [Role.TC]: wTrans('Training Coordinator'),
+        [Role.TAC]: wTrans('Training Assistant Coordinator'),
+        [Role.TA]: wTrans('Division Training Advisor'),
+        [Role.T0]: wTrans('Division Trainer'),
+        [Role.MC]: wTrans('Membership Coordinator'),
+        [Role.EC]: wTrans('Event Coordinator'),
+        [Role.EAC]: wTrans('Event Assistant Coordinator'),
+        [Role.EA]: wTrans('Division Event Advisor'),
+        [Role.PRC]: wTrans('Public Relations Coordinator'),
+        [Role.PRAC]: wTrans('Public Relations Assistant Coordinator'),
+        [Role.PRA]: wTrans('Public Relations Advisor'),
+        [Role.WM]: wTrans('Webmaster'),
+        [Role.AWM]: wTrans('Assistant Webmaster'),
+        [Role.WMA]: wTrans('Webmaster Advisor'),
     },
 };
 
