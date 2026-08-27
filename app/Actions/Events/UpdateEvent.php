@@ -48,6 +48,7 @@ class UpdateEvent
                         'aircraft' => $slot['aircraft'],
                         'origin' => $slot['origin'],
                         'destination' => $slot['destination'],
+                        'category' => $slot['category'],
                         'departs_at' => $slot['departs_at'],
                         'arrives_at' => $slot['arrives_at'] ?? null,
                         'gate' => $slot['gate'] ?? null,

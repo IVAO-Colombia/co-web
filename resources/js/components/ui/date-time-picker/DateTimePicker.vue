@@ -12,14 +12,17 @@ const props = withDefaults(
         modelValue?: string;
         placeholder?: string;
         disabled?: boolean;
-        /** ISO datetime string (yyyy-MM-ddTHH:mm) — only dates/times at or after this are selectable */
+        /** ISO datetime string (yyyy-MM-ddTHH:mm) — only dates/times strictly after this are selectable */
         minValue?: string;
+        /** Show separate Hour/Minute lists for per-minute precision instead of the 30-minute list */
+        preciseTime?: boolean;
     }>(),
     {
         modelValue: '',
         placeholder: 'Pick a date and time',
         disabled: false,
         minValue: undefined,
+        preciseTime: false,
     },
 );
 
@@ -60,7 +63,32 @@ const minTime = computed<string | undefined>(() => {
 
 const timeOptions = computed<string[]>(() => {
     if (!minTime.value) return allTimeOptions;
-    return allTimeOptions.filter((t) => t >= minTime.value!);
+    return allTimeOptions.filter((t) => t > minTime.value!);
+});
+
+// Precise mode: an Hour list (00-23) and a Minute list (00-59) instead of the
+// single 30-minute list, for fields that need per-minute precision.
+const allHourOptions = Array.from({ length: 24 }, (_, h) => String(h).padStart(2, '0'));
+const allMinuteOptions = Array.from({ length: 60 }, (_, m) => String(m).padStart(2, '0'));
+
+const selectedHour = computed<string>(() => selectedTime.value ? selectedTime.value.slice(0, 2) : '');
+const selectedMinute = computed<string>(() => selectedTime.value ? selectedTime.value.slice(3, 5) : '');
+
+const hourOptions = computed<string[]>(() => {
+    if (!minTime.value) return allHourOptions;
+    const minHour = minTime.value.slice(0, 2);
+    return allHourOptions.filter((h) => h >= minHour);
+});
+
+const minuteOptions = computed<string[]>(() => {
+    if (!minTime.value) return allMinuteOptions;
+    const minHour = minTime.value.slice(0, 2);
+    // Only restrict minutes once an hour is picked and it equals the min hour.
+    if (selectedHour.value && selectedHour.value === minHour) {
+        const minMinute = minTime.value.slice(3, 5);
+        return allMinuteOptions.filter((m) => m > minMinute);
+    }
+    return allMinuteOptions;
 });
 
 function parseModelValue(value: string): { date: CalendarDate | undefined; time: string } {
@@ -82,6 +110,12 @@ const { date: initialDate, time: initialTime } = parseModelValue(props.modelValu
 const selectedDate = ref<CalendarDate | undefined>(initialDate);
 const selectedTime = ref<string>(initialTime || '');
 const open = ref(false);
+
+// Precise mode: whether the hour/minute were explicitly clicked this session,
+// as opposed to `selectedTime` merely holding a defaulted '00' for the half
+// not yet picked. Drives when the popover is allowed to auto-close.
+const hourChosen = ref(false);
+const minuteChosen = ref(false);
 
 watch(
     () => props.modelValue,
@@ -109,7 +143,25 @@ function onTimeSelect(time: string): void {
     selectedTime.value = time;
     const value = buildIsoValue();
     if (value) emit('update:modelValue', value);
-    if (selectedDate.value !== undefined) open.value = false;
+
+    if (selectedDate.value === undefined) return;
+
+    // The plain 30-minute list is a single click that fully determines the
+    // time. Precise mode is two separate clicks, so only close once both the
+    // hour and the minute have actually been picked this session.
+    if (!props.preciseTime || (hourChosen.value && minuteChosen.value)) {
+        open.value = false;
+    }
+}
+
+function selectPreciseHour(hour: string): void {
+    hourChosen.value = true;
+    onTimeSelect(`${hour}:${selectedMinute.value || '00'}`);
+}
+
+function selectPreciseMinute(minute: string): void {
+    minuteChosen.value = true;
+    onTimeSelect(`${selectedHour.value || '00'}:${minute}`);
 }
 
 // CalendarDate is part of the DateValue union but Volar can't narrow it structurally
@@ -127,29 +179,49 @@ const displayValue = computed<string>(() => {
 });
 
 const timeListRef = ref<HTMLElement | null>(null);
+const hourListRef = ref<HTMLElement | null>(null);
+const minuteListRef = ref<HTMLElement | null>(null);
 
-function scrollToSelected(): void {
-    if (!timeListRef.value || !selectedTime.value) return;
-    const idx = timeOptions.value.indexOf(selectedTime.value);
+function scrollListToValue(el: HTMLElement | null, options: string[], value: string): void {
+    if (!el || !value) return;
+    const idx = options.indexOf(value);
     if (idx !== -1) {
-        const item = timeListRef.value.children[idx] as HTMLElement;
+        const item = el.children[idx] as HTMLElement;
         item?.scrollIntoView({ block: 'center' });
     }
+}
+
+function scrollToSelected(): void {
+    if (props.preciseTime) {
+        scrollListToValue(hourListRef.value, hourOptions.value, selectedHour.value);
+        scrollListToValue(minuteListRef.value, minuteOptions.value, selectedMinute.value);
+        return;
+    }
+    scrollListToValue(timeListRef.value, timeOptions.value, selectedTime.value);
 }
 
 // Clear the selected time if it's no longer valid when minValue changes
 watch(
     () => props.minValue,
     () => {
-        if (selectedTime.value && minTime.value && selectedTime.value < minTime.value) {
+        if (selectedTime.value && minTime.value && selectedTime.value <= minTime.value) {
             selectedTime.value = '';
+            hourChosen.value = false;
+            minuteChosen.value = false;
             emit('update:modelValue', '');
         }
     },
 );
 
 watch(open, (isOpen) => {
-    if (isOpen) nextTick(scrollToSelected);
+    if (isOpen) {
+        // A value already set when opening only needs one more click to
+        // finish (the other half keeps its valid value); a fresh/empty
+        // picker needs a deliberate click on each list before it can close.
+        hourChosen.value = !!selectedTime.value;
+        minuteChosen.value = !!selectedTime.value;
+        nextTick(scrollToSelected);
+    }
 });
 </script>
 
@@ -185,10 +257,71 @@ watch(open, (isOpen) => {
                     <Clock class="text-muted-foreground size-3.5" />
                     <span class="text-xs font-semibold tracking-wide uppercase">UTC</span>
                 </div>
+
+                <!-- Precise mode: separate Hour / Minute lists -->
+                <div v-if="preciseTime" class="flex">
+                    <div class="flex flex-col border-r">
+                        <div class="border-b px-2 py-1.5 text-center text-[10px] font-semibold tracking-wide text-muted-foreground uppercase">
+                            {{ $t('Hour') }}
+                        </div>
+                        <div
+                            ref="hourListRef"
+                            class="h-64 w-14 overflow-y-auto py-1"
+                        >
+                            <button
+                                v-for="hour in hourOptions"
+                                :key="hour"
+                                type="button"
+                                :class="cn(
+                                    'mx-1 flex w-[calc(100%-8px)] cursor-pointer items-center justify-center rounded-md px-1 py-1.5 text-sm transition-colors',
+                                    selectedHour === hour
+                                        ? 'bg-primary text-primary-foreground font-medium'
+                                        : 'hover:bg-accent hover:text-accent-foreground',
+                                )"
+                                @click="selectPreciseHour(hour)"
+                            >
+                                {{ hour }}
+                            </button>
+                        </div>
+                    </div>
+                    <div class="flex flex-col">
+                        <div class="border-b px-2 py-1.5 text-center text-[10px] font-semibold tracking-wide text-muted-foreground uppercase">
+                            {{ $t('Minute') }}
+                        </div>
+                        <div
+                            ref="minuteListRef"
+                            class="h-64 w-14 overflow-y-auto py-1"
+                        >
+                            <button
+                                v-for="minute in minuteOptions"
+                                :key="minute"
+                                type="button"
+                                :class="cn(
+                                    'mx-1 flex w-[calc(100%-8px)] cursor-pointer items-center justify-center rounded-md px-1 py-1.5 text-sm transition-colors',
+                                    selectedMinute === minute
+                                        ? 'bg-primary text-primary-foreground font-medium'
+                                        : 'hover:bg-accent hover:text-accent-foreground',
+                                )"
+                                @click="selectPreciseMinute(minute)"
+                            >
+                                {{ minute }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Default mode: single 30-minute list -->
                 <div
+                    v-else
                     ref="timeListRef"
                     class="h-64 w-28 overflow-y-auto py-1"
                 >
+                    <p
+                        v-if="timeOptions.length === 0"
+                        class="px-2 py-1.5 text-center text-xs text-muted-foreground"
+                    >
+                        {{ $t('No times available for this date.') }}
+                    </p>
                     <button
                         v-for="time in timeOptions"
                         :key="time"

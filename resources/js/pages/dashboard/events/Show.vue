@@ -4,6 +4,7 @@ import { trans, wTrans } from 'laravel-vue-i18n';
 import {
     CalendarDays,
     ChevronLeft,
+    Download,
     MapPin,
     PlaneTakeoff,
     Radio,
@@ -41,6 +42,7 @@ import { usePermissions } from '@/composables/usePermissions';
 import { formatDateTime, toUTCDateTime } from '@/lib/utils';
 import { destroy, index, show as showRoute } from '@/routes/dashboard/events';
 import pilotSlotRoutes from '@/routes/dashboard/events/pilot-slot';
+import pilotSlotsReport from '@/routes/dashboard/events/pilot-slots';
 import type { EventDetail, PilotSlot } from '@/types';
 import {
     EventConstants,
@@ -452,9 +454,23 @@ function confirmCancelPilotSlot(): void {
                         />
                         {{ $t('Pilot Slots') }}
                     </CardTitle>
-                    <Badge variant="outline">
-                        {{ event.pilot_slots.length }}
-                    </Badge>
+                    <div class="flex items-center gap-2">
+                        <Badge variant="outline">
+                            {{ event.pilot_slots.length }}
+                        </Badge>
+                        <Button variant="outline" size="sm" as-child>
+                            <a
+                                :href="
+                                    pilotSlotsReport.report.url({
+                                        event: event.slug,
+                                    })
+                                "
+                            >
+                                <Download class="size-4" />
+                                {{ $t('Download report') }}
+                            </a>
+                        </Button>
+                    </div>
                 </div>
                 <CardDescription>
                     {{ $t('Pilot slot assignments for this event.') }}
@@ -470,8 +486,9 @@ function confirmCancelPilotSlot(): void {
                                 <TableHead>{{ $t('Aircraft') }}</TableHead>
                                 <TableHead>{{ $t('Origin') }}</TableHead>
                                 <TableHead>{{ $t('Destination') }}</TableHead>
-                                <TableHead>{{ $t('Departs At') }}</TableHead>
-                                <TableHead>{{ $t('Arrives At') }}</TableHead>
+                                <TableHead>{{ $t('Category') }}</TableHead>
+                                <TableHead>{{ $t('EOBT') }}</TableHead>
+                                <TableHead>{{ $t('ETA') }}</TableHead>
                                 <TableHead>{{ $t('Gate') }}</TableHead>
                                 <TableHead>{{ $t('Status') }}</TableHead>
                                 <TableHead>{{ $t('Reserved By') }}</TableHead>
@@ -481,7 +498,7 @@ function confirmCancelPilotSlot(): void {
                         <TableBody>
                             <TableEmpty
                                 v-if="event.pilot_slots.length === 0"
-                                :colspan="11"
+                                :colspan="12"
                             >
                                 <p class="py-6 text-sm text-muted-foreground">
                                     {{ $t('No pilot slots added yet.') }}
@@ -503,6 +520,13 @@ function confirmCancelPilotSlot(): void {
                                 </TableCell>
                                 <TableCell class="font-mono">
                                     {{ slot.destination }}
+                                </TableCell>
+                                <TableCell>
+                                    {{
+                                        SlotsConstants.pilotCategoryLabels[
+                                            slot.category
+                                        ]
+                                    }}
                                 </TableCell>
                                 <TableCell>
                                     {{ toUTCDateTime(slot.departs_at) }} UTC

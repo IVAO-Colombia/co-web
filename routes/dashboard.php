@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\EventsController;
 use App\Http\Controllers\Dashboard\ImageGeneratorController;
+use App\Http\Controllers\Dashboard\PilotSlotsReportController;
 use App\Http\Controllers\Dashboard\ReservationsController;
 use App\Http\Controllers\Dashboard\Staff\SendIvaoTrainingRequestReminderController;
 use App\Http\Controllers\Dashboard\Staff\TrainingRequestsController as StaffTrainingRequestsController;
@@ -27,6 +28,8 @@ Route::delete('events/{event:slug}/reservations/atc-slot/{slot}', [AtcSlotReserv
 Route::post('/events/{event:slug}/reservations/pilot-slot/{slot}', [PilotSlotReservationsController::class, 'store'])->name('dashboard.events.pilot-slot.store');
 Route::patch('events/{event:slug}/reservations/pilot-slot/{slot}', [PilotSlotReservationsController::class, 'update'])->name('dashboard.events.pilot-slot.update');
 Route::delete('events/{event:slug}/reservations/pilot-slot/{slot}', [PilotSlotReservationsController::class, 'destroy'])->name('dashboard.events.pilot-slot.destroy');
+
+Route::get('events/{event:slug}/pilot-slots/report', PilotSlotsReportController::class)->name('dashboard.events.pilot-slots.report');
 
 Route::resource('events', EventsController::class)
     ->scoped(['event' => 'slug'])

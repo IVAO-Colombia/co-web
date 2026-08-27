@@ -5,6 +5,7 @@ import {
     EventStatus,
     EventTag,
     EventType,
+    PilotSlotCategory,
     SlotStatus,
     TrainingRequestStatus,
     TrainingRequestType,
@@ -62,6 +63,10 @@ export const EventConstants: EventConstantsType = {
 export type SlotsConstantsType = {
     statusLabels: Record<SlotStatus, string | ComputedRef<string>>;
     statusVariants: Record<SlotStatus, BadgeVariants['variant']>;
+    pilotCategoryLabels: Record<
+        PilotSlotCategory,
+        string | ComputedRef<string>
+    >;
 };
 
 export const SlotsConstants: SlotsConstantsType = {
@@ -74,6 +79,10 @@ export const SlotsConstants: SlotsConstantsType = {
         [SlotStatus.AVAILABLE]: 'outline',
         [SlotStatus.RESERVED]: 'outline',
         [SlotStatus.CONFIRMED]: 'default',
+    },
+    pilotCategoryLabels: {
+        [PilotSlotCategory.DEPARTURE]: wTrans('Departure'),
+        [PilotSlotCategory.ARRIVAL]: wTrans('Arrival'),
     },
 };
 

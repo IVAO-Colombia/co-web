@@ -8,6 +8,8 @@ use App\Enums\EventStatus;
 use App\Enums\EventTag;
 use App\Enums\EventType;
 use App\Enums\Permission;
+use App\Enums\PilotSlotCategory;
+use App\Models\Event;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -35,7 +37,7 @@ class UpdateEventRequest extends FormRequest
             'image' => ['nullable', 'file', 'mimes:jpeg,jpg,png,webp', 'max:2048'],
             'tags' => ['nullable', 'array'],
             'tags.*' => [Rule::enum(EventTag::class)],
-            'status' => ['required', Rule::in([EventStatus::ACTIVE->value, EventStatus::CANCELLED->value])],
+            'status' => ['required', Rule::in($this->allowedStatuses())],
             'pilot_slots_enabled' => ['boolean'],
             'atc_slots_enabled' => ['boolean'],
             'pilot_slots' => ['nullable', 'array', Rule::requiredIf($this->boolean('pilot_slots_enabled'))],
@@ -44,6 +46,7 @@ class UpdateEventRequest extends FormRequest
             'pilot_slots.*.aircraft' => ['required_with:pilot_slots', 'string', 'max:10'],
             'pilot_slots.*.origin' => ['required_with:pilot_slots', 'string', 'size:4'],
             'pilot_slots.*.destination' => ['required_with:pilot_slots', 'string', 'size:4'],
+            'pilot_slots.*.category' => ['required_with:pilot_slots', Rule::enum(PilotSlotCategory::class)],
             'pilot_slots.*.departs_at' => ['required_with:pilot_slots', 'date_format:Y-m-d H:i'],
             'pilot_slots.*.arrives_at' => ['nullable', 'date_format:Y-m-d H:i', 'after:pilot_slots.*.departs_at'],
             'pilot_slots.*.gate' => ['nullable', 'string', 'max:10'],
@@ -52,5 +55,26 @@ class UpdateEventRequest extends FormRequest
             'atc_slots.*.starts_at' => ['required_with:atc_slots', 'date_format:Y-m-d H:i'],
             'atc_slots.*.ends_at' => ['required_with:atc_slots', 'date_format:Y-m-d H:i'],
         ];
+    }
+
+    /**
+     * Active and cancelled are always selectable. Draft is only blocked once
+     * the event has reserved slots - reverting a live, booked event back to
+     * draft would strand those reservations, but an untouched event can
+     * freely move to and from draft. Finalized is never user-selectable.
+     *
+     * @return array<int, string>
+     */
+    private function allowedStatuses(): array
+    {
+        $statuses = [EventStatus::ACTIVE->value, EventStatus::CANCELLED->value];
+
+        $event = $this->route('event');
+
+        if ($event instanceof Event && ! $event->hasReservedSlots()) {
+            $statuses[] = EventStatus::DRAFT->value;
+        }
+
+        return $statuses;
     }
 }

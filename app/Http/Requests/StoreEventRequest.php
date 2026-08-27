@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
+use App\Enums\EventStatus;
 use App\Enums\EventTag;
 use App\Enums\EventType;
 use App\Enums\Permission;
+use App\Enums\PilotSlotCategory;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -27,6 +29,8 @@ class StoreEventRequest extends FormRequest
     #[\Override]
     protected function prepareForValidation(): void
     {
+        $this->mergeIfMissing(['status' => EventStatus::ACTIVE->value]);
+
         $weekdays = $this->input('recurrence_weekdays');
 
         if (! is_array($weekdays)) {
@@ -52,6 +56,7 @@ class StoreEventRequest extends FormRequest
             'description' => ['required', 'string'],
             'description_en' => ['nullable', 'string'],
             'type' => ['required', Rule::enum(EventType::class)],
+            'status' => ['required', Rule::in([EventStatus::DRAFT->value, EventStatus::ACTIVE->value])],
             'locations' => ['required', 'string', 'max:255'],
             'starts_at' => ['required', 'date'],
             'ends_at' => ['nullable', 'date', 'after:starts_at'],
@@ -66,6 +71,7 @@ class StoreEventRequest extends FormRequest
             'pilot_slots.*.aircraft' => ['required_with:pilot_slots', 'string', 'max:10'],
             'pilot_slots.*.origin' => ['required_with:pilot_slots', 'string', 'size:4'],
             'pilot_slots.*.destination' => ['required_with:pilot_slots', 'string', 'size:4'],
+            'pilot_slots.*.category' => ['required_with:pilot_slots', Rule::enum(PilotSlotCategory::class)],
             'pilot_slots.*.departs_at' => ['required_with:pilot_slots', 'date_format:Y-m-d H:i'],
             'pilot_slots.*.arrives_at' => ['nullable', 'date_format:Y-m-d H:i', 'after:pilot_slots.*.departs_at'],
             'pilot_slots.*.gate' => ['nullable', 'string', 'max:10'],

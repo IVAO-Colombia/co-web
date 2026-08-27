@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Dashboard;
 
 use App\Enums\EventStatus;
+use App\Enums\PilotSlotCategory;
 use App\Models\AtcSlot;
 use App\Models\Event;
 use App\Models\PilotSlot;
@@ -97,18 +98,47 @@ class EventsUpdateTest extends TestCase
     }
 
     #[Test]
-    public function draft_and_finalized_statuses_are_rejected(): void
+    public function finalized_status_is_always_rejected(): void
     {
         $event = Event::factory()->create();
         $user = User::factory()->director()->create();
 
-        foreach ([EventStatus::DRAFT->value, EventStatus::FINALIZED->value] as $status) {
-            $this->actingAs($user)
-                ->put(route('dashboard.events.update', $event), array_merge($this->validPayload($event), [
-                    'status' => $status,
-                ]))
-                ->assertSessionHasErrors('status');
-        }
+        $this->actingAs($user)
+            ->put(route('dashboard.events.update', $event), array_merge($this->validPayload($event), [
+                'status' => EventStatus::FINALIZED->value,
+            ]))
+            ->assertSessionHasErrors('status');
+    }
+
+    #[Test]
+    public function draft_status_is_accepted_when_the_event_has_no_reserved_slots(): void
+    {
+        $event = Event::factory()->create(['status' => EventStatus::ACTIVE]);
+        $user = User::factory()->director()->create();
+
+        $this->actingAs($user)
+            ->put(route('dashboard.events.update', $event), array_merge($this->validPayload($event), [
+                'status' => EventStatus::DRAFT->value,
+            ]));
+
+        $this->assertDatabaseHas('events', [
+            'id' => $event->id,
+            'status' => EventStatus::DRAFT->value,
+        ]);
+    }
+
+    #[Test]
+    public function draft_status_is_rejected_when_the_event_has_reserved_slots(): void
+    {
+        $event = Event::factory()->create(['status' => EventStatus::ACTIVE]);
+        PilotSlot::factory()->reserved()->create(['event_id' => $event->id]);
+        $user = User::factory()->director()->create();
+
+        $this->actingAs($user)
+            ->put(route('dashboard.events.update', $event), array_merge($this->validPayload($event), [
+                'status' => EventStatus::DRAFT->value,
+            ]))
+            ->assertSessionHasErrors('status');
     }
 
     #[Test]
@@ -169,6 +199,7 @@ class EventsUpdateTest extends TestCase
                         'aircraft' => 'B738',
                         'origin' => 'SEQM',
                         'destination' => 'SEGU',
+                        'category' => PilotSlotCategory::ARRIVAL->value,
                         'departs_at' => '2026-06-01 18:00',
                         'arrives_at' => '2026-06-01 19:30',
                         'gate' => 'A1',
@@ -180,6 +211,7 @@ class EventsUpdateTest extends TestCase
         $this->assertDatabaseHas('pilot_slots', [
             'event_id' => $event->id,
             'airline_icao' => 'ECA',
+            'category' => PilotSlotCategory::ARRIVAL->value,
             'arrives_at' => '2026-06-01 19:30:00',
         ]);
     }
@@ -205,6 +237,7 @@ class EventsUpdateTest extends TestCase
                         'aircraft' => 'A320',
                         'origin' => 'SEQM',
                         'destination' => 'SEGU',
+                        'category' => PilotSlotCategory::DEPARTURE->value,
                         'departs_at' => '2026-06-01 18:00',
                         'gate' => '',
                     ],

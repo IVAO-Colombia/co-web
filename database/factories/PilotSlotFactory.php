@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
+use App\Enums\PilotSlotCategory;
 use App\Enums\SlotStatus;
 use App\Models\Event;
 use App\Models\PilotSlot;
@@ -28,10 +29,25 @@ class PilotSlotFactory extends Factory
             'aircraft' => fake()->regexify('[A-Za-z0-9]{4}'),
             'origin' => fake()->regexify('[A-Za-z0-9]{10}'),
             'destination' => fake()->regexify('[A-Za-z0-9]{10}'),
+            'category' => PilotSlotCategory::DEPARTURE,
             'departs_at' => $departsAt,
             'arrives_at' => (clone $departsAt)->modify('+2 hours'),
             'status' => SlotStatus::AVAILABLE,
         ];
+    }
+
+    public function departure(): self
+    {
+        return $this->state(fn (array $attributes) => [
+            'category' => PilotSlotCategory::DEPARTURE,
+        ]);
+    }
+
+    public function arrival(): self
+    {
+        return $this->state(fn (array $attributes) => [
+            'category' => PilotSlotCategory::ARRIVAL,
+        ]);
     }
 
     public function reserved(): self
