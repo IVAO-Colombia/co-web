@@ -24,6 +24,7 @@ import {
     CardTitle,
 } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import {
     Select,
     SelectContent,
@@ -453,12 +454,22 @@ const canRequestTrainings = computed(() => {
                                     <TableCell
                                         class="max-w-50 text-sm text-muted-foreground"
                                     >
-                                        <span
+                                        <Popover
                                             v-if="request.public_observations"
-                                            class="line-clamp-2"
                                         >
-                                            {{ request.public_observations }}
-                                        </span>
+                                            <PopoverTrigger
+                                                class="line-clamp-2 cursor-pointer text-left whitespace-normal wrap-break-word transition-colors hover:text-foreground"
+                                                :title="$t('View full note')"
+                                            >
+                                                {{ request.public_observations }}
+                                            </PopoverTrigger>
+                                            <PopoverContent
+                                                align="start"
+                                                class="max-h-72 w-80 overflow-y-auto text-sm leading-relaxed whitespace-pre-wrap"
+                                            >
+                                                {{ request.public_observations }}
+                                            </PopoverContent>
+                                        </Popover>
                                         <span v-else>—</span>
                                     </TableCell>
                                     <TableCell>
