@@ -56,6 +56,7 @@ export enum PagesComponents {
     DASHBOARD_TRAININGS = 'dashboard/trainings/Index',
     STAFF_TRAININGS_INDEX = 'dashboard/staff/trainings/Index',
     STAFF_TRAININGS_SHOW = 'dashboard/staff/trainings/Show',
+    STAFF_USERS_INDEX = 'dashboard/staff/users/Index',
     LANDING_HOME = 'Welcome',
     LANDING_EVENTS = 'landing/events/Index',
     LANDING_EVENTS_SHOW = 'landing/events/Show',
@@ -75,6 +76,7 @@ export enum Permission {
     EDIT_TRAINING_NOTES = 'edit_training_notes',
     BE_ASSIGNED_TO_TRAININGS = 'be_assigned_to_trainings',
     CANCEL_PILOT_SLOT = 'cancel_pilot_slot',
+    VIEW_USERS = 'view_users',
 }
 export enum PilotRating {
     FS1 = 2,

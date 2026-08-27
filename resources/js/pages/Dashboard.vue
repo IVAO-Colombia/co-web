@@ -14,7 +14,7 @@ import {
     TableRow,
 } from '@/components/ui/table';
 import { useLocale } from '@/composables/useLocale';
-import { formatDateTime } from '@/lib/utils';
+import { formatDateTime, formatHours } from '@/lib/utils';
 import { dashboard } from '@/routes';
 import { index as reservationsIndex } from '@/routes/dashboard/reservations';
 import { index as trainingsIndex } from '@/routes/dashboard/trainings';
@@ -44,13 +44,6 @@ setLayoutProps({
 });
 
 const { locale } = useLocale();
-
-function formatHours(seconds: number): string {
-    const h = Math.floor(seconds / 3600);
-    const m = Math.floor((seconds % 3600) / 60);
-
-    return `${h}h ${m}min`;
-}
 
 const pilotRating = computed(() =>
     props.pilotRating ? PilotRatings[props.pilotRating] : null,

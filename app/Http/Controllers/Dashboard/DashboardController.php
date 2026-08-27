@@ -18,7 +18,7 @@ class DashboardController extends Controller
     {
         /** @var User */
         $user = $request->user();
-        $hours = $this->getHours($user->raw_data);
+        $hours = array_map(fn (?int $seconds): int => $seconds ?? 0, $user->onlineHours());
 
         $trackerSessions = rescue(
             fn () => app(Ivao::class)->getTrackerSessions($user->vid),
@@ -42,24 +42,5 @@ class DashboardController extends Controller
             'atcRating' => $user->atc_rating,
             'pilotRating' => $user->pilot_rating,
         ]);
-    }
-
-    /**
-     * @param  array<array-key, mixed>|null  $rawData
-     * @return array<string, int>
-     */
-    private function getHours(?array $rawData): array
-    {
-        $result = ['pilot' => 0, 'atc' => 0, 'staff' => 0];
-
-        /** @var array<int, array{type?: string, hours: int}> $hoursData */
-        $hoursData = $rawData['hours'] ?? [];
-
-        foreach ($hoursData as $entry) {
-            $type = $entry['type'] ?? null;
-            $result[$type] = (int) $entry['hours'];
-        }
-
-        return $result;
     }
 }

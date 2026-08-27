@@ -131,4 +131,28 @@ class User extends Authenticatable
     {
         $query->permission(\App\Enums\Permission::BE_ASSIGNED_TO_TRAININGS->value);
     }
+
+    /**
+     * Online seconds from the user's last IVAO profile snapshot.
+     * Null for a type the snapshot does not carry (including when there is no snapshot at all).
+     *
+     * @return array{pilot: ?int, atc: ?int, staff: ?int}
+     */
+    public function onlineHours(): array
+    {
+        $result = ['pilot' => null, 'atc' => null, 'staff' => null];
+
+        /** @var array<int, array{type?: string, hours: int}> $hoursData */
+        $hoursData = $this->raw_data['hours'] ?? [];
+
+        foreach ($hoursData as $entry) {
+            $type = $entry['type'] ?? null;
+
+            if ($type !== null && array_key_exists($type, $result)) {
+                $result[$type] = (int) $entry['hours'];
+            }
+        }
+
+        return $result;
+    }
 }

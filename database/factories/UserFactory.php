@@ -84,4 +84,11 @@ class UserFactory extends Factory
             $user->assignRole(Role::TA);
         });
     }
+
+    public function webmaster(): self
+    {
+        return $this->afterCreating(function (User $user) {
+            $user->assignRole(Role::WM);
+        });
+    }
 }

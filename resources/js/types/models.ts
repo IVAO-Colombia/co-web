@@ -1,10 +1,13 @@
 import type {
+    ATCRating,
     AtcTraining,
     EventStatus,
     EventTag,
     EventType,
     PilotSlotCategory,
+    PilotRating,
     PilotTraining,
+    Role,
     SlotStatus,
     TrainingRequestStatus,
     TrainingRequestType,
@@ -39,6 +42,20 @@ type SlotUser = {
     id: number;
     name: string;
     vid: number;
+};
+
+export type UserListRow = {
+    id: number;
+    name: string;
+    email: string;
+    vid: number;
+    division_id: string | null;
+    country_id: string | null;
+    atc_rating: ATCRating | null;
+    pilot_rating: PilotRating | null;
+    atc_hours: number | null;
+    pilot_hours: number | null;
+    roles: Role[];
 };
 
 export type PilotSlot = {

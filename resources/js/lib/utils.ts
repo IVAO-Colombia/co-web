@@ -115,3 +115,37 @@ export function getTrainingCategoryLabel(request: TrainingRequest | null) {
         ? AtcTrainings[request.category as AtcTraining].label
         : PilotTrainings[request.category as PilotTraining].label;
 }
+
+/**
+ * Formats a duration in seconds as "Hh Mmin".
+ */
+export function formatHours(seconds: number): string {
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+
+    return `${h}h ${m}min`;
+}
+
+/**
+ * Resolves an ISO 3166-1 alpha-2 code (e.g. "CO") to a localized country
+ * name (e.g. "Colombia" / "Colombia"). Falls back to the raw code for
+ * anything Intl does not recognize (some IVAO divisions are not countries).
+ */
+export function countryName(
+    code: string | null | undefined,
+    locale: Locale,
+): string | null {
+    if (!code) {
+        return null;
+    }
+
+    try {
+        const displayNames = new Intl.DisplayNames([locale], {
+            type: 'region',
+        });
+
+        return displayNames.of(code) ?? code;
+    } catch {
+        return code;
+    }
+}

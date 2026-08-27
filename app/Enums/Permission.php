@@ -21,6 +21,7 @@ enum Permission: string
     case EDIT_TRAINING_NOTES = 'edit_training_notes';
     case BE_ASSIGNED_TO_TRAININGS = 'be_assigned_to_trainings';
     case CANCEL_PILOT_SLOT = 'cancel_pilot_slot';
+    case VIEW_USERS = 'view_users';
 
     /**
      * Permissions that will be directly assigned to a user.
