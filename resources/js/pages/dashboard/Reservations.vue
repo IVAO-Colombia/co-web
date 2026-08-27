@@ -295,8 +295,8 @@ function cancelPilotSlot(slot: PilotSlotWithEvent) {
                                 <TableHead>{{ $t('Flight') }}</TableHead>
                                 <TableHead>{{ $t('Route') }}</TableHead>
                                 <TableHead>{{ $t('Aircraft') }}</TableHead>
-                                <TableHead>{{ $t('Departs At') }}</TableHead>
-                                <TableHead>{{ $t('Arrives At') }}</TableHead>
+                                <TableHead>{{ $t('EOBT') }}</TableHead>
+                                <TableHead>{{ $t('ETA') }}</TableHead>
                                 <TableHead>{{ $t('Status') }}</TableHead>
                                 <TableHead class="w-1" />
                             </TableRow>

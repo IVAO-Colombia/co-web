@@ -15,7 +15,8 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
-import type { PilotSlotCategory, PilotSlotRow } from '@/types';
+import { PilotSlotCategory } from '@/types';
+import type { PilotSlotRow } from '@/types';
 
 const props = defineProps<{
     category: PilotSlotCategory;
@@ -33,10 +34,20 @@ const emit = defineEmits<{
 
 type IndexedSlot = { slot: PilotSlotRow; index: number };
 
+/** Ascending EOBT for a departures section, ascending ETA for an arrivals one. */
+function sortTime(slot: PilotSlotRow): string {
+    return props.category === PilotSlotCategory.ARRIVAL
+        ? (slot.arrives_at ?? slot.departs_at)
+        : slot.departs_at;
+}
+
 const sectionSlots = computed<IndexedSlot[]>(() =>
     props.slots
         .map((slot, index) => ({ slot, index }))
-        .filter(({ slot }) => slot.category === props.category),
+        .filter(({ slot }) => slot.category === props.category)
+        // Sort the {slot, index} pairs together so `index` - used by
+        // openEditForm/removeSlot/fieldError - stays attached to the right row.
+        .sort((a, b) => sortTime(a.slot).localeCompare(sortTime(b.slot))),
 );
 
 function blankSlot(): PilotSlotRow {
@@ -180,8 +191,8 @@ function hasFieldError(index: number): boolean {
                         <TableHead>{{ $t('Aircraft') }}</TableHead>
                         <TableHead>{{ $t('Origin') }}</TableHead>
                         <TableHead>{{ $t('Destination') }}</TableHead>
-                        <TableHead>{{ $t('Departs At') }}</TableHead>
-                        <TableHead>{{ $t('Arrives At') }}</TableHead>
+                        <TableHead>{{ $t('EOBT') }}</TableHead>
+                        <TableHead>{{ $t('ETA') }}</TableHead>
                         <TableHead>{{ $t('Gate') }}</TableHead>
                         <TableHead class="w-16" />
                     </TableRow>
@@ -311,10 +322,14 @@ function hasFieldError(index: number): boolean {
                     />
                 </div>
                 <div class="flex flex-col gap-1.5">
-                    <Label>{{ $t('Departs At') }}</Label>
+                    <Label>{{ $t('EOBT') }}</Label>
+                    <p class="text-xs text-muted-foreground">
+                        {{ $t('Estimated Off-Block Time') }}
+                    </p>
                     <DateTimePicker
                         :model-value="form.draft.departs_at"
-                        :placeholder="$t('Pick departure date & time')"
+                        precise-time
+                        :placeholder="$t('Pick EOBT')"
                         @update:model-value="
                             (v) => setDraftDateTime('departs_at', v)
                         "
@@ -325,11 +340,15 @@ function hasFieldError(index: number): boolean {
                     />
                 </div>
                 <div class="flex flex-col gap-1.5">
-                    <Label>{{ $t('Arrives At') }}</Label>
+                    <Label>{{ $t('ETA') }}</Label>
+                    <p class="text-xs text-muted-foreground">
+                        {{ $t('Estimated Time of Arrival') }}
+                    </p>
                     <DateTimePicker
                         :model-value="form.draft.arrives_at ?? ''"
                         :min-value="form.draft.departs_at || undefined"
-                        :placeholder="$t('Pick arrival date & time')"
+                        precise-time
+                        :placeholder="$t('Pick ETA')"
                         @update:model-value="
                             (v) => setDraftDateTime('arrives_at', v)
                         "

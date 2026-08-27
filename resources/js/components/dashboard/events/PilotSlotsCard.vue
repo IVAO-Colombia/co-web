@@ -102,12 +102,8 @@ const emit = defineEmits<{
                                         $t('Destination')
                                     }}</TableHead>
                                     <TableHead>{{ $t('Category') }}</TableHead>
-                                    <TableHead>{{
-                                        $t('Departs At')
-                                    }}</TableHead>
-                                    <TableHead>{{
-                                        $t('Arrives At')
-                                    }}</TableHead>
+                                    <TableHead>{{ $t('EOBT') }}</TableHead>
+                                    <TableHead>{{ $t('ETA') }}</TableHead>
                                     <TableHead>{{ $t('Gate') }}</TableHead>
                                 </TableRow>
                             </TableHeader>
