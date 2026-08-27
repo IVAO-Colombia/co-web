@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
+use App\Enums\EventStatus;
 use App\Enums\EventTag;
 use App\Enums\EventType;
 use App\Enums\Permission;
@@ -28,6 +29,8 @@ class StoreEventRequest extends FormRequest
     #[\Override]
     protected function prepareForValidation(): void
     {
+        $this->mergeIfMissing(['status' => EventStatus::ACTIVE->value]);
+
         $weekdays = $this->input('recurrence_weekdays');
 
         if (! is_array($weekdays)) {
@@ -53,6 +56,7 @@ class StoreEventRequest extends FormRequest
             'description' => ['required', 'string'],
             'description_en' => ['nullable', 'string'],
             'type' => ['required', Rule::enum(EventType::class)],
+            'status' => ['required', Rule::in([EventStatus::DRAFT->value, EventStatus::ACTIVE->value])],
             'locations' => ['required', 'string', 'max:255'],
             'starts_at' => ['required', 'date'],
             'ends_at' => ['nullable', 'date', 'after:starts_at'],

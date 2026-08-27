@@ -133,11 +133,19 @@ const form = useForm<EventForm>({
     ),
 });
 
-const editableStatuses = [
-    EventStatusEnum.DRAFT,
-    EventStatusEnum.ACTIVE,
-    EventStatusEnum.CANCELLED,
-] as const;
+// Cancelling and activating are always available. Draft is only dropped once
+// the event has reserved slots - reverting a live, booked event back to
+// draft would strand those reservations, but an untouched event can freely
+// move to and from draft.
+const editableStatuses = computed(() =>
+    props.hasReservedPilotSlots || props.hasReservedAtcSlots
+        ? ([EventStatusEnum.ACTIVE, EventStatusEnum.CANCELLED] as const)
+        : ([
+              EventStatusEnum.DRAFT,
+              EventStatusEnum.ACTIVE,
+              EventStatusEnum.CANCELLED,
+          ] as const),
+);
 
 watch([() => form.starts_at, () => form.ends_at], ([startsAt, endsAt]) => {
     if (!startsAt || !endsAt) {

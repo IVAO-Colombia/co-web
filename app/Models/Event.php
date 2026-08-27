@@ -160,6 +160,15 @@ class Event extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function hasReservedSlots(): bool
+    {
+        if ($this->pilotSlots()->reserved()->exists()) {
+            return true;
+        }
+
+        return $this->atcSlots()->reserved()->exists();
+    }
+
     /**
      * @param  Builder<Event>  $query
      */

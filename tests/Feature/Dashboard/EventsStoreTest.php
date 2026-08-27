@@ -70,6 +70,37 @@ class EventsStoreTest extends TestCase
     }
 
     #[Test]
+    public function event_can_be_created_as_a_draft(): void
+    {
+        $user = User::factory()->director()->create();
+
+        $this->actingAs($user)
+            ->post(route('dashboard.events.store'), array_merge($this->validPayload(), [
+                'status' => EventStatus::DRAFT->value,
+            ]))
+            ->assertRedirect(route('dashboard.events.index'));
+
+        $this->assertDatabaseHas('events', [
+            'name' => 'Evento de Prueba',
+            'status' => EventStatus::DRAFT->value,
+        ]);
+    }
+
+    #[Test]
+    public function store_rejects_cancelled_and_finalized_statuses(): void
+    {
+        $user = User::factory()->director()->create();
+
+        foreach ([EventStatus::CANCELLED->value, EventStatus::FINALIZED->value] as $status) {
+            $this->actingAs($user)
+                ->post(route('dashboard.events.store'), array_merge($this->validPayload(), [
+                    'status' => $status,
+                ]))
+                ->assertSessionHasErrors('status');
+        }
+    }
+
+    #[Test]
     public function event_can_be_created_with_image(): void
     {
         Storage::fake('public');

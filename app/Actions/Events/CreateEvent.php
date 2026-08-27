@@ -41,7 +41,7 @@ class CreateEvent
                 'ends_at' => $validated['ends_at'] ?? null,
                 'pilot_slots_enabled' => $validated['pilot_slots_enabled'] ?? false,
                 'atc_slots_enabled' => $validated['atc_slots_enabled'] ?? false,
-                'status' => EventStatus::ACTIVE,
+                'status' => EventStatus::from($validated['status']),
                 'is_recurring' => $isRecurring,
                 'recurrence_interval' => $isRecurring ? $validated['recurrence_interval'] : null,
                 'recurrence_weekdays' => $isRecurring ? $validated['recurrence_weekdays'] : null,

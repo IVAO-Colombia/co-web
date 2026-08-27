@@ -108,7 +108,7 @@ class EventsController extends Controller
             ? $event->occurrences()->get()->push($event)
             : collect([$event]);
 
-        if ($events->contains(fn (Event $item): bool => $this->hasReservedSlots($item))) {
+        if ($events->contains(fn (Event $item): bool => $item->hasReservedSlots())) {
             throw ValidationException::withMessages([
                 'event' => __('This event cannot be deleted because it has reserved slots.'),
             ]);
@@ -121,14 +121,5 @@ class EventsController extends Controller
         });
 
         return to_route('dashboard.events.index');
-    }
-
-    private function hasReservedSlots(Event $event): bool
-    {
-        if ($event->pilotSlots()->reserved()->exists()) {
-            return true;
-        }
-
-        return (bool) $event->atcSlots()->reserved()->exists();
     }
 }

@@ -46,8 +46,12 @@ import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 import eventRoutes from '@/routes/dashboard/events';
 import { index, create } from '@/routes/dashboard/events';
-import type { AtcSlotRow, EventType, PilotSlotRow } from '@/types';
-import { EventConstants, EventTag } from '@/types';
+import type { AtcSlotRow, EventStatus, EventType, PilotSlotRow } from '@/types';
+import {
+    EventConstants,
+    EventTag,
+    EventStatus as EventStatusEnum,
+} from '@/types';
 
 type EventForm = {
     name: string;
@@ -55,6 +59,7 @@ type EventForm = {
     description: string;
     description_en: string;
     type: EventType | '';
+    status: EventStatus;
     locations: string;
     starts_at: string;
     ends_at: string;
@@ -71,6 +76,13 @@ type EventForm = {
     training_request_id: number | null;
 };
 
+// Cancelling and finalizing only make sense for an event that already
+// exists, so a new event can only start as a draft or go live immediately.
+const creatableStatuses = [
+    EventStatusEnum.DRAFT,
+    EventStatusEnum.ACTIVE,
+] as const;
+
 defineOptions({
     layout: {
         breadcrumbs: [
@@ -86,6 +98,7 @@ const form = useForm<EventForm>({
     description: '',
     description_en: '',
     type: '',
+    status: EventStatusEnum.ACTIVE,
     locations: '',
     starts_at: '',
     ends_at: '',
@@ -348,32 +361,67 @@ function submit(): void {
 
                     <Separator />
 
-                    <!-- Type + Locations -->
+                    <!-- Status + Type + Locations -->
                     <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                        <div class="flex flex-col gap-1.5">
-                            <Label for="type">
-                                {{ $t('Type') }}
-                                <span class="ml-0.5 text-destructive">*</span>
-                            </Label>
-                            <Select v-model="form.type">
-                                <SelectTrigger id="type">
-                                    <SelectValue
-                                        :placeholder="$t('Select event type')"
-                                    />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem
-                                        v-for="(
-                                            label, value
-                                        ) in EventConstants.typeLabels"
-                                        :key="value"
-                                        :value="value"
+                        <div class="flex gap-4">
+                            <div class="flex flex-col gap-1.5">
+                                <Label for="status">
+                                    {{ $t('Status') }}
+                                    <span class="ml-0.5 text-destructive"
+                                        >*</span
                                     >
-                                        {{ label }}
-                                    </SelectItem>
-                                </SelectContent>
-                            </Select>
-                            <InputError :message="form.errors.type" />
+                                </Label>
+                                <Select v-model="form.status">
+                                    <SelectTrigger id="status">
+                                        <SelectValue
+                                            :placeholder="$t('Select status')"
+                                        />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem
+                                            v-for="status in creatableStatuses"
+                                            :key="status"
+                                            :value="status"
+                                        >
+                                            {{
+                                                EventConstants.statusLabels[
+                                                    status
+                                                ]
+                                            }}
+                                        </SelectItem>
+                                    </SelectContent>
+                                </Select>
+                                <InputError :message="form.errors.status" />
+                            </div>
+                            <div class="flex flex-col gap-1.5">
+                                <Label for="type">
+                                    {{ $t('Type') }}
+                                    <span class="ml-0.5 text-destructive"
+                                        >*</span
+                                    >
+                                </Label>
+                                <Select v-model="form.type">
+                                    <SelectTrigger id="type">
+                                        <SelectValue
+                                            :placeholder="
+                                                $t('Select event type')
+                                            "
+                                        />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem
+                                            v-for="(
+                                                label, value
+                                            ) in EventConstants.typeLabels"
+                                            :key="value"
+                                            :value="value"
+                                        >
+                                            {{ label }}
+                                        </SelectItem>
+                                    </SelectContent>
+                                </Select>
+                                <InputError :message="form.errors.type" />
+                            </div>
                         </div>
                         <div class="flex flex-col gap-1.5">
                             <Label for="locations">

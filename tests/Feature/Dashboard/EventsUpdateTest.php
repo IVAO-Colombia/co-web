@@ -98,18 +98,47 @@ class EventsUpdateTest extends TestCase
     }
 
     #[Test]
-    public function draft_and_finalized_statuses_are_rejected(): void
+    public function finalized_status_is_always_rejected(): void
     {
         $event = Event::factory()->create();
         $user = User::factory()->director()->create();
 
-        foreach ([EventStatus::DRAFT->value, EventStatus::FINALIZED->value] as $status) {
-            $this->actingAs($user)
-                ->put(route('dashboard.events.update', $event), array_merge($this->validPayload($event), [
-                    'status' => $status,
-                ]))
-                ->assertSessionHasErrors('status');
-        }
+        $this->actingAs($user)
+            ->put(route('dashboard.events.update', $event), array_merge($this->validPayload($event), [
+                'status' => EventStatus::FINALIZED->value,
+            ]))
+            ->assertSessionHasErrors('status');
+    }
+
+    #[Test]
+    public function draft_status_is_accepted_when_the_event_has_no_reserved_slots(): void
+    {
+        $event = Event::factory()->create(['status' => EventStatus::ACTIVE]);
+        $user = User::factory()->director()->create();
+
+        $this->actingAs($user)
+            ->put(route('dashboard.events.update', $event), array_merge($this->validPayload($event), [
+                'status' => EventStatus::DRAFT->value,
+            ]));
+
+        $this->assertDatabaseHas('events', [
+            'id' => $event->id,
+            'status' => EventStatus::DRAFT->value,
+        ]);
+    }
+
+    #[Test]
+    public function draft_status_is_rejected_when_the_event_has_reserved_slots(): void
+    {
+        $event = Event::factory()->create(['status' => EventStatus::ACTIVE]);
+        PilotSlot::factory()->reserved()->create(['event_id' => $event->id]);
+        $user = User::factory()->director()->create();
+
+        $this->actingAs($user)
+            ->put(route('dashboard.events.update', $event), array_merge($this->validPayload($event), [
+                'status' => EventStatus::DRAFT->value,
+            ]))
+            ->assertSessionHasErrors('status');
     }
 
     #[Test]

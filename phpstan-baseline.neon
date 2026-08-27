@@ -31,18 +31,6 @@ parameters:
 			path: app/Http/Controllers/Dashboard/DashboardController.php
 
 		-
-			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\HasMany\<App\\Models\\AtcSlot, App\\Models\\Event\>\:\:reserved\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Http/Controllers/Dashboard/EventsController.php
-
-		-
-			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\HasMany\<App\\Models\\PilotSlot, App\\Models\\Event\>\:\:reserved\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Http/Controllers/Dashboard/EventsController.php
-
-		-
 			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\HasMany\<App\\Models\\PilotSlot, App\\Models\\Event\>\:\:reserved\(\)\.$#'
 			identifier: method.notFound
 			count: 1
@@ -71,3 +59,15 @@ parameters:
 			identifier: match.unhandled
 			count: 1
 			path: app/Models/AtcPositionFra.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\HasMany\<App\\Models\\AtcSlot, \$this\(App\\Models\\Event\)\>\:\:reserved\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Models/Event.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\HasMany\<App\\Models\\PilotSlot, \$this\(App\\Models\\Event\)\>\:\:reserved\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Models/Event.php

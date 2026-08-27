@@ -119,6 +119,6 @@ class PilotSlotsReportTest extends TestCase
     {
         $lines = array_filter(explode("\n", trim($content)));
 
-        return array_map(fn (string $line): array => str_getcsv($line), array_values($lines));
+        return array_map(str_getcsv(...), array_values($lines));
     }
 }
