@@ -617,13 +617,12 @@ function confirmCancelPilotSlot(): void {
                                 <TableHead>{{ $t('Ends At') }}</TableHead>
                                 <TableHead>{{ $t('Status') }}</TableHead>
                                 <TableHead>{{ $t('Reserved By') }}</TableHead>
-                                <TableHead class="w-10" />
                             </TableRow>
                         </TableHeader>
                         <TableBody>
                             <TableEmpty
                                 v-if="event.atc_slots.length === 0"
-                                :colspan="6"
+                                :colspan="5"
                             >
                                 <p class="py-6 text-sm text-muted-foreground">
                                     {{ $t('No ATC slots added yet.') }}
@@ -671,33 +670,6 @@ function confirmCancelPilotSlot(): void {
                                             ? `${slot.atc.name} (${slot.atc.vid})`
                                             : '—'
                                     }}
-                                </TableCell>
-                                <TableCell>
-                                    <TooltipProvider
-                                        v-if="
-                                            [
-                                                SlotStatus.RESERVED,
-                                                SlotStatus.CONFIRMED,
-                                            ].includes(slot.status)
-                                        "
-                                    >
-                                        <Tooltip>
-                                            <TooltipTrigger as-child>
-                                                <span>
-                                                    <Button
-                                                        variant="ghost"
-                                                        size="sm"
-                                                        disabled
-                                                    >
-                                                        {{ $t('Cancel') }}
-                                                    </Button>
-                                                </span>
-                                            </TooltipTrigger>
-                                            <TooltipContent>
-                                                {{ $t('Coming soon') }}
-                                            </TooltipContent>
-                                        </Tooltip>
-                                    </TooltipProvider>
                                 </TableCell>
                             </TableRow>
                         </TableBody>
