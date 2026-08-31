@@ -86,6 +86,75 @@ class LandingEventsTest extends TestCase
     }
 
     #[Test]
+    public function public_listing_hides_events_that_already_ended(): void
+    {
+        $this->travelTo('2026-08-31 09:00:00');
+
+        Event::factory()->create([
+            'starts_at' => '2026-08-30 21:00:00',
+            'ends_at' => '2026-08-31 01:00:00',
+        ]);
+
+        $this->get(route('home.events'))
+            ->assertOk()
+            ->assertInertia(fn ($page) => $page->has('events', 0));
+    }
+
+    #[Test]
+    public function public_listing_shows_events_that_are_still_in_progress(): void
+    {
+        Event::factory()->create([
+            'starts_at' => now()->subHours(2),
+            'ends_at' => now()->addHours(2),
+        ]);
+
+        $this->get(route('home.events'))
+            ->assertOk()
+            ->assertInertia(fn ($page) => $page->has('events', 1));
+    }
+
+    #[Test]
+    public function public_listing_hides_events_without_an_end_date_from_a_previous_day(): void
+    {
+        Event::factory()->create([
+            'starts_at' => now()->subDay(),
+            'ends_at' => null,
+        ]);
+
+        $this->get(route('home.events'))
+            ->assertOk()
+            ->assertInertia(fn ($page) => $page->has('events', 0));
+    }
+
+    #[Test]
+    public function public_listing_shows_events_without_an_end_date_that_started_earlier_today(): void
+    {
+        $this->travelTo('2026-08-31 18:00:00');
+
+        Event::factory()->create([
+            'starts_at' => '2026-08-31 09:00:00',
+            'ends_at' => null,
+        ]);
+
+        $this->get(route('home.events'))
+            ->assertOk()
+            ->assertInertia(fn ($page) => $page->has('events', 1));
+    }
+
+    #[Test]
+    public function public_listing_hides_events_whose_end_date_passed_even_if_they_started_today(): void
+    {
+        Event::factory()->create([
+            'starts_at' => now()->subHours(5),
+            'ends_at' => now()->subHour(),
+        ]);
+
+        $this->get(route('home.events'))
+            ->assertOk()
+            ->assertInertia(fn ($page) => $page->has('events', 0));
+    }
+
+    #[Test]
     public function events_index_filters_by_query(): void
     {
         $this->actingAs(User::factory()->director()->create());

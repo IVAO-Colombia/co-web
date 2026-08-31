@@ -613,4 +613,19 @@ class EventsStoreTest extends TestCase
             ['image' => UploadedFile::fake()->create('document.pdf', 100)],
         ))->assertSessionHasErrors('image');
     }
+
+    #[Test]
+    public function creator_and_assignee_relations_use_the_correct_keys(): void
+    {
+        $creator = User::factory()->create();
+        $assignee = User::factory()->create();
+
+        $event = Event::factory()->create([
+            'created_by' => $creator->id,
+            'assigned_to' => $assignee->id,
+        ]);
+
+        $this->assertTrue($event->createdBy->is($creator));
+        $this->assertTrue($event->assignedTo->is($assignee));
+    }
 }

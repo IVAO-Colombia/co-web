@@ -129,7 +129,7 @@ class Event extends Model
      */
     public function createdBy(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'created_by');
     }
 
     /**
@@ -157,7 +157,7 @@ class Event extends Model
      */
     public function assignedTo(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'assigned_to');
     }
 
     public function hasReservedSlots(): bool
@@ -178,9 +178,16 @@ class Event extends Model
         $query
             ->where('status', EventStatus::ACTIVE)
             ->where('is_recurring', false)
-            ->where(function ($query): void {
-                $query->orWhere('ends_at', '>=', now()->startOfDay())
-                    ->orWhere('starts_at', '>=', now()->startOfDay());
+            ->where(function (Builder $query): void {
+                $query
+                    ->where(function (Builder $query): void {
+                        $query->whereNotNull('ends_at')
+                            ->where('ends_at', '>=', now());
+                    })
+                    ->orWhere(function (Builder $query): void {
+                        $query->whereNull('ends_at')
+                            ->where('starts_at', '>=', now()->startOfDay());
+                    });
             });
     }
 }
