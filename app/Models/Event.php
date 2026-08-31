@@ -56,6 +56,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read int|null $user_award_reports_count
  *
  * @method static Builder<static>|Event active()
+ * @method static Builder<static>|Event ended()
  * @method static \Database\Factories\EventFactory factory($count = null, $state = [])
  * @method static Builder<static>|Event newModelQuery()
  * @method static Builder<static>|Event newQuery()
@@ -187,6 +188,27 @@ class Event extends Model
                     ->orWhere(function (Builder $query): void {
                         $query->whereNull('ends_at')
                             ->where('starts_at', '>=', now()->startOfDay());
+                    });
+            });
+    }
+
+    /**
+     * @param  Builder<Event>  $query
+     */
+    #[Scope]
+    protected function ended(Builder $query): void
+    {
+        $query
+            ->where('is_recurring', false)
+            ->where(function (Builder $query): void {
+                $query
+                    ->where(function (Builder $query): void {
+                        $query->whereNotNull('ends_at')
+                            ->where('ends_at', '<', now());
+                    })
+                    ->orWhere(function (Builder $query): void {
+                        $query->whereNull('ends_at')
+                            ->where('starts_at', '<', now()->startOfDay());
                     });
             });
     }
