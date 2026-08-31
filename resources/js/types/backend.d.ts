@@ -43,7 +43,11 @@ export enum EventType {
     TRAINING = 'training',
     RFO = 'rfo',
     RFE = 'rfe',
-    REGULAR = 'REGULAR',
+    AIRBRIDGE = 'airbridge',
+    MSE = 'mse',
+    FLY_IN = 'fly_in',
+    FLY_OUT = 'fly_out',
+    FLY_IN_FLY_OUT = 'fly_in_fly_out',
 }
 export enum PagesComponents {
     DASHBOARD = 'Dashboard',

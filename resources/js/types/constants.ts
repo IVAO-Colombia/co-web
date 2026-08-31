@@ -41,7 +41,11 @@ export const EventConstants: EventConstantsType = {
         [EventType.TRAINING]: wTrans('Training'),
         [EventType.RFO]: wTrans('RFO'),
         [EventType.RFE]: wTrans('RFE'),
-        [EventType.REGULAR]: wTrans('Regular'),
+        [EventType.AIRBRIDGE]: wTrans('Airbridge'),
+        [EventType.MSE]: wTrans('MSE'),
+        [EventType.FLY_IN]: wTrans('Fly In'),
+        [EventType.FLY_OUT]: wTrans('Fly Out'),
+        [EventType.FLY_IN_FLY_OUT]: wTrans('Fly In / Fly Out'),
     },
     tagLabels: {
         [EventTag.VFR]: wTrans('VFR'),
