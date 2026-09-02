@@ -129,7 +129,6 @@ function divisionLabel(code: string): string {
                 {{ $t('Users') }}
             </h1>
             <p class="text-sm text-muted-foreground">
-                TEST 2
                 {{ users.total.toLocaleString() }}
                 {{ transChoice('user|users', users.total) }}
             </p>
