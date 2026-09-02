@@ -9,6 +9,7 @@ use App\Http\Controllers\Dashboard\PilotSlotsReportController;
 use App\Http\Controllers\Dashboard\ReservationsController;
 use App\Http\Controllers\Dashboard\Staff\SendIvaoTrainingRequestReminderController;
 use App\Http\Controllers\Dashboard\Staff\TrainingRequestsController as StaffTrainingRequestsController;
+use App\Http\Controllers\Dashboard\Staff\UpdateUserRolesController;
 use App\Http\Controllers\Dashboard\Staff\UsersController as StaffUsersController;
 use App\Http\Controllers\Dashboard\TrainingsController;
 use App\Http\Controllers\Landing\AtcSlotReservationsController;
@@ -63,6 +64,10 @@ Route::middleware(['can:view_training_requests'])->group(function (): void {
 // Staff users directory
 Route::middleware(['can:view_users'])->group(function (): void {
     Route::get('staff/users', [StaffUsersController::class, 'index'])->name('dashboard.staff.users.index');
+});
+
+Route::middleware(['can:manage_user_roles'])->group(function (): void {
+    Route::patch('staff/users/{user}/roles', UpdateUserRolesController::class)->name('dashboard.staff.users.roles.update');
 });
 
 Route::redirect('settings', '/settings/profile');

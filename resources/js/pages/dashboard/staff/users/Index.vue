@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { Head, router } from '@inertiajs/vue3';
 import { transChoice, wTrans } from 'laravel-vue-i18n';
-import { ChevronLeft, ChevronRight, X } from 'lucide-vue-next';
+import { ChevronLeft, ChevronRight, Pencil, X } from 'lucide-vue-next';
 import { computed, ref, unref, watch } from 'vue';
+import ManageUserRolesDialog from '@/components/ManageUserRolesDialog.vue';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -28,9 +29,10 @@ import TooltipProvider from '@/components/ui/tooltip/TooltipProvider.vue';
 import TooltipTrigger from '@/components/ui/tooltip/TooltipTrigger.vue';
 import { useDebounce } from '@/composables/useDebounce';
 import { useLocale } from '@/composables/useLocale';
+import { usePermissions } from '@/composables/usePermissions';
 import { countryName, formatHours } from '@/lib/utils';
 import { index } from '@/routes/dashboard/staff/users';
-import { ATCRatings, PilotRatings, RoleConstants } from '@/types';
+import { ATCRatings, Permission, PilotRatings, RoleConstants } from '@/types';
 import type { LengthAwarePaginator, UserListRow } from '@/types';
 import type { ATCRating, PilotRating, Role } from '@/types';
 
@@ -53,6 +55,10 @@ defineOptions({
 });
 
 const { locale } = useLocale();
+const { hasPermission } = usePermissions();
+
+const canManageRoles = hasPermission(Permission.MANAGE_USER_ROLES);
+const editingUser = ref<UserListRow | null>(null);
 
 const query = ref(props.filters.query ?? '');
 const role = ref<Role | 'none' | ''>(props.filters.role ?? '');
@@ -227,10 +233,16 @@ function divisionLabel(code: string): string {
                         <TableHead>{{ $t('Division') }}</TableHead>
                         <TableHead>{{ $t('ATC') }}</TableHead>
                         <TableHead>{{ $t('Pilot') }}</TableHead>
+                        <TableHead v-if="canManageRoles">
+                            <span class="sr-only">{{ $t('Actions') }}</span>
+                        </TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    <TableEmpty v-if="users.data.length === 0" :colspan="5">
+                    <TableEmpty
+                        v-if="users.data.length === 0"
+                        :colspan="canManageRoles ? 6 : 5"
+                    >
                         {{ $t('No users found.') }}
                     </TableEmpty>
                     <TableRow v-for="user in users.data" :key="user.id">
@@ -369,6 +381,19 @@ function divisionLabel(code: string): string {
                             </div>
                             <span v-else class="text-muted-foreground">—</span>
                         </TableCell>
+                        <TableCell v-if="canManageRoles" class="text-right">
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                :title="$t('Manage roles')"
+                                @click="editingUser = user"
+                            >
+                                <Pencil class="size-4" />
+                                <span class="sr-only">{{
+                                    $t('Manage roles')
+                                }}</span>
+                            </Button>
+                        </TableCell>
                     </TableRow>
                 </TableBody>
             </Table>
@@ -406,5 +431,17 @@ function divisionLabel(code: string): string {
                 <ChevronRight class="size-4" />
             </Button>
         </div>
+
+        <ManageUserRolesDialog
+            v-if="canManageRoles"
+            :user="editingUser"
+            @update:open="
+                (open) => {
+                    if (!open) {
+                        editingUser = null;
+                    }
+                }
+            "
+        />
     </div>
 </template>

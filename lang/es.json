@@ -518,5 +518,8 @@
     "Public Relations Advisor": "Asesor de Relaciones Públicas",
     "Webmaster": "Webmaster",
     "Assistant Webmaster": "Webmaster Asistente",
-    "Webmaster Advisor": "Asesor de Webmaster"
+    "Webmaster Advisor": "Asesor de Webmaster",
+    "Manage roles": "Gestionar roles",
+    "Roles updated.": "Roles actualizados.",
+    "Roles are re-synced from the member's IVAO staff positions on their next login, so manual changes may be overwritten.": "Los roles se vuelven a sincronizar con las posiciones de staff de IVAO del miembro en su próximo inicio de sesión, por lo que los cambios manuales se pueden sobrescribir."
 }

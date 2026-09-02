@@ -268,6 +268,7 @@ class SpatieRolesAndPermissionsSeeder extends Seeder
                 EnumsPermission::ASSIGN_TRAINING_REQUESTS,
                 EnumsPermission::EDIT_TRAINING_NOTES,
                 EnumsPermission::VIEW_USERS,
+                EnumsPermission::MANAGE_USER_ROLES,
             ],
             EnumsRole::AWM->value => [
                 EnumsPermission::STAFF_ACCESS,
@@ -282,6 +283,7 @@ class SpatieRolesAndPermissionsSeeder extends Seeder
                 EnumsPermission::ASSIGN_TRAINING_REQUESTS,
                 EnumsPermission::EDIT_TRAINING_NOTES,
                 EnumsPermission::VIEW_USERS,
+                EnumsPermission::MANAGE_USER_ROLES,
             ],
             EnumsRole::WMA->value => [
                 EnumsPermission::STAFF_ACCESS,
@@ -296,6 +298,7 @@ class SpatieRolesAndPermissionsSeeder extends Seeder
                 EnumsPermission::ASSIGN_TRAINING_REQUESTS,
                 EnumsPermission::EDIT_TRAINING_NOTES,
                 EnumsPermission::VIEW_USERS,
+                EnumsPermission::MANAGE_USER_ROLES,
             ],
         ];
     }

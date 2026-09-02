@@ -81,6 +81,7 @@ export enum Permission {
     BE_ASSIGNED_TO_TRAININGS = 'be_assigned_to_trainings',
     CANCEL_PILOT_SLOT = 'cancel_pilot_slot',
     VIEW_USERS = 'view_users',
+    MANAGE_USER_ROLES = 'manage_user_roles',
 }
 export enum PilotRating {
     FS1 = 2,

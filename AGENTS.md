@@ -13,10 +13,11 @@ After each implementation we must verify the code by using the following compose
 
 Those are defined inside the `scripts` section of the composer.json file
 
-# Laravel code
+## Laravel code
 
 - Whenever possible use the Laravel PHP contextual attributes #\[Attributes\]. https://laravel.com/docs/13.x/container#contextual-attributes
 - Don't add guarded or fillable attributes to models as we are using Model::unguard().
+- Don't use custom methods for http request actions. Use single invokable action contorllers instead.
 
 ## Conventions
 

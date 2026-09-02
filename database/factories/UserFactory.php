@@ -91,4 +91,18 @@ class UserFactory extends Factory
             $user->assignRole(Role::WM);
         });
     }
+
+    public function assistantWebmaster(): self
+    {
+        return $this->afterCreating(function (User $user) {
+            $user->assignRole(Role::AWM);
+        });
+    }
+
+    public function webmasterAdvisor(): self
+    {
+        return $this->afterCreating(function (User $user) {
+            $user->assignRole(Role::WMA);
+        });
+    }
 }
