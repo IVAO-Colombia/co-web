@@ -96,6 +96,41 @@ class AuthenticationTest extends TestCase
     }
 
     #[Test]
+    public function it_doesnt_assign_roles_from_staff_positions_of_other_divisions(): void
+    {
+        $this->mockSocialiteIvao(['XG' => '-TC']);
+
+        $this->get(route('auth.callback', 'ivao'));
+
+        $this->assertEmpty(auth()->user()->roles);
+    }
+
+    #[Test]
+    public function it_only_assigns_roles_from_staff_positions_of_the_division(): void
+    {
+        $this->mockSocialiteIvao([Role::DIVISION => '-WMA2', 'XG' => '-TC']);
+
+        $this->get(route('auth.callback', 'ivao'));
+
+        $this->assertTrue(auth()->user()->hasRole(Role::WMA->value));
+        $this->assertFalse(auth()->user()->hasRole(Role::TC->value));
+    }
+
+    #[Test]
+    public function it_removes_roles_on_login_when_the_staff_positions_are_from_another_division(): void
+    {
+        $ivaoUser = $this->mockSocialiteIvao(['SK' => '-MC']);
+        User::factory()->membershipCoordinator()->create([
+            'vid' => $ivaoUser['id'],
+            'email' => $ivaoUser['email'],
+        ]);
+
+        $this->get(route('auth.callback', 'ivao'));
+
+        $this->assertEmpty(auth()->user()->roles);
+    }
+
+    #[Test]
     public function it_doesnt_registers_a_new_user_if_already_exists(): void
     {
         $ivaoUser = $this->mockSocialiteIvao();
@@ -125,9 +160,13 @@ class AuthenticationTest extends TestCase
         ]);
     }
 
-    private function mockSocialiteIvao(): array
+    /**
+     * @param  array<string, string>  $staffPositions  Map of division id to staff position id.
+     * @return array<string, mixed>
+     */
+    private function mockSocialiteIvao(array $staffPositions = [Role::DIVISION => '-WMA2']): array
     {
-        $ivaoUser = $this->getIvaoUser();
+        $ivaoUser = $this->getIvaoUser($staffPositions);
         $token = $this->faker->sha256();
         $refreshToken = $this->faker->sha256();
 
@@ -170,7 +209,11 @@ class AuthenticationTest extends TestCase
         return $ivaoUser;
     }
 
-    private function getIvaoUser(): array
+    /**
+     * @param  array<string, string>  $staffPositions  Map of division id to staff position id.
+     * @return array<string, mixed>
+     */
+    private function getIvaoUser(array $staffPositions = [Role::DIVISION => '-WMA2']): array
     {
         $pilotRating = $this->faker->randomElement(PilotRating::cases());
         $atcRating = $this->faker->randomElement(ATCRating::cases());
@@ -214,18 +257,19 @@ class AuthenticationTest extends TestCase
                 ['type' => 'atc', 'hours' => $this->faker->numberBetween(0, 9999)],
                 ['type' => 'staff', 'hours' => $this->faker->numberBetween(0, 9999)],
             ],
-            'userStaffPositions' => [
-                [
-                    'id' => "{$countryId}-WMA2",
-                    'staffPositionId' => '-WMA2',
-                    'divisionId' => $countryId,
+            'userStaffPositions' => collect($staffPositions)
+                ->map(fn (string $staffPositionId, string $divisionId): array => [
+                    'id' => "{$divisionId}{$staffPositionId}",
+                    'staffPositionId' => $staffPositionId,
+                    'divisionId' => $divisionId,
                     'centerId' => null,
-                    'connectAs' => "{$countryId}-WMA2",
+                    'connectAs' => "{$divisionId}{$staffPositionId}",
                     'onTrial' => true,
                     'description' => null,
                     'staffPosition' => [],
-                ],
-            ],
+                ])
+                ->values()
+                ->all(),
             'userStaffDetails' => [
                 'email' => $this->faker->userName(),
                 'note' => null,

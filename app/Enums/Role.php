@@ -9,6 +9,12 @@ namespace App\Enums;
  */
 enum Role: string
 {
+    /**
+     * The IVAO division this site belongs to. Only staff positions issued by
+     * this division grant roles.
+     */
+    public const string DIVISION = 'CO';
+
     case DIR = 'director';
     case ADIR = 'assistant_director';
     case FOC = 'flight_operations_coordinator';
@@ -58,7 +64,7 @@ enum Role: string
 
     public function callsign(): string
     {
-        return 'CO-'.strtoupper($this->name);
+        return self::DIVISION.'-'.strtoupper($this->name);
     }
 
     /**
