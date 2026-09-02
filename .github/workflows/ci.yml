@@ -29,18 +29,7 @@ jobs:
       group: deploy-production
       cancel-in-progress: false
     steps:
-      - name: Execute Remote Deployment
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            # Define paths
-            WORK_TREE="${{ secrets.WORK_TREE }}"
-            GIT_DIR="${{ secrets.GIT_DIR }}"
-
-            # Navigate to web root and pull latest changes
-            cd $WORK_TREE
-            git --git-dir=$GIT_DIR --work-tree=$WORK_TREE pull origin main
-            ./deploy.sh
+      - name: Trigger deployment
+        env:
+          DEPLOY_WEBHOOK_URL: ${{ secrets.DEPLOY_WEBHOOK_URL }}
+        run: curl --fail --silent --show-error --request POST "$DEPLOY_WEBHOOK_URL"
